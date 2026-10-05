@@ -17,7 +17,7 @@ declare(strict_types=1);
  * recover() for a grid's own query and by Mai_Query_Cache::fetch_ids() for the copy, and the swap
  * turns off for a day. So does a swapped statement that is slow, the copy's or the grid's own.
  * Anything that throws inside the swap sends the statement unchanged and turns the swap off for
- * the rest of the request.
+ * a day too.
  *
  * The query's own SQL text, as WordPress keeps it on the query, never changes, so cache keys
  * built from it work as before.
@@ -547,8 +547,9 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 *
 	 * Returns at once when nothing is prepared. Otherwise it takes the most recent prepared swap
 	 * whose text equals the statement, and checks it. Anything that throws on the way, such as an
-	 * object cache that fails on the transient read, sends the statement unchanged, turns the
-	 * swap off for the rest of this request and logs one line.
+	 * object cache that fails on the transient read, sends the statement unchanged and turns the
+	 * swap off for a day, like a failed statement, so a cause that repeats logs once a day. When
+	 * the turn-off throws too, the swap is off for the rest of this request and one line says so.
 	 *
 	 * @since 2.41.0
 	 *
@@ -567,7 +568,11 @@ final class Mai_Post_Grid_Query_Optimizer {
 			$this->off      = true;
 			$this->prepared = [];
 
-			( $this->logger )( sprintf( 'Grid query optimizer off for this request only (error): %s "%s" at %s:%d', get_class( $e ), $e->getMessage(), $e->getFile(), $e->getLine() ) );
+			try {
+				$this->turn_off( 'error', $e->getMessage() );
+			} catch ( Throwable ) {
+				( $this->logger )( "Grid query optimizer off for this request only (error): {$e->getMessage()}" );
+			}
 
 			return $sql;
 		}

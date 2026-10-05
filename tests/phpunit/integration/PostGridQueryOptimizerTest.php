@@ -481,7 +481,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertStringContainsString( self::SWAP, (string) $optimizer->swap( $split ) );
 	}
 
-	public function test_an_exception_inside_the_swap_sends_the_statement_unchanged(): void {
+	public function test_an_exception_inside_the_swap_sends_the_statement_unchanged_and_turns_it_off(): void {
 		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
 		$today     = $this->run_today( [] );
 		$logged    = [];
@@ -494,9 +494,15 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 			}
 		);
 
-		// As a cache drop-in that throws on a read would.
-		$throw = static function (): never {
-			throw new RuntimeException( 'Test cache read failure' );
+		// As a cache drop-in that throws on a read would, once, so the turn-off can read its
+		// transient back.
+		$thrown = 0;
+		$throw  = static function ( $pre ) use ( &$thrown ) {
+			if ( 0 === $thrown++ ) {
+				throw new RuntimeException( 'Test cache read failure' );
+			}
+
+			return $pre;
 		};
 
 		add_filter( 'pre_transient_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT, $throw );
@@ -505,11 +511,11 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
 		remove_filter( 'pre_transient_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT, $throw );
 
+		$this->assertGreaterThan( 0, $thrown );
 		$this->assertSame( [], self::swapped( $run ) );
 		$this->assertSame( $today['ids'], $run['ids'] );
-		$this->assertCount( 1, $logged );
-		$this->assertStringContainsString( 'Test cache read failure', $logged[0] );
-		$this->assertFalse( get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ), 'off for this request, not for the day' );
+		$this->assertSame( [ 'Grid query optimizer off for 24 hours (error): Test cache read failure' ], $logged, 'one line, so a cause that repeats logs once a day' );
+		$this->assertSame( 'error: Test cache read failure', get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ), 'off for a day, with the reason' );
 
 		$this->prepare_without_sending( [], 0 );
 
