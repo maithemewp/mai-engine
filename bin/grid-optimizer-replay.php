@@ -24,10 +24,10 @@ declare(strict_types=1);
  *      is a post whose post_date has a zero day or month, such as 2007-03-00 (Mike accepted it on
  *      2026-10-05): a date-sorted pair whose IDs differ only by such posts, under the rule in
  *      differs_only_by(), is counted as known, prints them, and is not timed. Anything else that
- *      differs is still a bug. A pair where both forms
- *      return no rows is counted as empty, and is not compared or timed. The pairs script builds
- *      its synthetic statements from terms that have posts, so one of those coming back empty
- *      means the data is wrong, and so do more than 10% of all pairs coming back empty.
+ *      differs is still a bug. A pair where both forms return no rows is counted as empty, and is
+ *      not compared or timed. The pairs script builds its synthetic statements from terms that
+ *      have posts, so one of those coming back empty means the data is wrong, and so do more than
+ *      10% of all pairs coming back empty.
  *   2. Both forms run in one session, timed on the server with NOW(6). Each runs 10 times by
  *      default, and --runs changes it. The form that goes first alternates run by run. The time
  *      runs from one NOW(6) to the next, around the statement and the transfer of its rows, so it
@@ -335,12 +335,15 @@ function invalid_dates( mysqli $db, string $sql, array $ids ): array {
  *   3. A LIMIT o, n that the rows filled: both lists have n entries. Let k be the number of
  *      distinct invalid-date posts in either list. The caller runs both statements again at
  *      LIMIT o, n + k ($wide_today, $wide_swapped). Each list must be the first n entries of its
- *      own widened run, so the widened run is the same statement giving the same order. With the
- *      invalid-date posts taken out of both widened runs, their first m entries must be equal,
- *      where m is the shorter length after the removal, and m must be at least n - k. So every
- *      post either form shows, other than the invalid-date ones, is in the same place in the
- *      other form's order, and whatever filled the places of the invalid-date posts is the next
- *      post in both.
+ *      own widened run, so the widened run is the same statement giving the same order. Then:
+ *      a. When either widened run has fewer than n + k entries, the rows ran out and its whole
+ *         result is visible. Both widened runs must then pass rule 2's test: the same posts, the
+ *         same number of them, and the same order with the invalid-date posts taken out.
+ *      b. Otherwise, with the invalid-date posts taken out of both widened runs, their first m
+ *         entries must be equal, where m is the shorter length after the removal, and m must be
+ *         at least n - k. So every post either form shows, other than the invalid-date ones, is
+ *         in the same place in the other form's order, and whatever filled the places of the
+ *         invalid-date posts is the next post in both.
  *
  * @param list<int>      $today        Today's IDs.
  * @param list<int>      $swapped      The swapped IDs.
@@ -362,14 +365,20 @@ function differs_only_by( array $today, array $swapped, array $invalid, bool $da
 
 	$strip = static fn( array $ids ): array => array_values( array_filter( $ids, static fn( int $id ): bool => ! isset( $skip[ $id ] ) ) );
 
+	// Rule 2's test: the same posts, the same number of them, the same order without the
+	// invalid-date posts.
+	$same = static function ( array $a, array $b ) use ( $strip ): bool {
+		$sorted_a = $a;
+		$sorted_b = $b;
+
+		sort( $sorted_a );
+		sort( $sorted_b );
+
+		return $sorted_a === $sorted_b && $strip( $a ) === $strip( $b );
+	};
+
 	if ( null === $rows || count( $today ) < $rows ) {
-		$a = $today;
-		$b = $swapped;
-
-		sort( $a );
-		sort( $b );
-
-		return $a === $b && $strip( $today ) === $strip( $swapped );
+		return $same( $today, $swapped );
 	}
 
 	if ( count( $today ) !== $rows || count( $swapped ) !== $rows || null === $wide_today || null === $wide_swapped ) {
@@ -378,6 +387,10 @@ function differs_only_by( array $today, array $swapped, array $invalid, bool $da
 
 	if ( array_slice( $wide_today, 0, $rows ) !== $today || array_slice( $wide_swapped, 0, $rows ) !== $swapped ) {
 		return false;
+	}
+
+	if ( count( $wide_today ) < $rows + count( $seen ) || count( $wide_swapped ) < $rows + count( $seen ) ) {
+		return $same( $wide_today, $wide_swapped );
 	}
 
 	$a = $strip( $wide_today );
