@@ -286,3 +286,44 @@ No release, tag or push without Mike asking.
 - **A WordPress update changes how core writes this SQL.** The checks stop matching and sites quietly keep today's speed. The "swap happens" tests catch it on the next test run.
 - **A brief database problem during a swapped statement turns the swap off for a day.** It costs only the speedup on that site.
 - **The tiebreaker changes which tied posts show** on grids that did not have it. See "Ties".
+
+## Results
+
+### Whole pages on local eurweb (2026-10-05)
+
+**A fully cold article view is about 1.8 s faster with the swap on.** With every note current, no difference showed above noise. This section covers local eurweb only, which runs MySQL 9.7.1. The results on MySQL 8.0, 8.4 and MariaDB come later, from the Docker runs (Task 8), and are not in this section.
+
+**Numbers.** Medians in milliseconds, time to first byte, with 95% bootstrap intervals in square brackets. "Off minus on" is the time the swap saves.
+
+- **Fully cold article views, 4 articles with 12 runs per arm each (48 per arm):** on 1,769 [1,719, 1,818], off 3,576 [3,550, 3,649].
+  - Off minus on: +1,807 [+1,746, +1,896] as a difference of medians, and +1,844 [+1,805, +1,870] as a paired difference over 48 pairs.
+  - Per article, on / off / difference of medians: realistic-editorial-technology-photography 1,737 / 3,676 / +1,939, sherri-shepherd-son-college 1,705 / 3,574 / +1,868, costco-motor-oil 1,765 / 3,536 / +1,772, mayor-jayden-williams-removal 1,814 / 3,575 / +1,760.
+  - The expected gain was about 1.5 s. The six heavy statements cost 1.69 s together in the off arm, and the page time around them goes too.
+- **The statements themselves, one cold article request per arm (MySQL's own timer):**
+  - Swap off: the six heavy statements took 271 to 307 ms each, 1,690 ms together.
+  - Swap on: the same six were swapped and took 2.6 to 9.8 ms each, 38 ms together. The two requests differed by 1,623 ms at the page, against 1,652 ms saved in the statements.
+  - A small single-term grid statement (`LIMIT` 2) went from 0.37 to 0.84 ms when swapped.
+  - Statements swapped in one cold request per arm: 7 on the article, 13 on the home page. With the swap on, no grid statement read more than 500,000 rows on either page. With it off, six did on each page.
+- **Every note current, so no grid statement is sent:** the checks cost nothing that these runs can see.
+  - Home page, 60 runs per arm: on 1,213 [1,182, 1,242], off 1,197 [1,173, 1,206]. Off minus on: −16 [−51, +16] as a difference of medians.
+  - Article (sherri-shepherd-son-college), 60 runs per arm: on 1,366 [1,319, 1,452], off 1,377 [1,330, 1,413]. Off minus on: +11 [−88, +74].
+  - Both intervals include 0. Both pages together, 118 pairs (leaving out the two stalled pairs, see below): paired difference −13 [−52, +2], so the swap on was at most about 50 ms slower, and the data cannot tell it from none.
+  - The first article run (20 per arm) read 83 ms slower with the swap on, paired, and its interval just missed 0 (−83 [−147, −2]). I repeated it with 40 runs per arm and the other arm going first, and got +4 [−54, +87]. I read the first as noise.
+  - Each page sent the same number of statements in both arms (12 on the article, 6 on the home page), and none was swapped. Each page had one small grid-shaped statement (0.4 to 2.4 ms, a newer-than-a-date list for one term), in the joined form in both arms.
+- **Notes emptied before every view, so statements are sent, 12 runs per arm:** the gain. The article's statement check above matches its gain, so the checks show no cost there. I did not make that check for the home page.
+  - Home page: on 2,218 [2,006, 2,293], off 3,641 [3,551, 3,769]. Off minus on: +1,423 [+1,316, +1,684].
+  - Article (sherri-shepherd-son-college): on 1,753 [1,661, 1,859], off 3,590 [3,520, 3,655]. Off minus on: +1,837 [+1,705, +1,970].
+
+**Method.**
+
+- **Site:** local eurweb through the plugin symlink, this branch at `4717e1486`. PHP 8.4.25, MySQL 9.7.1, Redis object cache, WP Rocket. Rules from `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`: `WP_DEVELOPMENT_MODE` empty and `SCRIPT_DEBUG` false while timing, `wp-config.php` restored with `cp` and checked with `cmp`, no `wp cache flush`.
+- **Arms:** a temporary mu-plugin returned `false` from `mai_post_grid_optimize_query` when the query string said `t16=off`. Requests alternated on and off, and the arm that went first alternated each pair. The `t16` query string keeps WP Rocket from answering. No response carried WP Rocket's footer, and every response was a 200 except one, below.
+- **Fully cold:** before every request, `wp eval 'wp_cache_set_posts_last_changed(); mai_cache()->flush();'`. That moves WordPress's query cache on and empties Mai's notes.
+- **Every note current:** four priming requests, then the runs with nothing in between.
+- **Timing and statistics:** `curl` `time_starttransfer`. Intervals come from 4,000 bootstrap resamples. A pair is one on and one off request for the same page and round. The four articles are the four newest published posts.
+- **The 24-hour off transient** (`mai_post_grid_optimize_off`) was unset before the first run, after every round of cold requests and after every run. `debug.log` has no Mai line from these runs.
+- **Raw data and drivers:** `/tmp/t16-pages/`, not kept in the repository.
+
+**Machine load.** The 1-minute load average at the start and end of each run, all under 20 at the start: cold articles 7.84 and 8.99, warm home page 8.99 and 7.70, warm article 7.32 and 7.19, cold home page 7.19 and 14.92, cold article 14.92 and 7.60, warm home page repeat 6.36 and 7.03, warm article repeat 7.03 and 9.57. The earlier run on beta.5 sat near 4. The off arm took 3.58 s here against 2.96 s then, and a warm article view took 1.37 s against 1.05 s. I think the busier machine explains that, but I did not test it. The comparison inside this section is unaffected, since both arms alternated through the same minutes.
+
+**One stall.** In the repeat of the warm article run, five requests in a row took 2.6, 7.6, 33.4, 29.5 and 2.7 s, and the third was a 502 on the off arm (nginx: `upstream prematurely closed connection`). I did not find the cause. I kept those rows, because medians resist them. Dropping the two pairs they touch moves the pooled article difference from +11 to +13 ms.
