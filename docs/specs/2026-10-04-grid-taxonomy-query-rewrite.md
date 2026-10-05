@@ -1,6 +1,6 @@
 # Grids: cheaper taxonomy queries on big sites
 
-Status: draft for Mike's review (2026-10-04). Not built. Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`. One question still open: custom taxonomies (see "Which grids").
+Status: draft for Mike's review (2026-10-04). Not built. Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
 
 ## Why
 
@@ -94,7 +94,7 @@ All of these must hold. Any one failing means today's statement goes out unchang
 - **The swap is not turned off:** by the filter, or for 24 hours after a failure (section 5).
 - **The database passed testing** (section 4).
 - **The query is marked** (section 2).
-- **The taxonomy filters are a covered shape:** one level, no nesting, every taxonomy covered (see "Which grids"), and the rules in section 1 for AND and OR.
+- **The taxonomy filters are a covered shape:** one level, no nesting, and the rules in section 1 for AND and OR. Any taxonomy.
 - **No search, no meta query, no row counting.** `s` is empty, the search part of the where is empty after the last `posts_search` callback, and there is no `SQL_CALC_FOUND_ROWS`.
 - **Every part is as WordPress built it.** For join, where, group-by, DISTINCT and fields, the value after the last filter equals the value at the first filter. First looks are at `PHP_INT_MIN` on `posts_where`, `posts_join`, `posts_groupby`, `posts_distinct` and `posts_fields`. The last look is at `PHP_INT_MAX` on `posts_clauses_request`, after every clause filter (WC Memberships edits at `posts_clauses` 999).
 - **A missing record means step aside.** list-category-posts, My Content Dash and The Blog Fixer remove other plugins' filters mid-request (`remove_all_filters`), so a first look can be missing.
@@ -149,7 +149,7 @@ A failure that is really something else, such as a lost connection, also turns t
 - Grids that defer their excludes, and grids without excludes.
 - One or more taxonomy filters, joined with AND, or joined with OR when all are `IN`. `NOT IN`, `AND` and `EXISTS` filters can sit next to `IN` filters under AND.
 - Sorted by any post column (date, title, modified, comment count, menu order) with the ID tiebreaker. Each sort is in the speed test, and one that misses the bar is left out.
-- Taxonomies: category and tag. **Open question:** custom taxonomies too (walk item).
+- Any taxonomy: categories, tags and custom taxonomies, such as recipe or product categories (Mike, 2026-10-04). They all use the same table, so the SQL is the same.
 
 **Not covered, so today's statement:**
 
@@ -164,7 +164,7 @@ It only makes a real difference for big taxonomies on big sites. On small ones t
 Integration tests, on a real database:
 
 - **Same posts.** For each covered shape, the posts from the swapped statement equal the posts from today's statement:
-  - one category with child categories, one tag, many terms (29, like eurweb's), a term with no posts
+  - one category with child categories, one tag, one custom taxonomy registered by the test, many terms (29, like eurweb's), a term with no posts
   - category and tag joined with AND, and with OR
   - category `IN` with category `NOT IN` (lamag's and orangecoast's shape), and with `mai_display` `NOT IN` (eurweb's home page shape)
   - with `post__not_in`, several post types, publish and private
@@ -190,7 +190,7 @@ The integration suite runs on local MySQL 9.7, and in Docker on MySQL 8.0 and 8.
 
 On each database above, in Docker, with copies of local eurweb (85,000 posts), local larrybrownsports (145,000 posts) and one small local site:
 
-- **Statements:** each site's real grid statements, captured on article and home page views, plus the 11 eurweb terms from 18 to 64,000 posts used in the earlier lab. Each at the grid's LIMIT and at LIMIT 2 and 32, in every covered shape and sort.
+- **Statements:** each site's real grid statements, captured on article and home page views, plus the 11 eurweb terms from 18 to 64,000 posts used in the earlier lab, and eurweb's custom `mai_display` taxonomy. Each at the grid's LIMIT and at LIMIT 2 and 32, in every covered shape and sort.
 - **Same posts** from both forms, every time.
 - **Speed:** both forms alternating in one session, at least 10 runs each, medians, plus the plan from `EXPLAIN`.
 - **The bar:** for every statement, the swapped median is no more than today's median plus 0.5 ms or 10%, whichever is larger. A database version, shape or sort that misses the bar on any statement is left out. That sets the MariaDB minimum and confirms the MySQL one.
