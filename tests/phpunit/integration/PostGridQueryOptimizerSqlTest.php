@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace BizBudding\MaiEngine\Tests\Integration;
 
@@ -16,7 +17,8 @@ use WP_UnitTest_Factory;
  * The rebuild must equal what core writes, character for character, or Mai steps aside. The
  * EXISTS form must return the same posts as today's statement, in the same order, with and
  * without a LIMIT. Every case also checks it differs from the same query with no tax filter,
- * so a swap that dropped the filter cannot pass by luck.
+ * and each AND or OR case from the same query with any one of its filters removed, so a swap
+ * that dropped the filter, or one piece of it, cannot pass by luck.
  */
 final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 
@@ -48,6 +50,7 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			'big AND tag'                => [ 'big AND tag', 2 ],
 			'three IN'                   => [ 'three IN', 3 ],
 			'big OR tag'                 => [ 'big OR tag', 2 ],
+			'OR, lowercase in then IN'   => [ 'OR, lowercase in then IN', 2 ],
 			'IN AND NOT IN'              => [ 'IN AND NOT IN', 2 ],
 			'IN AND NOT IN, all deleted' => [ 'IN AND NOT IN, all deleted', 1 ],
 			'IN AND operator AND'        => [ 'IN AND operator AND', 2 ],
@@ -376,6 +379,32 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 
 		$this->assertNotEmpty( $untaxed );
 		$this->assertNotSame( $untaxed, $today['with LIMIT'] );
+
+		// With several filters, removing any one that writes a condition changes the posts, so a
+		// swap that lost that filter's piece would fail above.
+		$filters = array_filter( $tax_query, 'is_int', ARRAY_FILTER_USE_KEY );
+
+		if ( count( $filters ) < 2 ) {
+			return;
+		}
+
+		$checked = 0;
+
+		foreach ( $filters as $key => $filter ) {
+			if ( '' === ( new WP_Tax_Query( [ $filter ] ) )->get_sql( $wpdb->posts, 'ID' )['where'] ) {
+				continue;
+			}
+
+			$without = $tax_query;
+
+			unset( $without[ $key ] );
+
+			$this->assertNotSame( $this->ids( ( new WP_Query( [ 'tax_query' => $without ] + $args ) )->request ), $today['with LIMIT'], "without filter {$key}" );
+
+			++$checked;
+		}
+
+		$this->assertSame( count( $rebuilt['pieces'] ), $checked );
 	}
 
 	public function test_or_without_brackets_would_be_wrong(): void {
@@ -440,6 +469,7 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			'big AND tag'                => [ 'relation' => 'AND', $big, $tag ],
 			'three IN'                   => [ 'relation' => 'AND', $big, $tag, $custom ],
 			'big OR tag'                 => [ 'relation' => 'OR', $big, $tag ],
+			'OR, lowercase in then IN'   => [ 'relation' => 'OR', $big + [ 'operator' => 'in' ], $tag ],
 			'IN AND NOT IN'              => [ 'relation' => 'AND', $big, $tag + [ 'operator' => 'NOT IN' ] ],
 			'IN AND NOT IN, all deleted' => [ 'relation' => 'AND', $big, [ 'taxonomy' => 'category', 'terms' => [ self::deleted_term() ], 'operator' => 'NOT IN' ] ],
 			'IN AND operator AND'        => [ 'relation' => 'AND', $big, $tag + [ 'operator' => 'AND' ] ],

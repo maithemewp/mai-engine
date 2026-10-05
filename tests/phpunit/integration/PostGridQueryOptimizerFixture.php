@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace BizBudding\MaiEngine\Tests\Integration;
 
@@ -10,7 +11,8 @@ namespace BizBudding\MaiEngine\Tests\Integration;
  * posts and terms after the class; that call removes what it does not.
  *
  * Dates, newest first: `newest` (the last 15 hours), then `big` (one a day, 1 to 40 days ago),
- * with `custom`'s own posts and the two private posts between big's days, then `small` (2015).
+ * with tag's and custom's own posts, the two private posts and the page between big's days,
+ * then `small` (2015).
  */
 trait PostGridQueryOptimizerFixture {
 
@@ -38,8 +40,9 @@ trait PostGridQueryOptimizerFixture {
 	 *   all others, in no test term), `page` (one page in big).
 	 * - `posts`: the published post IDs in each term, newest first. `big` lists all 40,
 	 *   including the 5 in `child`, 2 of which are also in big itself. `tag` is 8 of big's
-	 *   posts, spread across its days. `custom` is 4 of big's posts (2 of them tagged) and 4
-	 *   posts of its own.
+	 *   posts, spread across its days, and 2 of its own, 2.5 and 8.5 days old, so big OR tag
+	 *   differs from big within the newest 10, and big AND tag differs from tag. `custom` is 4
+	 *   of big's posts (2 of them tagged), 4 posts of its own, and tag's 2.5-day post.
 	 *
 	 * @param \WP_UnitTest_Factory $factory The test factory.
 	 *
@@ -131,6 +134,24 @@ trait PostGridQueryOptimizerFixture {
 			$posts['custom'][] = $id;
 		}
 
+		// Tag's own posts, in no test category. The newer one is in custom too.
+		foreach ( [ 2.5, 8.5 ] as $days ) {
+			$id = $factory->post->create(
+				[
+					'post_status' => 'publish',
+					'post_date'   => $date( $days * DAY_IN_SECONDS ),
+				]
+			);
+
+			wp_set_object_terms( $id, [ $tag ], 'post_tag' );
+			$posts['tag'][] = $id;
+
+			if ( 2.5 === $days ) {
+				wp_set_object_terms( $id, [ $custom ], 'mai_test_tax' );
+				$posts['custom'][] = $id;
+			}
+		}
+
 		foreach ( [ '2015-11-10 09:00:00', '2015-06-10 09:00:00', '2015-01-10 09:00:00' ] as $old ) {
 			$posts['small'][] = $factory->post->create(
 				[
@@ -175,7 +196,10 @@ trait PostGridQueryOptimizerFixture {
 			);
 		}
 
-		usort( $posts['custom'], static fn( int $a, int $b ): int => strcmp( get_post( $b )->post_date, get_post( $a )->post_date ) );
+		$newest_first = static fn( int $a, int $b ): int => strcmp( get_post( $b )->post_date, get_post( $a )->post_date );
+
+		usort( $posts['tag'], $newest_first );
+		usort( $posts['custom'], $newest_first );
 
 		return [
 			'big'     => $big,
