@@ -2,10 +2,10 @@
 Updated: 2026-10-04 by Claude
 
 ## Now
-Spec drafted for cheaper "current category" grid queries: `docs/specs/2026-10-04-grid-category-query-rewrite.md`. Waiting for Mike's review. No code written.
+Spec drafted for cheaper taxonomy grid queries: `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`. One walk question open (custom taxonomies), then Mike's review. No code written.
 
-- Mai's ID-only grid copy would send an `EXISTS` form instead of WordPress's join plus `GROUP BY`, only when every check proves no plugin touched the SQL. Off by default (`mai_query_cache_tax_exists`).
-- Mike decided (2026-10-04): test MariaDB too, and give it the rewrite only on versions that pass. He wants nothing fragile or brittle.
+- Mai post grid queries, and Mai's ID-only copy, would send an `EXISTS` form instead of WordPress's join plus `GROUP BY`, only when every check proves no plugin touched the SQL. It replaces the old `Mai_Post_Grid_Query_Optimizer` under its name and its filter `mai_post_grid_optimize_query`, now on by default.
+- Mike decided (2026-10-04): test MariaDB too and give it the swap only on versions that pass; on by default; cover several taxonomy filters and IN mixed with NOT IN; cover grids without excludes; totalprosports after eurweb and larrybrownsports. Nothing fragile or brittle, and it has to run on 5,000 sites.
 - Read-only findings are in the spec under "What we found": live eurweb's MySQL 8.0.46 picks the fast plan, the registry is all MySQL 8.0.45+, and no fleet plugin would break the swap.
 
 2.41.0-beta.5 is released and live on larrybrownsports.com and eurweb.com since 2026-10-04 (spec `docs/specs/2026-10-01-grid-cache-beta-5.md`).

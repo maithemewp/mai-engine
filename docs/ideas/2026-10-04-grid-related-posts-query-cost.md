@@ -1,6 +1,6 @@
 # Grids: make "current category" queries cheap on big sites
 
-Status: fix 1 is specced in `docs/specs/2026-10-04-grid-category-query-rewrite.md` (draft, 2026-10-04). Fix 2 is left out there. Earlier: idea, to test after 2.41.0-beta.5 (Mike, 2026-10-04: "sounds good if not fragile. Worth testing").
+Status: fix 1 is specced in `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md` (draft, 2026-10-04). Fix 2 is left out there. Earlier: idea, to test after 2.41.0-beta.5 (Mike, 2026-10-04: "sounds good if not fragile. Worth testing").
 
 ## The problem
 
