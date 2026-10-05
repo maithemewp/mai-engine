@@ -8,4 +8,4 @@
 - MariaDB stays off for the faster grid query: on eurweb's biggest category, ID sorts ran about 50 to 60 ms slower swapped on MariaDB 10.6 to 11.8, while date and author sorts passed. A follow-up could turn MariaDB on for date and author sorts only. See spec "Results".
 - Two `GridCacheAfterPageTest` tests (`test_failed_copy_statement_on_an_empty_grid_stores_nothing`, `test_failed_copy_statement_on_an_aged_empty_entry_deletes_it`) fail on MySQL 8.0.28 and 8.0.16 and MariaDB 11.4 and 11.8, also on `develop`. They refuse a statement with `max_join_size = 1`. Why that does not refuse there is not confirmed.
 - Larrybrownsports post 203 has `post_date` `2007-03-00 04:00:58`. Mike chose to correct it on live to `2007-02-28 04:00:58`.
-- The replay's weedout check is blind on MySQL 8.0.16 and 8.0.17, because `EXPLAIN FORMAT=TREE` cannot print many plans there. Task 8 checked with classic `EXPLAIN` instead.
+- The replay's weedout check is blind on MySQL 8.0.16 and 8.0.17, because `EXPLAIN FORMAT=TREE` cannot print many plans there. the Docker run checked with classic `EXPLAIN` instead.
