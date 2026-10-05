@@ -22,8 +22,9 @@ declare(strict_types=1);
  *   1. The IDs of both forms must match, in the same order. A pair whose IDs differ is a
  *      correctness bug. It is not timed and not counted against the bar. The one known exception
  *      is a post whose post_date has a zero day or month, such as 2007-03-00 (Mike accepted it on
- *      2026-10-05): a pair whose IDs differ only by such posts is counted as known, prints them,
- *      and is not timed. Anything else that differs is still a bug. A pair where both forms
+ *      2026-10-05): a date-sorted pair whose IDs differ only by such posts, under the rule in
+ *      differs_only_by(), is counted as known, prints them, and is not timed. Anything else that
+ *      differs is still a bug. A pair where both forms
  *      return no rows is counted as empty, and is not compared or timed. The pairs script builds
  *      its synthetic statements from terms that have posts, so one of those coming back empty
  *      means the data is wrong, and so do more than 10% of all pairs coming back empty.
@@ -44,7 +45,8 @@ declare(strict_types=1);
  *
  * It prints one summary line per pair and a total, and writes every number as JSON, also when
  * the run stops early (the file then says "complete": false). Exit code:
- *   0  every compared pair passes.
+ *   0  every compared pair passes. A pair whose IDs differ only by posts with invalid dates (known)
+ *      leaves the exit code at 0.
  *   1  a pair misses the bar, a swapped MySQL plan is flagged, a pair failed to run, an option is
  *      wrong, or the connection was lost.
  *   2  the IDs of a pair differ.
@@ -321,39 +323,114 @@ function invalid_dates( mysqli $db, string $sql, array $ids ): array {
 }
 
 /**
- * Whether two ID lists differ only by posts with invalid dates.
+ * Whether two ID lists differ only by posts with invalid dates. Pure: the caller runs the
+ * statements and reads the dates.
  *
- * With those posts taken out of both, the lists must be equal. For a statement with a LIMIT, the
- * shorter may instead be the start of the longer, when the longer has no more extra entries than
- * the number of invalid-date posts taken out of the shorter: those entries filled the places the
- * invalid-date posts took in the other form.
+ * The rule, all of which must hold:
+ *   1. Today's ORDER BY names {posts}.post_date ($date_sort), and at least one invalid-date post
+ *      is in the lists. Only a date sort can place such a post differently.
+ *   2. No LIMIT ($rows null), or a LIMIT the rows did not fill (today returned fewer than $rows,
+ *      so each list is the whole result): both lists hold the same posts, the same number of
+ *      them, and with the invalid-date posts taken out they are in the same order.
+ *   3. A LIMIT o, n that the rows filled: both lists have n entries. Let k be the number of
+ *      distinct invalid-date posts in either list. The caller runs both statements again at
+ *      LIMIT o, n + k ($wide_today, $wide_swapped). Each list must be the first n entries of its
+ *      own widened run, so the widened run is the same statement giving the same order. With the
+ *      invalid-date posts taken out of both widened runs, their first m entries must be equal,
+ *      where m is the shorter length after the removal, and m must be at least n - k. So every
+ *      post either form shows, other than the invalid-date ones, is in the same place in the
+ *      other form's order, and whatever filled the places of the invalid-date posts is the next
+ *      post in both.
  *
- * @param list<int> $today   Today's IDs.
- * @param list<int> $swapped The swapped IDs.
- * @param list<int> $invalid The IDs of the posts with invalid dates.
- * @param bool      $limited Whether the statement has a LIMIT.
+ * @param list<int>      $today        Today's IDs.
+ * @param list<int>      $swapped      The swapped IDs.
+ * @param list<int>      $invalid      The posts with invalid dates, among every list given.
+ * @param bool           $date_sort    Whether today's ORDER BY names {posts}.post_date.
+ * @param int|null       $rows         The n of LIMIT o, n. Null when there is no LIMIT.
+ * @param list<int>|null $wide_today   Today's IDs at LIMIT o, n + k. Unused without a LIMIT.
+ * @param list<int>|null $wide_swapped The swapped IDs at LIMIT o, n + k.
  *
  * @return bool
  */
-function differs_only_by( array $today, array $swapped, array $invalid, bool $limited ): bool {
+function differs_only_by( array $today, array $swapped, array $invalid, bool $date_sort, ?int $rows = null, ?array $wide_today = null, ?array $wide_swapped = null ): bool {
 	$skip = array_flip( $invalid );
-	$keep = static fn( array $ids ): array => array_values( array_filter( $ids, static fn( int $id ): bool => ! isset( $skip[ $id ] ) ) );
-	$a    = $keep( $today );
-	$b    = $keep( $swapped );
+	$seen = array_intersect_key( $skip, array_flip( array_merge( $today, $swapped ) ) );
 
-	if ( $a === $b ) {
-		return true;
-	}
-
-	if ( ! $limited ) {
+	if ( ! $date_sort || ! $seen ) {
 		return false;
 	}
 
-	[ $short, $long, $removed ] = count( $a ) <= count( $b )
-		? [ $a, $b, count( $today ) - count( $a ) ]
-		: [ $b, $a, count( $swapped ) - count( $b ) ];
+	$strip = static fn( array $ids ): array => array_values( array_filter( $ids, static fn( int $id ): bool => ! isset( $skip[ $id ] ) ) );
 
-	return array_slice( $long, 0, count( $short ) ) === $short && count( $long ) - count( $short ) <= $removed;
+	if ( null === $rows || count( $today ) < $rows ) {
+		$a = $today;
+		$b = $swapped;
+
+		sort( $a );
+		sort( $b );
+
+		return $a === $b && $strip( $today ) === $strip( $swapped );
+	}
+
+	if ( count( $today ) !== $rows || count( $swapped ) !== $rows || null === $wide_today || null === $wide_swapped ) {
+		return false;
+	}
+
+	if ( array_slice( $wide_today, 0, $rows ) !== $today || array_slice( $wide_swapped, 0, $rows ) !== $swapped ) {
+		return false;
+	}
+
+	$a = $strip( $wide_today );
+	$b = $strip( $wide_swapped );
+	$m = min( count( $a ), count( $b ) );
+
+	return $m >= $rows - count( $seen ) && array_slice( $a, 0, $m ) === array_slice( $b, 0, $m );
+}
+
+/**
+ * Whether a pair whose IDs differ is explained only by posts with invalid dates, under the rule
+ * in differs_only_by(). Runs both statements again at a wider LIMIT when the rule needs it.
+ *
+ * @param mysqli    $db          The connection.
+ * @param string    $today       Today's statement.
+ * @param string    $swapped     The swapped statement.
+ * @param list<int> $ids_today   Today's IDs.
+ * @param list<int> $ids_swapped The swapped IDs.
+ *
+ * @return array{known:bool,invalid:array<int,string>} The invalid-date posts found, keyed by ID.
+ */
+function invalid_date_difference( mysqli $db, string $today, string $swapped, array $ids_today, array $ids_swapped ): array {
+	$invalid = invalid_dates( $db, $today, array_values( array_unique( array_merge( $ids_today, $ids_swapped ) ) ) );
+	$table   = 1 === preg_match( '/^\s*SELECT\b.*?\bFROM\s+`?([A-Za-z0-9_$]+)`?/s', $today, $match ) ? $match[1] : '';
+	$dated   = '' !== $table && 1 === preg_match( '/\bORDER BY\b.*\b' . preg_quote( $table, '/' ) . '\.post_date\b/is', $today );
+	$limit   = '/\sLIMIT\s+(\d+)(?:\s*,\s*(\d+))?\s*$/i';
+
+	if ( ! $invalid || ! $dated ) {
+		return [ 'known' => false, 'invalid' => $invalid ];
+	}
+
+	if ( 1 !== preg_match( $limit, $today, $match ) ) {
+		return [ 'known' => differs_only_by( $ids_today, $ids_swapped, array_keys( $invalid ), true ), 'invalid' => $invalid ];
+	}
+
+	$offset = isset( $match[2] ) ? (int) $match[1] : 0;
+	$rows   = isset( $match[2] ) ? (int) $match[2] : (int) $match[1];
+	$wider  = " LIMIT {$offset}, " . ( $rows + count( $invalid ) );
+	$sql_a  = (string) preg_replace( $limit, $wider, $today, 1, $count_a );
+	$sql_b  = (string) preg_replace( $limit, $wider, $swapped, 1, $count_b );
+
+	if ( 1 !== $count_a || 1 !== $count_b ) {
+		return [ 'known' => false, 'invalid' => $invalid ];
+	}
+
+	$wide_today   = fetch_ids( $db, $sql_a );
+	$wide_swapped = fetch_ids( $db, $sql_b );
+	$invalid     += invalid_dates( $db, $today, array_values( array_unique( array_merge( $wide_today, $wide_swapped ) ) ) );
+
+	return [
+		'known'   => differs_only_by( $ids_today, $ids_swapped, array_keys( $invalid ), true, $rows, $wide_today, $wide_swapped ),
+		'invalid' => $invalid,
+	];
 }
 
 /**
@@ -422,9 +499,9 @@ function prepare_session( mysqli $db, string $engine ): array {
  * Runs one pair and returns what happened. It never prints.
  *
  * The status is "empty" when both forms return no rows, "known_invalid_date" when the IDs differ
- * only by posts with invalid dates (see differs_only_by()), "diff" when they differ otherwise,
- * "ids_only" when the IDs match and the pair is not timed, otherwise "pass" or "miss" against the
- * bar. Only a pass or a miss is timed.
+ * only by posts with invalid dates (the rule in differs_only_by()), "diff" when they differ
+ * otherwise, "ids_only" when the IDs match and the pair is not timed, otherwise "pass" or "miss"
+ * against the bar. Only a pass or a miss is timed.
  *
  * @param mysqli $db      The connection.
  * @param string $name    The pair's name.
@@ -468,10 +545,10 @@ function run_pair( mysqli $db, string $name, string $today, string $swapped, str
 			}
 		}
 
-		$invalid = invalid_dates( $db, $today, array_values( array_unique( array_merge( $ids_today, $ids_swapped ) ) ) );
+		$known = invalid_date_difference( $db, $today, $swapped, $ids_today, $ids_swapped );
 
-		$result['status']           = $invalid && differs_only_by( $ids_today, $ids_swapped, array_keys( $invalid ), $timed ) ? 'known_invalid_date' : 'diff';
-		$result['invalid_dates']    = $invalid;
+		$result['status']           = $known['known'] ? 'known_invalid_date' : 'diff';
+		$result['invalid_dates']    = $known['invalid'];
 		$result['first_difference'] = $first;
 		$result['plan_today']       = plan_of( $db, $today, $engine );
 		$result['plan_swapped']     = plan_of( $db, $swapped, $engine );
