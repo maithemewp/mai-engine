@@ -33,11 +33,14 @@
  *      saved, and skipped with a warning on a site with no administrator) and other public post
  *      types. One shape is not covered on purpose, to show the skip.
  *
- * Every statement is written at its own LIMIT, at LIMIT 0, 2, at LIMIT 0, 32 and with no LIMIT,
- * each as its own pair line:
+ * Every statement is written at its own LIMIT, at LIMIT 0, 2, at LIMIT 0, 32, at LIMIT 0, 1000
+ * and with no LIMIT, each as its own pair line:
  *   { "name", "original", "swapped_mysql", "swapped_mariadb" }
- * A statement text that an earlier pair already has, from another statement or from the same one
- * at a LIMIT that matches, is written once, so the replay never times it twice.
+ * LIMIT 0, 1000 is what a grid set to show all entries sends (mai_post_grid_max_posts_per_page in
+ * Mai_Grid). The replay compares only the IDs of the no LIMIT line, since the optimizer never
+ * swaps a statement without a LIMIT. A statement text that an earlier pair already has, from
+ * another statement or from the same one at a LIMIT that matches, is written once, so the replay
+ * never times it twice.
  *
  * Output: /tmp/mai-optimizer-pairs-<site>.jsonl, with <site> as above. The file is replaced on
  * every run. Nothing is written to the database.
@@ -547,7 +550,7 @@ function skip( array &$tally, bool $must_cover, string $why ): void {
 }
 
 /**
- * Writes the pair lines for one statement: its own LIMIT and three more.
+ * Writes the pair lines for one statement: its own LIMIT and four more.
  *
  * @param resource             $handle     The open output file.
  * @param string               $name       The statement's name.
@@ -584,18 +587,29 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 		return;
 	}
 
-	$own      = preg_match( '/\s+(LIMIT\s+\d+(?:\s*,\s*\d+)?)\s*$/i', $statement, $match ) ? $match[1] : 'no LIMIT';
+	// The own LIMIT, written the way the variant labels are, so a variant at the same LIMIT is left
+	// out. WordPress puts a newline and tabs before its LIMIT, so the texts never match exactly.
+	$own      = preg_match( '/\s+LIMIT\s+(\d+)(?:\s*,\s*(\d+))?\s*$/i', $statement, $match ) ? 'LIMIT ' . ( isset( $match[2] ) ? "{$match[1]}, {$match[2]}" : $match[1] ) : 'no LIMIT';
 	$variants = [
-		"own ({$own})" => $statement,
-		'LIMIT 0, 2'   => with_limit( $statement, 'LIMIT 0, 2' ),
-		'LIMIT 0, 32'  => with_limit( $statement, 'LIMIT 0, 32' ),
-		'no LIMIT'     => with_limit( $statement, null ),
+		"own ({$own})"  => $statement,
+		'LIMIT 0, 2'    => with_limit( $statement, 'LIMIT 0, 2' ),
+		'LIMIT 0, 32'   => with_limit( $statement, 'LIMIT 0, 32' ),
+		'LIMIT 0, 1000' => with_limit( $statement, 'LIMIT 0, 1000' ),
+		'no LIMIT'      => with_limit( $statement, null ),
 	];
 
+	if ( isset( $variants[ $own ] ) ) {
+		unset( $variants[ $own ] );
+		++$tally['duplicate_pairs'];
+	}
+
 	foreach ( $variants as $label => $text ) {
-		// The own LIMIT can be one of the others, and another statement can differ only by its
-		// LIMIT. Each text is written and timed once.
-		if ( isset( $tally['seen'][ $text ] ) ) {
+		// Another statement can differ only by its LIMIT. Each text is written and timed once,
+		// compared with its runs of whitespace made single spaces, since a captured statement has
+		// WordPress's newlines and tabs and a variant at the same LIMIT does not.
+		$key = (string) preg_replace( '/\s+/', ' ', $text );
+
+		if ( isset( $tally['seen'][ $key ] ) ) {
 			++$tally['duplicate_pairs'];
 			continue;
 		}
@@ -607,7 +621,7 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 			continue;
 		}
 
-		$tally['seen'][ $text ] = true;
+		$tally['seen'][ $key ] = true;
 
 		$line = wp_json_encode(
 			[

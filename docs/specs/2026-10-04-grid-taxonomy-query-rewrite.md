@@ -272,11 +272,11 @@ On each database above, in Docker, with copies of local eurweb (85,000 posts), l
   - mid-size terms covering 10 to 50% of posts
   - several post types, and publish plus private
   - every covered shape and every sort Mai offers
-  - each at the grid's `LIMIT` and at `LIMIT` 2 and 32
-- **Same posts** from both forms, every time.
+  - each at the grid's `LIMIT`, at `LIMIT` 2 and 32, at `LIMIT` 1000 (what a grid set to show all entries sends, `mai_post_grid_max_posts_per_page`), and with no `LIMIT`
+- **Same posts** from both forms, every time. The variant with no `LIMIT` compares the whole set of IDs. It is not timed or held to the bar, since the swap needs a `LIMIT` (section 3).
 - **Speed:** both forms alternating in one session, at least 10 runs each, medians, plus the plan from `EXPLAIN`.
-- **No duplicate weedout on MySQL.** Every plan on MySQL 8.0 and 8.4 is checked for the plan the hint forbids.
-- **The bar:** for every statement, the swapped median is no more than today's median plus 0.5 ms or 10%, whichever is larger. A database version, shape or sort that misses the bar on any statement is left out. That sets the MariaDB minimum, confirms the MySQL one, and sets the list of sorts.
+- **No duplicate weedout on MySQL.** Every plan on MySQL 8.0 and 8.4 is checked for the plan the hint forbids, by the word `weedout` in it. MySQL's LooseScan plan ("Remove duplicates from input sorted on ...") is allowed: the hint permits it, and MySQL 8.4 builds exactly that plan when a statement is forced to `SEMIJOIN(LOOSESCAN)`.
+- **The bar:** for every statement with a `LIMIT`, the swapped median is no more than today's median plus 2 ms or 10%, whichever is larger. Mike set 2 ms on 2026-10-05, replacing 0.5 ms, because statements of 5 to 7 ms swing by about 1 ms between runs on the test machine. A database version, shape or sort that misses the bar on any statement is left out. That sets the MariaDB minimum, confirms the MySQL one, and sets the list of sorts.
 - **The checks' own cost:** time added to a page with ten grids, answered from the cache and on a miss. It should be well under a millisecond.
 - **Whole pages:** cold article views on local eurweb with the swap on and off, following `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`, to confirm the 1.5 s gain.
 

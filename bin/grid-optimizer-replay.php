@@ -28,10 +28,16 @@ declare(strict_types=1);
  *      default, and --runs changes it. The form that goes first alternates run by run. The time
  *      runs from one NOW(6) to the next, around the statement and the transfer of its rows, so it
  *      includes two short round trips. Both forms carry the same extra. The medians are compared.
+ *      A pair whose statement has no LIMIT is checked for its IDs and its plan only, and is not
+ *      timed or held to the bar: the optimizer never swaps a statement without a LIMIT, and the
+ *      pairs script writes that variant so the whole set of IDs is compared.
  *   3. EXPLAIN FORMAT=TREE on MySQL, plain EXPLAIN on MariaDB. A swapped MySQL plan containing
- *      "weedout" or "Remove duplicates" is flagged.
+ *      "weedout", in any case, is flagged. MySQL's LooseScan plan reads "Remove duplicates from
+ *      input sorted on ..." and is not flagged: the hint allows it, and MySQL 8.4 builds exactly
+ *      that plan when a statement is forced to SEMIJOIN(LOOSESCAN).
  *   4. The bar passes when the swapped median is no more than today's median plus the larger of
- *      0.5 ms and 10%.
+ *      2 ms and 10%. Mike set 2 ms on 2026-10-05, because statements of 5 to 7 ms swing by about
+ *      1 ms between runs on the test machine.
  *
  * It prints one summary line per pair and a total, and writes every number as JSON, also when
  * the run stops early (the file then says "complete": false). Exit code:
@@ -338,8 +344,9 @@ function prepare_session( mysqli $db, string $engine ): array {
 /**
  * Runs one pair and returns what happened. It never prints.
  *
- * The status is "empty" when both forms return no rows, "diff" when the IDs differ, otherwise
- * "pass" or "miss" against the bar. Only a pass or a miss is timed.
+ * The status is "empty" when both forms return no rows, "diff" when the IDs differ, "ids_only"
+ * when the IDs match and the pair is not timed, otherwise "pass" or "miss" against the bar. Only
+ * a pass or a miss is timed.
  *
  * @param mysqli $db      The connection.
  * @param string $name    The pair's name.
@@ -347,10 +354,12 @@ function prepare_session( mysqli $db, string $engine ): array {
  * @param string $swapped The swapped statement.
  * @param string $engine  mysql or mariadb.
  * @param int    $runs    Timed runs of each form.
+ * @param bool   $timed   Whether to time the pair and hold it to the bar. False for a statement
+ *                        with no LIMIT.
  *
  * @return array<string,mixed>
  */
-function run_pair( mysqli $db, string $name, string $today, string $swapped, string $engine, int $runs ): array {
+function run_pair( mysqli $db, string $name, string $today, string $swapped, string $engine, int $runs, bool $timed ): array {
 	// The first run of each form checks the IDs and warms the buffer pool. It is not timed.
 	$ids_today   = fetch_ids( $db, $today );
 	$ids_swapped = fetch_ids( $db, $swapped );
@@ -385,7 +394,16 @@ function run_pair( mysqli $db, string $name, string $today, string $swapped, str
 		$result['first_difference'] = $first;
 		$result['plan_today']       = plan_of( $db, $today, $engine );
 		$result['plan_swapped']     = plan_of( $db, $swapped, $engine );
-		$result['weedout']          = 'mysql' === $engine && 1 === preg_match( '/weedout|Remove duplicates/i', $result['plan_swapped'] );
+		$result['weedout']          = 'mysql' === $engine && 1 === preg_match( '/weedout/i', $result['plan_swapped'] );
+
+		return $result;
+	}
+
+	if ( ! $timed ) {
+		$result['status']       = 'ids_only';
+		$result['plan_today']   = plan_of( $db, $today, $engine );
+		$result['plan_swapped'] = plan_of( $db, $swapped, $engine );
+		$result['weedout']      = 'mysql' === $engine && 1 === preg_match( '/weedout/i', $result['plan_swapped'] );
 
 		return $result;
 	}
@@ -408,7 +426,7 @@ function run_pair( mysqli $db, string $name, string $today, string $swapped, str
 	$plan_swapped   = plan_of( $db, $swapped, $engine );
 	$today_median   = median( $today_ms );
 	$swapped_median = median( $swapped_ms );
-	$allowed        = $today_median + max( 0.5, 0.10 * $today_median );
+	$allowed        = $today_median + max( 2.0, 0.10 * $today_median );
 	$round          = static fn( float $value ): float => round( $value, 3 );
 
 	$result['today_runs_ms']     = array_map( $round, $today_ms );
@@ -418,7 +436,7 @@ function run_pair( mysqli $db, string $name, string $today, string $swapped, str
 	$result['allowed_ms']        = $round( $allowed );
 	$result['bar_met']           = $swapped_median <= $allowed;
 	$result['status']            = $result['bar_met'] ? 'pass' : 'miss';
-	$result['weedout']           = 'mysql' === $engine && 1 === preg_match( '/weedout|Remove duplicates/i', $plan_swapped );
+	$result['weedout']           = 'mysql' === $engine && 1 === preg_match( '/weedout/i', $plan_swapped );
 	$result['plan_today']        = $plan_today;
 	$result['plan_swapped']      = $plan_swapped;
 
@@ -483,6 +501,7 @@ $totals     = [
 	'empty'           => 0,
 	'empty_synthetic' => 0,
 	'ids_match'       => 0,
+	'ids_only'        => 0,
 	'ids_differ'      => 0,
 	'bar_met'         => 0,
 	'bar_missed'      => 0,
@@ -571,6 +590,8 @@ foreach ( (array) file( $pairs_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LIN
 		'name'    => $name,
 		'today'   => $pair['original'],
 		'swapped' => $swapped,
+		// Only a statement that ends in a LIMIT is timed. The optimizer swaps no other.
+		'timed'   => 1 === preg_match( '/\sLIMIT\s+\d+(?:\s*,\s*\d+)?\s*$/i', $pair['original'] ),
 	];
 }
 
@@ -663,7 +684,7 @@ foreach ( $runnable as $pair ) {
 	++$totals['pairs'];
 
 	try {
-		$result = run_pair( $db, $pair['name'], $pair['today'], $pair['swapped'], $engine, $runs );
+		$result = run_pair( $db, $pair['name'], $pair['today'], $pair['swapped'], $engine, $runs, $pair['timed'] );
 	} catch ( Throwable $exception ) {
 		$result = [
 			'name'   => $pair['name'],
@@ -722,8 +743,15 @@ foreach ( $runnable as $pair ) {
 			);
 			break;
 
+		case 'ids_only':
+			++$totals['ids_match'];
+			++$totals['ids_only'];
+
+			printf( "IDS    %s  IDs match, no LIMIT so not timed  rows %d%s\n", $pair['name'], $result['rows'], $flag );
+			break;
+
 		default:
-			// The bar counts only pairs whose IDs match.
+			// The bar counts only pairs whose IDs match and that were timed.
 			++$totals['ids_match'];
 			++$totals[ 'pass' === $result['status'] ? 'bar_met' : 'bar_missed' ];
 
@@ -742,11 +770,12 @@ foreach ( $runnable as $pair ) {
 $report['complete'] = true;
 
 printf(
-	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d, IDs differ %d, bar met %d, bar missed %d, weedout %d, errors %d, skipped %d. Load at end: %s\n",
+	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d (%d of them ID-only, no LIMIT so not timed or held to the bar), IDs differ %d, bar met %d, bar missed %d, weedout %d, errors %d, skipped %d. Load at end: %s\n",
 	$totals['pairs'],
 	$totals['empty'],
 	$totals['empty_synthetic'],
 	$totals['ids_match'],
+	$totals['ids_only'],
 	$totals['ids_differ'],
 	$totals['bar_met'],
 	$totals['bar_missed'],
