@@ -5,13 +5,16 @@
  * Writes the statement pairs that bin/grid-optimizer-replay.php times and compares. Each pair is
  * today's statement and the swapped EXISTS form, built with the optimizer's own rebuild(),
  * condition() and swap(), once with the MySQL hint and once without (MariaDB does not read it).
- * A statement the optimizer would not cover (rebuild() or swap() returns null) is logged and
- * skipped.
+ * A statement the optimizer would not cover is logged and skipped: rebuild() or swap() returns
+ * null, or the ORDER BY fails Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok() (a RAND() grid, for
+ * one). Without that last check such a grid would report IDs that differ, since random order
+ * differs from one run to the next.
  *
  * Two sources:
  *   1. The statements bin/grid-optimizer-probe.php captured from real page views, from
- *      /tmp/mai-optimizer-statements.jsonl. A grid's own statement is written in the ID-only form
- *      WordPress sends when it splits the query, since that is what the database receives.
+ *      /tmp/mai-optimizer-statements-<site>.jsonl, where <site> is the host of home_url(). A
+ *      grid's own statement is written in the ID-only form WordPress sends when it splits the
+ *      query, since that is what the database receives.
  *   2. Synthetic statements for the site's real terms, found with SQL on the term tables
  *      (counts from term_taxonomy.count for category and post_tag): the biggest term, a mid-size
  *      one (10 to 50% of published posts, the nearest to 25%), a small one (under 20 posts) and
@@ -24,9 +27,11 @@
  * Every statement is written at its own LIMIT, at LIMIT 0, 2, at LIMIT 0, 32 and with no LIMIT,
  * each as its own pair line:
  *   { "name", "original", "swapped_mysql", "swapped_mariadb" }
+ * A statement text that an earlier pair already has, from another statement or from the same one
+ * at a LIMIT that matches, is written once, so the replay never times it twice.
  *
- * Output: /tmp/mai-optimizer-pairs-<site>.jsonl, where <site> is the host of home_url(). The
- * file is replaced on every run. Nothing is written to the database.
+ * Output: /tmp/mai-optimizer-pairs-<site>.jsonl, with <site> as above. The file is replaced on
+ * every run. Nothing is written to the database.
  *
  * Usage (from the WP root, local sites only):
  *   wp eval-file wp-content/plugins/mai-engine/bin/grid-optimizer-pairs.php
@@ -423,6 +428,31 @@ function swaps( string $statement, ?array $rebuilt, string $posts, string $terms
 }
 
 /**
+ * The site's name for file names: the host of home_url(). The probe builds it the same way.
+ *
+ * @return string
+ */
+function site_slug(): string {
+	$host = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
+	$site = trim( (string) preg_replace( '/[^a-z0-9.-]+/', '-', $host ), '-' );
+
+	return '' !== $site ? $site : 'site';
+}
+
+/**
+ * The ORDER BY of a statement, without the keywords and the LIMIT.
+ *
+ * @param string $statement The statement.
+ *
+ * @return string|null Null when the statement has no ORDER BY.
+ */
+function orderby_of( string $statement ): ?string {
+	$base = with_limit( $statement, null );
+
+	return 1 === preg_match( '/.*\sORDER BY\s+(.*?)\s*$/s', $base, $match ) ? $match[1] : null;
+}
+
+/**
  * A short description of a tax query, for names and logs.
  *
  * @param array $queries The tax queries.
@@ -453,12 +483,19 @@ function describe( array $queries ): string {
  * @param array                $queries   The tax filters WordPress used.
  * @param string               $posts     The posts table.
  * @param string               $terms     The term relationships table.
- * @param array<string,mixed>  $tally     Counts and skipped names, updated here.
+ * @param array<string,mixed>  $tally     Counts, the pair texts written and skipped names, updated here.
  *
  * @return void
  */
 function write_pairs( $handle, string $name, string $statement, array $queries, string $posts, string $terms, array &$tally ): void {
 	++$tally['statements'];
+
+	$orderby = orderby_of( $statement );
+
+	if ( null === $orderby || ! Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $orderby, $posts ) ) {
+		$tally['skipped'][] = "{$name} (ORDER BY is not covered: " . ( $orderby ?? 'none' ) . ')';
+		return;
+	}
 
 	$rebuilt = Mai_Post_Grid_Query_Optimizer_Sql::rebuild( new WP_Tax_Query( $queries ), $posts );
 
@@ -474,11 +511,12 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 		'LIMIT 0, 32'  => with_limit( $statement, 'LIMIT 0, 32' ),
 		'no LIMIT'     => with_limit( $statement, null ),
 	];
-	$written  = [];
 
 	foreach ( $variants as $label => $text ) {
-		// The own LIMIT can be one of the others.
-		if ( in_array( $text, $written, true ) ) {
+		// The own LIMIT can be one of the others, and another statement can differ only by its
+		// LIMIT. Each text is written and timed once.
+		if ( isset( $tally['seen'][ $text ] ) ) {
+			++$tally['duplicate_pairs'];
 			continue;
 		}
 
@@ -489,8 +527,9 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 			continue;
 		}
 
-		$written[] = $text;
-		$line      = wp_json_encode(
+		$tally['seen'][ $text ] = true;
+
+		$line = wp_json_encode(
 			[
 				'name'            => "{$name} | {$label}",
 				'original'        => $text,
@@ -511,11 +550,9 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 
 global $wpdb;
 
-$host = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
-$site = trim( (string) preg_replace( '/[^a-z0-9.-]+/', '-', $host ), '-' );
-$site = '' !== $site ? $site : 'site';
+$site = site_slug();
 $out  = "/tmp/mai-optimizer-pairs-{$site}.jsonl";
-$in   = isset( $args[0] ) && is_string( $args[0] ) ? $args[0] : '/tmp/mai-optimizer-statements.jsonl';
+$in   = isset( $args[0] ) && is_string( $args[0] ) ? $args[0] : "/tmp/mai-optimizer-statements-{$site}.jsonl";
 
 $handle = fopen( $out, 'w' );
 
@@ -524,11 +561,13 @@ if ( false === $handle ) {
 }
 
 $tally = [
-	'captured'   => 0,
-	'duplicates' => 0,
-	'statements' => 0,
-	'pairs'      => 0,
-	'skipped'    => [],
+	'captured'        => 0,
+	'duplicates'      => 0,
+	'duplicate_pairs' => 0,
+	'statements'      => 0,
+	'pairs'           => 0,
+	'skipped'         => [],
+	'seen'            => [],
 ];
 $seen  = [];
 
@@ -600,9 +639,10 @@ foreach ( $tally['skipped'] as $why ) {
 
 WP_CLI::success(
 	sprintf(
-		'%d captured statements read, %d duplicates left out, %d statements checked, %d skipped, %d pairs written to %s.',
+		'%d captured statements read, %d duplicate statements and %d duplicate pair texts left out, %d statements checked, %d skipped, %d pairs written to %s.',
 		$tally['captured'],
 		$tally['duplicates'],
+		$tally['duplicate_pairs'],
 		$tally['statements'],
 		count( $tally['skipped'] ),
 		$tally['pairs'],

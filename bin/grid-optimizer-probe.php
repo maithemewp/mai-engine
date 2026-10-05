@@ -6,7 +6,8 @@ declare(strict_types=1);
  * Description: Dev tool, never shipped. Records the SQL of every Mai grid query on a request that asks for it.
  *
  * Writes one JSON line per marked grid query (a grid's own query or Mai's ID-only copy), whatever
- * the optimizer's checks decided, to /tmp/mai-optimizer-statements.jsonl. Each line holds
+ * the optimizer's checks decided, to /tmp/mai-optimizer-statements-<site>.jsonl, where <site> is
+ * the host of home_url(), so two sites never share a file. Each line holds
  * { "role", "statement", "queries", "posts", "terms" }: the statement as it stands after every
  * posts_request callback, the tax filters WordPress used, and the two table names. The query is
  * recorded and the statement is returned unchanged.
@@ -21,7 +22,8 @@ declare(strict_types=1);
  *   4. Restore wp-config.php with cp, check it with cmp, and delete the mu-plugin.
  *   5. Turn the statements into pairs with bin/grid-optimizer-pairs.php.
  *
- * The file is appended to, never emptied. Delete it before a fresh capture.
+ * The file is appended to, never emptied. Delete it before a fresh capture. The pairs script reads
+ * the file for the site it runs on.
  *
  * @package BizBudding\MaiEngine
  */
@@ -57,8 +59,13 @@ add_action(
 					]
 				);
 
+				// The same name the pairs script builds from the host.
+				$host = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
+				$site = trim( (string) preg_replace( '/[^a-z0-9.-]+/', '-', $host ), '-' );
+				$site = '' !== $site ? $site : 'site';
+
 				if ( is_string( $line ) ) {
-					file_put_contents( '/tmp/mai-optimizer-statements.jsonl', $line . "\n", FILE_APPEND | LOCK_EX );
+					file_put_contents( "/tmp/mai-optimizer-statements-{$site}.jsonl", $line . "\n", FILE_APPEND | LOCK_EX );
 				}
 
 				return $request;
