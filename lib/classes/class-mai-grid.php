@@ -293,6 +293,10 @@ class Mai_Grid {
 
 					$query = new WP_Query();
 
+					// Lets the grid query optimizer send a faster statement for this grid when it
+					// can prove it returns the same posts.
+					Mai_Post_Grid_Query_Optimizer::instance()->mark( $query, 'grid' );
+
 					// Set on the query itself before it runs, never as a query var. A plugin
 					// that answers posts_pre_query by building its own query from this one's
 					// args and vars, as The Events Calendar does at priority 100, would carry a

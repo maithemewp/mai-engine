@@ -13,6 +13,10 @@ declare(strict_types=1);
  * checking the database and rebuilding WordPress's taxonomy SQL with WordPress's own code.
  * Anything unexpected sends today's statement unchanged.
  *
+ * A swapped statement that fails is sent again unswapped, by recover() for a grid's own query
+ * and by Mai_Query_Cache::fetch_ids() for the copy, and the swap turns off for a day. So does a
+ * copy statement that is slow.
+ *
  * The query's own SQL text, as WordPress keeps it on the query, never changes, so cache keys
  * built from it work as before.
  *
@@ -156,6 +160,10 @@ final class Mai_Post_Grid_Query_Optimizer {
 
 		// Latest priority, so the statement is seen exactly as it goes to the database.
 		add_filter( 'query', [ $this, 'swap' ], PHP_INT_MAX );
+
+		// Earliest priority, so a failed grid statement is repaired before anything reads the
+		// result. The grid result cache shares the priority and registers later, so it runs after.
+		add_filter( 'posts_results', [ $this, 'recover' ], PHP_INT_MIN, 2 );
 	}
 
 	/**
@@ -399,6 +407,9 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * A statement with a placeholder escape is left alone. WordPress strips the escape in its
 	 * own query callback at priority 0, so the text would never match.
 	 *
+	 * A grid's own statement is left alone when recover() is no longer on posts_results, since
+	 * nothing could then repair it if it failed.
+	 *
 	 * @since 2.41.0
 	 *
 	 * @param mixed $request The statement.
@@ -426,6 +437,12 @@ final class Mai_Post_Grid_Query_Optimizer {
 		}
 
 		$role = $query->mai_optimize;
+
+		// A grid's failed statement is repaired by recover(). A plugin that removed every
+		// posts_results callback removed that too, and then a failed swap would show no posts.
+		if ( 'grid' === $role && false === has_filter( 'posts_results', [ $this, 'recover' ] ) ) {
+			return $request;
+		}
 
 		$this->prepared[] = [
 			'owner'    => $query,
@@ -518,6 +535,60 @@ final class Mai_Post_Grid_Query_Optimizer {
 		];
 
 		return $swapped;
+	}
+
+	/**
+	 * Repairs a grid whose swapped statement failed, before anything reads its posts.
+	 *
+	 * Every grid query reaches posts_results, including one answered by a cache, so this is
+	 * where a grid's prepared swaps are dropped. When its swapped statement failed, the swap is
+	 * turned off, WordPress is made to forget the failed empty result it cached under the
+	 * query's key, and the original statement is sent once more the way WordPress sent it. The
+	 * list is then exactly today's, so the grid result cache stores it as usual. If the resend
+	 * fails too, $wpdb holds its error, and the grid result cache stores nothing, as for any
+	 * failed grid statement.
+	 *
+	 * The error is read before turn_off(), whose transient write is a statement of its own.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param mixed $posts The posts.
+	 * @param mixed $query The query.
+	 *
+	 * @return mixed The posts, or the resent list when the swapped statement failed.
+	 */
+	public function recover( mixed $posts, mixed $query = null ): mixed {
+		global $wpdb;
+
+		if ( ! $query instanceof WP_Query || 'grid' !== ( $query->mai_optimize ?? null ) ) {
+			return $posts;
+		}
+
+		$outcome = $this->outcome( $query );
+
+		$this->drop( $query );
+
+		if ( 'failed' !== ( $outcome['status'] ?? null ) ) {
+			return $posts;
+		}
+
+		$error   = (string) $wpdb->last_error;
+		$request = (string) $query->request;
+
+		$this->turn_off( 'failed', $error );
+
+		wp_cache_set_posts_last_changed();
+
+		if ( 'split' === $outcome['form'] ) {
+			$vars = $query->query_vars;
+			$ids  = array_map( 'intval', (array) $wpdb->get_col( $request ) );
+
+			_prime_post_caches( $ids, (bool) ( $vars['update_post_term_cache'] ?? true ), (bool) ( $vars['update_post_meta_cache'] ?? true ) );
+
+			return array_map( 'get_post', $ids );
+		}
+
+		return array_map( 'get_post', (array) $wpdb->get_results( $request ) );
 	}
 
 	/**

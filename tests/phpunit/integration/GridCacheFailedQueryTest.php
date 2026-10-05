@@ -18,6 +18,10 @@ use WP_Query;
  * query cache like any other, so a second render in the same request could be answered with
  * no SQL. The tests empty the object cache between renders, which is what a new request does
  * on a site without a persistent object cache.
+ *
+ * The grid query optimizer is off for the whole class, since these tests fail the statement
+ * WordPress writes. A failed faster statement is repaired before the result cache sees it, which
+ * PostGridQueryOptimizerGridTest tests.
  */
 final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 
@@ -33,6 +37,9 @@ final class GridCacheFailedQueryTest extends MaiIntegrationTestCase {
 
 	public function set_up(): void {
 		parent::set_up();
+
+		// Today's failure path, not the optimizer's. See the class docblock.
+		add_filter( 'mai_post_grid_optimize_query', '__return_false' );
 
 		$this->term_id = self::factory()->term->create( [ 'taxonomy' => 'category' ] );
 

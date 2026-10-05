@@ -921,12 +921,20 @@ class Mai_Query_Cache {
 	 * Counting rows is the caller's check, because only the grid's own query can say whether
 	 * it counts.
 	 *
+	 * The copy is marked for the grid query optimizer, which may send a faster statement for it.
+	 * When that statement failed, the optimizer is turned off, core is made to forget the copy's
+	 * cached empty result, and the copy's own statement is sent once more. The checks described
+	 * above then judge that statement. When the faster statement took longer than the
+	 * optimizer's limit, the optimizer is turned off and the IDs stand.
+	 *
 	 * @since 2.41.0 Takes the args, the asked cache_results and the expected key instead of the
 	 *            live query, and returns the copy's found_posts with the IDs.
 	 * @since 2.41.0 Returns an empty ID list when the copy finds nothing and $wpdb shows no error,
 	 *            rather than null.
 	 * @since 2.41.0 Counts an empty copy's error as its own failure when a statement was sent
 	 *            while it ran.
+	 * @since 2.41.0 Marks the copy for the grid query optimizer, and resends a failed faster
+	 *            statement.
 	 *
 	 * @param array  $args          The args the grid's query was built from.
 	 * @param bool   $cache_results The cache_results the grid asked for.
@@ -937,22 +945,51 @@ class Mai_Query_Cache {
 	private function fetch_ids( array $args, bool $cache_results, string $expected_key ): array|false|null {
 		global $wpdb;
 
-		$copy = new WP_Query();
+		$copy      = new WP_Query();
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+
+		// Lets the grid query optimizer send a faster statement for the copy when it can prove it
+		// returns the same IDs. The copy's request text stays as WordPress built it, so the key
+		// check below is unchanged.
+		$optimizer->mark( $copy, 'copy' );
 
 		// $wpdb counts a statement once it is sent, after the query filter, so this tells whether
 		// anything reached the database while the copy ran. See the empty copy check below.
 		$sent = $wpdb->num_queries;
 
-		$copy->query(
-			array_merge(
-				$args,
-				[
-					'fields'        => 'ids',
-					'cache_results' => $cache_results,
-					'mai_cache'     => false,
-				]
-			)
-		);
+		try {
+			$copy->query(
+				array_merge(
+					$args,
+					[
+						'fields'        => 'ids',
+						'cache_results' => $cache_results,
+						'mai_cache'     => false,
+					]
+				)
+			);
+		} finally {
+			// The copy's statement has been sent or never will be.
+			$optimizer->drop( $copy );
+		}
+
+		$outcome = $optimizer->outcome( $copy );
+
+		if ( 'failed' === ( $outcome['status'] ?? null ) ) {
+			// The faster statement failed. Read the error before turn_off(), whose transient write
+			// is a statement of its own. Core cached the copy's empty result, so it is made to
+			// forget it, and the copy's own statement is sent once more, unswapped. The checks
+			// below then read that one, so if it fails too, today's failure path applies.
+			$error = (string) $wpdb->last_error;
+
+			$optimizer->turn_off( 'failed', $error );
+			$this->forget_failure();
+
+			$copy->posts = $wpdb->get_col( (string) $copy->request );
+		} elseif ( 'ok' === ( $outcome['status'] ?? null ) && $outcome['seconds'] > Mai_Post_Grid_Query_Optimizer::$slow ) {
+			// Right, but slow enough that the database planned it badly. The IDs stand.
+			$optimizer->turn_off( 'slow', sprintf( '%.3f s', $outcome['seconds'] ) );
+		}
 
 		// Only an error from the copy's own statement, which is the last one it runs. When core
 		// answers the copy from its cache, that statement never runs, and last_error belongs to

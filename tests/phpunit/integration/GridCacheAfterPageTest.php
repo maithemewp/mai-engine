@@ -612,6 +612,46 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * The rebuild after the page sends the faster statement too. The copy's request text is
+	 * unchanged by the swap, so its key still matches the grid's, and the list is stored.
+	 */
+	public function test_the_rebuild_after_the_page_swaps(): void {
+		$warm = $this->warm( 'current' );
+
+		$this->drift( 'current' );
+		$this->age();
+		$this->new_request( 'current' );
+		$this->render( 'current' );
+
+		$this->assertTrue( $this->queue->has_job( $warm['key'] ) );
+
+		// After the optimizer's query callback, at the same priority, so it sees the swapped text.
+		$swapped = [];
+		$watch   = static function ( $sql ) use ( &$swapped ) {
+			if ( is_string( $sql ) && str_contains( $sql, 'EXISTS ( SELECT ' ) ) {
+				$swapped[] = $sql;
+			}
+
+			return $sql;
+		};
+
+		add_filter( 'query', $watch, PHP_INT_MAX );
+		$selects = $this->run_queue();
+		remove_filter( 'query', $watch, PHP_INT_MAX );
+
+		$stored   = $this->stored( $warm['key'] );
+		$envelope = $this->envelope( $warm['key'] );
+
+		$this->assertSame( 1, $selects, 'the job ran the ID query once' );
+		$this->assertCount( 1, $swapped, 'and it was swapped' );
+		$this->assertStringContainsString( 'LIMIT 0, ' . ( self::PER_PAGE + 1 ), $swapped[0], 'the padded copy' );
+		$this->assertTrue( $stored['fresh'], 'the copy\'s key matched the grid\'s, so the list was stored' );
+		$this->assertSame( $this->now, $envelope['w'], 'written now' );
+		$this->assertSame( [ $this->outsider, $this->post_ids[0], $this->post_ids[1], $this->post_ids[2] ], $stored['value']['ids'] );
+		$this->assertSame( 'ids', $stored['value']['by'] );
+	}
+
+	/**
 	 * The no-drift rule: the job stores exactly what a rebuild during the page would. The data
 	 * changes between the first store and the job, without a save, so the job has a new list
 	 * to get right. The comparison is a cold rebuild of the same grid during the page, with core's
@@ -991,6 +1031,10 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	 * fails it without changing its SQL.
 	 */
 	public function test_failed_copy_statement_deletes_entry_and_releases_the_lock(): void {
+		// Today's failure path, not the grid query optimizer's, which would repair the refused
+		// statement. The optimizer reads this once per request, so it is set before any grid runs.
+		add_filter( 'mai_post_grid_optimize_query', '__return_false' );
+
 		$warm = $this->warm( 'current' );
 
 		$this->age();
@@ -1378,6 +1422,10 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	 * core is made to forget its cached empty result, and the grid's own query answers.
 	 */
 	public function test_failed_copy_statement_on_an_empty_grid_stores_nothing(): void {
+		// Today's failure path, not the grid query optimizer's, which would repair the refused
+		// statement. The optimizer reads this once per request, so it is set before any grid runs.
+		add_filter( 'mai_post_grid_optimize_query', '__return_false' );
+
 		$this->new_request( 'empty' );
 
 		$before = wp_cache_get_last_changed( 'posts' );
@@ -1541,6 +1589,10 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 	/** The same after the page: a refused copy deletes the aged empty entry rather than store an empty list. */
 	public function test_failed_copy_statement_on_an_aged_empty_entry_deletes_it(): void {
+		// Today's failure path, not the grid query optimizer's, which would repair the refused
+		// statement. The optimizer reads this once per request, so it is set before any grid runs.
+		add_filter( 'mai_post_grid_optimize_query', '__return_false' );
+
 		$warm = $this->warm( 'empty' );
 
 		$this->age();

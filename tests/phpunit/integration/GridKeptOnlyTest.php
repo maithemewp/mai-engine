@@ -945,6 +945,10 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 	public function test_a_refused_id_query_is_forgotten_by_core_query_cache(): void {
 		global $wpdb;
 
+		// Today's failure path, not the grid query optimizer's, which would repair the refused
+		// statement. The optimizer reads this once per request, so it is set before any grid runs.
+		add_filter( 'mai_post_grid_optimize_query', '__return_false' );
+
 		$prepared = $this->prepare( 'both_many' );
 		$padded   = self::PER_PAGE + count( $prepared['excluded'] );
 

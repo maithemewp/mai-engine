@@ -49,6 +49,29 @@ final class HarnessTest extends MaiIntegrationTestCase {
 		$this->assertInstanceOf( \Mai_Query_Cache::class, $cache, 'Mai_Query_Cache is not on posts_pre_query' );
 	}
 
+	public function test_grid_optimizer_recovery_runs_before_the_result_cache_on_posts_results(): void {
+		// The optimizer resends a failed swapped statement there, so the result cache, which
+		// shares the earliest priority, must see the resent list, not the failure. The callbacks
+		// array is sorted by priority, and holds each priority's callbacks in the order they run.
+		$order = [];
+
+		foreach ( $GLOBALS['wp_filter']['posts_results']->callbacks ?? [] as $callbacks ) {
+			foreach ( $callbacks as $callback ) {
+				$function = $callback['function'];
+
+				if ( is_array( $function ) && $function[0] instanceof \Mai_Post_Grid_Query_Optimizer && 'recover' === $function[1] ) {
+					$order[] = 'recover';
+				}
+
+				if ( is_array( $function ) && $function[0] instanceof \Mai_Query_Cache && 'posts_results' === $function[1] ) {
+					$order[] = 'result cache';
+				}
+			}
+		}
+
+		$this->assertSame( [ 'recover', 'result cache' ], $order );
+	}
+
 	public function test_a_grid_can_be_built(): void {
 		$term = self::factory()->term->create( [ 'taxonomy' => 'category' ] );
 		self::factory()->post->create( [ 'post_status' => 'publish', 'post_category' => [ $term ] ] );

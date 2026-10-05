@@ -17,6 +17,9 @@ use WP_UnitTest_Factory;
  * the swapped text. A swapped run is compared with the same query when the filter turns the
  * optimizer off, and every run must have sent its statement to the posts table, so a run
  * answered from a cache cannot pass by luck.
+ *
+ * Every run holds recover() back at posts_results (without_recovery()), so these tests read
+ * outcome() and the prepared swaps themselves. PostGridQueryOptimizerGridTest tests recover().
  */
 final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
@@ -668,7 +671,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		add_filter( 'query', $capture, PHP_INT_MAX );
 
 		try {
-			$query->query( $args + self::base_args() );
+			$this->without_recovery( static fn() => $query->query( $args + self::base_args() ) );
 		} finally {
 			remove_filter( 'query', $capture, PHP_INT_MAX );
 		}
@@ -726,7 +729,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
 			Mai_Post_Grid_Query_Optimizer::instance()->mark( $query, 'grid' );
 
-			$query->query( $args + self::base_args() );
+			$this->without_recovery( static fn() => $query->query( $args + self::base_args() ) );
 		} finally {
 			remove_filter( 'posts_pre_query', $answer );
 		}
@@ -734,6 +737,41 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertSame( $before + 1, self::prepared_count(), 'A swap was prepared for the query.' );
 
 		return $query;
+	}
+
+	/**
+	 * Runs the callback with recover() off posts_results while each query reaches that hook.
+	 *
+	 * recover() reads and forgets a grid's outcome, and drops its prepared swaps, at
+	 * posts_results. These tests read both themselves. prepare() only prepares a grid's swap
+	 * while recover() is registered, so it is taken off after prepare() has run, by a
+	 * posts_request callback added after prepare() at the same priority. It is put back when the
+	 * callback returns. The core test case restores every hook after the test, so the next test
+	 * has the original order again.
+	 *
+	 * @param callable $callback The code to run.
+	 *
+	 * @return mixed What the callback returns.
+	 */
+	private function without_recovery( callable $callback ): mixed {
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+		$hold      = static function ( $request ) use ( $optimizer ) {
+			remove_filter( 'posts_results', [ $optimizer, 'recover' ], PHP_INT_MIN );
+
+			return $request;
+		};
+
+		add_filter( 'posts_request', $hold, PHP_INT_MAX );
+
+		try {
+			return $callback();
+		} finally {
+			remove_filter( 'posts_request', $hold, PHP_INT_MAX );
+
+			if ( false === has_filter( 'posts_results', [ $optimizer, 'recover' ] ) ) {
+				add_filter( 'posts_results', [ $optimizer, 'recover' ], PHP_INT_MIN, 2 );
+			}
+		}
 	}
 
 	/**
