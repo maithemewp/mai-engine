@@ -20,7 +20,10 @@ declare(strict_types=1);
  * before trusting a small difference. For each pair:
  *
  *   1. The IDs of both forms must match, in the same order. A pair whose IDs differ is a
- *      correctness bug. It is not timed and not counted against the bar. A pair where both forms
+ *      correctness bug. It is not timed and not counted against the bar. The one known exception
+ *      is a post whose post_date has a zero day or month, such as 2007-03-00 (Mike accepted it on
+ *      2026-10-05): a pair whose IDs differ only by such posts is counted as known, prints them,
+ *      and is not timed. Anything else that differs is still a bug. A pair where both forms
  *      return no rows is counted as empty, and is not compared or timed. The pairs script builds
  *      its synthetic statements from terms that have posts, so one of those coming back empty
  *      means the data is wrong, and so do more than 10% of all pairs coming back empty.
@@ -280,6 +283,80 @@ function plan_of( mysqli $db, string $sql, string $engine ): string {
 }
 
 /**
+ * The posts among some IDs whose post_date has a zero day or a zero month, such as 2007-03-00,
+ * but is not 0000-00-00 00:00:00. A database can place such a post differently when it sorts
+ * than when it walks the date index, so the two forms may disagree about it.
+ *
+ * Read as text, so it works the same on MySQL and MariaDB whatever the session's date modes.
+ *
+ * @param mysqli    $db  The connection.
+ * @param string    $sql A statement of the pair, to read the posts table from its first FROM.
+ * @param list<int> $ids The IDs of both forms.
+ *
+ * @return array<int,string> The post_date of each such post, keyed by its ID.
+ */
+function invalid_dates( mysqli $db, string $sql, array $ids ): array {
+	if ( 1 !== preg_match( '/^\s*SELECT\b.*?\bFROM\s+`?([A-Za-z0-9_$]+)`?/s', $sql, $match ) ) {
+		return [];
+	}
+
+	$result = $db->query( "SELECT ID, CAST( post_date AS CHAR ) FROM `{$match[1]}` WHERE SUBSTRING( CAST( post_date AS CHAR ), 6, 2 ) = '00' OR SUBSTRING( CAST( post_date AS CHAR ), 9, 2 ) = '00'" );
+
+	if ( ! $result instanceof mysqli_result ) {
+		return [];
+	}
+
+	$wanted = array_flip( $ids );
+	$dates  = [];
+
+	foreach ( $result->fetch_all() as [ $id, $date ] ) {
+		if ( isset( $wanted[ (int) $id ] ) && ! str_starts_with( (string) $date, '0000-00-00 00:00:00' ) ) {
+			$dates[ (int) $id ] = (string) $date;
+		}
+	}
+
+	$result->free();
+
+	return $dates;
+}
+
+/**
+ * Whether two ID lists differ only by posts with invalid dates.
+ *
+ * With those posts taken out of both, the lists must be equal. For a statement with a LIMIT, the
+ * shorter may instead be the start of the longer, when the longer has no more extra entries than
+ * the number of invalid-date posts taken out of the shorter: those entries filled the places the
+ * invalid-date posts took in the other form.
+ *
+ * @param list<int> $today   Today's IDs.
+ * @param list<int> $swapped The swapped IDs.
+ * @param list<int> $invalid The IDs of the posts with invalid dates.
+ * @param bool      $limited Whether the statement has a LIMIT.
+ *
+ * @return bool
+ */
+function differs_only_by( array $today, array $swapped, array $invalid, bool $limited ): bool {
+	$skip = array_flip( $invalid );
+	$keep = static fn( array $ids ): array => array_values( array_filter( $ids, static fn( int $id ): bool => ! isset( $skip[ $id ] ) ) );
+	$a    = $keep( $today );
+	$b    = $keep( $swapped );
+
+	if ( $a === $b ) {
+		return true;
+	}
+
+	if ( ! $limited ) {
+		return false;
+	}
+
+	[ $short, $long, $removed ] = count( $a ) <= count( $b )
+		? [ $a, $b, count( $today ) - count( $a ) ]
+		: [ $b, $a, count( $swapped ) - count( $b ) ];
+
+	return array_slice( $long, 0, count( $short ) ) === $short && count( $long ) - count( $short ) <= $removed;
+}
+
+/**
  * A load average line, for the log and the JSON.
  *
  * @return list<float>
@@ -344,9 +421,10 @@ function prepare_session( mysqli $db, string $engine ): array {
 /**
  * Runs one pair and returns what happened. It never prints.
  *
- * The status is "empty" when both forms return no rows, "diff" when the IDs differ, "ids_only"
- * when the IDs match and the pair is not timed, otherwise "pass" or "miss" against the bar. Only
- * a pass or a miss is timed.
+ * The status is "empty" when both forms return no rows, "known_invalid_date" when the IDs differ
+ * only by posts with invalid dates (see differs_only_by()), "diff" when they differ otherwise,
+ * "ids_only" when the IDs match and the pair is not timed, otherwise "pass" or "miss" against the
+ * bar. Only a pass or a miss is timed.
  *
  * @param mysqli $db      The connection.
  * @param string $name    The pair's name.
@@ -390,7 +468,10 @@ function run_pair( mysqli $db, string $name, string $today, string $swapped, str
 			}
 		}
 
-		$result['status']           = 'diff';
+		$invalid = invalid_dates( $db, $today, array_values( array_unique( array_merge( $ids_today, $ids_swapped ) ) ) );
+
+		$result['status']           = $invalid && differs_only_by( $ids_today, $ids_swapped, array_keys( $invalid ), $timed ) ? 'known_invalid_date' : 'diff';
+		$result['invalid_dates']    = $invalid;
 		$result['first_difference'] = $first;
 		$result['plan_today']       = plan_of( $db, $today, $engine );
 		$result['plan_swapped']     = plan_of( $db, $swapped, $engine );
@@ -503,6 +584,7 @@ $totals     = [
 	'ids_match'       => 0,
 	'ids_only'        => 0,
 	'ids_differ'      => 0,
+	'known'           => 0,
 	'bar_met'         => 0,
 	'bar_missed'      => 0,
 	'weedout'         => 0,
@@ -730,6 +812,17 @@ foreach ( $runnable as $pair ) {
 			echo "EMPTY  {$pair['name']}  both forms returned 0 rows, not compared\n";
 			break;
 
+		case 'known_invalid_date':
+			++$totals['known'];
+
+			printf(
+				"KNOWN  %s  IDs differ only by posts with invalid dates: %s%s\n",
+				$pair['name'],
+				implode( ', ', array_map( static fn( int $id, string $date ): string => "{$id} ({$date})", array_keys( $result['invalid_dates'] ), $result['invalid_dates'] ) ),
+				$flag
+			);
+			break;
+
 		case 'diff':
 			++$totals['ids_differ'];
 
@@ -770,13 +863,14 @@ foreach ( $runnable as $pair ) {
 $report['complete'] = true;
 
 printf(
-	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d (%d of them ID-only, no LIMIT so not timed or held to the bar), IDs differ %d, bar met %d, bar missed %d, weedout %d, errors %d, skipped %d. Load at end: %s\n",
+	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d (%d of them ID-only, no LIMIT so not timed or held to the bar), IDs differ %d, known %d (IDs differ only by posts with invalid dates), bar met %d, bar missed %d, weedout %d, errors %d, skipped %d. Load at end: %s\n",
 	$totals['pairs'],
 	$totals['empty'],
 	$totals['empty_synthetic'],
 	$totals['ids_match'],
 	$totals['ids_only'],
 	$totals['ids_differ'],
+	$totals['known'],
 	$totals['bar_met'],
 	$totals['bar_missed'],
 	$totals['weedout'],
