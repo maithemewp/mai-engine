@@ -18,9 +18,12 @@ defined( 'ABSPATH' ) || die;
 final class Mai_Post_Grid_Query_Optimizer_Sql {
 
 	/**
-	 * The post columns a grid may sort by, before the ID tiebreaker.
+	 * The post columns a grid may sort by, before the ID tiebreaker. Only the sorts that met the
+	 * speed bar are here. Modified date, title, slug, menu order and comment count sorts ran slower
+	 * swapped on a mid-size category, and parent and type sorts were never measured, so those grids
+	 * keep today's statement (spec "Which grids").
 	 */
-	public const SORT_COLUMNS = [ 'post_date', 'post_modified', 'post_title', 'post_name', 'menu_order', 'comment_count', 'post_author', 'post_parent', 'post_type', 'ID' ];
+	public const SORT_COLUMNS = [ 'post_date', 'post_author', 'ID' ];
 
 	/**
 	 * Written right after SELECT inside each EXISTS on MySQL. It forbids the one plan that hits

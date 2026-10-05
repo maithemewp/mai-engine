@@ -188,7 +188,7 @@ On a failure, in this order:
 - Grids that defer their excludes, and grids without excludes.
 - One or more taxonomy filters, joined with AND, or joined with OR when all are `IN` and share one table. `NOT IN`, `AND` and `EXISTS` filters can sit next to `IN` filters under AND.
 - Any taxonomy: categories, tags and custom taxonomies, such as recipe or product categories (Mike, 2026-10-04). They all use the same table, so the SQL is the same.
-- Sorted by any post column that passes the speed test, with the ID tiebreaker.
+- Sorted by date, author or ID, with the ID tiebreaker. Title, slug, modified date, menu order and comment count sorts were slower on a mid-size category in the speed test, so they keep today's statement (measured on MySQL 9.7.1, 2026-10-05).
 
 **Not covered, so today's statement:**
 

@@ -57,6 +57,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 			'no_found_rows false',
 			'orderby rand',
 			'orderby RAND(7)',
+			'orderby menu order',
 			'tiebreaker removed',
 			'ORDER BY names the term table',
 			'no LIMIT',
@@ -513,6 +514,11 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
 			case 'orderby RAND(7)':
 				$args = [ 'orderby' => 'RAND(7)' ];
+				break;
+
+			case 'orderby menu order':
+				// A sort that is left out, since the swapped form was slower on a mid-size category.
+				$args = [ 'orderby' => 'menu_order' ];
 				break;
 
 			case 'tiebreaker removed':

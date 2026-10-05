@@ -21,7 +21,8 @@ use WP_UnitTest_Factory;
  * case passes when:
  *
  * - both runs show the same post IDs in the same order,
- * - the first run sent no swapped statement and the second sent one,
+ * - the first run sent no swapped statement and the second sent one, unless the sort is one the
+ *   optimizer leaves out, which sends none on either run,
  * - the swap stayed on, since a swapped statement that fails is sent again unswapped, which
  *   would show today's posts and hide the break,
  * - the posts differ from the same grid with no taxonomy filter, so the taxonomy filter really
@@ -57,7 +58,8 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 	];
 
 	/**
-	 * The sorts of the first provider: the argument Mai's grid reads in `orderby`.
+	 * The sorts of the first provider: the argument Mai's grid reads in `orderby`. Every sort stays
+	 * in the matrix, so a sort the optimizer leaves out still shows the same posts on and off.
 	 */
 	private const SORTS = [
 		'date'          => 'date',
@@ -69,6 +71,13 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 		'ID'            => 'ID',
 		'author'        => 'author',
 	];
+
+	/**
+	 * The sorts above the optimizer swaps: date, author and ID, the ones that met the speed bar.
+	 * Written out here, not read from SORT_COLUMNS, so adding a sort to that list fails these cases
+	 * until the sort is measured and listed here.
+	 */
+	private const SWAPPED_SORTS = [ 'date', 'author', 'ID' ];
 
 	/**
 	 * The fixture's IDs, built once for the class.
@@ -220,7 +229,13 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 
 		$this->assertNotEmpty( $on['ids'], 'the grid shows posts' );
 		$this->assertSame( [], $off['swapped'], 'the first run was not swapped' );
-		$this->assertNotEmpty( $on['swapped'], 'the second run sent the swapped statement' );
+
+		if ( in_array( $args['orderby'], self::SWAPPED_SORTS, true ) ) {
+			$this->assertNotEmpty( $on['swapped'], 'the second run sent the swapped statement' );
+		} else {
+			$this->assertSame( [], $on['swapped'], 'the second run kept today\'s statement, because the sort is left out' );
+		}
+
 		$this->assertSame( $off['ids'], $on['ids'], 'the same posts in the same order' );
 		$this->assertSame( [], $this->logged, 'the swap did not fail or turn itself off' );
 		$this->assertFalse( get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ), 'and it is not off for the day' );
