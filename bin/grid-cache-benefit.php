@@ -5,7 +5,7 @@
  * Validates the premise of the grid result cache: that the cache-hit path (a post__in
  * fetch of known IDs) is materially cheaper than the filtering query it replaces. For a
  * few real configs it times the actual grid query (run through mai_post_grid_query_args,
- * so the optimizer/EP transforms apply) vs a post__in fetch of the same result IDs, and
+ * so the EP transform applies) vs a post__in fetch of the same result IDs, and
  * prints the speedup. fields=ids isolates the matching cost; the per-hit Redis GET that
  * precedes the post__in is sub-millisecond and not modeled here.
  *
@@ -72,7 +72,7 @@ WP_CLI::log( sprintf( '%-16s | %-16s | %-16s | %s', 'config', 'filter ms (med/mi
 WP_CLI::log( str_repeat( '-', 78 ) );
 
 foreach ( $configs as $label => $args ) {
-	$filter_args = apply_filters( 'mai_post_grid_query_args', $args, [] ); // optimizer/EP transforms apply.
+	$filter_args = apply_filters( 'mai_post_grid_query_args', $args, [] ); // EP transforms apply.
 	$f           = $timeit( $filter_args, $iters );
 	$ids         = $f['ids'];
 

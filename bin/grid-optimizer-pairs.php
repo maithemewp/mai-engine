@@ -10,6 +10,11 @@
  * one). Without that last check such a grid would report IDs that differ, since random order
  * differs from one run to the next.
  *
+ * Some skips are expected: a statement with no tax filter, the one synthetic shape that is not
+ * covered on purpose, a sort orderby_ok() refuses, and any captured statement the optimizer would
+ * not cover. A synthetic statement meant to be covered that is skipped is not expected, and stops
+ * the run with an error, as do no pairs at all, a failed write and a failed term read.
+ *
  * Two sources:
  *   1. The statements bin/grid-optimizer-probe.php captured from real page views, from
  *      /tmp/mai-optimizer-statements-<site>.jsonl, where <site> is the host of home_url(). A
@@ -19,10 +24,12 @@
  *      (counts from term_taxonomy.count for category and post_tag): the biggest term, a mid-size
  *      one (10 to 50% of published posts, the nearest to 25%), a small one (under 20 posts) and
  *      an old one (newest post over a year old, the biggest such term). Each size is crossed with
- *      the eight sorts, ascending and descending, with Mai's ID tiebreaker. Then come tag, custom
- *      taxonomy, AND, OR, IN with NOT IN, 29 terms, no children, posts and pages, publish and
- *      private (as the first administrator, nothing is saved) and other public post types. One
- *      shape is not covered on purpose, to show the skip.
+ *      the eight sorts, ascending and descending, with Mai's ID tiebreaker. Only date, author and
+ *      ID pass orderby_ok(); the others are logged as skipped. Then come tag, custom taxonomy,
+ *      AND, OR, IN with NOT IN, 29 terms, no children, posts and pages, publish and private (as
+ *      the first administrator, nothing is saved, and skipped with a warning on a site with no
+ *      administrator) and other public post types. One shape is not covered on purpose, to show
+ *      the skip.
  *
  * Every statement is written at its own LIMIT, at LIMIT 0, 2, at LIMIT 0, 32 and with no LIMIT,
  * each as its own pair line:
@@ -85,6 +92,30 @@ function tax_filter( string $taxonomy, array $ids, string $operator = 'IN', bool
 }
 
 /**
+ * Stops the run when the last statement failed, so a broken read never passes for an empty site.
+ *
+ * @param string $what What was read, for the message.
+ *
+ * @return void
+ */
+function stop_on_db_error( string $what ): void {
+	global $wpdb;
+
+	if ( '' !== (string) $wpdb->last_error ) {
+		WP_CLI::error( "Could not read {$what}: {$wpdb->last_error}" );
+	}
+}
+
+/**
+ * The first administrator's ID, or 0 when the site has none.
+ *
+ * @return int
+ */
+function first_admin(): int {
+	return (int) ( get_users( [ 'role' => 'administrator', 'number' => 1, 'fields' => 'ID' ] )[0] ?? 0 );
+}
+
+/**
  * Finds the site's terms by size, with SQL on the term tables.
  *
  * @return array<string,array{id:int,taxonomy:string,count:int}> Keys: big, mid, small, old,
@@ -95,10 +126,15 @@ function find_terms(): array {
 	global $wpdb;
 
 	$published = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status = 'publish'" );
-	$rows      = (array) $wpdb->get_results(
+
+	stop_on_db_error( 'the published post count' );
+
+	$rows = (array) $wpdb->get_results(
 		"SELECT term_id, taxonomy, count FROM {$wpdb->term_taxonomy} WHERE taxonomy IN ( 'category', 'post_tag' ) AND count > 0 ORDER BY count DESC, term_id ASC",
 		ARRAY_A
 	);
+
+	stop_on_db_error( 'the categories and tags' );
 
 	$pick = static fn( array $row ): array => [
 		'id'       => (int) $row['term_id'],
@@ -156,6 +192,8 @@ function find_terms(): array {
 		ARRAY_A
 	);
 
+	stop_on_db_error( 'the old term' );
+
 	if ( is_array( $old ) ) {
 		$terms['old'] = $pick( $old );
 	}
@@ -191,6 +229,8 @@ function best_term( array $taxonomies ): ?array {
 		ARRAY_A
 	);
 
+	stop_on_db_error( 'the biggest term of ' . implode( ', ', $taxonomies ) );
+
 	return is_array( $row ) ? [
 		'id'       => (int) $row['term_id'],
 		'taxonomy' => (string) $row['taxonomy'],
@@ -199,21 +239,23 @@ function best_term( array $taxonomies ): ?array {
 }
 
 /**
- * The synthetic statements to build: name and WP_Query args.
+ * The synthetic statements to build: name, WP_Query args, whether to build it as the first
+ * administrator, and whether the optimizer is meant to cover it.
  *
  * @param array<string,array{id:int,taxonomy:string,count:int}> $terms What find_terms() found.
  *
- * @return list<array{name:string,args:array,admin:bool}>
+ * @return list<array{name:string,args:array,admin:bool,covered:bool}>
  */
 function synthetic_specs( array $terms ): array {
 	global $wpdb;
 
 	$specs = [];
-	$make  = static function ( string $name, array $tax_query, array $over = [], bool $admin = false ) use ( &$specs ): void {
+	$make  = static function ( string $name, array $tax_query, array $over = [], bool $admin = false, bool $covered = true ) use ( &$specs ): void {
 		$specs[] = [
-			'name'  => $name,
-			'admin' => $admin,
-			'args'  => array_merge(
+			'name'    => $name,
+			'admin'   => $admin,
+			'covered' => $covered,
+			'args'    => array_merge(
 				[
 					'post_type'              => 'post',
 					'post_status'            => 'publish',
@@ -237,7 +279,8 @@ function synthetic_specs( array $terms ): array {
 
 	$term_filter = static fn( array $term, string $operator = 'IN', bool $children = true ): array => tax_filter( $term['taxonomy'], [ $term['id'] ], $operator, $children );
 
-	// Each size of term, crossed with every sort the grid offers.
+	// Each size of term, crossed with every sort the grid offers. Only date, author and ID pass
+	// orderby_ok(); the others are logged as skipped.
 	$sorts = [ 'date', 'modified', 'title', 'name', 'menu_order', 'comment_count', 'author', 'ID' ];
 
 	foreach ( [ 'big', 'mid', 'small', 'old' ] as $size ) {
@@ -267,22 +310,33 @@ function synthetic_specs( array $terms ): array {
 	if ( isset( $terms['big'] ) ) {
 		$has_children = (bool) $wpdb->get_var( $wpdb->prepare( "SELECT term_taxonomy_id FROM {$wpdb->term_taxonomy} WHERE parent = %d AND taxonomy = %s LIMIT 1", $terms['big']['id'], $terms['big']['taxonomy'] ) );
 
+		stop_on_db_error( 'the child terms of the big term' );
+
 		if ( $has_children ) {
 			$make( 'big, no child terms', [ $term_filter( $terms['big'], 'IN', false ) ] );
 		}
 
 		$make( 'big, posts and pages', [ $term_filter( $terms['big'] ) ], [ 'post_type' => [ 'post', 'page' ] ] );
-		$make( 'big, publish and private', [ $term_filter( $terms['big'] ) ], [ 'post_status' => [ 'publish', 'private' ] ], true );
-		$make( 'big, posts and pages, publish and private', [ $term_filter( $terms['big'] ) ], [
-			'post_type'   => [ 'post', 'page' ],
-			'post_status' => [ 'publish', 'private' ],
-		], true );
-		$make( 'big, NOT IN only (not covered)', [ $term_filter( $terms['big'], 'NOT IN' ) ] );
+
+		// Private posts are only in the statement for a user who may read them.
+		if ( first_admin() ) {
+			$make( 'big, publish and private', [ $term_filter( $terms['big'] ) ], [ 'post_status' => [ 'publish', 'private' ] ], true );
+			$make( 'big, posts and pages, publish and private', [ $term_filter( $terms['big'] ) ], [
+				'post_type'   => [ 'post', 'page' ],
+				'post_status' => [ 'publish', 'private' ],
+			], true );
+		} else {
+			WP_CLI::warning( 'No administrator on this site, so no publish and private statements.' );
+		}
+
+		$make( 'big, NOT IN only (not covered)', [ $term_filter( $terms['big'], 'NOT IN' ) ], [], false, false );
 
 		$category_ids = array_map(
 			'intval',
 			(array) $wpdb->get_col( "SELECT term_id FROM {$wpdb->term_taxonomy} WHERE taxonomy = 'category' AND count > 0 ORDER BY count DESC, term_id ASC LIMIT 29" )
 		);
+
+		stop_on_db_error( 'the 29 biggest categories' );
 
 		$make( count( $category_ids ) . ' terms', [ tax_filter( 'category', $category_ids ) ] );
 	}
@@ -347,7 +401,7 @@ function build( array $args, bool $admin ): ?array {
 	$short = static fn(): array => [];
 
 	$before = get_current_user_id();
-	$user   = $admin ? (int) ( get_users( [ 'role' => 'administrator', 'number' => 1, 'fields' => 'ID' ] )[0] ?? 0 ) : 0;
+	$user   = $admin ? first_admin() : 0;
 
 	wp_set_current_user( $user );
 	add_filter( 'posts_pre_query', $short, PHP_INT_MAX );
@@ -403,7 +457,8 @@ function swaps( string $statement, ?array $rebuilt, string $posts, string $terms
 		return $out;
 	}
 
-	// Task 1's rule decides whether the hint is written, from a server string for each engine.
+	// The optimizer's own rule decides whether the hint is written, from a server string for each
+	// engine.
 	$engines = [
 		'swapped_mysql'   => '8.0.45',
 		'swapped_mariadb' => '10.11.9-MariaDB',
@@ -475,32 +530,53 @@ function describe( array $queries ): string {
 }
 
 /**
- * Writes the pair lines for one statement: its own LIMIT and three more.
+ * Records a skipped statement as expected or not.
  *
- * @param resource             $handle    The open output file.
- * @param string               $name      The statement's name.
- * @param string               $statement The statement.
- * @param array                $queries   The tax filters WordPress used.
- * @param string               $posts     The posts table.
- * @param string               $terms     The term relationships table.
- * @param array<string,mixed>  $tally     Counts, the pair texts written and skipped names, updated here.
+ * @param array<string,mixed> $tally      Counts and skips, updated here.
+ * @param bool                $must_cover Whether the statement was meant to be covered.
+ * @param string              $why        The statement's name and why it was skipped.
  *
  * @return void
  */
-function write_pairs( $handle, string $name, string $statement, array $queries, string $posts, string $terms, array &$tally ): void {
+function skip( array &$tally, bool $must_cover, string $why ): void {
+	$tally[ $must_cover ? 'unexpected' : 'expected' ][] = $why;
+}
+
+/**
+ * Writes the pair lines for one statement: its own LIMIT and three more.
+ *
+ * @param resource             $handle     The open output file.
+ * @param string               $name       The statement's name.
+ * @param string               $statement  The statement.
+ * @param array                $queries    The tax filters WordPress used.
+ * @param string               $posts      The posts table.
+ * @param string               $terms      The term relationships table.
+ * @param bool                 $must_cover Whether the optimizer is meant to cover it, when its sort
+ *                                         is one orderby_ok() takes. A skip is then unexpected.
+ * @param array<string,mixed>  $tally      Counts, the pair texts written and skipped names, updated here.
+ *
+ * @return void
+ */
+function write_pairs( $handle, string $name, string $statement, array $queries, string $posts, string $terms, bool $must_cover, array &$tally ): void {
 	++$tally['statements'];
+
+	// No tax filter: a grid with no taxonomies, which the optimizer never touches.
+	if ( ! array_filter( $queries, 'is_array' ) ) {
+		skip( $tally, false, "{$name} (no tax filter)" );
+		return;
+	}
 
 	$orderby = orderby_of( $statement );
 
 	if ( null === $orderby || ! Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $orderby, $posts ) ) {
-		$tally['skipped'][] = "{$name} (ORDER BY is not covered: " . ( $orderby ?? 'none' ) . ')';
+		skip( $tally, false, "{$name} (ORDER BY is not covered: " . ( $orderby ?? 'none' ) . ')' );
 		return;
 	}
 
 	$rebuilt = Mai_Post_Grid_Query_Optimizer_Sql::rebuild( new WP_Tax_Query( $queries ), $posts );
 
 	if ( null === $rebuilt ) {
-		$tally['skipped'][] = "{$name} (rebuild returned null: " . describe( $queries ) . ')';
+		skip( $tally, $must_cover, "{$name} (rebuild returned null: " . describe( $queries ) . ')' );
 		return;
 	}
 
@@ -523,7 +599,7 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 		$swapped = swaps( $text, $rebuilt, $posts, $terms );
 
 		if ( null === $swapped['swapped_mysql'] || null === $swapped['swapped_mariadb'] ) {
-			$tally['skipped'][] = "{$name} | {$label} (swap returned null)";
+			skip( $tally, $must_cover, "{$name} | {$label} (swap returned null)" );
 			continue;
 		}
 
@@ -543,7 +619,10 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 			WP_CLI::error( "Could not encode the pair {$name} | {$label} as JSON." );
 		}
 
-		fwrite( $handle, $line . "\n" );
+		if ( false === fwrite( $handle, $line . "\n" ) ) {
+			WP_CLI::error( "Could not write the pair {$name} | {$label} to the pairs file." );
+		}
+
 		++$tally['pairs'];
 	}
 }
@@ -566,7 +645,8 @@ $tally = [
 	'duplicate_pairs' => 0,
 	'statements'      => 0,
 	'pairs'           => 0,
-	'skipped'         => [],
+	'expected'        => [],
+	'unexpected'      => [],
 	'seen'            => [],
 ];
 $seen  = [];
@@ -588,9 +668,16 @@ if ( is_readable( $in ) ) {
 		$role      = (string) ( $data['role'] ?? 'grid' );
 		$statement = $data['statement'];
 
-		// A grid's own statement reaches the database in its ID-only form.
+		// A grid's own statement reaches the database in its ID-only form, when WordPress splits
+		// it. One split() cannot rewrite, such as a Load More grid's, is written as captured.
 		if ( 'grid' === $role ) {
-			$statement = Mai_Post_Grid_Query_Optimizer_Sql::split( $statement, $posts ) ?? $statement;
+			$split = Mai_Post_Grid_Query_Optimizer_Sql::split( $statement, $posts );
+
+			if ( null === $split ) {
+				WP_CLI::log( 'Captured grid statement ' . $tally['captured'] . ' is not in the form split() takes, so it is written as captured.' );
+			} else {
+				$statement = $split;
+			}
 		}
 
 		if ( isset( $seen[ $statement ] ) ) {
@@ -600,7 +687,8 @@ if ( is_readable( $in ) ) {
 
 		$seen[ $statement ] = true;
 
-		write_pairs( $handle, 'captured ' . $role . ' ' . ( $tally['captured'] ) . ' [' . describe( $data['queries'] ) . ']', $statement, $data['queries'], $posts, $terms, $tally );
+		// A real page can hold any grid, so a captured statement that is not covered is expected.
+		write_pairs( $handle, 'captured ' . $role . ' ' . ( $tally['captured'] ) . ' [' . describe( $data['queries'] ) . ']', $statement, $data['queries'], $posts, $terms, false, $tally );
 	}
 } else {
 	WP_CLI::warning( "No captured statements at {$in}. Only the synthetic statements are written." );
@@ -617,7 +705,7 @@ foreach ( synthetic_specs( $found ) as $spec ) {
 	$built = build( $spec['args'], $spec['admin'] );
 
 	if ( null === $built ) {
-		$tally['skipped'][] = "{$spec['name']} (WordPress wrote no tax query)";
+		skip( $tally, false, "{$spec['name']} (WordPress wrote no tax query)" );
 		continue;
 	}
 
@@ -628,23 +716,35 @@ foreach ( synthetic_specs( $found ) as $spec ) {
 
 	$seen[ $built['statement'] ] = true;
 
-	write_pairs( $handle, $spec['name'], $built['statement'], $built['queries'], $wpdb->posts, $wpdb->term_relationships, $tally );
+	write_pairs( $handle, $spec['name'], $built['statement'], $built['queries'], $wpdb->posts, $wpdb->term_relationships, $spec['covered'], $tally );
 }
 
 fclose( $handle );
 
-foreach ( $tally['skipped'] as $why ) {
+foreach ( $tally['expected'] as $why ) {
 	WP_CLI::log( "Skipped, not covered: {$why}" );
+}
+
+foreach ( $tally['unexpected'] as $why ) {
+	WP_CLI::warning( "Skipped, but meant to be covered: {$why}" );
+}
+
+if ( $tally['unexpected'] ) {
+	WP_CLI::error( count( $tally['unexpected'] ) . ' synthetic statements meant to be covered were skipped, listed above. The optimizer no longer covers a shape it should, or the site writes it differently.' );
+}
+
+if ( 0 === $tally['pairs'] ) {
+	WP_CLI::error( "No pairs were written to {$out}, so there is nothing to replay." );
 }
 
 WP_CLI::success(
 	sprintf(
-		'%d captured statements read, %d duplicate statements and %d duplicate pair texts left out, %d statements checked, %d skipped, %d pairs written to %s.',
+		'%d captured statements read, %d duplicate statements and %d duplicate pair texts left out, %d statements checked, %d skipped as not covered, %d pairs written to %s.',
 		$tally['captured'],
 		$tally['duplicates'],
 		$tally['duplicate_pairs'],
 		$tally['statements'],
-		count( $tally['skipped'] ),
+		count( $tally['expected'] ),
 		$tally['pairs'],
 		$out
 	)

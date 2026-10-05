@@ -16,14 +16,15 @@ declare(strict_types=1);
  *   1. Copy this file to wp-content/mu-plugins/zzz-mai-optimizer-probe.php.
  *   2. Make Mai's cache able to store, so grids defer and copies run: back up wp-config.php, set
  *      WP_DEVELOPMENT_MODE '' and SCRIPT_DEBUG false, and empty Mai's grid cache with
- *      wp eval 'mai_cache( "grid" )->flush();' (see .superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md).
+ *      wp eval 'mai_cache( "grid" )->flush();'.
  *   3. Request each page with the flag:
  *        curl -sk -o /dev/null "https://site.test/some-page/?mai_optimizer_probe=1"
  *   4. Restore wp-config.php with cp, check it with cmp, and delete the mu-plugin.
  *   5. Turn the statements into pairs with bin/grid-optimizer-pairs.php.
  *
  * The file is appended to, never emptied. Delete it before a fresh capture. The pairs script reads
- * the file for the site it runs on.
+ * the file for the site it runs on. A line that cannot be encoded or written is reported in the PHP
+ * error log.
  *
  * @package BizBudding\MaiEngine
  */
@@ -63,9 +64,12 @@ add_action(
 				$host = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
 				$site = trim( (string) preg_replace( '/[^a-z0-9.-]+/', '-', $host ), '-' );
 				$site = '' !== $site ? $site : 'site';
+				$file = "/tmp/mai-optimizer-statements-{$site}.jsonl";
 
-				if ( is_string( $line ) ) {
-					file_put_contents( "/tmp/mai-optimizer-statements-{$site}.jsonl", $line . "\n", FILE_APPEND | LOCK_EX );
+				if ( ! is_string( $line ) ) {
+					error_log( 'Mai grid optimizer probe: could not encode a ' . $query->mai_optimize . ' statement as JSON: ' . json_last_error_msg() );
+				} elseif ( false === file_put_contents( $file, $line . "\n", FILE_APPEND | LOCK_EX ) ) {
+					error_log( "Mai grid optimizer probe: could not write to {$file}." );
 				}
 
 				return $request;

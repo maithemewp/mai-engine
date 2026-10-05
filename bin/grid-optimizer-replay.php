@@ -6,13 +6,14 @@ declare(strict_types=1);
  *
  * Runs the statement pairs from bin/grid-optimizer-pairs.php against a MySQL or MariaDB server,
  * and compares today's statement with the swapped EXISTS form. The session is set up the way
- * WordPress sets up its own: utf8mb4, and the SQL modes wpdb::set_sql_mode() removes (such as
- * ONLY_FULL_GROUP_BY and the STRICT modes) removed. On MariaDB the query cache is turned off for
- * the session, so a repeat run is never a cache hit.
+ * WordPress sets up its own: utf8mb4, without the SQL modes wpdb::set_sql_mode() removes, such as
+ * ONLY_FULL_GROUP_BY and the STRICT modes. On MariaDB the query cache is turned off for the
+ * session, so a repeat run is never a cache hit, and the setting is read back and recorded.
  *
- * Before any pair runs, it counts the rows of the posts table and stops when that is zero, so a
- * database import that loaded nothing cannot read as a pass. It also prints the size of that table
- * and the server's InnoDB buffer pool, and warns when the pool is the smaller. A statement then
+ * Before any pair runs, it counts the rows of the posts table and of the term relationships table,
+ * and stops when either is zero, so a database import that loaded nothing cannot read as a pass.
+ * It also prints the size of the posts table and the server's InnoDB buffer pool, and warns when
+ * the pool is the smaller. A statement then
  * reads some pages from disk or the operating system's cache on every run, and its time depends
  * on what ran before it: the same fast statement was measured at 7 ms and at 30 ms on a server
  * with a 128 MB pool and a 900 MB posts table. Start the server with a pool larger than the data
@@ -20,11 +21,13 @@ declare(strict_types=1);
  *
  *   1. The IDs of both forms must match, in the same order. A pair whose IDs differ is a
  *      correctness bug. It is not timed and not counted against the bar. A pair where both forms
- *      return no rows is counted as empty, and is not compared or timed.
- *   2. Both forms run in one session, 10 runs each, timed on the server with NOW(6). The form that
- *      goes first alternates run by run. The time runs from one NOW(6) to the next, around the
- *      statement and the transfer of its rows, so it includes two short round trips. Both forms
- *      carry the same extra. The medians are compared.
+ *      return no rows is counted as empty, and is not compared or timed. The pairs script builds
+ *      its synthetic statements from terms that have posts, so one of those coming back empty
+ *      means the data is wrong, and so do more than 10% of all pairs coming back empty.
+ *   2. Both forms run in one session, timed on the server with NOW(6). Each runs 10 times by
+ *      default, and --runs changes it. The form that goes first alternates run by run. The time
+ *      runs from one NOW(6) to the next, around the statement and the transfer of its rows, so it
+ *      includes two short round trips. Both forms carry the same extra. The medians are compared.
  *   3. EXPLAIN FORMAT=TREE on MySQL, plain EXPLAIN on MariaDB. A swapped MySQL plan containing
  *      "weedout" or "Remove duplicates" is flagged.
  *   4. The bar passes when the swapped median is no more than today's median plus the larger of
@@ -36,8 +39,10 @@ declare(strict_types=1);
  *   1  a pair misses the bar, a swapped MySQL plan is flagged, a pair failed to run, an option is
  *      wrong, or the connection was lost.
  *   2  the IDs of a pair differ.
- *   3  nothing was compared: no pairs to run, every pair skipped, an empty posts table, or every
- *      pair empty.
+ *   3  the data cannot be trusted: no pairs to run, a pair line skipped, an empty posts or term
+ *      relationships table, a synthetic pair empty, more than 10% of pairs empty, or nothing
+ *      compared.
+ *   4  the run would have exited 0, but the JSON file could not be written.
  *
  * Usage:
  *   php bin/grid-optimizer-replay.php --pairs=FILE --db=NAME --engine=mysql|mariadb \
@@ -90,7 +95,36 @@ const INCOMPATIBLE_MODES = [ 'NO_ZERO_DATE', 'ONLY_FULL_GROUP_BY', 'STRICT_TRANS
  */
 function fail( string $message, int $code = 1 ): never {
 	fwrite( STDERR, "Error: {$message}\n" );
+	finish( $code );
+}
+
+/**
+ * Stops with an exit code, and keeps it for the shutdown function that writes the JSON.
+ *
+ * @param int $code The exit code.
+ *
+ * @return never
+ */
+function finish( int $code ): never {
+	exit_code( $code );
 	exit( $code );
+}
+
+/**
+ * The exit code the run is ending with. 0 until finish() sets another.
+ *
+ * @param int|null $set The code to keep, or null to read it.
+ *
+ * @return int
+ */
+function exit_code( ?int $set = null ): int {
+	static $code = 0;
+
+	if ( null !== $set ) {
+		$code = $set;
+	}
+
+	return $code;
 }
 
 /**
@@ -254,8 +288,8 @@ function load_average(): array {
  * Sets the session up the way WordPress sets up its own connection.
  *
  * The character set is utf8mb4. The SQL modes are the server's, less the ones wpdb::set_sql_mode()
- * removes. On MariaDB the query cache is turned off, and an error from a server that has no such
- * variable is ignored.
+ * removes. On MariaDB the query cache is turned off and the setting read back, and an error from a
+ * server that has no such variable is recorded in the result instead of stopping the run.
  *
  * @param mysqli $db     The connection.
  * @param string $engine mysql or mariadb.
@@ -282,7 +316,9 @@ function prepare_session( mysqli $db, string $engine ): array {
 		try {
 			$db->query( 'SET SESSION query_cache_type = OFF' );
 
-			$query_cache = 'off for the session';
+			$result      = $db->query( 'SELECT @@session.query_cache_type' );
+			$row         = $result instanceof mysqli_result ? $result->fetch_row() : null;
+			$query_cache = 'query_cache_type ' . ( is_array( $row ) ? (string) $row[0] : 'unread' ) . ' for the session';
 		} catch ( mysqli_sql_exception $exception ) {
 			$query_cache = 'not set: ' . $exception->getMessage();
 		}
@@ -443,15 +479,16 @@ $session    = prepare_session( $db, $engine );
 $key        = 'mysql' === $engine ? 'swapped_mysql' : 'swapped_mariadb';
 $load_start = load_average();
 $totals     = [
-	'pairs'      => 0,
-	'empty'      => 0,
-	'ids_match'  => 0,
-	'ids_differ' => 0,
-	'bar_met'    => 0,
-	'bar_missed' => 0,
-	'weedout'    => 0,
-	'errors'     => 0,
-	'skipped'    => 0,
+	'pairs'           => 0,
+	'empty'           => 0,
+	'empty_synthetic' => 0,
+	'ids_match'       => 0,
+	'ids_differ'      => 0,
+	'bar_met'         => 0,
+	'bar_missed'      => 0,
+	'weedout'         => 0,
+	'errors'          => 0,
+	'skipped'         => 0,
 ];
 
 // Everything written to the JSON. The shutdown function writes it, so the numbers survive a lost
@@ -465,6 +502,7 @@ $report = [
 	'runs'           => $runs,
 	'session'        => $session,
 	'tables'         => [],
+	'term_tables'    => [],
 	'buffer_pool_mb' => 0,
 	'load_start'     => $load_start,
 	'load_end'       => [],
@@ -481,6 +519,12 @@ register_shutdown_function(
 
 		if ( ! is_string( $json ) || false === file_put_contents( $out, $json . "\n" ) ) {
 			fwrite( STDERR, "Error: cannot write {$out}.\n" );
+
+			// A run that would pass must not, without its numbers. Any other code stands.
+			if ( 0 === exit_code() ) {
+				exit( 4 );
+			}
+
 			return;
 		}
 
@@ -535,16 +579,45 @@ if ( ! $runnable ) {
 }
 
 // Preflight: the posts table must hold rows. The first FROM of each statement is its posts table.
+// The term relationships table, named after the first LEFT JOIN, must hold rows too, or every
+// pair comes back empty.
 $tables = [];
+$terms  = [];
 
 foreach ( $runnable as $pair ) {
 	if ( 1 === preg_match( '/^\s*SELECT\b.*?\bFROM\s+`?([A-Za-z0-9_$]+)`?/s', $pair['today'], $match ) ) {
 		$tables[ $match[1] ] = true;
 	}
+
+	if ( 1 === preg_match( '/\bLEFT JOIN\s+`?([A-Za-z0-9_$]+)`?/', $pair['today'], $match ) ) {
+		$terms[ $match[1] ] = true;
+	}
 }
 
 if ( ! $tables ) {
 	fail( 'Cannot find the posts table in the statements.', 3 );
+}
+
+if ( ! $terms ) {
+	fail( 'Cannot find the term relationships table in the statements.', 3 );
+}
+
+foreach ( array_keys( $terms ) as $table ) {
+	try {
+		$result = $db->query( "SELECT COUNT(*) FROM `{$table}`" );
+		$row    = $result instanceof mysqli_result ? $result->fetch_row() : null;
+		$count  = is_array( $row ) ? (int) $row[0] : 0;
+	} catch ( mysqli_sql_exception $exception ) {
+		fail( "Cannot count the rows of {$table} in {$database}: " . $exception->getMessage(), 3 );
+	}
+
+	$report['term_tables'][ $table ] = $count;
+
+	echo "Preflight: {$table} has {$count} rows.\n";
+
+	if ( 0 === $count ) {
+		fail( "{$table} is empty in {$database}. Every pair would come back empty. Check that the import loaded.", 3 );
+	}
 }
 
 foreach ( array_keys( $tables ) as $table ) {
@@ -624,6 +697,15 @@ foreach ( $runnable as $pair ) {
 		case 'empty':
 			++$totals['empty'];
 
+			// The pairs script names captured statements "captured ...". Every other pair is a
+			// synthetic one, built from a term that has posts.
+			if ( ! str_starts_with( $pair['name'], 'captured ' ) ) {
+				++$totals['empty_synthetic'];
+
+				echo "EMPTY  {$pair['name']}  both forms returned 0 rows, but this synthetic pair's term has posts. The data is wrong.\n";
+				break;
+			}
+
 			echo "EMPTY  {$pair['name']}  both forms returned 0 rows, not compared\n";
 			break;
 
@@ -660,9 +742,10 @@ foreach ( $runnable as $pair ) {
 $report['complete'] = true;
 
 printf(
-	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared), IDs match %d, IDs differ %d, bar met %d, bar missed %d, weedout %d, errors %d, skipped %d. Load at end: %s\n",
+	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d, IDs differ %d, bar met %d, bar missed %d, weedout %d, errors %d, skipped %d. Load at end: %s\n",
 	$totals['pairs'],
 	$totals['empty'],
+	$totals['empty_synthetic'],
 	$totals['ids_match'],
 	$totals['ids_differ'],
 	$totals['bar_met'],
@@ -674,16 +757,29 @@ printf(
 );
 
 if ( $totals['ids_differ'] > 0 ) {
-	exit( 2 );
+	finish( 2 );
 }
 
 if ( $totals['bar_missed'] + $totals['weedout'] + $totals['errors'] > 0 ) {
-	exit( 1 );
+	finish( 1 );
+}
+
+if ( $totals['skipped'] > 0 ) {
+	fail( "Skipped {$totals['skipped']} of the lines in {$pairs_file}, listed above. Write the pairs again.", 3 );
+}
+
+if ( $totals['empty_synthetic'] > 0 ) {
+	fail( "{$totals['empty_synthetic']} of the synthetic pairs came back empty, listed above. Their terms have posts, so the data is wrong. Check that the import loaded.", 3 );
+}
+
+if ( $totals['empty'] * 10 > $totals['pairs'] ) {
+	echo "Warning: {$totals['empty']} of {$totals['pairs']} pairs came back empty, more than 10%.\n";
+
+	fail( 'Too many pairs came back empty for the comparison to mean much. Check that the import loaded.', 3 );
 }
 
 if ( 0 === $totals['ids_match'] ) {
-	fwrite( STDERR, "Error: nothing was compared. Every pair was empty or skipped.\n" );
-	exit( 3 );
+	fail( 'Nothing was compared. Every pair was empty or skipped.', 3 );
 }
 
-exit( 0 );
+finish( 0 );
