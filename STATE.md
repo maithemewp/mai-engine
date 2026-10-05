@@ -11,14 +11,16 @@ The grid taxonomy optimizer is built on branch `grid-taxonomy-optimizer` (from `
 - 2.41.0-beta.5 is still what live eurweb and larrybrownsports run.
 
 ## Next
-1. Mike answers two questions, one at a time: how to start Docker (walk item sent 2026-10-05), then the tiebreaker direction on ascending date and author sorts (`post_date ASC, ID DESC` forces a full sort, 25 to 50 ms instead of under 1 ms).
-2. Task 8: Docker runs on MySQL 8.0 (several 8.0 tags, oldest to newest), 8.4 and MariaDB 10.6, 10.11, 11.4, 11.8; set `MYSQL_MIN` and `$mariadb_min` to the lowest versions that pass; record results in the spec.
-3. Task 9 Steps 4 to 6: final verification, this file, commit.
-4. Mike decides how the branch reaches `develop`, then the beta push commands for eurweb and larrybrownsports, then totalprosports.
+Mike decided on 2026-10-05 (walk): Docker option a (its open-dashboard-on-start setting is now off, backup `/tmp/docker-settings.json.bak`, and it was started with `open -g -a Docker`); tiebreaker option a. Resume with the subagent-driven-development skill on `docs/plans/2026-10-04-grid-taxonomy-query-rewrite.md`; the ledger is `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/progress.md`.
+
+1. Task 7c, the tiebreaker (one implementer plus a task review). In `Mai_Grid::add_grid_orderby_tiebreaker()`: an ORDER BY that already names `{posts}.ID` stays as it is; when the last sort key is `{posts}.post_date` or `{posts}.post_author`, append `, {posts}.ID` in that key's direction; otherwise append `, {posts}.post_date DESC, {posts}.ID DESC`, or only `, {posts}.ID DESC` when the ORDER BY already names `{posts}.post_date`. Update `GridTiebreakerTest`, any same-posts or tiebreaker expectations, spec section 2 and "Ties", and `CHANGES.md:25`. Also move the `swap()` docblock paragraph above `@since` (deferred minor). Measured: date ASC with `ID DESC` took about 190 ms more per rebuild on local eurweb's biggest category than with `ID ASC`.
+2. Task 8: check `docker info` answers first. Run one container at a time with a large buffer pool (for example `--innodb-buffer-pool-size=2G`): MySQL 8.0 at several tags from the oldest available up to the latest 8.0, then 8.4, then MariaDB 10.6, 10.11, 11.4 and 11.8. Per container: integration suite through `WP_TESTS_DB_HOST` (MariaDB with `WP_TESTS_MARIADB_MIN=10.6.0`), load the three sites' tables, verify row counts, capture and replay pairs. Set `MYSQL_MIN` and `$mariadb_min` to the lowest versions that pass everything (and fix `test_mariadb_is_off_by_default`), record results in the spec, stop and remove every container. If a covered shape or a MySQL version misses the bar, stop and walk it with Mike.
+3. Task 9 Steps 4 to 6: final verification, rewrite this file, commit.
+4. Walk Mike through how the branch reaches `develop`, then the beta push commands for eurweb and larrybrownsports, then totalprosports.
 5. From before: watch beta.5 on live; check MySQL's buffer pool size on the main hosts before 2.41.0 final; the rest of `TODO.md`.
 
 ## Blocked / waiting on
-- Mike's Docker answer (Task 8) and the tiebreaker decision.
+- Nothing on Mike right now; both walk items are answered.
 - Hindsight is off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json` (backup `/tmp/hindsight-coding-agent.json.bak`), `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
 
 ## Verify
@@ -34,6 +36,6 @@ The grid taxonomy optimizer is built on branch `grid-taxonomy-optimizer` (from `
 - Local MySQL has a 128 MB buffer pool against eurweb's 896 MB posts table, so small timings are noisy; Docker containers for Task 8 need a big pool and an idle machine.
 - MySQL 8.0 and 8.4 have bug 120943 (duplicate weedout drops rows); every swapped `EXISTS` carries `/*+ NO_SEMIJOIN(DUPSWEEDOUT) */` on MySQL.
 - `mai-sites run` treats `wp db query "DESCRIBE ..."` as a read; `EXPLAIN` is not on its read list.
-- Docker Desktop opens its dashboard on start (`openUIOnStartupDisabled` false); do not start it without Mike's answer.
+- Docker Desktop's dashboard-on-start is off now; start it only with `open -g -a Docker`.
 - `npm run beta` ends with `composer install`, which leaves a dev autoloader. Run `composer dump-autoload --no-dev`. The committed autoloader must be no-dev, or every site crashes.
 - The SDD ledger and reports for this plan are in `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/` (git-ignored). Raw timing data in `/tmp/t16-pages/` and `/tmp/t15-*`.
