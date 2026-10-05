@@ -652,6 +652,77 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * A swapped copy statement that fails after the page is sent again unswapped, and its list is
+	 * stored like any other. The rebuild stored, so it keeps its lock until it expires, as every
+	 * rebuild that stores does (see Mai_Query_Cache::give_up()).
+	 */
+	public function test_a_failed_copy_swap_after_the_page_stores_the_resent_list(): void {
+		global $wpdb;
+
+		$warm = $this->warm( 'current' );
+
+		$this->drift( 'current' );
+		$this->age();
+		$this->new_request( 'current' );
+		$this->render( 'current' );
+
+		$this->assertTrue( $this->queue->has_job( $warm['key'] ) );
+
+		$logged = [];
+
+		\Mai_Post_Grid_Query_Optimizer::instance()->set_logger(
+			static function ( string $message ) use ( &$logged ): void {
+				$logged[] = $message;
+			}
+		);
+
+		// After the optimizer's query callback, at the same priority, so it sees the swapped text.
+		$broken  = '';
+		$swapped = 0;
+		$break   = static function ( $sql ) use ( &$broken, &$swapped ) {
+			if ( ! is_string( $sql ) || ! str_contains( $sql, 'EXISTS ( SELECT ' ) ) {
+				return $sql;
+			}
+
+			++$swapped;
+
+			if ( '' !== $broken ) {
+				return $sql;
+			}
+
+			$broken = $sql;
+
+			return $sql . ' BROKEN';
+		};
+
+		$before   = wp_cache_get_last_changed( 'posts' );
+		$suppress = $wpdb->suppress_errors( true );
+
+		add_filter( 'query', $break, PHP_INT_MAX );
+
+		try {
+			$selects = $this->run_queue();
+		} finally {
+			remove_filter( 'query', $break, PHP_INT_MAX );
+			$wpdb->suppress_errors( $suppress );
+		}
+
+		$stored = $this->stored( $warm['key'] );
+
+		$this->assertNotSame( '', $broken, 'the swapped copy was broken' );
+		$this->assertStringContainsString( 'LIMIT 0, ' . ( self::PER_PAGE + 1 ), $broken, 'the padded copy' );
+		$this->assertSame( 1, $swapped, 'and the resend went out unswapped' );
+		$this->assertSame( 2, $selects, 'the broken copy and the resend' );
+		$this->assertTrue( $stored['fresh'] ?? false, 'the resent list was stored' );
+		$this->assertSame( [ $this->outsider, $this->post_ids[0], $this->post_ids[1], $this->post_ids[2] ], $stored['value']['ids'] );
+		$this->assertSame( 'ids', $stored['value']['by'] );
+		$this->assertStringStartsWith( 'failed:', (string) get_transient( \Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
+		$this->assertCount( 1, $logged );
+		$this->assertNotSame( $before, wp_cache_get_last_changed( 'posts' ), 'core forgot the failed result' );
+		$this->assertFalse( mai_cache( 'grid' )->lock( $warm['key'], 5 ), 'the stored rebuild keeps its lock' );
+	}
+
+	/**
 	 * The no-drift rule: the job stores exactly what a rebuild during the page would. The data
 	 * changes between the first store and the job, without a save, so the job has a new list
 	 * to get right. The comparison is a cold rebuild of the same grid during the page, with core's

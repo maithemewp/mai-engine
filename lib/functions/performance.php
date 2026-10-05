@@ -294,8 +294,10 @@ add_action( 'init', 'mai_register_post_grid_query_optimizer', 9 );
 /**
  * Registers the Mai Post Grid query optimizer.
  *
- * Priority 9, before the grid result cache registers on 10, so where the two share a hook and a
- * priority, the optimizer's callback runs first.
+ * Priority 9, before the grid result cache registers on 10. Both put a callback on posts_results
+ * at the earliest priority, and the optimizer's recover() must run before
+ * Mai_Query_Cache::posts_results(), so the result cache sees a failed faster statement already
+ * sent again.
  *
  * @since 2.41.0
  *

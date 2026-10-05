@@ -32,6 +32,12 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 	private const HINT = '/*+ NO_SEMIJOIN(DUPSWEEDOUT) */ ';
 
 	/**
+	 * What WordPress's taxonomy condition starts with, and so what rebuild() writes in front of
+	 * it and condition() takes off.
+	 */
+	private const WHERE_PREFIX = ' AND ';
+
+	/**
 	 * Rebuilds the taxonomy join and condition WordPress wrote for a tax query.
 	 *
 	 * Uses a fresh WP_Tax_Query, because WordPress's own object never resets its list of table
@@ -40,8 +46,9 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 	 * level, then joined back together with core's exact separators.
 	 *
 	 * Returns null when the shape is not covered: nested filters, a filter whose terms or
-	 * taxonomy no longer exist (core writes `0 = 1`), no filter with a join, or OR filters that
-	 * are not all IN on one shared table.
+	 * taxonomy no longer exist (core writes `0 = 1`), no filter with a join or a condition, OR
+	 * filters that are not all IN on one shared table, or AND with an IN filter WordPress gave no
+	 * table name.
 	 *
 	 * @param WP_Tax_Query $tax_query   The query's tax query, as WP_Query used it.
 	 * @param string       $posts_table The posts table name.
@@ -60,6 +67,7 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 		$joins     = [];
 		$pieces    = [];
 		$operators = [];
+		$unnamed   = false;
 
 		foreach ( $queries as $key => &$clause ) {
 			if ( 'relation' === $key ) {
@@ -90,9 +98,11 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 				continue;
 			}
 
+			$alias    = 'IN' === $operator && is_string( $clause['alias'] ?? null ) ? $clause['alias'] : null;
+			$unnamed  = $unnamed || ( 'IN' === $operator && null === $alias );
 			$pieces[] = [
 				'where' => $where,
-				'alias' => 'IN' === $operator && is_string( $clause['alias'] ?? null ) ? $clause['alias'] : null,
+				'alias' => $alias,
 			];
 		}
 
@@ -100,7 +110,7 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 
 		$joins = array_unique( array_filter( $joins ) );
 
-		if ( ! $joins ) {
+		if ( ! $joins || ! $pieces ) {
 			return null;
 		}
 
@@ -108,9 +118,14 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 			return null;
 		}
 
+		// condition() writes each IN filter's EXISTS on the table name WordPress gave it.
+		if ( 'AND' === $relation && $unnamed ) {
+			return null;
+		}
+
 		return [
 			'join'     => implode( ' ', $joins ),
-			'where'    => ' AND ( ' . "\n  " . implode( " \n  {$relation} \n  ", array_column( $pieces, 'where' ) ) . "\n)",
+			'where'    => self::WHERE_PREFIX . '( ' . "\n  " . implode( " \n  {$relation} \n  ", array_column( $pieces, 'where' ) ) . "\n)",
 			'relation' => $relation,
 			'pieces'   => $pieces,
 		];
@@ -121,7 +136,8 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 	 *
 	 * AND: each IN filter becomes its own EXISTS on the table name WordPress gave it, and the
 	 * other filters stay as WordPress wrote them, all directly in the top-level AND. OR: the
-	 * whole WordPress condition, brackets included, goes inside one EXISTS.
+	 * whole WordPress condition, brackets included, goes inside one EXISTS. Any other relation
+	 * returns an empty string, which swap() refuses.
 	 *
 	 * @param array  $rebuilt     What rebuild() returned.
 	 * @param string $posts_table The posts table name.
@@ -133,13 +149,27 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 	public static function condition( array $rebuilt, string $posts_table, string $term_table, bool $hint ): string {
 		$select = 'SELECT ' . ( $hint ? self::HINT : '' ) . '1 FROM ';
 
-		if ( 'OR' === $rebuilt['relation'] ) {
-			return ' AND EXISTS ( ' . $select . $term_table . ' WHERE ' . $term_table . '.object_id = ' . $posts_table . '.ID AND ' . substr( $rebuilt['where'], 5 ) . ' )';
-		}
+		return match ( $rebuilt['relation'] ?? null ) {
+			'AND'   => self::and_condition( $rebuilt['pieces'], $select, $posts_table, $term_table ),
+			'OR'    => self::WHERE_PREFIX . 'EXISTS ( ' . $select . $term_table . ' WHERE ' . $term_table . '.object_id = ' . $posts_table . '.ID AND ' . substr( $rebuilt['where'], strlen( self::WHERE_PREFIX ) ) . ' )',
+			default => '',
+		};
+	}
 
+	/**
+	 * Writes the condition for filters joined with AND. See condition().
+	 *
+	 * @param list<array{where:string,alias:?string}> $pieces      What rebuild() returned as pieces.
+	 * @param string                                  $select      The start of each EXISTS.
+	 * @param string                                  $posts_table The posts table name.
+	 * @param string                                  $term_table  The term relationships table name.
+	 *
+	 * @return string
+	 */
+	private static function and_condition( array $pieces, string $select, string $posts_table, string $term_table ): string {
 		$parts = [];
 
-		foreach ( $rebuilt['pieces'] as $piece ) {
+		foreach ( $pieces as $piece ) {
 			$alias = $piece['alias'];
 
 			if ( null === $alias ) {
@@ -151,7 +181,7 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 			$parts[] = "EXISTS ( {$select}{$from} WHERE {$alias}.object_id = {$posts_table}.ID AND {$piece['where']} )";
 		}
 
-		return ' AND ' . implode( ' AND ', $parts );
+		return self::WHERE_PREFIX . implode( ' AND ', $parts );
 	}
 
 	/**

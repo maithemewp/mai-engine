@@ -922,10 +922,10 @@ class Mai_Query_Cache {
 	 * it counts.
 	 *
 	 * The copy is marked for the grid query optimizer, which may send a faster statement for it.
-	 * When that statement failed, the optimizer is turned off, core is made to forget the copy's
-	 * cached empty result, and the copy's own statement is sent once more. The checks described
-	 * above then judge that statement. When the faster statement took longer than the
-	 * optimizer's limit, the optimizer is turned off and the IDs stand.
+	 * When that statement failed, or never reached the database, core is made to forget the
+	 * copy's cached result, the optimizer is turned off, and the copy's own statement is sent
+	 * once more. The checks described above then judge that statement. When the faster statement
+	 * took longer than the optimizer's limit, the optimizer is turned off and the IDs stand.
 	 *
 	 * @since 2.41.0 Takes the args, the asked cache_results and the expected key instead of the
 	 *            live query, and returns the copy's found_posts with the IDs.
@@ -951,7 +951,7 @@ class Mai_Query_Cache {
 		// Lets the grid query optimizer send a faster statement for the copy when it can prove it
 		// returns the same IDs. The copy's request text stays as WordPress built it, so the key
 		// check below is unchanged.
-		$optimizer->mark( $copy, 'copy' );
+		$optimizer->mark( $copy, Mai_Post_Grid_Query_Optimizer::ROLE_COPY );
 
 		// $wpdb counts a statement once it is sent, after the query filter, so this tells whether
 		// anything reached the database while the copy ran. See the empty copy check below.
@@ -969,26 +969,29 @@ class Mai_Query_Cache {
 				)
 			);
 		} finally {
-			// The copy's statement has been sent or never will be.
+			// The copy's statement has been sent or never will be, and the copy is done.
 			$optimizer->drop( $copy );
 		}
 
 		$outcome = $optimizer->outcome( $copy );
 
-		if ( 'failed' === ( $outcome['status'] ?? null ) ) {
-			// The faster statement failed. Read the error before turn_off(), whose transient write
-			// is a statement of its own. Core cached the copy's empty result, so it is made to
-			// forget it, and the copy's own statement is sent once more, unswapped. The checks
-			// below then read that one, so if it fails too, today's failure path applies.
+		if ( Mai_Post_Grid_Query_Optimizer::STATUS_FAILED === ( $outcome['status'] ?? null ) ) {
+			// The faster statement failed, or never reached the database. Read the error before
+			// anything else sends a statement. Core cached the copy's result, so it is made to
+			// forget it first, since turn_off()'s transient write is a statement of its own and
+			// can fail too. Then the copy's own statement is sent once more, unswapped. The checks
+			// below read that one, so if it fails too, today's failure path applies.
 			$error = (string) $wpdb->last_error;
 
+			self::forget_failure();
+
 			$optimizer->turn_off( 'failed', $error );
-			$this->forget_failure();
 
 			$copy->posts = $wpdb->get_col( (string) $copy->request );
-		} elseif ( 'ok' === ( $outcome['status'] ?? null ) && $outcome['seconds'] > Mai_Post_Grid_Query_Optimizer::$slow ) {
-			// Right, but slow enough that the database planned it badly. The IDs stand.
-			$optimizer->turn_off( 'slow', sprintf( '%.3f s', $outcome['seconds'] ) );
+		} elseif ( Mai_Post_Grid_Query_Optimizer::STATUS_OK === ( $outcome['status'] ?? null ) && $outcome['seconds'] > Mai_Post_Grid_Query_Optimizer::$slow ) {
+			// The swapped statement worked, but it was slow enough that the database planned it
+			// badly. The IDs stand.
+			$optimizer->turn_off( 'slow', sprintf( '%.3f s, copy form', $outcome['seconds'] ) );
 		}
 
 		// Only an error from the copy's own statement, which is the last one it runs. When core
@@ -1000,7 +1003,7 @@ class Mai_Query_Cache {
 		// is an empty grid.
 		if ( $wpdb->last_error && $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $copy->request ) ) {
 			// Core cached the copy's empty result too, and the next view would read it back.
-			$this->forget_failure();
+			self::forget_failure();
 
 			return false;
 		}
@@ -1015,7 +1018,7 @@ class Mai_Query_Cache {
 			// Core may have cached the empty list under the copy's key, and the next view, or the
 			// next visitor after a rebuild after the page gave up, would read it back.
 			if ( $wpdb->num_queries > $sent ) {
-				$this->forget_failure();
+				self::forget_failure();
 
 				return false;
 			}
@@ -1167,7 +1170,7 @@ class Mai_Query_Cache {
 		if ( $wpdb->last_query === $wpdb->remove_placeholder_escape( (string) $query->request ) ) {
 			unset( $query->mai_cache_store_key, $query->mai_cache_store_version );
 
-			$this->forget_failure();
+			self::forget_failure();
 		}
 
 		return $posts;
@@ -1185,11 +1188,14 @@ class Mai_Query_Cache {
 	 * Only called when a grid's own statement failed, never on success. Every entry in core's
 	 * post-queries cache misses once afterwards, the same as after one post save.
 	 *
+	 * Public and static so the grid query optimizer resets the cache the same way when a faster
+	 * statement failed.
+	 *
 	 * @since 2.41.0
 	 *
 	 * @return void
 	 */
-	private function forget_failure(): void {
+	public static function forget_failure(): void {
 		wp_cache_set_posts_last_changed();
 	}
 

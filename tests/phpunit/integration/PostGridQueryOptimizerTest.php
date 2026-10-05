@@ -4,8 +4,12 @@ declare(strict_types=1);
 namespace BizBudding\MaiEngine\Tests\Integration;
 
 use Mai_Post_Grid_Query_Optimizer;
+use Mai_Post_Grid_Query_Optimizer_Database;
+use Mai_Post_Grid_Query_Optimizer_Sql;
 use PHPUnit\Framework\Attributes\DataProvider;
+use ReflectionObject;
 use ReflectionProperty;
+use RuntimeException;
 use WP_Query;
 use WP_UnitTest_Factory;
 
@@ -29,6 +33,11 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 	 * What only Mai's swap writes. Core's own EXISTS operator writes `EXISTS (` too.
 	 */
 	private const SWAP = 'EXISTS ( SELECT ';
+
+	/**
+	 * The MySQL hint, as written after SELECT inside each EXISTS.
+	 */
+	private const HINT = '/*+ NO_SEMIJOIN(DUPSWEEDOUT) */ ';
 
 	/**
 	 * The fixture's IDs, built once for the class.
@@ -95,6 +104,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
 		$this->assertCount( 1, $statements );
 		$this->assertStringNotContainsString( 'GROUP BY', $statements[0] );
+		$this->assert_hint( $statements[0], 1 );
 		$this->assertSame( $today['ids'], $swapped['ids'] );
 		$this->assertSame( array_slice( self::$fixture['posts']['big'], 0, 7 ), $swapped['ids'] );
 		$this->assertNotSame( array_slice( self::$fixture['newest'], 0, 7 ), $swapped['ids'] );
@@ -107,6 +117,26 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertSame( 'split', $outcome['form'] ?? null );
 		$this->assertIsFloat( $outcome['seconds'] ?? null );
 		$this->assertNull( $again, 'outcome() forgets the record.' );
+	}
+
+	public function test_swaps_an_and_query_with_two_in_filters(): void {
+		$args = [
+			'tax_query' => [
+				'relation' => 'AND',
+				[ 'taxonomy' => 'category', 'terms' => [ self::$fixture['big'] ] ],
+				[ 'taxonomy' => 'post_tag', 'terms' => [ self::$fixture['tag'] ] ],
+			],
+		];
+
+		$swapped = $this->run_marked( $args );
+		$today   = $this->run_today( $args );
+
+		$statements = self::swapped( $swapped );
+
+		$this->assertCount( 1, $statements );
+		$this->assert_hint( $statements[0], 2 );
+		$this->assertSame( $today['ids'], $swapped['ids'] );
+		$this->assertSame( array_slice( array_values( array_intersect( self::$fixture['posts']['big'], self::$fixture['posts']['tag'] ) ), 0, 7 ), $swapped['ids'] );
 	}
 
 	public function test_swaps_the_full_form(): void {
@@ -144,7 +174,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertStringStartsWith( "SELECT   {$wpdb->posts}.ID", $statements[0] );
 		$this->assertSame( $today['ids'], $copy['ids'] );
 		$this->assertSame( array_slice( self::$fixture['posts']['big'], 0, 7 ), $copy['ids'] );
-		$this->assertSame( 'ok', $outcome['status'] ?? null, 'Nothing runs after a copy statement, so the count alone would say failed.' );
+		$this->assertSame( 'ok', $outcome['status'] ?? null, 'A good copy statement is the only one sent, so the statement count matches. Only the empty last_error keeps it from reading as failed.' );
 		$this->assertSame( 'copy', $outcome['form'] ?? null );
 
 		$grid    = $this->run_marked( $args, 'grid' );
@@ -282,7 +312,8 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
 		$optimizer->turn_off( 'failed', 'x' );
 
-		$this->assertNotFalse( get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
+		$this->assertSame( 'failed: x', get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ), 'the transient holds the reason' );
+		$this->assertEqualsWithDelta( time() + DAY_IN_SECONDS, (int) get_option( '_transient_timeout_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT ), 5, 'for a day' );
 		$this->assertSame( [ 'Grid query optimizer off for 24 hours (failed): x' ], $logged );
 		$this->assertNull( $optimizer->outcome( $swapped['query'] ) );
 
@@ -295,6 +326,284 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertSame( [], self::swapped( $unmarked ), 'The waiting prepared swap was cleared.' );
 		$this->assertSame( [], self::swapped( $next ) );
 		$this->assertSame( array_slice( self::$fixture['posts']['big'], 0, 7 ), $next['ids'] );
+	}
+
+	/**
+	 * The transient write can be a statement of its own, which comes back through swap(). By then
+	 * nothing may be left to swap.
+	 */
+	public function test_turn_off_clears_the_request_before_writing_the_transient(): void {
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+
+		$this->new_request();
+		$this->prepare_without_sending( [] );
+
+		$seen = null;
+
+		add_filter(
+			'pre_set_transient_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT,
+			static function ( $value ) use ( &$seen, $optimizer ) {
+				$seen = [
+					'prepared' => self::prepared_count(),
+					'off'      => ( new ReflectionProperty( Mai_Post_Grid_Query_Optimizer::class, 'off' ) )->getValue( $optimizer ),
+				];
+
+				return $value;
+			}
+		);
+
+		$optimizer->set_logger( static function (): void {} );
+		$optimizer->turn_off( 'failed', 'x' );
+
+		$this->assertSame(
+			[
+				'prepared' => 0,
+				'off'      => true,
+			],
+			$seen
+		);
+	}
+
+	public function test_turn_off_says_so_when_the_transient_did_not_stick(): void {
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+		$logged    = [];
+
+		// The read back finds nothing, as after a write that failed.
+		add_filter( 'transient_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT, '__return_false' );
+
+		$optimizer->set_logger(
+			static function ( string $message ) use ( &$logged ): void {
+				$logged[] = $message;
+			}
+		);
+
+		$optimizer->turn_off( 'failed', 'x' );
+
+		$this->assertSame( [ 'Grid query optimizer off for this request only (failed): x' ], $logged );
+	}
+
+	public function test_the_default_logger_writes_whatever_wp_debug_log_says(): void {
+		$this->assertFalse( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG, 'the debug log is off in this suite' );
+
+		$file = (string) tempnam( sys_get_temp_dir(), 'mai-test-log-' );
+		$was  = ini_set( 'error_log', $file );
+
+		try {
+			Mai_Post_Grid_Query_Optimizer::instance()->turn_off( 'failed', 'x' );
+		} finally {
+			ini_set( 'error_log', (string) $was );
+		}
+
+		$log = (string) file_get_contents( $file );
+
+		unlink( $file );
+
+		$this->assertStringContainsString( 'Mai Engine: Grid query optimizer off for 24 hours (failed): x', $log );
+	}
+
+	public function test_reset_puts_the_slow_limit_back(): void {
+		Mai_Post_Grid_Query_Optimizer::$slow = 5.0;
+
+		Mai_Post_Grid_Query_Optimizer::instance()->reset();
+
+		$this->assertSame( 1.0, Mai_Post_Grid_Query_Optimizer::$slow );
+	}
+
+	public function test_steps_aside_when_the_database_check_fails(): void {
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+		$today     = $this->run_today( [] );
+
+		$this->new_request();
+
+		( new ReflectionProperty( Mai_Post_Grid_Query_Optimizer::class, 'database' ) )->setValue( $optimizer, false );
+
+		$reads = 0;
+
+		add_filter(
+			'pre_transient_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT,
+			static function ( $pre ) use ( &$reads ) {
+				++$reads;
+
+				return $pre;
+			}
+		);
+
+		$run = $this->run_marked( [], 'grid', false );
+
+		$this->assertSame( [], self::swapped( $run ) );
+		$this->assertSame( $today['ids'], $run['ids'] );
+		$this->assertSame( 0, $reads, 'a database that cannot take the swap costs no transient read' );
+
+		// And nothing more is prepared for the rest of the request.
+		$this->prepare_without_sending( [], 0 );
+	}
+
+	public function test_steps_aside_for_another_database_layer(): void {
+		global $wpdb;
+
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+
+		$this->new_request();
+
+		$split = (string) Mai_Post_Grid_Query_Optimizer_Sql::split( (string) $this->prepare_without_sending( [] )->request, $wpdb->posts );
+		$real  = $wpdb;
+
+		// Another layer on the same connection and transaction: every property of $wpdb, the
+		// connection included, on an object of another class. Its constructor would connect again.
+		// Not the open result, which a statement sent through the copy would free under $wpdb.
+		$layer = new class() extends \wpdb {
+			public function __construct() {}
+		};
+
+		foreach ( ( new ReflectionObject( $real ) )->getProperties() as $property ) {
+			if ( ! $property->isStatic() && 'result' !== $property->getName() ) {
+				$property->setValue( $layer, $property->getValue( $real ) );
+			}
+		}
+
+		$this->assertSame( $real->dbh, $layer->dbh );
+
+		$GLOBALS['wpdb'] = $layer;
+
+		try {
+			$sent = $optimizer->swap( $split );
+		} finally {
+			$GLOBALS['wpdb'] = $real;
+		}
+
+		$this->assertSame( $split, $sent, 'another layer gets the statement unchanged' );
+		$this->prepare_without_sending( [], 0 );
+
+		// WordPress's own layer swaps the same statement.
+		$this->new_request();
+		$this->prepare_without_sending( [] );
+
+		$this->assertStringContainsString( self::SWAP, (string) $optimizer->swap( $split ) );
+	}
+
+	public function test_an_exception_inside_the_swap_sends_the_statement_unchanged(): void {
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+		$today     = $this->run_today( [] );
+		$logged    = [];
+
+		$this->new_request();
+
+		$optimizer->set_logger(
+			static function ( string $message ) use ( &$logged ): void {
+				$logged[] = $message;
+			}
+		);
+
+		// As a cache drop-in that throws on a read would.
+		$throw = static function (): never {
+			throw new RuntimeException( 'Test cache read failure' );
+		};
+
+		add_filter( 'pre_transient_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT, $throw );
+
+		$run = $this->run_marked( [], 'grid', false );
+
+		remove_filter( 'pre_transient_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT, $throw );
+
+		$this->assertSame( [], self::swapped( $run ) );
+		$this->assertSame( $today['ids'], $run['ids'] );
+		$this->assertCount( 1, $logged );
+		$this->assertStringContainsString( 'Test cache read failure', $logged[0] );
+		$this->assertFalse( get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ), 'off for this request, not for the day' );
+
+		$this->prepare_without_sending( [], 0 );
+
+		$next = $this->run_marked( [], 'grid', false );
+
+		$this->assertSame( [], self::swapped( $next ), 'off for the rest of the request' );
+	}
+
+	/** What can change between prepare() and the statement reaching the database. */
+	public static function changes_before_the_statement(): array {
+		return [
+			'off for the request'        => [ 'off' ],
+			'the filter says no'         => [ 'filter' ],
+			'recover() taken off'        => [ 'recover' ],
+			'nothing, so it is swapped'  => [ 'nothing' ],
+		];
+	}
+
+	#[DataProvider( 'changes_before_the_statement' )]
+	public function test_a_prepared_swap_is_checked_again_when_sent( string $change ): void {
+		global $wpdb;
+
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+
+		$this->new_request();
+
+		$query = $this->prepare_without_sending( [] );
+		$split = (string) Mai_Post_Grid_Query_Optimizer_Sql::split( (string) $query->request, $wpdb->posts );
+
+		match ( $change ) {
+			'off'     => ( new ReflectionProperty( Mai_Post_Grid_Query_Optimizer::class, 'off' ) )->setValue( $optimizer, true ),
+			'filter'  => ( new ReflectionProperty( Mai_Post_Grid_Query_Optimizer::class, 'allowed' ) )->setValue( $optimizer, false ),
+			'recover' => remove_filter( 'posts_results', [ $optimizer, 'recover' ], PHP_INT_MIN ),
+			'nothing' => null,
+		};
+
+		$sent = $this->send( $split );
+
+		if ( 'nothing' === $change ) {
+			$this->assertCount( 1, self::swapped( $sent ) );
+		} else {
+			$this->assertSame( [], self::swapped( $sent ) );
+		}
+
+		$this->assertSame( array_slice( self::$fixture['posts']['big'], 0, 7 ), $sent['ids'] );
+	}
+
+	/**
+	 * A copy's statement has the text of its grid's split form. A copy that prepared no swap of
+	 * its own must not take the grid's.
+	 */
+	public function test_a_copy_cannot_take_its_grids_split_entry(): void {
+		global $wpdb;
+
+		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+
+		$this->new_request();
+
+		$grid  = $this->prepare_without_sending( [] );
+		$split = (string) Mai_Post_Grid_Query_Optimizer_Sql::split( (string) $grid->request, $wpdb->posts );
+		$copy  = new WP_Query();
+
+		$optimizer->mark( $copy, 'copy' );
+
+		$while = $this->send( $split );
+
+		$this->assertSame( [], self::swapped( $while ), 'not while the copy runs' );
+		$this->assertSame( 1, self::prepared_count(), 'and the grid\'s swap is still waiting' );
+
+		$optimizer->drop( $copy );
+
+		$after = $this->send( $split );
+
+		$this->assertCount( 1, self::swapped( $after ), 'the grid\'s statement takes it once the copy is done' );
+		$this->assertSame( $while['ids'], $after['ids'] );
+	}
+
+	public function test_an_owner_has_one_prepared_swap(): void {
+		$this->new_request();
+
+		$query  = new WP_Query();
+		$answer = static fn() => [];
+
+		Mai_Post_Grid_Query_Optimizer::instance()->mark( $query, 'grid' );
+
+		add_filter( 'posts_pre_query', $answer );
+
+		// The same query run twice, answered both times before its statement is sent.
+		$this->without_recovery( static fn() => $query->query( self::base_args() ) );
+		$this->without_recovery( static fn() => $query->query( self::base_args() ) );
+
+		remove_filter( 'posts_pre_query', $answer );
+
+		$this->assertSame( 1, self::prepared_count() );
 	}
 
 	public function test_outcome_reports_a_changed_statement_that_failed(): void {
@@ -398,6 +707,68 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertSame( 'split', $outcome['form'] ?? null );
 	}
 
+	/**
+	 * A later query callback returns an empty string for the swapped text. $wpdb then sends
+	 * nothing and returns before it clears the last result, so get_col() hands back the rows of
+	 * the statement before, with no error.
+	 */
+	public function test_outcome_reports_a_swapped_statement_that_was_never_sent(): void {
+		global $wpdb;
+
+		$this->new_request();
+
+		$query = $this->prepare_without_sending( [] );
+		$split = (string) Mai_Post_Grid_Query_Optimizer_Sql::split( (string) $query->request, $wpdb->posts );
+		$done  = false;
+
+		add_filter(
+			'query',
+			static function ( $sql ) use ( &$done ) {
+				if ( ! $done && is_string( $sql ) && str_contains( $sql, self::SWAP ) ) {
+					$done = true;
+
+					return '';
+				}
+
+				return $sql;
+			},
+			PHP_INT_MAX
+		);
+
+		// Read once here, so the optimizer's own read of it sends nothing in between.
+		get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT );
+
+		$wpdb->query( 'SELECT 42' );
+
+		$ids     = $wpdb->get_col( $split );
+		$outcome = Mai_Post_Grid_Query_Optimizer::instance()->outcome( $query );
+
+		$this->assertTrue( $done );
+		$this->assertSame( [ '42' ], $ids, 'the rows of the statement before' );
+		$this->assertSame( '', $wpdb->last_error );
+		$this->assertSame( 'failed', $outcome['status'] ?? null );
+	}
+
+	/**
+	 * MySQL refuses the swapped text unchanged, and refuse_once() then sends a statement that
+	 * works, which clears $wpdb's error. The query is given posts, so the empty-posts rule cannot
+	 * catch it. Only the list of failed statements WordPress keeps is left.
+	 */
+	public function test_outcome_reports_a_refused_statement_after_a_later_one_worked(): void {
+		global $wpdb;
+
+		[ $run, $refused ] = $this->refuse_once(
+			static fn( string $sql ): bool => str_contains( $sql, self::SWAP ),
+			fn(): array => $this->run_marked( [] )
+		);
+
+		$run['query']->posts = [ 1 ];
+
+		$this->assertTrue( $refused );
+		$this->assertSame( '', $wpdb->last_error, 'a later statement cleared the error' );
+		$this->assertSame( 'failed', Mai_Post_Grid_Query_Optimizer::instance()->outcome( $run['query'] )['status'] ?? null );
+	}
+
 	/** The hooks whose look a second run of the same query loses. */
 	public static function second_run_hooks(): array {
 		return [
@@ -440,13 +811,24 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertSame( $first['ids'], $second['ids'] );
 	}
 
+	/**
+	 * PHP gives a freed object's ID to the next object it makes. A rebuild kept by the query's
+	 * object ID would hand the first grid's taxonomy SQL to the second, which would then step
+	 * aside.
+	 */
 	public function test_rebuilds_are_not_shared_between_grids(): void {
 		$big = $this->run_marked( [] );
-		$tag = $this->run_marked( [ 'tax_query' => [ [ 'taxonomy' => 'post_tag', 'terms' => [ self::$fixture['tag'] ] ] ] ], 'grid', false );
+		$id  = spl_object_id( $big['query'] );
 
 		$this->assertCount( 1, self::swapped( $big ) );
-		$this->assertCount( 1, self::swapped( $tag ) );
 		$this->assertSame( array_slice( self::$fixture['posts']['big'], 0, 7 ), $big['ids'] );
+
+		unset( $big );
+
+		$tag = $this->run_marked( [ 'tax_query' => [ [ 'taxonomy' => 'post_tag', 'terms' => [ self::$fixture['tag'] ] ] ] ], 'grid', false );
+
+		$this->assertSame( $id, spl_object_id( $tag['query'] ), 'the second query has the first one\'s object ID' );
+		$this->assertCount( 1, self::swapped( $tag ) );
 		$this->assertSame( array_slice( self::$fixture['posts']['tag'], 0, 7 ), $tag['ids'] );
 	}
 
@@ -720,11 +1102,12 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 	 * Marks and runs a query that another callback answers at posts_pre_query, so its swap is
 	 * prepared but its statement is never sent.
 	 *
-	 * @param array $args Query args, on top of base_args().
+	 * @param array $args  Query args, on top of base_args().
+	 * @param int   $added How many swaps the run should prepare: 1, or 0 when the swap is off.
 	 *
 	 * @return WP_Query
 	 */
-	private function prepare_without_sending( array $args ): WP_Query {
+	private function prepare_without_sending( array $args, int $added = 1 ): WP_Query {
 		$answer = static fn() => [];
 		$before = self::prepared_count();
 
@@ -740,9 +1123,44 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 			remove_filter( 'posts_pre_query', $answer );
 		}
 
-		$this->assertSame( $before + 1, self::prepared_count(), 'A swap was prepared for the query.' );
+		$this->assertSame( $before + $added, self::prepared_count(), 1 === $added ? 'A swap was prepared for the query.' : 'No swap was prepared.' );
 
 		return $query;
+	}
+
+	/**
+	 * Sends a statement as WordPress would, outside any query, capturing every statement sent.
+	 *
+	 * @param string $sql The statement. It selects post IDs.
+	 *
+	 * @return array{ids:int[],statements:string[]}
+	 */
+	private function send( string $sql ): array {
+		global $wpdb;
+
+		$statements = [];
+		$capture    = static function ( $sql ) use ( &$statements ) {
+			if ( is_string( $sql ) ) {
+				$statements[] = $sql;
+			}
+
+			return $sql;
+		};
+
+		add_filter( 'query', $capture, PHP_INT_MAX );
+
+		try {
+			$ids = $wpdb->get_col( $sql );
+		} finally {
+			remove_filter( 'query', $capture, PHP_INT_MAX );
+		}
+
+		$this->assertSame( '', $wpdb->last_error );
+
+		return [
+			'ids'        => array_map( 'intval', $ids ),
+			'statements' => $statements,
+		];
 	}
 
 	/**
@@ -750,10 +1168,13 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 	 *
 	 * recover() reads and forgets a grid's outcome, and drops its prepared swaps, at
 	 * posts_results. These tests read both themselves. prepare() only prepares a grid's swap
-	 * while recover() is registered, so it is taken off after prepare() has run, by a
-	 * posts_request callback added after prepare() at the same priority. It is put back when the
-	 * callback returns. The core test case restores every hook after the test, so the next test
-	 * has the original order again.
+	 * while recover() is registered, and swap() only swaps it while recover() still is, so
+	 * recover() is taken off once the query's statement is on its way: by a query callback added
+	 * after swap() at the same priority, armed by a posts_request callback added after prepare()
+	 * at the same priority. A query another callback answers at posts_pre_query sends no
+	 * statement, so it is taken off there instead. It is put back when the callback returns. The
+	 * core test case restores every hook after the test, so the next test has the original order
+	 * again.
 	 *
 	 * @param callable $callback The code to run.
 	 *
@@ -761,22 +1182,67 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 	 */
 	private function without_recovery( callable $callback ): mixed {
 		$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
-		$hold      = static function ( $request ) use ( $optimizer ) {
-			remove_filter( 'posts_results', [ $optimizer, 'recover' ], PHP_INT_MIN );
+		$armed     = false;
+		$hold      = static function () use ( &$armed, $optimizer ): void {
+			if ( $armed ) {
+				$armed = false;
+
+				remove_filter( 'posts_results', [ $optimizer, 'recover' ], PHP_INT_MIN );
+			}
+		};
+		$arm       = static function ( $request ) use ( &$armed ) {
+			$armed = true;
 
 			return $request;
 		};
+		$sent      = static function ( $sql ) use ( $hold ) {
+			$hold();
 
-		add_filter( 'posts_request', $hold, PHP_INT_MAX );
+			return $sql;
+		};
+		$answered  = static function ( $posts ) use ( $hold ) {
+			if ( null !== $posts ) {
+				$hold();
+			}
+
+			return $posts;
+		};
+
+		add_filter( 'posts_request', $arm, PHP_INT_MAX );
+		add_filter( 'query', $sent, PHP_INT_MAX );
+		add_filter( 'posts_pre_query', $answered, PHP_INT_MAX );
 
 		try {
 			return $callback();
 		} finally {
-			remove_filter( 'posts_request', $hold, PHP_INT_MAX );
+			remove_filter( 'posts_pre_query', $answered, PHP_INT_MAX );
+			remove_filter( 'query', $sent, PHP_INT_MAX );
+			remove_filter( 'posts_request', $arm, PHP_INT_MAX );
 
 			if ( false === has_filter( 'posts_results', [ $optimizer, 'recover' ] ) ) {
 				add_filter( 'posts_results', [ $optimizer, 'recover' ], PHP_INT_MIN, 2 );
 			}
+		}
+	}
+
+	/**
+	 * Asserts a swapped statement has the expected number of Mai's EXISTS, and that each carries
+	 * the MySQL hint when this database takes it, and none does otherwise.
+	 *
+	 * @param string $statement The swapped statement.
+	 * @param int    $exists    How many EXISTS it should have.
+	 *
+	 * @return void
+	 */
+	private function assert_hint( string $statement, int $exists ): void {
+		global $wpdb;
+
+		$this->assertSame( $exists, substr_count( $statement, self::SWAP ) );
+
+		if ( Mai_Post_Grid_Query_Optimizer_Database::hint( Mai_Post_Grid_Query_Optimizer_Database::server_info( $wpdb ) ) ) {
+			$this->assertSame( $exists, substr_count( $statement, 'EXISTS ( SELECT ' . self::HINT . '1 FROM ' ), 'every EXISTS carries the hint' );
+		} else {
+			$this->assertSame( 0, substr_count( $statement, self::HINT ), 'no hint on a database that does not read it' );
 		}
 	}
 

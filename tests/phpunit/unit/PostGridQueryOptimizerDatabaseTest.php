@@ -35,6 +35,8 @@ final class PostGridQueryOptimizerDatabaseTest extends TestCase {
 			'SQLite on top of WordPress'        => [ '8.0.38-mysql-on-sqlite-3.0.2', false ],
 			'Vitess'                            => [ '8.0.40-Vitess', false ],
 			'TiDB'                              => [ '8.0.11-TiDB-v7.5.0', false ],
+			// Off on purpose: no X.Y.Z at the start, so no MySQL version Mai can compare. Aurora
+			// plans like the MySQL it is built on, which is unmeasured here.
 			'Aurora'                            => [ '8.0.mysql_aurora.3.04.0', false ],
 			'MariaDB with the 5.5.5 prefix'     => [ '5.5.5-10.11.6-MariaDB', true ],
 			'MariaDB with a suffix'             => [ '10.11.6-MariaDB-log', true ],
@@ -63,6 +65,30 @@ final class PostGridQueryOptimizerDatabaseTest extends TestCase {
 
 		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Database::allows( '11.8.2-MariaDB' ) );
 		$this->assertFalse( Mai_Post_Grid_Query_Optimizer_Database::allows( '10.6.18-MariaDB' ) );
+	}
+
+	/**
+	 * @return array<string,array{0:string}>
+	 */
+	public static function junk_minimums(): array {
+		return [
+			'zero'           => [ '0' ],
+			'letters'        => [ 'abc' ],
+			'a space'        => [ ' ' ],
+			'two parts'      => [ '10.11' ],
+			'a suffix'       => [ '10.11.0-MariaDB' ],
+			'a leading v'    => [ 'v10.11.0' ],
+			'a trailing dot' => [ '10.11.0.' ],
+		];
+	}
+
+	#[DataProvider( 'junk_minimums' )]
+	public function test_a_junk_mariadb_minimum_keeps_mariadb_off( string $minimum ): void {
+		Mai_Post_Grid_Query_Optimizer_Database::$mariadb_min = $minimum;
+
+		$this->assertFalse( Mai_Post_Grid_Query_Optimizer_Database::allows( '11.8.2-MariaDB' ), 'the shipped minimum' );
+		$this->assertFalse( Mai_Post_Grid_Query_Optimizer_Database::allows( '11.8.2-MariaDB', $minimum ), 'a minimum passed in' );
+		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Database::allows( '11.8.2-MariaDB', '10.11.0' ), 'a well-formed one turns it on' );
 	}
 
 	public function test_engine(): void {

@@ -182,7 +182,7 @@ final class GridCacheStoreTest extends MaiIntegrationTestCase {
 			foreach ( $callbacks as $callback ) {
 				$function = $callback['function'];
 
-				if ( 'mai_add_grid_orderby_tiebreaker' === $function || ( is_array( $function ) && 'add_deferred_orderby_tiebreaker' === ( $function[1] ?? '' ) ) ) {
+				if ( 'mai_add_grid_orderby_tiebreaker' === $function || ( is_array( $function ) && 'add_grid_orderby_tiebreaker' === ( $function[1] ?? '' ) ) ) {
 					++$count;
 				}
 			}
@@ -357,8 +357,8 @@ final class GridCacheStoreTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * A query without the var never loads Mai_Grid, so a page with no deferred grid does not pay
-	 * for the class on every filtered query. Its own process, because a loaded class stays loaded.
+	 * A query without the var never loads Mai_Grid, so a page with no post grid does not pay for
+	 * the class on every filtered query. Its own process, because a loaded class stays loaded.
 	 */
 	#[RunInSeparateProcess]
 	public function test_tiebreaker_does_not_load_the_grid_class_for_other_queries(): void {

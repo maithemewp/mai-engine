@@ -6,8 +6,10 @@ namespace BizBudding\MaiEngine\Tests\Integration;
 use Mai_Grid;
 use Mai_Post_Grid_Query_Optimizer;
 use Mai_Query_Cache;
+use mysqli_driver;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionProperty;
+use RuntimeException;
 use WP_Query;
 use WP_UnitTest_Factory;
 
@@ -49,6 +51,9 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 	/** The statement the breaker broke, before it broke it. Empty until it has. */
 	private string $broken = '';
 
+	/** How many swapped statements hold_swapped_statements() held. */
+	private int $held = 0;
+
 	/** What $wpdb->suppress_errors() was before the test. */
 	private bool $suppressed = false;
 
@@ -67,6 +72,7 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 
 		$this->logged = [];
 		$this->broken = '';
+		$this->held   = 0;
 
 		// The breaker's statements fail on purpose. Their errors are not printed.
 		$this->suppressed = (bool) $wpdb->suppress_errors( true );
@@ -79,8 +85,7 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 
 		$wpdb->suppress_errors( $this->suppressed );
 
-		Mai_Post_Grid_Query_Optimizer::$slow = 1.0;
-		Mai_Grid::$existing_post_ids        = [];
+		Mai_Grid::$existing_post_ids = [];
 
 		parent::tear_down();
 	}
@@ -107,6 +112,7 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 
 		$this->fresh_start();
 
+		$before     = wp_cache_get_last_changed( 'posts' );
 		$run        = $this->render( $args );
 		$swapped    = self::swapped( $run );
 		$statements = self::grid_statements( $run );
@@ -119,6 +125,7 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 		$this->assertSame( [ [ 'ids' => array_slice( self::$fixture['posts']['big'], 0, self::PER_PAGE + 1 ), 'found' => 0, 'by' => 'ids' ] ], $run['stored'] );
 		$this->assertSame( [], $this->logged );
 		$this->assertFalse( get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ), 'core\'s query cache is left alone' );
 
 		$this->new_request();
 
@@ -136,6 +143,7 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 
 		$this->fresh_start();
 
+		$before  = wp_cache_get_last_changed( 'posts' );
 		$run     = $this->render( $args );
 		$swapped = self::swapped( $run );
 
@@ -148,6 +156,7 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 		$this->assertSame( [ $expected ], array_column( $run['stored'], 'ids' ) );
 		$this->assertSame( [], $this->logged );
 		$this->assertFalse( get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ), 'core\'s query cache is left alone' );
 	}
 
 	public function test_a_grid_with_the_cache_off_swaps_and_recovers(): void {
@@ -244,22 +253,70 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 	}
 
 	public function test_a_slow_copy_turns_it_off(): void {
-		Mai_Post_Grid_Query_Optimizer::$slow = 0.05;
-
 		$args     = $this->deferring_args();
 		$expected = $this->today( $args );
 
 		$this->fresh_start();
+		$this->hold_swapped_statements();
 
-		$held = 0;
+		$before = wp_cache_get_last_changed( 'posts' );
+		$run    = $this->render( $args );
+
+		$this->assertSame( 1, $this->held, 'the swapped copy was held' );
+		$this->assertCount( 1, self::swapped( $run ) );
+		$this->assertSame( $expected, $run['ids'] );
+		$this->assertSame( [ array_slice( self::$fixture['posts']['big'], 0, self::PER_PAGE + 1 ) ], array_column( $run['stored'], 'ids' ), 'the slow copy\'s list is right, so it is kept' );
+		$this->assert_turned_off( 'slow' );
+		$this->assertStringContainsString( 's, copy form', $this->logged[0] );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ), 'nothing failed, so core\'s query cache is left alone' );
+	}
+
+	/** A grid's own statement is timed too: its form, split or full, is in the line. */
+	#[DataProvider( 'grid_forms' )]
+	public function test_a_slow_grid_statement_turns_it_off( string $form ): void {
+		if ( 'full' === $form ) {
+			add_filter( 'split_the_query', '__return_false' );
+		}
+
+		$args     = $this->plain_args();
+		$expected = $this->today( $args );
+
+		$this->fresh_start();
+		$this->hold_swapped_statements();
+
+		$before = wp_cache_get_last_changed( 'posts' );
+		$run    = $this->render( $args );
+
+		$this->assertSame( 1, $this->held, 'the swapped statement was held' );
+		$this->assertCount( 1, self::swapped( $run ) );
+		$this->assertSame( $expected, $run['ids'] );
+		$this->assertSame( [ $expected ], array_column( $run['stored'], 'ids' ), 'the slow statement\'s list is right, so it is kept' );
+		$this->assert_turned_off( 'slow' );
+		$this->assertStringContainsString( "s, grid {$form} form", $this->logged[0] );
+		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ), 'nothing failed, so core\'s query cache is left alone' );
+	}
+
+	/**
+	 * A later query callback returns an empty string for the swapped text, so $wpdb sends nothing
+	 * and hands back the rows of the statement before. That is caught as a failure, and the
+	 * statement is sent again unswapped.
+	 */
+	#[DataProvider( 'owners' )]
+	public function test_a_swapped_statement_that_is_never_sent_is_caught( string $form ): void {
+		$args     = 'copy' === $form ? $this->deferring_args() : $this->plain_args();
+		$expected = $this->today( $args );
+		$stored   = 'copy' === $form ? array_slice( self::$fixture['posts']['big'], 0, self::PER_PAGE + 1 ) : $expected;
+		$dropped  = '';
+
+		$this->fresh_start();
 
 		add_filter(
 			'query',
-			static function ( $sql ) use ( &$held ) {
-				if ( is_string( $sql ) && str_contains( $sql, self::SWAP ) ) {
-					++$held;
+			static function ( $sql ) use ( &$dropped ) {
+				if ( '' === $dropped && is_string( $sql ) && str_contains( $sql, self::SWAP ) ) {
+					$dropped = $sql;
 
-					usleep( 60000 );
+					return '';
 				}
 
 				return $sql;
@@ -267,15 +324,93 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 			PHP_INT_MAX
 		);
 
-		$before = wp_cache_get_last_changed( 'posts' );
-		$run    = $this->render( $args );
+		$run = $this->render( $args );
 
-		$this->assertSame( 1, $held, 'the swapped copy was held' );
-		$this->assertCount( 1, self::swapped( $run ) );
+		$this->assertNotSame( '', $dropped, 'the swapped statement was dropped' );
+		$this->assertSame( $expected, $run['ids'], 'the grid shows today\'s posts' );
+		$this->assertSame( [ $stored ], array_column( $run['stored'], 'ids' ), 'and the right list is stored' );
+		$this->assert_turned_off( 'failed' );
+	}
+
+	/** The failure callback taken off after the swap was prepared, before the statement is sent. */
+	public function test_no_swap_once_recovery_is_gone(): void {
+		$args     = $this->plain_args();
+		$expected = $this->today( $args );
+		$prepared = null;
+
+		$this->fresh_start();
+
+		add_filter(
+			'posts_request',
+			static function ( $request ) use ( &$prepared ) {
+				$prepared = self::prepared_count();
+
+				remove_all_filters( 'posts_results' );
+
+				return $request;
+			},
+			PHP_INT_MAX
+		);
+
+		$run = $this->render( $args );
+
+		$this->assertSame( 1, $prepared, 'the swap was prepared' );
+		$this->assertNotEmpty( self::grid_statements( $run ), 'the grid sent its statement' );
+		$this->assertSame( [], self::swapped( $run ) );
 		$this->assertSame( $expected, $run['ids'] );
-		$this->assertSame( [ array_slice( self::$fixture['posts']['big'], 0, self::PER_PAGE + 1 ) ], array_column( $run['stored'], 'ids' ), 'the slow copy\'s list is right, so it is kept' );
-		$this->assert_turned_off( 'slow' );
-		$this->assertSame( $before, wp_cache_get_last_changed( 'posts' ), 'nothing failed, so core\'s query cache is left alone' );
+	}
+
+	/**
+	 * With mysqli in exception mode, a failed swapped statement would throw out of WP_Query, past
+	 * recover(), so the swap steps aside.
+	 */
+	public function test_mysqli_exception_mode_steps_aside(): void {
+		$args     = $this->plain_args();
+		$expected = $this->today( $args );
+		$mode     = ( new mysqli_driver() )->report_mode;
+
+		$this->fresh_start();
+
+		mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
+
+		try {
+			$run = $this->render( $args );
+		} finally {
+			mysqli_report( $mode );
+		}
+
+		$this->assertNotEmpty( self::grid_statements( $run ), 'the grid sent its statement' );
+		$this->assertSame( [], self::swapped( $run ) );
+		$this->assertSame( $expected, $run['ids'] );
+		$this->assertSame( [], $this->logged );
+	}
+
+	public function test_a_grid_that_throws_leaves_nothing_prepared(): void {
+		$args     = $this->plain_args();
+		$prepared = null;
+
+		$this->fresh_start();
+
+		add_filter(
+			'posts_pre_query',
+			static function () use ( &$prepared ) {
+				$prepared = self::prepared_count();
+
+				throw new RuntimeException( 'Test failure before the statement' );
+			},
+			20
+		);
+
+		try {
+			( new Mai_Grid( $args ) )->get_query();
+
+			$this->fail( 'The grid query should have thrown.' );
+		} catch ( RuntimeException $e ) {
+			$this->assertSame( 'Test failure before the statement', $e->getMessage() );
+		}
+
+		$this->assertSame( 1, $prepared, 'the swap was prepared' );
+		$this->assertSame( 0, self::prepared_count(), 'and dropped when the query threw' );
 	}
 
 	public function test_recovery_is_not_armed_without_its_callback(): void {
@@ -362,18 +497,38 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 		$this->break_next_swap( $send_own );
 
 		$before = wp_cache_get_last_changed( 'posts' );
-		$run    = $this->render( $args );
+		$moved  = null;
+
+		// Core's query cache is reset before the transient is written, since the write can fail.
+		add_filter(
+			'pre_set_transient_' . Mai_Post_Grid_Query_Optimizer::TRANSIENT,
+			static function ( $value ) use ( &$moved, $before ) {
+				$moved = $before !== wp_cache_get_last_changed( 'posts' );
+
+				return $value;
+			}
+		);
+
+		$run = $this->render( $args );
 
 		$this->assertNotSame( '', $this->broken, 'a swapped statement was broken' );
 		$this->assertStringStartsWith( 'full' === $form ? "SELECT   {$wpdb->posts}.*" : "SELECT   {$wpdb->posts}.ID", $this->broken );
 		$this->assertStringContainsString( 'LIMIT 0, ' . ( 'copy' === $form ? self::PER_PAGE + 1 : self::PER_PAGE ), $this->broken );
+		$this->assertCount( 1, self::swapped( $run ), 'the resend went out unswapped' );
 		$this->assertSame( $expected, $run['ids'], 'the grid shows today\'s posts' );
 		$this->assertNotContains( '', wp_list_pluck( $run['query']->posts, 'post_title' ), 'whole posts, not rows holding only the ID' );
 		$this->assertSame( [ $stored ], array_column( $run['stored'], 'ids' ), 'and the right list is stored' );
+
+		if ( 'copy' === $form ) {
+			$this->assertSame( 'ids', $run['stored'][0]['by'] ?? null, 'from the resent copy' );
+		}
+
 		$this->assert_turned_off( 'failed' );
 		$this->assertStringContainsString( 'BROKEN', $this->logged[0], 'the line carries the database error' );
+		$this->assertStringContainsString( 'BROKEN', (string) get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ), 'and so does the transient' );
 		$this->assertSame( 0, self::prepared_count(), 'every prepared swap was cleared' );
 		$this->assertNotSame( $before, wp_cache_get_last_changed( 'posts' ), 'core forgot the failed result' );
+		$this->assertTrue( $moved, 'before the transient was written' );
 
 		add_filter( Mai_Post_Grid_Query_Optimizer::FILTER, '__return_false' );
 
@@ -386,17 +541,41 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * Asserts the swap was turned off once, for the given reason: the transient is set and one
-	 * line was logged.
+	 * Asserts the swap was turned off once, for the given reason: the transient holds the reason
+	 * and one line was logged.
 	 *
 	 * @param string $why 'failed' or 'slow'.
 	 *
 	 * @return void
 	 */
 	private function assert_turned_off( string $why ): void {
-		$this->assertSame( $why, get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
+		$this->assertStringStartsWith( "{$why}:", (string) get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
 		$this->assertCount( 1, $this->logged );
 		$this->assertStringStartsWith( "Grid query optimizer off for 24 hours ({$why}): ", $this->logged[0] );
+	}
+
+	/**
+	 * Holds every swapped statement on its way to the database for 60 ms, and lowers the slow
+	 * limit to 50 ms. Call after the last new_request(), since reset() puts the limit back.
+	 *
+	 * @return void
+	 */
+	private function hold_swapped_statements(): void {
+		Mai_Post_Grid_Query_Optimizer::$slow = 0.05;
+
+		add_filter(
+			'query',
+			function ( $sql ) {
+				if ( is_string( $sql ) && str_contains( $sql, self::SWAP ) ) {
+					++$this->held;
+
+					usleep( 60000 );
+				}
+
+				return $sql;
+			},
+			PHP_INT_MAX
+		);
 	}
 
 	/**

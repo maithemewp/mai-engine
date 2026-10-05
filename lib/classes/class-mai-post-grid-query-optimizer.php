@@ -13,9 +13,11 @@ declare(strict_types=1);
  * checking the database and rebuilding WordPress's taxonomy SQL with WordPress's own code.
  * Anything unexpected sends today's statement unchanged.
  *
- * A swapped statement that fails is sent again unswapped, by recover() for a grid's own query
- * and by Mai_Query_Cache::fetch_ids() for the copy, and the swap turns off for a day. So does a
- * copy statement that is slow.
+ * A swapped statement that fails, or never reaches the database, is sent again unswapped, by
+ * recover() for a grid's own query and by Mai_Query_Cache::fetch_ids() for the copy, and the swap
+ * turns off for a day. So does a swapped statement that is slow, the copy's or the grid's own.
+ * Anything that throws inside the swap sends the statement unchanged and turns the swap off for
+ * the rest of the request.
  *
  * The query's own SQL text, as WordPress keeps it on the query, never changes, so cache keys
  * built from it work as before.
@@ -34,9 +36,45 @@ final class Mai_Post_Grid_Query_Optimizer {
 	public const FILTER = 'mai_post_grid_optimize_query';
 
 	/**
-	 * Set for a day when a swapped statement failed or was slow.
+	 * Set for a day when a swapped statement failed or was slow. Holds why, such as
+	 * "failed: " and the database error.
 	 */
 	public const TRANSIENT = 'mai_post_grid_optimize_off';
+
+	/**
+	 * A grid's own query, marked by Mai_Grid::get_query().
+	 */
+	public const ROLE_GRID = 'grid';
+
+	/**
+	 * Mai's ID-only copy of a grid's query, marked by Mai_Query_Cache::fetch_ids().
+	 */
+	public const ROLE_COPY = 'copy';
+
+	/**
+	 * What outcome() reports when the swapped statement worked.
+	 */
+	public const STATUS_OK = 'ok';
+
+	/**
+	 * What outcome() reports when the swapped statement failed or never reached the database.
+	 */
+	public const STATUS_FAILED = 'failed';
+
+	/**
+	 * The copy's statement.
+	 */
+	public const FORM_COPY = 'copy';
+
+	/**
+	 * A grid's ID-only statement, which WordPress sends first when it splits the query.
+	 */
+	public const FORM_SPLIT = 'split';
+
+	/**
+	 * A grid's whole statement, sent when WordPress does not split the query.
+	 */
+	public const FORM_FULL = 'full';
 
 	/**
 	 * The SQL parts recorded at the first and last plugin filter. posts_where comes first in
@@ -45,9 +83,14 @@ final class Mai_Post_Grid_Query_Optimizer {
 	private const PARTS = [ 'where', 'join', 'groupby', 'distinct', 'fields' ];
 
 	/**
-	 * Seconds a swapped copy statement may take before the swap is turned off. Tests lower it.
+	 * The default of $slow.
 	 */
-	public static float $slow = 1.0;
+	private const SLOW = 1.0;
+
+	/**
+	 * Seconds a swapped statement may take before the swap is turned off. Tests change it.
+	 */
+	public static float $slow = self::SLOW;
 
 	/**
 	 * The one instance the hooks use. See instance().
@@ -92,19 +135,27 @@ final class Mai_Post_Grid_Query_Optimizer {
 	private array $rebuilds = [];
 
 	/**
-	 * Swaps waiting for their statement, oldest first.
+	 * Swaps waiting for their statement, oldest first, at most one per query.
 	 *
 	 * @var list<array{owner:WP_Query,original:string,split:?string,role:string}>
 	 */
 	private array $prepared = [];
 
 	/**
-	 * What each swap recorded for its query, until outcome() reads it.
+	 * The copy running now, from mark() until drop(). While it runs, only a copy's swap may be
+	 * taken. Weak, so a copy freed without drop() stops counting as running.
+	 */
+	private ?WeakReference $copy = null;
+
+	/**
+	 * What each swap recorded for its query, until outcome() reads it: the statement count and
+	 * the length of WordPress's list of failed statements before it was sent, its text, its form
+	 * and when it started.
 	 *
 	 * Keyed by the query object itself, which a WeakMap forgets when the query is freed. A key
 	 * made from spl_object_id() could be reused by a later query.
 	 *
-	 * @var WeakMap<WP_Query,array{queries:int,swapped:string,form:string,start:float}>
+	 * @var WeakMap<WP_Query,array{queries:int,errors:int,swapped:string,form:string,start:float}>
 	 */
 	private WeakMap $records;
 
@@ -169,21 +220,30 @@ final class Mai_Post_Grid_Query_Optimizer {
 	/**
 	 * Marks a query, so the optimizer looks at it. Any other role leaves it unmarked.
 	 *
+	 * A copy counts as running from here until drop(), so call drop() once it has run.
+	 *
 	 * @since 2.41.0
 	 *
 	 * @param WP_Query $query The query, before it runs.
-	 * @param string   $role  'grid' for a grid's own query, 'copy' for Mai's ID-only copy.
+	 * @param string   $role  ROLE_GRID for a grid's own query, ROLE_COPY for Mai's ID-only copy.
 	 *
 	 * @return void
 	 */
 	public function mark( WP_Query $query, string $role ): void {
-		if ( in_array( $role, [ 'grid', 'copy' ], true ) ) {
-			$query->mai_optimize = $role;
+		if ( ! in_array( $role, [ self::ROLE_GRID, self::ROLE_COPY ], true ) ) {
+			return;
+		}
+
+		$query->mai_optimize = $role;
+
+		if ( self::ROLE_COPY === $role ) {
+			$this->copy = WeakReference::create( $query );
 		}
 	}
 
 	/**
-	 * Removes a query's prepared swaps, once its statement can no longer be sent.
+	 * Removes a query's prepared swap, once its statement can no longer be sent. For a copy, it
+	 * also ends the copy's run.
 	 *
 	 * @since 2.41.0
 	 *
@@ -192,13 +252,25 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * @return void
 	 */
 	public function drop( WP_Query $query ): void {
-		$this->prepared = array_values( array_filter( $this->prepared, static fn( array $entry ): bool => $entry['owner'] !== $query ) );
+		$this->forget( $query );
+
+		if ( $query === $this->copy?->get() ) {
+			$this->copy = null;
+		}
 	}
 
 	/**
 	 * How a query's swapped statement went, and forgets it.
 	 *
-	 * Failed means $wpdb has an error, and any of these holds:
+	 * Failed when nothing was sent after the swap. A later query callback that returned an empty
+	 * string or false for the swapped text stops $wpdb before it sends anything or clears its
+	 * last result, so the query was handed the rows of the statement before, with no error.
+	 *
+	 * Failed when WordPress's list of failed statements ($EZSQL_ERROR) gained one with the
+	 * swapped text. $wpdb adds every failed statement to it, errors shown or not, so this holds
+	 * after a later statement cleared $wpdb's error.
+	 *
+	 * Failed when $wpdb has an error, and any of these holds:
 	 *
 	 * - Exactly one statement ran since the swap. This holds whatever later query callbacks did
 	 *   to the text.
@@ -231,15 +303,19 @@ final class Mai_Post_Grid_Query_Optimizer {
 		unset( $this->records[ $query ] );
 
 		$sent   = (int) $wpdb->num_queries;
-		$failed = '' !== (string) $wpdb->last_error
-			&& (
-				$record['queries'] + 1 === $sent
-				|| $record['swapped'] === $wpdb->last_query
-				|| ( empty( $query->posts ) && $sent > $record['queries'] )
+		$failed = $sent === $record['queries']
+			|| self::logged_as_failed( $record )
+			|| (
+				'' !== (string) $wpdb->last_error
+				&& (
+					$record['queries'] + 1 === $sent
+					|| $record['swapped'] === $wpdb->last_query
+					|| ( empty( $query->posts ) && $sent > $record['queries'] )
+				)
 			);
 
 		return [
-			'status'  => $failed ? 'failed' : 'ok',
+			'status'  => $failed ? self::STATUS_FAILED : self::STATUS_OK,
 			'seconds' => microtime( true ) - $record['start'],
 			'form'    => $record['form'],
 		];
@@ -247,6 +323,11 @@ final class Mai_Post_Grid_Query_Optimizer {
 
 	/**
 	 * Turns the swap off for the rest of this request and for a day, and logs one line.
+	 *
+	 * The request is cleared first, since the transient write can be a statement of its own,
+	 * which comes back through swap(). The transient holds why and what happened. When it cannot
+	 * be read back, the write did not stick, and the line says the swap is off for this request
+	 * only.
 	 *
 	 * @since 2.41.0
 	 *
@@ -256,14 +337,15 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * @return void
 	 */
 	public function turn_off( string $why, string $detail = '' ): void {
-		$this->off = true;
-
-		set_transient( self::TRANSIENT, $why, DAY_IN_SECONDS );
-
+		$this->off      = true;
 		$this->prepared = [];
 		$this->records  = new WeakMap();
 
-		( $this->logger )( "Grid query optimizer off for 24 hours ({$why}): {$detail}" );
+		set_transient( self::TRANSIENT, trim( "{$why}: {$detail}" ), DAY_IN_SECONDS );
+
+		$for = false === get_transient( self::TRANSIENT ) ? 'this request only' : '24 hours';
+
+		( $this->logger )( "Grid query optimizer off for {$for} ({$why}): {$detail}" );
 	}
 
 	/**
@@ -280,8 +362,8 @@ final class Mai_Post_Grid_Query_Optimizer {
 	}
 
 	/**
-	 * Clears the per-request state, as at the start of a request, and puts the default logger
-	 * back. The hooks stay registered.
+	 * Clears the per-request state, as at the start of a request, and puts the default logger and
+	 * slow limit back. The hooks stay registered.
 	 *
 	 * @since 2.41.0
 	 *
@@ -295,8 +377,11 @@ final class Mai_Post_Grid_Query_Optimizer {
 		$this->hint     = false;
 		$this->rebuilds = [];
 		$this->prepared = [];
+		$this->copy     = null;
 		$this->records  = new WeakMap();
 		$this->logger   = self::log( ... );
+
+		self::$slow = self::SLOW;
 	}
 
 	/**
@@ -402,7 +487,8 @@ final class Mai_Post_Grid_Query_Optimizer {
 	/**
 	 * Prepares a swap for a ready query whose statement no posts_request callback changed.
 	 *
-	 * The ready verdict is read once and cleared, so it never carries over to another run.
+	 * The ready verdict is read once and cleared, so it never carries over to another run. A
+	 * query that runs again replaces its earlier swap, so it has at most one.
 	 *
 	 * A statement with a placeholder escape is left alone. WordPress strips the escape in its
 	 * own query callback at priority 0, so the text would never match.
@@ -440,14 +526,16 @@ final class Mai_Post_Grid_Query_Optimizer {
 
 		// A grid's failed statement is repaired by recover(). A plugin that removed every
 		// posts_results callback removed that too, and then a failed swap would show no posts.
-		if ( 'grid' === $role && false === has_filter( 'posts_results', [ $this, 'recover' ] ) ) {
+		if ( self::ROLE_GRID === $role && false === has_filter( 'posts_results', [ $this, 'recover' ] ) ) {
 			return $request;
 		}
+
+		$this->forget( $query );
 
 		$this->prepared[] = [
 			'owner'    => $query,
 			'original' => $request,
-			'split'    => 'grid' === $role ? Mai_Post_Grid_Query_Optimizer_Sql::split( $request, $wpdb->posts ) : null,
+			'split'    => self::ROLE_GRID === $role ? Mai_Post_Grid_Query_Optimizer_Sql::split( $request, $wpdb->posts ) : null,
 			'role'     => $role,
 		];
 
@@ -458,10 +546,9 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * Swaps a prepared statement for the EXISTS form as it goes to the database.
 	 *
 	 * Returns at once when nothing is prepared. Otherwise it takes the most recent prepared swap
-	 * whose text equals the statement. The most recent wins because a copy runs inside its
-	 * grid's query, and its text equals the grid's split form. Then come the checks, and any
-	 * failed one sends the statement unchanged. The statement count is recorded last, since the
-	 * checks can send statements of their own.
+	 * whose text equals the statement, and checks it. Anything that throws on the way, such as an
+	 * object cache that fails on the transient read, sends the statement unchanged, turns the
+	 * swap off for the rest of this request and logs one line.
 	 *
 	 * @since 2.41.0
 	 *
@@ -470,83 +557,35 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * @return mixed The statement, swapped or unchanged.
 	 */
 	public function swap( mixed $sql ): mixed {
-		global $wpdb;
-
 		if ( ! $this->prepared || ! is_string( $sql ) ) {
 			return $sql;
 		}
 
-		$entry = $this->take( $sql );
-
-		if ( null === $entry ) {
-			return $sql;
-		}
-
-		// On a site without a persistent object cache this read is a statement of its own. It
-		// comes back through here and finds nothing prepared for it.
-		$this->paused ??= false !== get_transient( self::TRANSIENT );
-
-		if ( $this->paused ) {
+		try {
+			return $this->swap_statement( $sql );
+		} catch ( Throwable $e ) {
 			$this->off      = true;
 			$this->prepared = [];
 
+			( $this->logger )( sprintf( 'Grid query optimizer off for this request only (error): %s "%s" at %s:%d', get_class( $e ), $e->getMessage(), $e->getFile(), $e->getLine() ) );
+
 			return $sql;
 		}
-
-		if ( ! is_object( $wpdb ) || ! Mai_Post_Grid_Query_Optimizer_Database::layer_allows( $wpdb ) ) {
-			return $sql;
-		}
-
-		if ( null === $this->database ) {
-			$info           = Mai_Post_Grid_Query_Optimizer_Database::server_info( $wpdb );
-			$this->database = Mai_Post_Grid_Query_Optimizer_Database::allows( $info );
-			$this->hint     = Mai_Post_Grid_Query_Optimizer_Database::hint( $info );
-		}
-
-		if ( ! $this->database ) {
-			return $sql;
-		}
-
-		$owner   = $entry['owner'];
-		$rebuilt = $this->rebuild( $owner, $wpdb->posts );
-		$first   = $owner->mai_optimize_first ?? null;
-
-		// Nothing else is joined, and WordPress's taxonomy condition is in the where once.
-		if ( null === $rebuilt || ! is_array( $first ) || ( $first['join'] ?? null ) !== $rebuilt['join'] ) {
-			return $sql;
-		}
-
-		if ( ! is_string( $first['where'] ?? null ) || '' === $rebuilt['where'] || 1 !== substr_count( $first['where'], $rebuilt['where'] ) ) {
-			return $sql;
-		}
-
-		$condition = Mai_Post_Grid_Query_Optimizer_Sql::condition( $rebuilt, $wpdb->posts, $wpdb->term_relationships, $this->hint );
-		$swapped   = Mai_Post_Grid_Query_Optimizer_Sql::swap( $sql, $rebuilt, $condition, $wpdb->posts );
-
-		if ( null === $swapped ) {
-			return $sql;
-		}
-
-		$this->records[ $owner ] = [
-			'queries' => (int) $wpdb->num_queries,
-			'swapped' => $swapped,
-			'form'    => 'copy' === $entry['role'] ? 'copy' : ( $sql === $entry['split'] ? 'split' : 'full' ),
-			'start'   => microtime( true ),
-		];
-
-		return $swapped;
 	}
 
 	/**
 	 * Repairs a grid whose swapped statement failed, before anything reads its posts.
 	 *
 	 * Every grid query reaches posts_results, including one answered by a cache, so this is
-	 * where a grid's prepared swaps are dropped. When its swapped statement failed, the swap is
-	 * turned off, WordPress is made to forget the failed empty result it cached under the
-	 * query's key, and the original statement is sent once more the way WordPress sent it. The
-	 * list is then exactly today's, so the grid result cache stores it as usual. If the resend
-	 * fails too, $wpdb holds its error, and the grid result cache stores nothing, as for any
-	 * failed grid statement.
+	 * where a grid's prepared swap is dropped. When its swapped statement failed, WordPress is
+	 * made to forget the failed empty result it cached under the query's key, the swap is turned
+	 * off, and the original statement is sent once more the way WordPress sent it. The list is
+	 * then exactly today's, so the grid result cache stores it as usual. If the resend fails too,
+	 * $wpdb holds its error, and the grid result cache stores nothing, as for any failed grid
+	 * statement.
+	 *
+	 * When the swapped statement worked but took longer than $slow, the swap is turned off and
+	 * the posts stand. For the split form the time includes loading the posts.
 	 *
 	 * The error is read before turn_off(), whose transient write is a statement of its own.
 	 *
@@ -560,7 +599,7 @@ final class Mai_Post_Grid_Query_Optimizer {
 	public function recover( mixed $posts, mixed $query = null ): mixed {
 		global $wpdb;
 
-		if ( ! $query instanceof WP_Query || 'grid' !== ( $query->mai_optimize ?? null ) ) {
+		if ( ! $query instanceof WP_Query || self::ROLE_GRID !== ( $query->mai_optimize ?? null ) ) {
 			return $posts;
 		}
 
@@ -568,18 +607,29 @@ final class Mai_Post_Grid_Query_Optimizer {
 
 		$this->drop( $query );
 
-		if ( 'failed' !== ( $outcome['status'] ?? null ) ) {
+		if ( null === $outcome ) {
+			return $posts;
+		}
+
+		if ( self::STATUS_OK === $outcome['status'] ) {
+			// Right, but slow enough that the database planned it badly. The posts stand.
+			if ( $outcome['seconds'] > self::$slow ) {
+				$this->turn_off( 'slow', sprintf( '%.3f s, grid %s form', $outcome['seconds'], $outcome['form'] ) );
+			}
+
 			return $posts;
 		}
 
 		$error   = (string) $wpdb->last_error;
 		$request = (string) $query->request;
 
+		// WordPress cached the failed result under the query's key before this ran. Reset before
+		// turn_off(), whose transient write is a statement of its own and can fail too.
+		Mai_Query_Cache::forget_failure();
+
 		$this->turn_off( 'failed', $error );
 
-		wp_cache_set_posts_last_changed();
-
-		if ( 'split' === $outcome['form'] ) {
+		if ( self::FORM_SPLIT === $outcome['form'] ) {
 			$vars = $query->query_vars;
 			$ids  = array_map( 'intval', (array) $wpdb->get_col( $request ) );
 
@@ -605,7 +655,7 @@ final class Mai_Post_Grid_Query_Optimizer {
 		$role  = $query->mai_optimize;
 		$first = $query->mai_optimize_first ?? null;
 
-		if ( ! in_array( $role, [ 'grid', 'copy' ], true ) || ! is_array( $first ) ) {
+		if ( ! in_array( $role, [ self::ROLE_GRID, self::ROLE_COPY ], true ) || ! is_array( $first ) ) {
 			return false;
 		}
 
@@ -626,7 +676,7 @@ final class Mai_Post_Grid_Query_Optimizer {
 			&& is_string( $limits )
 			&& '' !== $limits
 			&& '' === $first['distinct']
-			&& ( 'copy' === $role ? "{$wpdb->posts}.ID" : "{$wpdb->posts}.*" ) === $first['fields']
+			&& ( self::ROLE_COPY === $role ? "{$wpdb->posts}.ID" : "{$wpdb->posts}.*" ) === $first['fields']
 			&& "{$wpdb->posts}.ID" === $first['groupby']
 			&& '' !== $first['join']
 			&& is_string( $orderby )
@@ -636,15 +686,179 @@ final class Mai_Post_Grid_Query_Optimizer {
 	}
 
 	/**
+	 * Swaps a statement that may have a prepared swap, or returns it unchanged.
+	 *
+	 * Takes the most recent prepared swap whose text equals the statement. The most recent wins
+	 * because a copy runs inside its grid's query, and its text equals the grid's split form.
+	 * Then come the checks, and any failed one sends the statement unchanged:
+	 *
+	 * - prepare()'s checks again, since a later callback can change them before the statement is
+	 *   sent: the swap is still on for the request and the filter allows it, and for a grid's own
+	 *   statement recover() is still on posts_results.
+	 * - The database and its layer. These send no statement, so they come before the transient
+	 *   read, which is a statement of its own on a site without a persistent object cache. When
+	 *   either fails, the swap is off for the rest of the request, so prepare() stops preparing.
+	 * - The day-long transient.
+	 * - The rebuild of WordPress's taxonomy SQL, compared with the first looks.
+	 *
+	 * The statement count and the length of WordPress's list of failed statements are recorded
+	 * last, since the checks can send statements of their own.
+	 *
+	 * @param string $sql The statement.
+	 *
+	 * @return string The statement, swapped or unchanged.
+	 */
+	private function swap_statement( string $sql ): string {
+		global $wpdb;
+
+		$entry = $this->take( $sql );
+
+		if ( null === $entry ) {
+			return $sql;
+		}
+
+		if ( $this->off || ! $this->allowed() ) {
+			return $sql;
+		}
+
+		if ( self::ROLE_GRID === $entry['role'] && false === has_filter( 'posts_results', [ $this, 'recover' ] ) ) {
+			return $sql;
+		}
+
+		if ( ! $this->database_allows() ) {
+			$this->off      = true;
+			$this->prepared = [];
+
+			return $sql;
+		}
+
+		// On a site without a persistent object cache this read is a statement of its own. It
+		// comes back through here and finds nothing prepared for it.
+		$this->paused ??= false !== get_transient( self::TRANSIENT );
+
+		if ( $this->paused ) {
+			$this->off      = true;
+			$this->prepared = [];
+
+			return $sql;
+		}
+
+		$owner   = $entry['owner'];
+		$rebuilt = $this->rebuild( $owner, $wpdb->posts );
+		$first   = $owner->mai_optimize_first ?? null;
+
+		// Nothing else is joined, and WordPress's taxonomy condition is in the where once.
+		if ( null === $rebuilt || ! is_array( $first ) || ( $first['join'] ?? null ) !== $rebuilt['join'] ) {
+			return $sql;
+		}
+
+		if ( ! is_string( $first['where'] ?? null ) || '' === $rebuilt['where'] || 1 !== substr_count( $first['where'], $rebuilt['where'] ) ) {
+			return $sql;
+		}
+
+		$condition = Mai_Post_Grid_Query_Optimizer_Sql::condition( $rebuilt, $wpdb->posts, $wpdb->term_relationships, $this->hint );
+		$swapped   = Mai_Post_Grid_Query_Optimizer_Sql::swap( $sql, $rebuilt, $condition, $wpdb->posts );
+
+		if ( null === $swapped ) {
+			return $sql;
+		}
+
+		$errors = $GLOBALS['EZSQL_ERROR'] ?? null;
+
+		$this->records[ $owner ] = [
+			'queries' => (int) $wpdb->num_queries,
+			'errors'  => is_array( $errors ) ? count( $errors ) : 0,
+			'swapped' => $swapped,
+			'form'    => self::ROLE_COPY === $entry['role'] ? self::FORM_COPY : ( $sql === $entry['split'] ? self::FORM_SPLIT : self::FORM_FULL ),
+			'start'   => microtime( true ),
+		];
+
+		return $swapped;
+	}
+
+	/**
+	 * Whether the database and its layer can take the swap. Sends no statement.
+	 *
+	 * The layer must be WordPress's own or Query Monitor's, and mysqli must not be in exception
+	 * mode: a failed swapped statement would then throw out of WP_Query before recover() or
+	 * fetch_ids() could send it again. Both are checked on every swap, since a plugin can change
+	 * either mid-request. The server is read once per request.
+	 *
+	 * @return bool
+	 */
+	private function database_allows(): bool {
+		global $wpdb;
+
+		if ( ! is_object( $wpdb ) || ! Mai_Post_Grid_Query_Optimizer_Database::layer_allows( $wpdb ) ) {
+			return false;
+		}
+
+		if ( class_exists( 'mysqli_driver', false ) && ( ( new mysqli_driver() )->report_mode & MYSQLI_REPORT_STRICT ) ) {
+			return false;
+		}
+
+		if ( null === $this->database ) {
+			$info           = Mai_Post_Grid_Query_Optimizer_Database::server_info( $wpdb );
+			$this->database = Mai_Post_Grid_Query_Optimizer_Database::allows( $info );
+			$this->hint     = Mai_Post_Grid_Query_Optimizer_Database::hint( $info );
+		}
+
+		return $this->database;
+	}
+
+	/**
+	 * Whether WordPress's list of failed statements gained the swapped text after the swap.
+	 *
+	 * @param array{errors:int,swapped:string} $record What swap_statement() recorded.
+	 *
+	 * @return bool
+	 */
+	private static function logged_as_failed( array $record ): bool {
+		$errors = $GLOBALS['EZSQL_ERROR'] ?? null;
+
+		if ( ! is_array( $errors ) ) {
+			return false;
+		}
+
+		foreach ( array_slice( $errors, $record['errors'] ) as $error ) {
+			if ( is_array( $error ) && ( $error['query'] ?? null ) === $record['swapped'] ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Removes a query's prepared swap, without ending a copy's run.
+	 *
+	 * @param WP_Query $query The query.
+	 *
+	 * @return void
+	 */
+	private function forget( WP_Query $query ): void {
+		$this->prepared = array_values( array_filter( $this->prepared, static fn( array $entry ): bool => $entry['owner'] !== $query ) );
+	}
+
+	/**
 	 * Removes and returns the most recent prepared swap whose text equals the statement.
+	 *
+	 * While a copy runs, only a copy's swap can be taken. The copy's text equals its grid's split
+	 * form, so a copy that prepared no swap of its own would otherwise take the grid's.
 	 *
 	 * @param string $sql The statement.
 	 *
 	 * @return array{owner:WP_Query,original:string,split:?string,role:string}|null
 	 */
 	private function take( string $sql ): ?array {
+		$copy_only = null !== $this->copy?->get();
+
 		for ( $i = count( $this->prepared ) - 1; $i >= 0; $i-- ) {
 			$entry = $this->prepared[ $i ];
+
+			if ( $copy_only && self::ROLE_COPY !== $entry['role'] ) {
+				continue;
+			}
 
 			if ( $sql === $entry['original'] || $sql === $entry['split'] ) {
 				array_splice( $this->prepared, $i, 1 );
@@ -660,7 +874,7 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * WordPress's taxonomy SQL for a query, rebuilt once per request.
 	 *
 	 * Keyed by the tax filters and the posts table, never by the query object, so a grid and its
-	 * copy share one rebuild and two grids never do.
+	 * copy share one rebuild, and grids with different filters never do.
 	 *
 	 * @param WP_Query $query       The query.
 	 * @param string   $posts_table The posts table name.
@@ -691,15 +905,15 @@ final class Mai_Post_Grid_Query_Optimizer {
 	}
 
 	/**
-	 * The default logger. Writes the line to the debug log when WP_DEBUG_LOG is on.
+	 * The default logger. Writes the line to the PHP error log, whatever WP_DEBUG_LOG says, so a
+	 * live site shows when the swap turned off. A turn-off is written at most once a day per
+	 * site, unless the transient cannot be stored.
 	 *
 	 * @param string $message The message.
 	 *
 	 * @return void
 	 */
 	private static function log( string $message ): void {
-		if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
-			error_log( 'Mai Engine: ' . $message );
-		}
+		error_log( 'Mai Engine: ' . $message );
 	}
 }

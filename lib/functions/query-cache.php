@@ -53,7 +53,8 @@ function mai_register_query_cache() {
  * Appends the grid ID tiebreaker to a query's ORDER BY, when the query asks for it.
  *
  * Runs on every filtered query, so it checks the mai_grid_tiebreak query var first and only
- * then loads Mai_Grid. A page with no deferred grid never loads that class for this.
+ * then loads Mai_Grid. A query without the var never loads Mai_Grid, so a page with no post grid
+ * does not pay for the class on every filtered query.
  *
  * @since 2.41.0
  *
@@ -67,5 +68,5 @@ function mai_add_grid_orderby_tiebreaker( $orderby, $query ) {
 		return $orderby;
 	}
 
-	return Mai_Grid::add_deferred_orderby_tiebreaker( $orderby, $query );
+	return Mai_Grid::add_grid_orderby_tiebreaker( $orderby, $query );
 }

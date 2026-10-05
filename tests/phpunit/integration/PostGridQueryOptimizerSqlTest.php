@@ -27,6 +27,11 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 	private const HINT = '/*+ NO_SEMIJOIN(DUPSWEEDOUT) */ ';
 
 	/**
+	 * Stands for big's two newest posts in a provider row, which runs before the fixture exists.
+	 */
+	private const BIG_NEWEST_TWO = 'big newest two';
+
+	/**
 	 * The fixture's IDs, built once for the class.
 	 *
 	 * @var array
@@ -87,6 +92,7 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			'offset 5'           => [ 'big', [ 'offset' => 5 ], null, false ],
 			'posts_per_page 200' => [ 'big', [ 'posts_per_page' => 200 ], 40, false ],
 			'one shared date'    => [ 'big', [], null, true ],
+			'post__not_in'       => [ 'big', [ 'post__not_in' => self::BIG_NEWEST_TWO ], null, false ],
 		];
 	}
 
@@ -192,6 +198,16 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			" AND EXISTS ( SELECT {$hint}1 FROM {$t} WHERE {$t}.object_id = {$p}.ID AND ( \n  {$t}.term_taxonomy_id IN ({$tag}) \n  OR \n  {$t}.term_taxonomy_id IN ({$custom})\n) )",
 			Mai_Post_Grid_Query_Optimizer_Sql::condition( $or, $p, $t, true )
 		);
+	}
+
+	public function test_condition_refuses_an_unknown_relation(): void {
+		global $wpdb;
+
+		$rebuilt = $this->rebuild( [ [ 'taxonomy' => 'post_tag', 'terms' => [ self::$fixture['tag'] ] ] ] );
+
+		foreach ( [ 'XOR', 'and', '' ] as $relation ) {
+			$this->assertSame( '', Mai_Post_Grid_Query_Optimizer_Sql::condition( [ 'relation' => $relation ] + $rebuilt, $wpdb->posts, $wpdb->term_relationships, false ), $relation );
+		}
 	}
 
 	public function test_swap(): void {
@@ -349,6 +365,13 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			$this->share_one_date();
 		}
 
+		$excluded = [];
+
+		if ( self::BIG_NEWEST_TWO === ( $args['post__not_in'] ?? null ) ) {
+			$excluded             = array_slice( self::$fixture['posts']['big'], 0, 2 );
+			$args['post__not_in'] = $excluded;
+		}
+
 		$args      = array_merge( self::query_args(), $args );
 		$tax_query = self::shape( $shape );
 		$limited   = new WP_Query( [ 'tax_query' => $tax_query ] + $args );
@@ -375,6 +398,12 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			$today[ $form ] = $this->ids( $query->request );
 
 			$this->assertSame( $today[ $form ], $this->ids( $swapped ), $form );
+		}
+
+		if ( $excluded ) {
+			$this->assertStringContainsString( "{$wpdb->posts}.ID NOT IN (" . implode( ',', $excluded ) . ')', (string) $swapped, 'the excluded posts are in the swapped statement' );
+			$this->assertSame( [], array_values( array_intersect( $excluded, $today['without LIMIT'] ) ) );
+			$this->assertSame( array_slice( self::$fixture['posts']['big'], 2, 10 ), $today['with LIMIT'] );
 		}
 
 		if ( null === $count ) {

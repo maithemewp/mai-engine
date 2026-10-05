@@ -291,11 +291,12 @@ class Mai_Grid {
 						$this->query_args['cache_results'] = false;
 					}
 
-					$query = new WP_Query();
+					$query     = new WP_Query();
+					$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
 
 					// Lets the grid query optimizer send a faster statement for this grid when it
 					// can prove it returns the same posts.
-					Mai_Post_Grid_Query_Optimizer::instance()->mark( $query, 'grid' );
+					$optimizer->mark( $query, Mai_Post_Grid_Query_Optimizer::ROLE_GRID );
 
 					// Set on the query itself before it runs, never as a query var. A plugin
 					// that answers posts_pre_query by building its own query from this one's
@@ -306,11 +307,17 @@ class Mai_Grid {
 						$query->mai_grid_keep = $keep;
 					}
 
-					$query->query( $this->query_args );
+					try {
+						$query->query( $this->query_args );
+					} finally {
+						// The grid's statement has been sent or never will be. recover() drops the
+						// prepared swap at posts_results, which a query that throws never reaches.
+						$optimizer->drop( $query );
+					}
 
 					// The marker has done its work. Take it off the query and the args for every
-					// grid, so nothing that reads them later, such as Mai Load More, which
-					// serializes the query's args and runs them again, finds it there.
+					// grid, so nothing that reads them later, such as a plugin that serializes the
+					// query's args and runs them again, finds it there.
 					unset( $query->query_vars['mai_grid_tiebreak'], $query->query['mai_grid_tiebreak'] );
 
 					$this->query_args = $asked;
@@ -876,12 +883,11 @@ class Mai_Grid {
 		// rather than a false check on purpose: WP_Query's own default is false, so an absent
 		// key means counting is ON and must be treated the same as an explicit false.
 		//
-		// This guard is also what keeps the tiebreaker from desynchronising offset pagination.
-		// Page one would be ordered by (sort key, ID) and page two by sort key alone, so on a
-		// tied sort a reader could see the same post on both pages. Mai Load More sets
-		// no_found_rows false today, so it is caught here, but for the stated reason above.
-		// Do not drop this guard on the strength of having made the total accurate under
-		// padding: the ordering half would still be broken.
+		// This guard also keeps a counting grid from deferring. get_query() gives counting grids
+		// no ID tiebreaker, because their later pages run from saved args that never carry it,
+		// so a padded LIMIT on one would break ties differently from run to run. Do not drop this
+		// guard on the strength of having made the total accurate under padding: the ordering
+		// half would still be broken.
 		if ( empty( $query_args['no_found_rows'] ) ) {
 			$can = false;
 		}
@@ -1116,7 +1122,7 @@ class Mai_Grid {
 	 *
 	 * @return string
 	 */
-	public static function add_deferred_orderby_tiebreaker( $orderby, $query ) {
+	public static function add_grid_orderby_tiebreaker( $orderby, $query ) {
 		global $wpdb;
 
 		if ( empty( $query->query_vars['mai_grid_tiebreak'] ) ) {

@@ -20,13 +20,13 @@ use WP_UnitTest_Factory;
  * optimizer's per-request state are cleared, so a run reads nothing the one before it left. A
  * case passes when:
  *
- * - both runs show the same post IDs in the same order,
- * - the first run sent no swapped statement and the second sent one, unless the sort is one the
+ * - the off run and the on run show the same post IDs in the same order,
+ * - the off run sent no swapped statement and the on run sent one, unless the sort is one the
  *   optimizer leaves out, which sends none on either run,
  * - the swap stayed on, since a swapped statement that fails is sent again unswapped, which
  *   would show today's posts and hide the break,
- * - the posts differ from the same grid with no taxonomy filter, so the taxonomy filter really
- *   narrowed the list, and
+ * - the on run's posts differ from those of the run with no taxonomy filter, so the taxonomy
+ *   filter really narrowed the list, and
  * - no excluded post is shown.
  *
  * The fixture's posts get spread values for every sort column on top of the shared fixture, so
@@ -73,7 +73,7 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 	];
 
 	/**
-	 * The sorts above the optimizer swaps: date, author and ID, the ones that met the speed bar.
+	 * The sorts above that the optimizer swaps: date, author and ID, the ones that met the speed bar.
 	 * Written out here, not read from SORT_COLUMNS, so adding a sort to that list fails these cases
 	 * until the sort is measured and listed here.
 	 */
@@ -125,20 +125,12 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 		parent::set_up();
 
 		$this->logged = [];
-
-		// A busy machine must not turn the swap off for being slow. PostGridQueryOptimizerGridTest covers that.
-		Mai_Post_Grid_Query_Optimizer::$slow = 60.0;
 	}
 
 	public function tear_down(): void {
-		Mai_Post_Grid_Query_Optimizer::$slow = 1.0;
-		Mai_Grid::$existing_post_ids        = [];
+		Mai_Grid::$existing_post_ids = [];
 
 		wp_set_current_user( 0 );
-
-		// The optimizer is one object for the whole process. Drop this test's logger and its
-		// cached checks, so the next test starts as a new request.
-		Mai_Post_Grid_Query_Optimizer::instance()->reset();
 
 		parent::tear_down();
 	}
@@ -228,12 +220,12 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 		$unfiltered = $this->render( array_merge( $args, [ 'taxonomies' => [] ] ), true );
 
 		$this->assertNotEmpty( $on['ids'], 'the grid shows posts' );
-		$this->assertSame( [], $off['swapped'], 'the first run was not swapped' );
+		$this->assertSame( [], $off['swapped'], 'the off run was not swapped' );
 
 		if ( in_array( $args['orderby'], self::SWAPPED_SORTS, true ) ) {
-			$this->assertNotEmpty( $on['swapped'], 'the second run sent the swapped statement' );
+			$this->assertNotEmpty( $on['swapped'], 'the on run sent the swapped statement' );
 		} else {
-			$this->assertSame( [], $on['swapped'], 'the second run kept today\'s statement, because the sort is left out' );
+			$this->assertSame( [], $on['swapped'], 'the on run kept today\'s statement, because the sort is left out' );
 		}
 
 		$this->assertSame( $off['ids'], $on['ids'], 'the same posts in the same order' );
@@ -420,6 +412,10 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 			}
 		);
 
+		// After reset(), which puts the limit back. A busy machine must not turn the swap off for
+		// being slow. PostGridQueryOptimizerGridTest covers that.
+		Mai_Post_Grid_Query_Optimizer::$slow = 60.0;
+
 		$statements = [];
 		$answer     = $optimize ? '__return_true' : '__return_false';
 
@@ -500,10 +496,11 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * Gives every fixture post its own title, slug, menu order, comment count, author and modified
-	 * date, none of them in date order. Each sort then orders the posts differently from the date,
-	 * and several columns tie, so the ID tiebreaker decides part of every order. Without this the
-	 * factory leaves menu order, comment count and author the same on every post.
+	 * Gives every fixture post a title, slug, menu order, comment count, author and modified date
+	 * that do not follow the post date. Each of those sorts then orders the posts differently from
+	 * the date. Each column also repeats its values across posts, so posts tie on it and the ID
+	 * tiebreaker decides part of that sort's order. Without this the factory leaves menu order,
+	 * comment count and author the same on every post.
 	 *
 	 * @param WP_UnitTest_Factory $factory The test factory.
 	 *
