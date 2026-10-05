@@ -120,7 +120,7 @@ All of these must hold. Any one failing means today's statement goes out unchang
 
 The tax rebuild (section 1) runs only at this last step, when the statement actually goes to the database. Its result is kept for the rest of the request, so a grid and its copy rebuild once. Reviewer's measure: 0.13 ms per rebuild for eurweb's biggest category, with no database queries.
 
-**How prepared swaps are kept.** At `posts_request` `PHP_INT_MAX`, for a marked query that passed the cheap checks, Mai adds an entry to a list: the original text, the owner query, and its form (copy, split, full). The `query` callback is added while the list has entries and removed when it is empty, so other statements pay nothing. When a statement matches more than one entry, the most recent wins: a copy runs inside its grid's query, and its text equals the grid's split form. The copy's entry is dropped in a `finally` after `$copy->query()` returns. The grid's entries are dropped at `posts_results`, which every grid query reaches, including ones answered by a cache. The whole list is cleared on any failure.
+**How prepared swaps are kept.** At `posts_request` `PHP_INT_MAX`, for a marked query that passed the cheap checks, Mai adds an entry to a list: the original text, the owner query, and its form (copy, split, full). The `query` callback is registered once and returns at once when nothing is prepared, which costs about 0.2 µs per statement (reviewer's measure). Registering it once also lets tests watch the swapped statement with a later callback at the same priority. When a statement matches more than one entry, the most recent wins: a copy runs inside its grid's query, and its text equals the grid's split form. The copy's entry is dropped in a `finally` after `$copy->query()` returns. The grid's entries are dropped at `posts_results`, which every grid query reaches, including ones answered by a cache. The whole list is cleared on any failure.
 
 **Gotchas for the build.**
 
@@ -161,7 +161,7 @@ On a failure, in this order:
 ### 6. Changes to existing code
 
 - **The old optimizer is replaced.** These are removed:
-  - `lib/classes/class-mai-post-grid-query-optimizer.php`, and its registration in `lib/functions/performance.php:293-303`.
+  - The old code in `lib/classes/class-mai-post-grid-query-optimizer.php`. The file keeps its name and holds the new class.
   - Its five tests, `tests/phpunit/unit/PostGridQueryOptimizer{Args,Classify,Orderby,Register,Where}Test.php`.
   - `bin/grid-query-equivalence.php` and `bin/grid-equivalence-matrix.php`.
   - The `mai_post_grid_tt_ids` check in `Mai_Query_Cache::is_cacheable()`, and its two tests in `tests/phpunit/unit/MaiQueryCacheabilityTest.php:28` and `:32`.
@@ -171,7 +171,7 @@ On a failure, in this order:
 - **`Mai_Grid::add_deferred_orderby_tiebreaker()`:** always appends `, {posts}.ID DESC`, and its docblock says why.
 - **`Mai_Query_Cache::fetch_ids()`** (`class-mai-query-cache.php:942`): marks the copy, drops its prepared swap in a `finally`, and runs the failure and slow checks before its own checks. The key check (`:1006`) and the ID-only check (`:1002`) are unchanged, because the copy's request text is unchanged.
 - **`Mai_Query_Cache::posts_results()`:** unchanged. The new failure callback runs before it, at the same priority but registered first. After a successful resend `$wpdb->last_error` is empty, so it stores the list as usual.
-- **`mai_register_query_cache()`** (`lib/functions/query-cache.php:21`): registers the first-look and last-look callbacks (including `posts_search` and both ends of `posts_request`) and the failure callback once. Each returns at once unless the query is marked.
+- **`mai_register_post_grid_query_optimizer()`** (`lib/functions/performance.php:300`), as today, but on `init` at priority 9: registers the first-look and last-look callbacks (including `posts_search` and both ends of `posts_request`), the `query` callback and the failure callback once. Priority 9 makes the failure callback on `posts_results` run before `Mai_Query_Cache::posts_results()`, which shares its priority and registers at 10. Each callback returns at once unless the query is marked.
 - **Tests that use `mai_grid_tiebreak` to spot a deferring grid** need another way, since every grid without Load More now carries it (`GridCacheStoreTest.php:139`, `GridKeptOnlyTest.php:228`, `:809`, `:846`, `:885`, `:894`, `:1074`, `:1486`). Tests that assert only deferring grids get it change (`GridDeferredExcludesTest.php:308-316`, `GridKeptOnlyTest.php:424-425`, `:1295-1296`).
 - **`CHANGES.md`:** a 2.41.0 entry for the faster grid queries and the filter.
 

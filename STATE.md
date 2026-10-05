@@ -2,7 +2,7 @@
 Updated: 2026-10-04 by Claude
 
 ## Now
-Spec drafted and revised after three reviews: `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`. Waiting for Mike's approval, then the plan. No code written.
+Spec and plan written for cheaper taxonomy grid queries: `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md` (revised after three reviews) and `docs/plans/2026-10-04-grid-taxonomy-query-rewrite.md` (nine tasks). Waiting for Mike to review the plan and pick how it is built. No code written.
 
 - Mai post grid queries, and Mai's ID-only copy, would send an `EXISTS` form instead of WordPress's join plus `GROUP BY`, only when every check proves no plugin touched the SQL. It replaces the old `Mai_Post_Grid_Query_Optimizer` under its name and its filter `mai_post_grid_optimize_query`, now on by default.
 - Mike decided (2026-10-04): test MariaDB too and give it the swap only on versions that pass; on by default; cover several taxonomy filters and IN mixed with NOT IN; cover grids without excludes; cover custom taxonomies; tied posts newest first on every sort; totalprosports after eurweb and larrybrownsports. Nothing fragile or brittle, and it has to run on 5,000 sites.
@@ -11,14 +11,14 @@ Spec drafted and revised after three reviews: `docs/specs/2026-10-04-grid-taxono
 2.41.0-beta.5 is released and live on larrybrownsports.com and eurweb.com since 2026-10-04 (spec `docs/specs/2026-10-01-grid-cache-beta-5.md`).
 
 ## Next
-1. Mike reviews the spec. On approval, write the plan in `docs/plans/` with the writing-plans skill.
+1. Mike reviews the plan and picks subagent-driven or native.
 2. Build per the plan: tests first, then the Docker runs (MySQL 8.0, 8.4, MariaDB 10.6, 10.11, 11.4, 11.8) and the speed bar in the spec.
 3. Keep watching beta.5 on live: PHP error logs, page timings, grids showing the right posts after a save.
 4. Before 2.41.0 final, check MySQL's buffer pool size on the main hosts (`TODO.md`, beta.5 spec Risks).
 5. The rest of `TODO.md`.
 
 ## Blocked / waiting on
-- Mike's review of the spec.
+- Mike's review of the plan.
 - Hindsight is off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json` (backup `/tmp/hindsight-coding-agent.json.bak`), `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
 
 ## Verify
