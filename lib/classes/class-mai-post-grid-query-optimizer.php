@@ -394,6 +394,8 @@ final class Mai_Post_Grid_Query_Optimizer {
 	/**
 	 * Prepares a swap for a ready query whose statement no posts_request callback changed.
 	 *
+	 * The ready verdict is read once and cleared, so it never carries over to another run.
+	 *
 	 * A statement with a placeholder escape is left alone. WordPress strips the escape in its
 	 * own query callback at priority 0, so the text would never match.
 	 *
@@ -410,6 +412,10 @@ final class Mai_Post_Grid_Query_Optimizer {
 		if ( ! is_string( $request ) || ! $query instanceof WP_Query || true !== ( $query->mai_optimize_ready ?? null ) ) {
 			return $request;
 		}
+
+		// The verdict is used once. A later run of this query that skips the looks, because a
+		// plugin removed them, must earn its own.
+		$query->mai_optimize_ready = false;
 
 		if ( $this->off || ! $this->allowed() || $request !== ( $query->mai_optimize_request ?? null ) ) {
 			return $request;

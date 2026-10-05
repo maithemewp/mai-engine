@@ -5,6 +5,7 @@ namespace BizBudding\MaiEngine\Tests\Integration;
 
 use Mai_Post_Grid_Query_Optimizer;
 use PHPUnit\Framework\Attributes\DataProvider;
+use ReflectionProperty;
 use WP_Query;
 use WP_UnitTest_Factory;
 
@@ -296,7 +297,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		global $wpdb;
 
 		// A later query callback breaks the swapped text, so only the statement count is left to
-		// pin the failure on the swap.
+		// pin the failure on the swap. The query is given posts, so the empty-posts rule cannot.
 		$done    = false;
 		$breaker = static function ( $sql ) use ( &$done ) {
 			if ( ! $done && is_string( $sql ) && str_contains( $sql, self::SWAP ) ) {
@@ -313,7 +314,10 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$suppress = $wpdb->suppress_errors( true );
 
 		try {
-			$run     = $this->run_marked( [] );
+			$run = $this->run_marked( [] );
+
+			$run['query']->posts = [ 1 ];
+
 			$outcome = Mai_Post_Grid_Query_Optimizer::instance()->outcome( $run['query'] );
 		} finally {
 			$wpdb->suppress_errors( $suppress );
@@ -326,12 +330,15 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
 	public function test_outcome_reports_a_refused_statement_after_another_one(): void {
 		// MySQL refuses the swapped text unchanged, and the refusal sends a statement of its own
-		// first, so only the text is left to pin the failure on the swap. Read inside the
-		// callback, since refuse_once() sends one more statement when it is done.
+		// first, so only the text is left to pin the failure on the swap. The query is given
+		// posts, so the empty-posts rule cannot. Read inside the callback, since refuse_once()
+		// sends one more statement when it is done.
 		[ [ $run, $outcome ], $refused ] = $this->refuse_once(
 			static fn( string $sql ): bool => str_contains( $sql, self::SWAP ),
 			function (): array {
 				$run = $this->run_marked( [] );
+
+				$run['query']->posts = [ 1 ];
 
 				return [ $run, Mai_Post_Grid_Query_Optimizer::instance()->outcome( $run['query'] ) ];
 			}
@@ -407,6 +414,24 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
 		$second = $this->run_query( $first['query'], [] );
 
+		$this->assertSame( [], self::swapped( $second ) );
+		$this->assertSame( $first['ids'], $second['ids'] );
+	}
+
+	public function test_a_rerun_without_its_looks_reuses_no_verdict(): void {
+		$first = $this->run_marked( [] );
+
+		$this->assertCount( 1, self::swapped( $first ) );
+		$this->assertSame( 0, self::prepared_count() );
+
+		// The same query object again, with both the look that starts a fresh record and the one
+		// that gives the verdict gone. The first run's verdict must not stand in for the second's.
+		remove_all_filters( 'posts_where' );
+		remove_all_filters( 'posts_clauses_request' );
+
+		$second = $this->run_query( $first['query'], [] );
+
+		$this->assertSame( 0, self::prepared_count() );
 		$this->assertSame( [], self::swapped( $second ) );
 		$this->assertSame( $first['ids'], $second['ids'] );
 	}
@@ -692,6 +717,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 	 */
 	private function prepare_without_sending( array $args ): WP_Query {
 		$answer = static fn() => [];
+		$before = self::prepared_count();
 
 		add_filter( 'posts_pre_query', $answer );
 
@@ -705,9 +731,18 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 			remove_filter( 'posts_pre_query', $answer );
 		}
 
-		$this->assertTrue( $query->mai_optimize_ready, 'The query passed the cheap checks.' );
+		$this->assertSame( $before + 1, self::prepared_count(), 'A swap was prepared for the query.' );
 
 		return $query;
+	}
+
+	/**
+	 * How many swaps are prepared and waiting for their statement.
+	 *
+	 * @return int
+	 */
+	private static function prepared_count(): int {
+		return count( ( new ReflectionProperty( Mai_Post_Grid_Query_Optimizer::class, 'prepared' ) )->getValue( Mai_Post_Grid_Query_Optimizer::instance() ) );
 	}
 
 	/**
