@@ -149,15 +149,21 @@ final class Mai_Post_Grid_Query_Optimizer {
 
 	/**
 	 * What each swap recorded for its query, until outcome() reads it: the statement count and
-	 * the length of WordPress's list of failed statements before it was sent, its text, its form
-	 * and when it started.
+	 * the length of WordPress's list of failed statements before it was sent, how deep in the
+	 * filters it was swapped, its text, its form, when it started, and what the next statement
+	 * found: when it ended, and whether it was never sent.
 	 *
 	 * Keyed by the query object itself, which a WeakMap forgets when the query is freed. A key
 	 * made from spl_object_id() could be reused by a later query.
 	 *
-	 * @var WeakMap<WP_Query,array{queries:int,errors:int,swapped:string,form:string,start:float}>
+	 * @var WeakMap<WP_Query,array{queries:int,errors:int,depth:int,swapped:string,form:string,start:float,end:?float,unsent:bool}>
 	 */
 	private WeakMap $records;
+
+	/**
+	 * The query whose swapped statement the next statement checks. See check_last_swap().
+	 */
+	private ?WeakReference $pending = null;
 
 	/**
 	 * Receives the one line written when the swap turns off.
@@ -262,9 +268,11 @@ final class Mai_Post_Grid_Query_Optimizer {
 	/**
 	 * How a query's swapped statement went, and forgets it.
 	 *
-	 * Failed when nothing was sent after the swap. A later query callback that returned an empty
+	 * Failed when it never reached the database. A later query callback that returned an empty
 	 * string or false for the swapped text stops $wpdb before it sends anything or clears its
-	 * last result, so the query was handed the rows of the statement before, with no error.
+	 * last result, so the query was handed the rows of the statement before, with no error. The
+	 * next statement finds the statement count unchanged (see check_last_swap()), and when none
+	 * came before this, the count is still what was recorded.
 	 *
 	 * Failed when WordPress's list of failed statements ($EZSQL_ERROR) gained one with the
 	 * swapped text. $wpdb adds every failed statement to it, errors shown or not, so this holds
@@ -284,12 +292,16 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 *
 	 * A swapped statement that returns no rows without an error is ok.
 	 *
+	 * The seconds run from the swap to the next statement, so loading a grid's posts afterwards
+	 * does not count. When no statement came after it, they run to now.
+	 *
 	 * @since 2.41.0
 	 *
 	 * @param WP_Query $query The query.
 	 *
-	 * @return array{status:string,seconds:float,form:string}|null Null when nothing was swapped
-	 *                                                             for it.
+	 * @return array{status:string,seconds:float,form:string,error:string}|null Null when nothing
+	 *         was swapped for it. The error is what to log for a failure: "statement never sent",
+	 *         or the database error. Empty when ok.
 	 */
 	public function outcome( WP_Query $query ): ?array {
 		global $wpdb;
@@ -302,11 +314,18 @@ final class Mai_Post_Grid_Query_Optimizer {
 
 		unset( $this->records[ $query ] );
 
+		if ( $query === $this->pending?->get() ) {
+			$this->pending = null;
+		}
+
 		$sent   = (int) $wpdb->num_queries;
-		$failed = $sent === $record['queries']
-			|| self::logged_as_failed( $record )
+		$error  = (string) $wpdb->last_error;
+		$unsent = $record['unsent'] || $sent === $record['queries'];
+		$logged = $unsent ? null : self::logged_error( $record );
+		$failed = $unsent
+			|| null !== $logged
 			|| (
-				'' !== (string) $wpdb->last_error
+				'' !== $error
 				&& (
 					$record['queries'] + 1 === $sent
 					|| $record['swapped'] === $wpdb->last_query
@@ -316,8 +335,9 @@ final class Mai_Post_Grid_Query_Optimizer {
 
 		return [
 			'status'  => $failed ? self::STATUS_FAILED : self::STATUS_OK,
-			'seconds' => microtime( true ) - $record['start'],
+			'seconds' => ( $record['end'] ?? microtime( true ) ) - $record['start'],
 			'form'    => $record['form'],
+			'error'   => ! $failed ? '' : ( $unsent ? 'statement never sent' : ( $logged ?? $error ) ),
 		];
 	}
 
@@ -340,6 +360,7 @@ final class Mai_Post_Grid_Query_Optimizer {
 		$this->off      = true;
 		$this->prepared = [];
 		$this->records  = new WeakMap();
+		$this->pending  = null;
 
 		set_transient( self::TRANSIENT, trim( "{$why}: {$detail}" ), DAY_IN_SECONDS );
 
@@ -379,6 +400,7 @@ final class Mai_Post_Grid_Query_Optimizer {
 		$this->prepared = [];
 		$this->copy     = null;
 		$this->records  = new WeakMap();
+		$this->pending  = null;
 		$this->logger   = self::log( ... );
 
 		self::$slow = self::SLOW;
@@ -553,11 +575,18 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 *
 	 * @since 2.41.0
 	 *
+	 * Every statement first checks the last swapped one, while one is waiting. See
+	 * check_last_swap().
+	 *
 	 * @param mixed $sql The statement.
 	 *
 	 * @return mixed The statement, swapped or unchanged.
 	 */
 	public function swap( mixed $sql ): mixed {
+		if ( null !== $this->pending ) {
+			$this->check_last_swap();
+		}
+
 		if ( ! $this->prepared || ! is_string( $sql ) ) {
 			return $sql;
 		}
@@ -590,9 +619,9 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * statement.
 	 *
 	 * When the swapped statement worked but took longer than $slow, the swap is turned off and
-	 * the posts stand. For the split form the time includes loading the posts.
+	 * the posts stand. The time stops at the next statement, so loading the posts does not count.
 	 *
-	 * The error is read before turn_off(), whose transient write is a statement of its own.
+	 * outcome() reads the error before turn_off(), whose transient write is a statement of its own.
 	 *
 	 * @since 2.41.0
 	 *
@@ -625,7 +654,7 @@ final class Mai_Post_Grid_Query_Optimizer {
 			return $posts;
 		}
 
-		$error   = (string) $wpdb->last_error;
+		$error   = $outcome['error'];
 		$request = (string) $query->request;
 
 		// WordPress cached the failed result under the query's key before this ran. Reset before
@@ -707,14 +736,15 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * - The rebuild of WordPress's taxonomy SQL, compared with the first looks.
 	 *
 	 * The statement count and the length of WordPress's list of failed statements are recorded
-	 * last, since the checks can send statements of their own.
+	 * last, since the checks can send statements of their own. The next statement then checks
+	 * this one (check_last_swap()).
 	 *
 	 * @param string $sql The statement.
 	 *
 	 * @return string The statement, swapped or unchanged.
 	 */
 	private function swap_statement( string $sql ): string {
-		global $wpdb;
+		global $wpdb, $wp_current_filter;
 
 		$entry = $this->take( $sql );
 
@@ -773,12 +803,60 @@ final class Mai_Post_Grid_Query_Optimizer {
 		$this->records[ $owner ] = [
 			'queries' => (int) $wpdb->num_queries,
 			'errors'  => is_array( $errors ) ? count( $errors ) : 0,
+			'depth'   => is_array( $wp_current_filter ) ? count( $wp_current_filter ) : 0,
 			'swapped' => $swapped,
 			'form'    => self::ROLE_COPY === $entry['role'] ? self::FORM_COPY : ( $sql === $entry['split'] ? self::FORM_SPLIT : self::FORM_FULL ),
 			'start'   => microtime( true ),
+			'end'     => null,
+			'unsent'  => false,
 		];
 
+		$this->pending = WeakReference::create( $owner );
+
 		return $swapped;
+	}
+
+	/**
+	 * Checks the last swapped statement as the next statement comes through: whether it reached
+	 * the database, and when it ended.
+	 *
+	 * The statement count is the one recorded when nothing was sent. outcome() can only count
+	 * statements when posts_results runs, and by then WordPress may have loaded posts for the
+	 * stale rows a dropped split statement handed back, which moves the count on. So the next
+	 * statement records it. Its arrival is also when the swapped statement ended, so a grid's
+	 * timer stops before its posts are loaded.
+	 *
+	 * A statement sent from inside the swapped statement's own query filters, by a callback after
+	 * swap(), arrives before the swapped one is sent. It is one query filter deeper, at the
+	 * swapped statement's level, so it is passed over and the check waits for the next one.
+	 *
+	 * Runs on every statement while a swap is waiting, so it only reads a few values.
+	 *
+	 * @return void
+	 */
+	private function check_last_swap(): void {
+		global $wpdb, $wp_current_filter;
+
+		$owner = $this->pending?->get();
+
+		if ( ! $owner instanceof WP_Query || ! isset( $this->records[ $owner ] ) ) {
+			$this->pending = null;
+
+			return;
+		}
+
+		$record = $this->records[ $owner ];
+		$stack  = is_array( $wp_current_filter ) ? $wp_current_filter : [];
+
+		if ( count( $stack ) > $record['depth'] && 'query' === ( $stack[ $record['depth'] - 1 ] ?? null ) ) {
+			return;
+		}
+
+		$record['end']    = microtime( true );
+		$record['unsent'] = (int) $wpdb->num_queries === $record['queries'];
+
+		$this->records[ $owner ] = $record;
+		$this->pending           = null;
 	}
 
 	/**
@@ -812,26 +890,27 @@ final class Mai_Post_Grid_Query_Optimizer {
 	}
 
 	/**
-	 * Whether WordPress's list of failed statements gained the swapped text after the swap.
+	 * The error WordPress's list of failed statements gained for the swapped text after the
+	 * swap, if it did.
 	 *
 	 * @param array{errors:int,swapped:string} $record What swap_statement() recorded.
 	 *
-	 * @return bool
+	 * @return string|null Null when the list has no such entry.
 	 */
-	private static function logged_as_failed( array $record ): bool {
+	private static function logged_error( array $record ): ?string {
 		$errors = $GLOBALS['EZSQL_ERROR'] ?? null;
 
 		if ( ! is_array( $errors ) ) {
-			return false;
+			return null;
 		}
 
 		foreach ( array_slice( $errors, $record['errors'] ) as $error ) {
 			if ( is_array( $error ) && ( $error['query'] ?? null ) === $record['swapped'] ) {
-				return true;
+				return (string) ( $error['error_str'] ?? '' );
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	/**

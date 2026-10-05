@@ -976,12 +976,12 @@ class Mai_Query_Cache {
 		$outcome = $optimizer->outcome( $copy );
 
 		if ( Mai_Post_Grid_Query_Optimizer::STATUS_FAILED === ( $outcome['status'] ?? null ) ) {
-			// The faster statement failed, or never reached the database. Read the error before
-			// anything else sends a statement. Core cached the copy's result, so it is made to
-			// forget it first, since turn_off()'s transient write is a statement of its own and
-			// can fail too. Then the copy's own statement is sent once more, unswapped. The checks
-			// below read that one, so if it fails too, today's failure path applies.
-			$error = (string) $wpdb->last_error;
+			// The faster statement failed, or never reached the database. outcome() read the
+			// error before anything else sent a statement. Core cached the copy's result, so it is
+			// made to forget it first, since turn_off()'s transient write is a statement of its
+			// own and can fail too. Then the copy's own statement is sent once more, unswapped.
+			// The checks below read that one, so if it fails too, today's failure path applies.
+			$error = $outcome['error'];
 
 			self::forget_failure();
 

@@ -753,6 +753,40 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertSame( [ '42' ], $ids, 'the rows of the statement before' );
 		$this->assertSame( '', $wpdb->last_error );
 		$this->assertSame( 'failed', $outcome['status'] ?? null );
+		$this->assertSame( 'statement never sent', $outcome['error'] ?? null );
+	}
+
+	/**
+	 * A later query callback sends a statement of its own while the swapped text passes through
+	 * it, then lets the swapped text go out unchanged. That statement comes before the swapped
+	 * one reaches the database, so it does not count as the next one.
+	 */
+	public function test_a_statement_sent_inside_the_swapped_statements_filters_is_not_the_next_one(): void {
+		global $wpdb;
+
+		$done = false;
+
+		add_filter(
+			'query',
+			static function ( $sql ) use ( &$done, $wpdb ) {
+				if ( ! $done && is_string( $sql ) && str_contains( $sql, self::SWAP ) ) {
+					$done = true;
+
+					$wpdb->query( 'SELECT 1' );
+				}
+
+				return $sql;
+			},
+			PHP_INT_MAX
+		);
+
+		$run     = $this->run_marked( [] );
+		$outcome = Mai_Post_Grid_Query_Optimizer::instance()->outcome( $run['query'] );
+
+		$this->assertTrue( $done );
+		$this->assertCount( 1, self::swapped( $run ) );
+		$this->assertSame( array_slice( self::$fixture['posts']['big'], 0, 7 ), $run['ids'] );
+		$this->assertSame( 'ok', $outcome['status'] ?? null );
 	}
 
 	/**

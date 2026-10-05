@@ -298,17 +298,44 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 
 	/**
 	 * A later query callback returns an empty string for the swapped text, so $wpdb sends nothing
-	 * and hands back the rows of the statement before. That is caught as a failure, and the
-	 * statement is sent again unswapped.
+	 * and hands back the rows of the statement before. Here that statement returned seven other
+	 * posts' IDs, and for the grid's split form WordPress loads those posts before posts_results,
+	 * so statements were sent after the swap all the same. It is still caught, at the next
+	 * statement, and the statement is sent again unswapped.
 	 */
 	#[DataProvider( 'owners' )]
 	public function test_a_swapped_statement_that_is_never_sent_is_caught( string $form ): void {
+		global $wpdb;
+
 		$args     = 'copy' === $form ? $this->deferring_args() : $this->plain_args();
 		$expected = $this->today( $args );
 		$stored   = 'copy' === $form ? array_slice( self::$fixture['posts']['big'], 0, self::PER_PAGE + 1 ) : $expected;
+		$role     = 'copy' === $form ? 'copy' : 'grid';
+		$others   = array_slice( self::$fixture['newest'], 0, self::PER_PAGE );
 		$dropped  = '';
+		$side     = null;
+
+		rsort( $others );
 
 		$this->fresh_start();
+
+		// Read once here, so the optimizer's own read sends nothing between the side statement and
+		// the swapped one.
+		get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT );
+
+		// The last statement before the swapped one, after the result cache's own reads.
+		add_filter(
+			'posts_pre_query',
+			static function ( $posts, $query ) use ( &$side, $role, $others, $wpdb ) {
+				if ( null === $side && $role === ( $query->mai_optimize ?? null ) ) {
+					$side = array_map( 'intval', $wpdb->get_col( "SELECT ID FROM {$wpdb->posts} WHERE ID IN (" . implode( ',', $others ) . ') ORDER BY ID DESC' ) );
+				}
+
+				return $posts;
+			},
+			1000,
+			2
+		);
 
 		add_filter(
 			'query',
@@ -326,10 +353,61 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 
 		$run = $this->render( $args );
 
+		$this->assertSame( $others, $side, 'the statement before the swapped one returned other posts' );
 		$this->assertNotSame( '', $dropped, 'the swapped statement was dropped' );
+
+		if ( 'split' === $form ) {
+			$loaded = array_filter( $run['statements'], static fn( string $sql ): bool => str_contains( $sql, 'WHERE ID IN (' . implode( ',', $others ) . ')' ) );
+
+			$this->assertNotEmpty( $loaded, 'WordPress loaded those posts before posts_results' );
+		}
+
 		$this->assertSame( $expected, $run['ids'], 'the grid shows today\'s posts' );
 		$this->assertSame( [ $stored ], array_column( $run['stored'], 'ids' ), 'and the right list is stored' );
-		$this->assert_turned_off( 'failed' );
+		$this->assertSame( 'failed: statement never sent', get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
+		$this->assertSame( [ 'Grid query optimizer off for 24 hours (failed): statement never sent' ], $this->logged );
+	}
+
+	/**
+	 * The grid's own statement is timed to the next statement, so loading its posts afterwards
+	 * does not count. The next statement is held after the optimizer has seen it.
+	 */
+	public function test_the_grid_timer_stops_at_the_next_statement(): void {
+		$args     = $this->plain_args();
+		$expected = $this->today( $args );
+		$state    = 'waiting';
+
+		$this->fresh_start();
+
+		Mai_Post_Grid_Query_Optimizer::$slow = 0.05;
+
+		add_filter(
+			'query',
+			static function ( $sql ) use ( &$state ) {
+				if ( ! is_string( $sql ) ) {
+					return $sql;
+				}
+
+				if ( 'waiting' === $state && str_contains( $sql, self::SWAP ) ) {
+					$state = 'swapped';
+				} elseif ( 'swapped' === $state ) {
+					$state = 'held';
+
+					usleep( 60000 );
+				}
+
+				return $sql;
+			},
+			PHP_INT_MAX
+		);
+
+		$run = $this->render( $args );
+
+		$this->assertSame( 'held', $state, 'the statement after the swapped one was held' );
+		$this->assertCount( 1, self::swapped( $run ) );
+		$this->assertSame( $expected, $run['ids'] );
+		$this->assertSame( [], $this->logged, 'not slow' );
+		$this->assertFalse( get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
 	}
 
 	/** The failure callback taken off after the swap was prepared, before the statement is sent. */
