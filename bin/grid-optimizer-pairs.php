@@ -24,12 +24,14 @@
  *      (counts from term_taxonomy.count for category and post_tag): the biggest term, a mid-size
  *      one (10 to 50% of published posts, the nearest to 25%), a small one (under 20 posts) and
  *      an old one (newest post over a year old, the biggest such term). Each size is crossed with
- *      the eight sorts, ascending and descending, with Mai's ID tiebreaker. Only date, author and
- *      ID pass orderby_ok(); the others are logged as skipped. Then come tag, custom taxonomy,
- *      AND, OR, IN with NOT IN, 29 terms, no children, posts and pages, publish and private (as
- *      the first administrator, nothing is saved, and skipped with a warning on a site with no
- *      administrator) and other public post types. One shape is not covered on purpose, to show
- *      the skip.
+ *      the eight sorts, ascending and descending. Each statement gets Mai's own tiebreaker, from
+ *      mai_add_grid_orderby_tiebreaker() on posts_orderby, not a copy of its rule, so it ends the
+ *      way a grid's does: the ID in the sort's direction for date and author, and post_date DESC
+ *      then the ID DESC for the other sorts. Only date, author and ID pass orderby_ok(); the others
+ *      are logged as skipped. Then come tag, custom taxonomy, AND, OR, IN with NOT IN, 29 terms,
+ *      no children, posts and pages, publish and private (as the first administrator, nothing is
+ *      saved, and skipped with a warning on a site with no administrator) and other public post
+ *      types. One shape is not covered on purpose, to show the skip.
  *
  * Every statement is written at its own LIMIT, at LIMIT 0, 2, at LIMIT 0, 32 and with no LIMIT,
  * each as its own pair line:
@@ -64,6 +66,12 @@ if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
 
 if ( ! class_exists( 'Mai_Post_Grid_Query_Optimizer_Sql' ) || ! class_exists( 'Mai_Post_Grid_Query_Optimizer_Database' ) ) {
 	WP_CLI::error( 'Mai Engine with the grid query optimizer is not loaded on this site.' );
+}
+
+// The synthetic statements ask Mai's own filter for their tiebreaker. Without it a date or author
+// sort would fail orderby_ok() and be skipped as not covered, and the run would look healthy.
+if ( false === has_filter( 'posts_orderby', 'mai_add_grid_orderby_tiebreaker' ) ) {
+	WP_CLI::error( 'Mai Engine\'s grid tiebreaker is not registered on posts_orderby on this site.' );
 }
 
 /**
@@ -266,10 +274,10 @@ function synthetic_specs( array $terms ): array {
 					'cache_results'          => false,
 					'update_post_meta_cache' => false,
 					'update_post_term_cache' => false,
-					'orderby'                => [
-						'date' => 'DESC',
-						'ID'   => 'DESC',
-					],
+					// The tiebreaker comes from Mai's filter, which acts on this var. Sorted by date,
+					// descending, that makes `post_date DESC, ID DESC`.
+					'mai_grid_tiebreak'      => true,
+					'orderby'                => [ 'date' => 'DESC' ],
 					'tax_query'              => $tax_query,
 				],
 				$over
@@ -294,13 +302,9 @@ function synthetic_specs( array $terms ): array {
 				$make(
 					"{$size}, {$sort} {$direction}",
 					[ $term_filter( $terms[ $size ] ) ],
-					[
-						// Mai's tiebreaker is the ID, newest first. Sorting by the ID needs none.
-						'orderby' => 'ID' === $sort ? [ 'ID' => $direction ] : [
-							$sort => $direction,
-							'ID'  => 'DESC',
-						],
-					]
+					// Only the sort. Mai's filter adds the tiebreaker, which follows the direction for date
+					// and author, and is newest first for the others. Sorting by the ID needs none.
+					[ 'orderby' => [ $sort => $direction ] ]
 				);
 			}
 		}
