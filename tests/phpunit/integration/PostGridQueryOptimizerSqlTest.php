@@ -323,7 +323,9 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 		$allowed = [
 			"{$p}.post_date DESC, {$p}.ID DESC",
 			"{$p}.post_date ASC, {$p}.ID DESC",
+			"{$p}.post_date ASC, {$p}.ID ASC",
 			"{$p}.post_author DESC, {$p}.ID DESC",
+			"{$p}.post_author ASC, {$p}.ID ASC",
 			"{$p}.ID DESC",
 			"{$p}.ID ASC",
 		];
@@ -341,6 +343,7 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			"{$p}.post_parent ASC, {$p}.ID DESC",
 			"{$p}.post_type ASC, {$p}.ID DESC",
 			"RAND(7), {$p}.ID DESC",
+			"RAND(7), {$p}.post_date DESC, {$p}.ID DESC",
 			"{$p}.post_date DESC",
 			"{$t}.term_order ASC, {$p}.ID DESC",
 			"tt1.term_order ASC, {$p}.ID DESC",

@@ -95,8 +95,8 @@ The mark is a property on the query, never a query var.
 
 - It is set in the same place as today, after `can_defer_excludes()` decides, and removed from the query afterwards for every grid, not only deferring ones (`class-mai-grid.php:380-386`).
 - Load More grids are left out, because their second page would be ordered without it.
-- Posts that tie now always come back in ID order. On sorts where almost every post ties, such as menu order on a site that never set it, the tiebreaker decides the whole grid (see "Ties" below).
-- It is always `, {posts}.ID DESC`, whatever the sort's direction. Today it copies the direction of the last sort key (`class-mai-grid.php:1118-1122`), which changes.
+- Posts that tie now come back in a fixed order: by ID for date and author sorts, newest first for every other sort. On sorts where almost every post ties, such as menu order on a site that never set it, the tiebreaker decides the whole grid (see "Ties" below).
+- Which tiebreaker depends on the sort. A date or author sort ends `, {posts}.ID ASC` or `, {posts}.ID DESC`, matching the direction of that last key. Any other sort ends `, {posts}.ID DESC` when `{posts}.post_date` is already named, and `, {posts}.post_date DESC, {posts}.ID DESC` when it is not. An ORDER BY that already names `{posts}.ID` is left as it is. "Ties" has the rule in order, and why.
 - Cache keys of grids that did not defer change once. A Mai Engine update flushes grid results anyway (`lib/admin/upgrade.php:58`).
 
 ### 3. When Mai swaps
@@ -177,7 +177,7 @@ On a failure, in this order:
   - The comment about "the optimizer's fast path" in `class-mai-grid.php:927-928`, and the stale line numbers in `.agents/elasticpress-grid-cache.md:58`.
   - The new class takes the old name and filter, so Mai has one grid query optimizer.
 - **`Mai_Grid::get_query()`:** marks the query, drops its prepared swap in a `finally` after the query runs, sets the tiebreaker for every grid that does not count rows, and removes it afterwards for every grid.
-- **`Mai_Grid::add_grid_orderby_tiebreaker()`** (new in 2.41.0, and called `add_deferred_orderby_tiebreaker()` until it applied to every grid): always appends `, {posts}.ID DESC`, and its docblock says why.
+- **`Mai_Grid::add_grid_orderby_tiebreaker()`** (new in 2.41.0, and called `add_deferred_orderby_tiebreaker()` until it applied to every grid): appends an ID tiebreaker that follows the sort for date and author sorts and shows ties newest first for every other sort (see "Ties"), and its docblock says why.
 - **`Mai_Query_Cache::fetch_ids()`** (`class-mai-query-cache.php:942`): marks the copy, drops its prepared swap in a `finally`, and runs the failure and slow checks before its own checks. The key check (`:1006`) and the ID-only check (`:1002`) are unchanged, because the copy's request text is unchanged. `forget_failure()` becomes public and static, so the optimizer resets WordPress's query cache with the same helper.
 - **`Mai_Query_Cache::posts_results()`:** unchanged. The new failure callback runs before it, at the same priority but registered first. After a successful resend `$wpdb->last_error` is empty, so it stores the list as usual.
 - **`mai_register_post_grid_query_optimizer()`** (`lib/functions/performance.php:300`), as today, but on `init` at priority 9: registers the first-look and last-look callbacks (including `posts_search` and both ends of `posts_request`), the `query` callback and the failure callback once. Priority 9 makes the failure callback on `posts_results` run before `Mai_Query_Cache::posts_results()`, which shares its priority and registers at 10. Each callback returns at once unless the query is marked.
@@ -208,9 +208,22 @@ It makes a real difference for big taxonomies on big sites. On small ones the da
 
 ## Ties
 
-Tied posts show newest first on every sort (Mike, 2026-10-04). A grid where nobody set the sort field, such as menu order on a site that never used it, then looks like a normal latest-posts list instead of showing posts from years ago. Today it shows whatever order the database happens to pick.
+Mike decided on 2026-10-05 (option a of a walk) that the tiebreaker follows the sort for date and author, and that every other sort shows tied posts newest first. This replaces his decision of 2026-10-04, which made it always `, {posts}.ID DESC`.
 
-This also changes beta.5's deferring grids, whose tiebreaker followed the sort direction, so on ascending sorts their ties showed oldest first.
+**The rule,** in `Mai_Grid::add_grid_orderby_tiebreaker()`, in this order:
+
+1. An empty `ORDER BY`, or one that already names `{posts}.ID`, is returned as it is.
+2. When the last sort key is `{posts}.post_date` or `{posts}.post_author`, `, {posts}.ID ASC` or `, {posts}.ID DESC` is added, matching that key's direction. A key with no direction is ascending, as it is in SQL.
+3. Otherwise, when the `ORDER BY` already names `{posts}.post_date` as a whole column (so `post_date_gmt` does not count), `, {posts}.ID DESC` is added.
+4. Otherwise `, {posts}.post_date DESC, {posts}.ID DESC` is added.
+
+Random order gets the general rule, with no special case.
+
+**Why the ascending date sort changed back.** An `ID DESC` after `post_date ASC` does not match the order the database walks the posts index, so it sorts every matching row. Measured on local eurweb's biggest category, date ascending with `LIMIT 7`, swapped, took 68 ms with `ID ASC` and 254 ms with `ID DESC`. That is about 190 ms more on every rebuild. Date and author are the sorts the swap covers, so they are the ones that follow their direction.
+
+**Why the other sorts show newest first.** A grid where nobody set the sort field, such as menu order on a site that never used it, then looks like a normal latest-posts list instead of showing posts from years ago. Today it shows whatever order the database happens to pick.
+
+This brings back what beta.5's deferring grids did: their tiebreaker followed the sort direction. Date and author sorts do that again. The other sorts differ from beta.5, because their ties now show newest first instead of following the direction.
 
 ## Tests
 
@@ -238,7 +251,7 @@ Integration tests, on a real database:
   - the statement has a `%` placeholder escape
   - `$wpdb` is a class other than `wpdb` or `QM_DB`
   - a hook callback is handed `null`
-- **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids. It is `{posts}.ID DESC` on ascending and descending sorts alike.
+- **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids. Each case of the rule in "Ties" is tested: date and author sorts ascending and descending, a sort that is not by date, a sort that names `post_date` without ending on it, a last key with no direction, the GMT date, and an ORDER BY that already names `{posts}.ID`. A date or author ascending grid still passes `orderby_ok()`, so it is still swapped.
 - **The rebuild after the page swaps too** (`run_queue()`), and the copy's key still matches the grid's, so the note is stored.
 - **Failure,** for the copy and for the grid's own query, split and full: a `query` callback added after Mai's breaks the swapped statement. The grid still shows the right posts, nothing wrong is stored, every prepared swap is cleared, the 24-hour transient is set, a second grid on the same page is not swapped, one log line is written, and WordPress's query cache was reset.
 - **Slow:** a swapped statement held over the limit, the copy's and the grid's own split and full forms (a test lowers the limit and a later `query` callback waits with `usleep()`), turns the swap off for the day and keeps the right list.

@@ -261,10 +261,10 @@ class Mai_Grid {
 					$asked     = $this->query_args;
 					$keep      = null;
 
-					// Ties in the sort break by post ID, newest first, for every grid that does
-					// not count rows. Mai Load More counts them, so it is left out. Its next
-					// pages run from the saved args, which never carry the marker, so the first
-					// page would break ties by ID and the pages after it would not.
+					// Ties in the sort are settled for every grid that does not count rows, in the
+					// way add_grid_orderby_tiebreaker() describes. Mai Load More counts them, so it
+					// is left out. Its next pages run from the saved args, which never carry the
+					// marker, so the first page would break ties by ID and the pages after it would not.
 					if ( ! empty( $asked['no_found_rows'] ) ) {
 						$this->query_args['mai_grid_tiebreak'] = true;
 					}
@@ -1086,7 +1086,8 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Appends a post ID tiebreaker to a grid's ORDER BY: always `{posts}.ID DESC`.
+	 * Appends a post ID tiebreaker to a grid's ORDER BY. A date or author sort breaks ties by ID in
+	 * its own direction. Any other sort shows tied posts newest first.
 	 *
 	 * Every post grid that does not count rows gets this, deferring its excludes or not. Mai Load
 	 * More counts rows, so its grids do not. get_query() asks for it with the mai_grid_tiebreak
@@ -1108,14 +1109,28 @@ class Mai_Grid {
 	 * (Mai_Post_Grid_Query_Optimizer) also needs an order with no ties before it can promise the
 	 * same posts as the statement it replaces.
 	 *
-	 * Ties always show newest first, whatever the direction of the sort. A grid sorted by a field
-	 * nobody filled in, such as menu order on a site that never used it, then reads like a plain
-	 * latest posts list. What this buys is a fixed answer, which can differ from what the
-	 * database picked before among tied rows.
+	 * The rule, in this order:
+	 * 1. An empty ORDER BY, or one that already names the post ID, is returned as it is.
+	 * 2. When the last sort key is the post date or the post author, ", ID" follows in that key's
+	 *    direction. A key with no direction is ascending, as it is in SQL.
+	 * 3. Otherwise, when the post date is already named, ", ID DESC".
+	 * 4. Otherwise ", post_date DESC, ID DESC".
+	 *
+	 * Why the ascending date sort breaks ties ascending: the taxonomy query walks the posts index
+	 * in the sort's direction and stops at the LIMIT. A trailing ID DESC on an ascending date sort
+	 * does not match that index order, so MySQL sorts every matching row. Measured on eurweb's
+	 * biggest category, date ASC with LIMIT 7 took 68 ms with ID ASC and 254 ms with ID DESC.
+	 * Beta.5's deferring grids followed the sort direction like this too. Other sorts have no such
+	 * index to match, so their tied posts show newest first. A grid sorted by a field nobody filled
+	 * in, such as menu order on a site that never used it, then reads like a plain latest posts
+	 * list. What this buys is a fixed answer, which can differ from what the database picked
+	 * before among tied rows.
 	 *
 	 * @since 2.41.0
 	 * @since 2.41.0 Static, and registered once instead of around each grid's query.
-	 * @since 2.41.0 Always DESC, and applied to every grid that does not count rows.
+	 * @since 2.41.0 Applied to every grid that does not count rows. Date and author sorts tie by ID in
+	 *               their own direction, because ID DESC on an ascending date sort forces a full sort.
+	 *               Other sorts tie newest first.
 	 *
 	 * @param string   $orderby The ORDER BY clause.
 	 * @param WP_Query $query   The query.
@@ -1140,7 +1155,24 @@ class Mai_Grid {
 			return $orderby;
 		}
 
-		return $orderby . ", {$wpdb->posts}.ID DESC";
+		$posts = preg_quote( $wpdb->posts, '/' );
+
+		// The last sort key is the date or the author, so the ID follows its direction. The
+		// pattern is anchored at the end and starts at the clause or at a comma, so a column
+		// inside a function, which a closing bracket follows, or in another table, does not match.
+		if ( preg_match( '/(?:^|,)\s*' . $posts . '\.post_(?:date|author)(?:\s+((?i:ASC|DESC)))?\s*$/', $orderby, $last ) ) {
+			$direction = 'DESC' === strtoupper( $last[1] ?? '' ) ? 'DESC' : 'ASC';
+
+			return "{$orderby}, {$wpdb->posts}.ID {$direction}";
+		}
+
+		// The post date is already one of the sort keys, so a second date key would add nothing.
+		// A whole-column match, so the GMT date does not count.
+		if ( preg_match( '/(?<!\w)' . $posts . '\.post_date\b/', $orderby ) ) {
+			return "{$orderby}, {$wpdb->posts}.ID DESC";
+		}
+
+		return "{$orderby}, {$wpdb->posts}.post_date DESC, {$wpdb->posts}.ID DESC";
 	}
 
 	/**

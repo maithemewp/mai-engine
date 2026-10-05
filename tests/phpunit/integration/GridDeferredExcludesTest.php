@@ -290,15 +290,20 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->assertSame( $plain, $deferred );
 	}
 
-	public function test_tiebreaker_is_newest_first_whatever_the_direction(): void {
+	public function test_a_date_sort_breaks_ties_in_its_own_direction(): void {
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
 
-		$query = ( new Mai_Grid( $this->grid_args( [ 'order' => 'ASC' ] ) ) )->get_query();
+		$ascending = ( new Mai_Grid( $this->grid_args( [ 'order' => 'ASC' ] ) ) )->get_query();
 
-		$this->assertStringContainsString( 'LIMIT 0, 4', $query->request, 'must actually have deferred' );
-		$this->assertStringContainsString( 'post_date ASC, ', $query->request, 'the sort itself is ascending' );
-		$this->assertStringContainsString( '.ID DESC', $query->request );
-		$this->assertStringNotContainsString( '.ID ASC', $query->request );
+		$this->assertStringContainsString( 'LIMIT 0, 4', $ascending->request, 'must actually have deferred' );
+		$this->assertStringContainsString( 'post_date ASC, ', $ascending->request, 'the sort itself is ascending' );
+		$this->assertStringContainsString( '.ID ASC', $ascending->request );
+		$this->assertStringNotContainsString( '.ID DESC', $ascending->request );
+
+		$descending = ( new Mai_Grid( $this->grid_args( [ 'order' => 'DESC' ] ) ) )->get_query();
+
+		$this->assertStringContainsString( '.ID DESC', $descending->request );
+		$this->assertStringNotContainsString( '.ID ASC', $descending->request );
 	}
 
 	public function test_tiebreaker_is_applied_to_an_undeferred_grid(): void {

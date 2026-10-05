@@ -573,10 +573,10 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 * swap off for a day, like a failed statement, so a cause that repeats logs once a day. When
 	 * the turn-off throws too, the swap is off for the rest of this request and one line says so.
 	 *
-	 * @since 2.41.0
-	 *
 	 * Every statement first checks the last swapped one, while one is waiting. See
 	 * check_last_swap().
+	 *
+	 * @since 2.41.0
 	 *
 	 * @param mixed $sql The statement.
 	 *
