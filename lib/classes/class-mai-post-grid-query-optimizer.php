@@ -1,179 +1,613 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Mai Post Grid Query Optimizer.
+ * Mai Post Grid query optimizer.
  *
- * Rewrites the simple "posts IN these terms" grid tax query from the stock
- * LEFT JOIN + GROUP BY + filesort into a correlated scalar subquery, which the
- * optimizer plans as a backward index scan that stops at LIMIT. Hook-wired; does
- * not modify Mai_Grid. Falls back to stock WordPress for anything but the simple
- * single-IN case.
+ * Swaps a Mai grid's taxonomy statement for the faster EXISTS form at the last moment, and only
+ * when it can prove the swap returns the same posts. Mai marks the grid's query and its ID-only
+ * copy. For a marked query this class records each SQL part when WordPress hands it to the
+ * first plugin filter and again after the last one, and the finished statement at both ends of
+ * posts_request. When nothing changed and the query is a covered shape, it prepares a swap. Its
+ * $wpdb query callback then swaps the exact statement as it goes to the database, after
+ * checking the database and rebuilding WordPress's taxonomy SQL with WordPress's own code.
+ * Anything unexpected sends today's statement unchanged.
+ *
+ * The query's own SQL text, as WordPress keeps it on the query, never changes, so cache keys
+ * built from it work as before.
  *
  * @package BizBudding\MaiEngine
  */
 
+// Prevent direct file access.
 defined( 'ABSPATH' ) || die;
 
-class Mai_Post_Grid_Query_Optimizer {
+final class Mai_Post_Grid_Query_Optimizer {
 
 	/**
-	 * Query var that carries the resolved term_taxonomy_ids from the args filter
-	 * to the clause filters.
+	 * Return false to turn the swap off for a site. Read once per request.
 	 */
-	private const TT_IDS_VAR = 'mai_post_grid_tt_ids';
+	public const FILTER = 'mai_post_grid_optimize_query';
 
 	/**
-	 * Register hooks, unless the master switch is off.
+	 * Set for a day when a swapped statement failed or was slow.
+	 */
+	public const TRANSIENT = 'mai_post_grid_optimize_off';
+
+	/**
+	 * The SQL parts recorded at the first and last plugin filter. posts_where comes first in
+	 * core, so its first look starts a fresh record.
+	 */
+	private const PARTS = [ 'where', 'join', 'groupby', 'distinct', 'fields' ];
+
+	/**
+	 * Seconds a swapped copy statement may take before the swap is turned off. Tests lower it.
+	 */
+	public static float $slow = 1.0;
+
+	/**
+	 * The one instance the hooks use. See instance().
+	 */
+	private static ?self $instance = null;
+
+	/**
+	 * Whether register() has run.
+	 */
+	private bool $registered = false;
+
+	/**
+	 * Whether the swap is off for the rest of this request.
+	 */
+	private bool $off = false;
+
+	/**
+	 * What the filter returned, read once per request.
+	 */
+	private ?bool $allowed = null;
+
+	/**
+	 * Whether the day-long transient is set, read once per request, right before the first swap.
+	 */
+	private ?bool $paused = null;
+
+	/**
+	 * Whether the database may take the swap, read once per request.
+	 */
+	private ?bool $database = null;
+
+	/**
+	 * Whether to write the MySQL hint, read with $database.
+	 */
+	private bool $hint = false;
+
+	/**
+	 * Rebuilt taxonomy SQL for this request, keyed by the tax filters and the posts table.
+	 *
+	 * @var array<string,array|null>
+	 */
+	private array $rebuilds = [];
+
+	/**
+	 * Swaps waiting for their statement, oldest first.
+	 *
+	 * @var list<array{owner:WP_Query,original:string,split:?string,role:string}>
+	 */
+	private array $prepared = [];
+
+	/**
+	 * What each swap recorded for its query, until outcome() reads it.
+	 *
+	 * Keyed by the query object itself, which a WeakMap forgets when the query is freed. A key
+	 * made from spl_object_id() could be reused by a later query.
+	 *
+	 * @var WeakMap<WP_Query,array{queries:int,swapped:string,form:string,start:float}>
+	 */
+	private WeakMap $records;
+
+	/**
+	 * Receives the one line written when the swap turns off.
+	 */
+	private Closure $logger;
+
+	/**
+	 * Sets up the per-request state.
+	 */
+	private function __construct() {
+		$this->reset();
+	}
+
+	/**
+	 * The one instance the hooks use.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @return self
+	 */
+	public static function instance(): self {
+		return self::$instance ??= new self();
+	}
+
+	/**
+	 * Registers the hook callbacks. A second call does nothing.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @return void
 	 */
 	public function register(): void {
-		// Off by default: the result cache makes warm hits free for every shape, so the
-		// optimizer (a cold-path-only accelerator that is unvalidated and fails dangerously
-		// on query offloaders) is opt-in. Enable with
-		// add_filter( 'mai_post_grid_optimize_query', '__return_true' ).
-		if ( ! apply_filters( 'mai_post_grid_optimize_query', false ) ) {
+		if ( $this->registered ) {
 			return;
 		}
 
-		add_filter( 'mai_post_grid_query_args', [ $this, 'maybe_optimize' ], 99, 1 );
-		add_filter( 'posts_where', [ $this, 'add_subquery_where' ], 10, 2 );
-		add_filter( 'posts_orderby', [ $this, 'add_orderby_tiebreaker' ], 10, 2 );
-	}
+		$this->registered = true;
 
-	public function maybe_optimize( array $query_args ): array {
-		// ElasticPress (or any handler that offloads the query) runs it elsewhere and
-		// ignores our posts_where subquery, so stripping the tax filter would leave it
-		// querying with no taxonomy constraint. Leave the query untouched for it to handle.
-		if ( ! empty( $query_args['ep_integrate'] ) ) {
-			return $query_args;
+		// Earliest priority, so each part is seen as WordPress built it.
+		foreach ( self::PARTS as $part ) {
+			add_filter( "posts_{$part}", fn( mixed $value, mixed $query = null ): mixed => $this->first_look( $part, $value, $query ), PHP_INT_MIN, 2 );
 		}
 
-		// Rewrite the simple single-IN tax filter into a correlated scalar subquery.
-		$clause = $this->get_simple_in_clause( $query_args );
+		// Latest priorities, so what is left after every plugin filter is seen.
+		add_filter( 'posts_search', [ $this, 'last_search' ], PHP_INT_MAX, 2 );
+		add_filter( 'posts_clauses_request', [ $this, 'last_look' ], PHP_INT_MAX, 2 );
 
-		if ( null === $clause ) {
-			return $query_args; // not the simple-IN shape; tax stays stock.
-		}
+		// Both ends of posts_request, so a plugin that rewrites the statement is seen.
+		add_filter( 'posts_request', [ $this, 'first_request' ], PHP_INT_MIN, 2 );
+		add_filter( 'posts_request', [ $this, 'prepare' ], PHP_INT_MAX, 2 );
 
-		$tt_ids = $this->resolve_tt_ids( $clause['taxonomy'], (array) $clause['terms'] );
-
-		if ( ! $tt_ids ) {
-			return $query_args; // could not resolve; tax stays stock.
-		}
-
-		// Remove the tax_query so WordPress emits no JOIN or GROUP BY; we add our own clause.
-		unset( $query_args['tax_query'] );
-		$query_args[ self::TT_IDS_VAR ] = $tt_ids;
-
-		return $query_args;
+		// Latest priority, so the statement is seen exactly as it goes to the database.
+		add_filter( 'query', [ $this, 'swap' ], PHP_INT_MAX );
 	}
 
 	/**
-	 * Resolve term ids to term_taxonomy_ids, including child terms, mirroring the
-	 * WP_Tax_Query include_children default for IN queries.
+	 * Marks a query, so the optimizer looks at it. Any other role leaves it unmarked.
 	 *
-	 * @return int[]
+	 * @since 2.41.0
+	 *
+	 * @param WP_Query $query The query, before it runs.
+	 * @param string   $role  'grid' for a grid's own query, 'copy' for Mai's ID-only copy.
+	 *
+	 * @return void
 	 */
-	private function resolve_tt_ids( string $taxonomy, array $term_ids ): array {
-		$term_ids = array_map( 'intval', $term_ids );
-
-		if ( is_taxonomy_hierarchical( $taxonomy ) ) {
-			foreach ( $term_ids as $term_id ) {
-				$children = get_term_children( $term_id, $taxonomy );
-				if ( ! is_wp_error( $children ) ) {
-					$term_ids = array_merge( $term_ids, array_map( 'intval', $children ) );
-				}
-			}
-			$term_ids = array_values( array_unique( $term_ids ) );
+	public function mark( WP_Query $query, string $role ): void {
+		if ( in_array( $role, [ 'grid', 'copy' ], true ) ) {
+			$query->mai_optimize = $role;
 		}
-
-		$tt_ids = [];
-		foreach ( $term_ids as $term_id ) {
-			$term = get_term( $term_id, $taxonomy );
-			if ( $term && ! is_wp_error( $term ) ) {
-				$tt_ids[] = (int) $term->term_taxonomy_id;
-			}
-		}
-
-		return array_values( array_unique( $tt_ids ) );
-	}
-
-	public function add_subquery_where( string $where, $query ): string {
-		$tt_ids = $query->query_vars[ self::TT_IDS_VAR ] ?? null;
-
-		if ( ! is_array( $tt_ids ) || ! $tt_ids ) {
-			return $where;
-		}
-
-		global $wpdb;
-		$ids = implode( ',', array_map( 'intval', $tt_ids ) );
-
-		// Correlated scalar subquery. Not eligible for the semi-join transform, so MySQL
-		// keeps it correlated, drives from posts in date order, and stops at LIMIT.
-		$where .= " AND ( (SELECT mtr.object_id FROM {$wpdb->term_relationships} mtr"
-			. " WHERE mtr.object_id = {$wpdb->posts}.ID AND mtr.term_taxonomy_id IN ({$ids})"
-			. ' LIMIT 1) IS NOT NULL )';
-
-		return $where;
-	}
-
-	public function add_orderby_tiebreaker( string $orderby, $query ): string {
-		$tt_ids = $query->query_vars[ self::TT_IDS_VAR ] ?? null;
-
-		if ( ! is_array( $tt_ids ) || ! $tt_ids ) {
-			return $orderby;
-		}
-
-		global $wpdb;
-
-		// Already has an ID tiebreaker, or not ordering by date: leave it.
-		if ( str_contains( $orderby, "{$wpdb->posts}.ID" ) ) {
-			return $orderby;
-		}
-
-		if ( ! preg_match( '/' . preg_quote( $wpdb->posts, '/' ) . '\.post_date\s+(ASC|DESC)/i', $orderby, $m ) ) {
-			return $orderby;
-		}
-
-		// Match the primary direction so it stays a single index scan.
-		return $orderby . ", {$wpdb->posts}.ID " . strtoupper( $m[1] );
 	}
 
 	/**
-	 * Return the single tax clause if this is the simple "one IN clause" case, else null.
-	 * Strips the 'relation' key, requires exactly one clause, operator IN (default),
-	 * a string taxonomy and a non-empty terms array.
+	 * Removes a query's prepared swaps, once its statement can no longer be sent.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param WP_Query $query The query.
+	 *
+	 * @return void
 	 */
-	private function get_simple_in_clause( array $query_args ): ?array {
-		$tax_query = $query_args['tax_query'] ?? null;
+	public function drop( WP_Query $query ): void {
+		$this->prepared = array_values( array_filter( $this->prepared, static fn( array $entry ): bool => $entry['owner'] !== $query ) );
+	}
 
-		if ( ! is_array( $tax_query ) || ! $tax_query ) {
+	/**
+	 * How a query's swapped statement went, and forgets it.
+	 *
+	 * Failed means $wpdb has an error, and either exactly one statement ran since the swap or
+	 * the last statement is the swapped text. The count holds whatever later query callbacks did
+	 * to the text. The text holds when a later callback sent a statement of its own.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param WP_Query $query The query.
+	 *
+	 * @return array{status:string,seconds:float,form:string}|null Null when nothing was swapped
+	 *                                                             for it.
+	 */
+	public function outcome( WP_Query $query ): ?array {
+		global $wpdb;
+
+		if ( ! isset( $this->records[ $query ] ) ) {
 			return null;
 		}
 
-		// Drop the relation key; what remains must be exactly one first-order clause.
-		$clauses = array_filter(
-			$tax_query,
-			fn( $key ) => 'relation' !== $key,
-			ARRAY_FILTER_USE_KEY
-		);
+		$record = $this->records[ $query ];
 
-		if ( 1 !== count( $clauses ) ) {
+		unset( $this->records[ $query ] );
+
+		$failed = '' !== (string) $wpdb->last_error
+			&& ( $record['queries'] + 1 === (int) $wpdb->num_queries || $record['swapped'] === $wpdb->last_query );
+
+		return [
+			'status'  => $failed ? 'failed' : 'ok',
+			'seconds' => microtime( true ) - $record['start'],
+			'form'    => $record['form'],
+		];
+	}
+
+	/**
+	 * Turns the swap off for the rest of this request and for a day, and logs one line.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param string $why    Why, such as 'failed' or 'slow'.
+	 * @param string $detail What happened, such as the database error.
+	 *
+	 * @return void
+	 */
+	public function turn_off( string $why, string $detail = '' ): void {
+		$this->off = true;
+
+		set_transient( self::TRANSIENT, $why, DAY_IN_SECONDS );
+
+		$this->prepared = [];
+		$this->records  = new WeakMap();
+
+		( $this->logger )( "Grid query optimizer off for 24 hours ({$why}): {$detail}" );
+	}
+
+	/**
+	 * Replaces what receives the log line. Tests collect it.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param Closure $logger Receives the message as a string.
+	 *
+	 * @return void
+	 */
+	public function set_logger( Closure $logger ): void {
+		$this->logger = $logger;
+	}
+
+	/**
+	 * Clears the per-request state, as at the start of a request, and puts the default logger
+	 * back. The hooks stay registered.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @return void
+	 */
+	public function reset(): void {
+		$this->off      = false;
+		$this->allowed  = null;
+		$this->paused   = null;
+		$this->database = null;
+		$this->hint     = false;
+		$this->rebuilds = [];
+		$this->prepared = [];
+		$this->records  = new WeakMap();
+		$this->logger   = self::log( ... );
+	}
+
+	/**
+	 * Records a SQL part as WordPress built it, before any plugin filter.
+	 *
+	 * The where comes first in core, so its look starts a fresh record, and a query that runs
+	 * twice never reuses the looks from its first run. A part that is not a string is not
+	 * recorded, so the query steps aside.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param string $part  'where', 'join', 'groupby', 'distinct' or 'fields'.
+	 * @param mixed  $value The part.
+	 * @param mixed  $query The query.
+	 *
+	 * @return mixed The part, unchanged.
+	 */
+	public function first_look( string $part, mixed $value, mixed $query ): mixed {
+		if ( ! $query instanceof WP_Query || ! isset( $query->mai_optimize ) ) {
+			return $value;
+		}
+
+		if ( 'where' === $part ) {
+			$first                       = [];
+			$query->mai_optimize_ready   = false;
+			$query->mai_optimize_request = null;
+		} else {
+			$first = $query->mai_optimize_first ?? [];
+			$first = is_array( $first ) ? $first : [];
+		}
+
+		if ( is_string( $value ) ) {
+			$first[ $part ] = $value;
+		}
+
+		$query->mai_optimize_first = $first;
+
+		return $value;
+	}
+
+	/**
+	 * Records the search part of the where, after every posts_search callback.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param mixed $search The search SQL.
+	 * @param mixed $query  The query.
+	 *
+	 * @return mixed The search SQL, unchanged.
+	 */
+	public function last_search( mixed $search, mixed $query = null ): mixed {
+		if ( $query instanceof WP_Query && isset( $query->mai_optimize ) ) {
+			$query->mai_optimize_search = $search;
+		}
+
+		return $search;
+	}
+
+	/**
+	 * Decides whether the query is ready for a swap, after every clause filter.
+	 *
+	 * The search look is read once and cleared. Core runs posts_search before posts_where, so
+	 * the where look cannot clear it, and a second run of the same query must see its own.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param mixed $clauses The query's clauses.
+	 * @param mixed $query   The query.
+	 *
+	 * @return mixed The clauses, unchanged.
+	 */
+	public function last_look( mixed $clauses, mixed $query = null ): mixed {
+		if ( ! $query instanceof WP_Query || ! isset( $query->mai_optimize ) ) {
+			return $clauses;
+		}
+
+		$search = $query->mai_optimize_search ?? null;
+
+		$query->mai_optimize_search = null;
+		$query->mai_optimize_ready  = '' === $search && is_array( $clauses ) && $this->covered( $clauses, $query );
+
+		return $clauses;
+	}
+
+	/**
+	 * Records the finished statement before any posts_request callback.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param mixed $request The statement.
+	 * @param mixed $query   The query.
+	 *
+	 * @return mixed The statement, unchanged.
+	 */
+	public function first_request( mixed $request, mixed $query = null ): mixed {
+		if ( $query instanceof WP_Query && isset( $query->mai_optimize ) ) {
+			$query->mai_optimize_request = is_string( $request ) ? $request : null;
+		}
+
+		return $request;
+	}
+
+	/**
+	 * Prepares a swap for a ready query whose statement no posts_request callback changed.
+	 *
+	 * A statement with a placeholder escape is left alone. WordPress strips the escape in its
+	 * own query callback at priority 0, so the text would never match.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param mixed $request The statement.
+	 * @param mixed $query   The query.
+	 *
+	 * @return mixed The statement, unchanged.
+	 */
+	public function prepare( mixed $request, mixed $query = null ): mixed {
+		global $wpdb;
+
+		if ( ! is_string( $request ) || ! $query instanceof WP_Query || true !== ( $query->mai_optimize_ready ?? null ) ) {
+			return $request;
+		}
+
+		if ( $this->off || ! $this->allowed() || $request !== ( $query->mai_optimize_request ?? null ) ) {
+			return $request;
+		}
+
+		if ( ! method_exists( $wpdb, 'remove_placeholder_escape' ) || $wpdb->remove_placeholder_escape( $request ) !== $request ) {
+			return $request;
+		}
+
+		$role = $query->mai_optimize;
+
+		$this->prepared[] = [
+			'owner'    => $query,
+			'original' => $request,
+			'split'    => 'grid' === $role ? Mai_Post_Grid_Query_Optimizer_Sql::split( $request, $wpdb->posts ) : null,
+			'role'     => $role,
+		];
+
+		return $request;
+	}
+
+	/**
+	 * Swaps a prepared statement for the EXISTS form as it goes to the database.
+	 *
+	 * Returns at once when nothing is prepared. Otherwise it takes the most recent prepared swap
+	 * whose text equals the statement. The most recent wins because a copy runs inside its
+	 * grid's query, and its text equals the grid's split form. Then come the checks, and any
+	 * failed one sends the statement unchanged. The statement count is recorded last, since the
+	 * checks can send statements of their own.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param mixed $sql The statement.
+	 *
+	 * @return mixed The statement, swapped or unchanged.
+	 */
+	public function swap( mixed $sql ): mixed {
+		global $wpdb;
+
+		if ( ! $this->prepared || ! is_string( $sql ) ) {
+			return $sql;
+		}
+
+		$entry = $this->take( $sql );
+
+		if ( null === $entry ) {
+			return $sql;
+		}
+
+		// On a site without a persistent object cache this read is a statement of its own. It
+		// comes back through here and finds nothing prepared for it.
+		$this->paused ??= false !== get_transient( self::TRANSIENT );
+
+		if ( $this->paused ) {
+			$this->off      = true;
+			$this->prepared = [];
+
+			return $sql;
+		}
+
+		if ( ! is_object( $wpdb ) || ! Mai_Post_Grid_Query_Optimizer_Database::layer_allows( $wpdb ) ) {
+			return $sql;
+		}
+
+		if ( null === $this->database ) {
+			$info           = Mai_Post_Grid_Query_Optimizer_Database::server_info( $wpdb );
+			$this->database = Mai_Post_Grid_Query_Optimizer_Database::allows( $info );
+			$this->hint     = Mai_Post_Grid_Query_Optimizer_Database::hint( $info );
+		}
+
+		if ( ! $this->database ) {
+			return $sql;
+		}
+
+		$owner   = $entry['owner'];
+		$rebuilt = $this->rebuild( $owner, $wpdb->posts );
+		$first   = $owner->mai_optimize_first ?? null;
+
+		// Nothing else is joined, and WordPress's taxonomy condition is in the where once.
+		if ( null === $rebuilt || ! is_array( $first ) || ( $first['join'] ?? null ) !== $rebuilt['join'] ) {
+			return $sql;
+		}
+
+		if ( ! is_string( $first['where'] ?? null ) || '' === $rebuilt['where'] || 1 !== substr_count( $first['where'], $rebuilt['where'] ) ) {
+			return $sql;
+		}
+
+		$condition = Mai_Post_Grid_Query_Optimizer_Sql::condition( $rebuilt, $wpdb->posts, $wpdb->term_relationships, $this->hint );
+		$swapped   = Mai_Post_Grid_Query_Optimizer_Sql::swap( $sql, $rebuilt, $condition, $wpdb->posts );
+
+		if ( null === $swapped ) {
+			return $sql;
+		}
+
+		$this->records[ $owner ] = [
+			'queries' => (int) $wpdb->num_queries,
+			'swapped' => $swapped,
+			'form'    => 'copy' === $entry['role'] ? 'copy' : ( $sql === $entry['split'] ? 'split' : 'full' ),
+			'start'   => microtime( true ),
+		];
+
+		return $swapped;
+	}
+
+	/**
+	 * Whether the query is a covered shape and every part is as WordPress built it.
+	 *
+	 * @param array    $clauses The clauses after every clause filter.
+	 * @param WP_Query $query   The marked query.
+	 *
+	 * @return bool
+	 */
+	private function covered( array $clauses, WP_Query $query ): bool {
+		global $wpdb;
+
+		$role  = $query->mai_optimize;
+		$first = $query->mai_optimize_first ?? null;
+
+		if ( ! in_array( $role, [ 'grid', 'copy' ], true ) || ! is_array( $first ) ) {
+			return false;
+		}
+
+		foreach ( self::PARTS as $part ) {
+			if ( ! isset( $first[ $part ] ) || ( $clauses[ $part ] ?? null ) !== $first[ $part ] ) {
+				return false;
+			}
+		}
+
+		$vars    = $query->query_vars;
+		$limits  = $clauses['limits'] ?? '';
+		$orderby = $clauses['orderby'] ?? null;
+
+		return '' === ( $vars['s'] ?? '' )
+			&& $query->meta_query instanceof WP_Meta_Query
+			&& empty( $query->meta_query->queries )
+			&& ! empty( $vars['no_found_rows'] )
+			&& is_string( $limits )
+			&& '' !== $limits
+			&& '' === $first['distinct']
+			&& ( 'copy' === $role ? "{$wpdb->posts}.ID" : "{$wpdb->posts}.*" ) === $first['fields']
+			&& "{$wpdb->posts}.ID" === $first['groupby']
+			&& '' !== $first['join']
+			&& is_string( $orderby )
+			&& Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $orderby, $wpdb->posts )
+			&& $query->tax_query instanceof WP_Tax_Query
+			&& ! empty( $query->tax_query->queries );
+	}
+
+	/**
+	 * Removes and returns the most recent prepared swap whose text equals the statement.
+	 *
+	 * @param string $sql The statement.
+	 *
+	 * @return array{owner:WP_Query,original:string,split:?string,role:string}|null
+	 */
+	private function take( string $sql ): ?array {
+		for ( $i = count( $this->prepared ) - 1; $i >= 0; $i-- ) {
+			$entry = $this->prepared[ $i ];
+
+			if ( $sql === $entry['original'] || $sql === $entry['split'] ) {
+				array_splice( $this->prepared, $i, 1 );
+
+				return $entry;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * WordPress's taxonomy SQL for a query, rebuilt once per request.
+	 *
+	 * Keyed by the tax filters and the posts table, never by the query object, so a grid and its
+	 * copy share one rebuild and two grids never do.
+	 *
+	 * @param WP_Query $query       The query.
+	 * @param string   $posts_table The posts table name.
+	 *
+	 * @return array|null What Mai_Post_Grid_Query_Optimizer_Sql::rebuild() returned.
+	 */
+	private function rebuild( WP_Query $query, string $posts_table ): ?array {
+		if ( ! $query->tax_query instanceof WP_Tax_Query ) {
 			return null;
 		}
 
-		$clause = reset( $clauses );
+		$key = md5( serialize( $query->tax_query->queries ) ) . $posts_table;
 
-		if ( ! is_array( $clause ) || isset( $clause['relation'] ) ) {
-			return null; // nested clause group, not first-order.
+		if ( ! array_key_exists( $key, $this->rebuilds ) ) {
+			$this->rebuilds[ $key ] = Mai_Post_Grid_Query_Optimizer_Sql::rebuild( $query->tax_query, $posts_table );
 		}
 
-		$operator = strtoupper( (string) ( $clause['operator'] ?? 'IN' ) );
-		$terms    = $clause['terms'] ?? [];
+		return $this->rebuilds[ $key ];
+	}
 
-		$is_simple = 'IN' === $operator
-			&& is_string( $clause['taxonomy'] ?? null )
-			&& is_array( $terms )
-			&& [] !== $terms;
+	/**
+	 * Whether the swap is allowed by the filter, read once per request.
+	 *
+	 * @return bool
+	 */
+	private function allowed(): bool {
+		return $this->allowed ??= (bool) apply_filters( self::FILTER, true );
+	}
 
-		return $is_simple ? $clause : null;
+	/**
+	 * The default logger. Writes the line to the debug log when WP_DEBUG_LOG is on.
+	 *
+	 * @param string $message The message.
+	 *
+	 * @return void
+	 */
+	private static function log( string $message ): void {
+		if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+			error_log( 'Mai Engine: ' . $message );
+		}
 	}
 }

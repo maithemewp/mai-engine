@@ -487,11 +487,6 @@ class Mai_Query_Cache {
 			$cacheable = false;
 		}
 
-		// Optimizer already made this a post__in fast path (marker present, no meta JOIN).
-		if ( isset( $query_vars['mai_post_grid_tt_ids'] ) && empty( $query_vars['meta_query'] ) ) {
-			$cacheable = false;
-		}
-
 		// Caching a random order defeats it, so both spellings must match: Mai_Grid emits the
 		// bare string 'rand' from the Order By setting, and WP_Query also accepts the seeded
 		// 'RAND(123)' form.

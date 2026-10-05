@@ -55,4 +55,4 @@ Unknown and worth establishing before picking this up: **how many of the ~200 cl
 
 - `.claude` memory: `project-grid-cache-key-shatter` (the measured `post__not_in` key shatter and its fix)
 - `docs/specs/2026-06-26-grid-result-cache-design.md`
-- `lib/classes/class-mai-post-grid-query-optimizer.php:44-47` already bails on `ep_integrate` for the same reason
+- The grid query optimizer (`lib/classes/class-mai-post-grid-query-optimizer.php`) never sees ElasticPress grids, because ElasticPress answers them at `posts_pre_query` and no statement is sent.

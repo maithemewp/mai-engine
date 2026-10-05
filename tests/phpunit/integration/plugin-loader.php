@@ -45,6 +45,13 @@ spl_autoload_register(
 	}
 );
 
+// Mirrors mai_register_post_grid_query_optimizer() in lib/functions/performance.php, which this
+// file cannot load. Tests never call register() themselves.
+add_action( 'init', static fn() => Mai_Post_Grid_Query_Optimizer::instance()->register(), 9 );
+
+// The lowest MariaDB that may take the faster query. The Docker runs set it to test MariaDB.
+Mai_Post_Grid_Query_Optimizer_Database::$mariadb_min = (string) ( getenv( 'WP_TESTS_MARIADB_MIN' ) ?: Mai_Post_Grid_Query_Optimizer_Database::$mariadb_min );
+
 // Mai_Grid::__construct() calls get_sanitized_args() and get_defaults(), which need the
 // display, layout and query field helpers. These declare functions and register ACF hooks;
 // they do not need Genesis.

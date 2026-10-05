@@ -924,11 +924,11 @@ class Mai_Grid {
 
 		// No point paying for this on a grid whose result will not be cached: the whole
 		// benefit is a shared cache entry. Covers the mai_post_grid_cache opt-out, plus
-		// everything Mai_Query_Cache refuses (ElasticPress, random order, the optimizer's
-		// fast path), plus a store that cannot write at all (SCRIPT_DEBUG, or the
-		// mai_can_cache filter). Calling is_cacheable() rather than restating its rules means
-		// the two cannot drift apart. It fires the mai_query_cache filter a second time for
-		// this query, which is harmless for a filter that only answers a question.
+		// everything Mai_Query_Cache refuses (ElasticPress, random order), plus a store that
+		// cannot write at all (SCRIPT_DEBUG, or the mai_can_cache filter). Calling
+		// is_cacheable() rather than restating its rules means the two cannot drift apart. It
+		// fires the mai_query_cache filter a second time for this query, which is harmless for
+		// a filter that only answers a question.
 		if ( empty( $query_args['mai_cache'] ) ) {
 			$can = false;
 		}
