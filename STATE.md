@@ -2,29 +2,35 @@
 Updated: 2026-10-04 by Claude
 
 ## Now
-2.41.0-beta.5 is released. `npm run beta` pushed `develop` and `beta` on 2026-10-04 (commit `6cd628ef3`, "Beta release"). It ships the grid cache work and mai-cache 0.6.0, loaded by mai-package-loader 0.1.0.
+Spec drafted for cheaper "current category" grid queries: `docs/specs/2026-10-04-grid-category-query-rewrite.md`. Waiting for Mike's review. No code written.
 
-- Spec: `docs/specs/2026-10-01-grid-cache-beta-5.md`. Local verification is under "Results", and two accepted costs are under "Risks". Plan: `docs/plans/2026-10-01-grid-cache-beta-5.md`.
-- `develop` has local commits not on GitHub: STATE.md updates and the `installed.php` reference lines that `npm run beta`'s closing `composer install` rewrote. They go out with the next push.
-- The working ledger and raw measurements stay in `.superpowers/sdd/2026-10-01-grid-cache-beta-5/` and `/tmp/t14-*` (git-ignored) until Mike decides whether to keep them.
+- Mai's ID-only grid copy would send an `EXISTS` form instead of WordPress's join plus `GROUP BY`, only when every check proves no plugin touched the SQL. Off by default (`mai_query_cache_tax_exists`).
+- Mike decided (2026-10-04): test MariaDB too, and give it the rewrite only on versions that pass. He wants nothing fragile or brittle.
+- Read-only findings are in the spec under "What we found": live eurweb's MySQL 8.0.46 picks the fast plan, the registry is all MySQL 8.0.45+, and no fleet plugin would break the swap.
+
+2.41.0-beta.5 is released and live on larrybrownsports.com and eurweb.com since 2026-10-04 (spec `docs/specs/2026-10-01-grid-cache-beta-5.md`).
 
 ## Next
-1. Watch beta.5 on real sites: PHP error logs, page timings, and grids showing the right posts after a save. Live larrybrownsports.com and eurweb.com run beta.5 since 2026-10-04 (`mai-sites push <site> .` from this repo, then `mai-sites run <site> -- wp mai flush`, because a push skips the flush a plugin update does). Both checked healthy after the flush.
-2. Before 2.41.0 final, check MySQL's buffer pool size on the main hosts (`TODO.md`, spec Risks).
-3. Next piece of work: make "current category" grid queries cheap on big sites, safely, with fallbacks. Read `docs/ideas/2026-10-04-grid-related-posts-query-cost.md` (measured problem, two fixes, the fallback design Mike asked for). Start with its read-only steps: one `EXPLAIN` on live eurweb through `mai-sites run`, and a fleet scan for plugins hooking the SQL clause filters. Then a spec in `docs/specs/` before any code.
-4. The rest of `TODO.md`: refresh every grid after the page (an idea to test), the local deployable-guard update, and the loader's self-version compare.
+1. Mike reviews the spec. On approval, write the plan in `docs/plans/` with the writing-plans skill.
+2. Build per the plan: tests first, then the Docker runs (MySQL 8.0, 8.4, MariaDB 10.6, 10.11, 11.4, 11.8) and the speed bar in the spec.
+3. Keep watching beta.5 on live: PHP error logs, page timings, grids showing the right posts after a save.
+4. Before 2.41.0 final, check MySQL's buffer pool size on the main hosts (`TODO.md`, beta.5 spec Risks).
+5. The rest of `TODO.md`.
 
 ## Blocked / waiting on
-- Hindsight is switched off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json` (backup `/tmp/hindsight-coding-agent.json.bak`), `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
+- Mike's review of the spec.
+- Hindsight is off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json` (backup `/tmp/hindsight-coding-agent.json.bak`), `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
 
 ## Verify
 - Mai Engine: `composer test-unit` (235, 11 skipped libxml goldens) and `composer test-integration` (245). Both pass with `--order-by=random`.
-- `php vendor/bin/deployable-guard check` passes. `vendor/composer/autoload_files.php` loads `maithemewp/mai-package-loader/init.php`, not mai-cache's old `init.php`.
-- Local sites load `Mai\Cache\Cache` from this repo's `vendor/`: `wp eval 'echo (new ReflectionClass("Mai\\Cache\\Cache"))->getFileName();'`.
+- `php vendor/bin/deployable-guard check` passes.
+- Integration tests take the database from `WP_TESTS_DB_HOST` (and `_NAME`, `_USER`, `_PASS`), so the same suite can point at a Docker container.
 
 ## Gotchas
-- `npm run beta` ends with `composer install`, which leaves a dev autoloader in the working tree and rewrites two `reference` lines in `vendor/composer/installed.php`. Run `composer dump-autoload --no-dev` to restore the committed autoloader. Commit the `installed.php` lines with the next change, as deployable-guard's README says.
-- The committed autoloader must be no-dev. A dev autoloader crashes every site (a876863db, fixed by 4c8c6131e).
-- Speed tests follow `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`: `wp-config.php` backup and `cmp` restore, load under 20, never `wp cache flush` on Redis sites, `/bin/rm` for temp files.
-- Switching a site between 2.40.1 and beta.5 orphans beta.5 notes. Clean up with `delete_transient()` then `mai_cache( 'grid' )->flush()`.
-- `run_queue()` catches `Throwable`, so assertions inside hook callbacks during a job are swallowed. Assert after `run_queue()` returns.
+- `WP_Query` has a magic `__get()`, so `$query->prop['key'] = $value` on an unset property is silently dropped. Assign whole values.
+- `WP_Tax_Query::get_sql()` never resets its alias list. Build a fresh `WP_Tax_Query` to get core's tax SQL again.
+- Local eurweb and larrybrownsports run `SCRIPT_DEBUG` true, so mai-cache refuses to store and no grid defers or runs a copy. Any probe follows `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`: back up `wp-config.php`, set `WP_DEVELOPMENT_MODE` `''` and `SCRIPT_DEBUG` false, restore with `cp`, check with `cmp`.
+- Never `wp cache flush` on Redis sites. Use `mai_cache( 'grid' )->flush()` through `wp eval`.
+- `mai-sites run` treats `wp db query "DESCRIBE ..."` as a read. `EXPLAIN` is not on its read list, and `DESCRIBE` is the same statement in MySQL.
+- `npm run beta` ends with `composer install`, which leaves a dev autoloader. Run `composer dump-autoload --no-dev`. The committed autoloader must be no-dev, or every site crashes.
+- Scratch from 2026-10-04 in `/tmp/t15-*` (live EXPLAIN output, probes, `wp-config.php` backups). Safe to delete once the spec is approved.
