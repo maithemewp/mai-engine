@@ -261,13 +261,20 @@ class Mai_Grid {
 					$asked     = $this->query_args;
 					$keep      = null;
 
+					// Ties in the sort break by post ID, newest first, for every grid that does
+					// not count rows. Mai Load More counts them, so it is left out. Its next
+					// pages run from the saved args, which never carry the marker, so the first
+					// page would break ties by ID and the pages after it would not.
+					if ( ! empty( $asked['no_found_rows'] ) ) {
+						$this->query_args['mai_grid_tiebreak'] = true;
+					}
+
 					if ( $defer ) {
 						// Keep the per-view ids out of the SQL so every page sharing this
 						// grid's filters shares one cache entry, and ask for enough extra
 						// rows that the grid still fills once they are dropped.
-						$this->query_args['post__not_in']      = array_values( array_diff( $asked['post__not_in'], $effective ) );
-						$this->query_args['posts_per_page']    = $asked['posts_per_page'] + count( $effective );
-						$this->query_args['mai_grid_tiebreak'] = true;
+						$this->query_args['post__not_in']   = array_values( array_diff( $asked['post__not_in'], $effective ) );
+						$this->query_args['posts_per_page'] = $asked['posts_per_page'] + count( $effective );
 
 						// Mai_Query_Cache reads this in posts_pre_query and answers with only
 						// the posts that will be shown, so the rest are never loaded.
@@ -296,6 +303,13 @@ class Mai_Grid {
 					}
 
 					$query->query( $this->query_args );
+
+					// The marker has done its work. Take it off the query and the args for every
+					// grid, so nothing that reads them later, such as Mai Load More, which
+					// serializes the query's args and runs them again, finds it there.
+					unset( $query->query_vars['mai_grid_tiebreak'], $query->query['mai_grid_tiebreak'] );
+
+					$this->query_args = $asked;
 
 					if ( $defer ) {
 						// Mai_Query_Cache already dropped the excludes and kept the asked count,
@@ -377,13 +391,7 @@ class Mai_Grid {
 							unset( $query->query['cache_results'] );
 						}
 
-						unset(
-							$query->query_vars['mai_grid_tiebreak'],
-							$query->query['mai_grid_tiebreak'],
-							$query->mai_grid_keep
-						);
-
-						$this->query_args = $asked;
+						unset( $query->mai_grid_keep );
 
 						// Core left $query->post pointing at the unfiltered first post, which
 						// with exclude_current is very often the post being excluded.
@@ -1068,29 +1076,36 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Appends a post ID tiebreaker to a deferred grid's ORDER BY.
+	 * Appends a post ID tiebreaker to a grid's ORDER BY: always `{posts}.ID DESC`.
+	 *
+	 * Every post grid that does not count rows gets this, deferring its excludes or not. Mai Load
+	 * More counts rows, so its grids do not. get_query() asks for it with the mai_grid_tiebreak
+	 * query var, and removes the var again once the query has run.
 	 *
 	 * Public only because mai_add_grid_orderby_tiebreaker() calls it. That function is registered
 	 * once on posts_orderby, in mai_register_query_cache(), and it stays registered. It only
-	 * calls this for a query carrying the mai_grid_tiebreak query var that get_query() sets, so
-	 * Mai_Grid is not loaded for any other query and this cannot reach into one. Staying
-	 * registered means an ID-only copy of a grid's query, run after the page by
-	 * Mai_Query_Cache, gets the same ORDER BY as the grid did.
+	 * calls this for a query carrying the mai_grid_tiebreak query var, so Mai_Grid is not loaded
+	 * for any other query and this cannot reach into one. Staying registered means an ID-only
+	 * copy of a grid's query, run after the page by Mai_Query_Cache, gets the same ORDER BY as
+	 * the grid did.
 	 *
-	 * Why it is needed: the deferred path asks for posts_per_page + N rows. When rows tie on
-	 * the sort column, MySQL's LIMIT-aware sort is free to keep different ones for different
-	 * LIMITs, and it is free to answer differently between two runs of the same statement.
-	 * Measured on larrybrownsports with comment_count ordering, where 134,207 of 145,646 posts
-	 * tie at zero: across 120 grid renders, 20 differed between a LIMIT 6 and a LIMIT 13 read
-	 * of the same grid, 5 of them returning genuinely different posts rather than a reshuffle.
+	 * Why it is needed: when rows tie on the sort column, MySQL is free to answer differently for
+	 * different LIMITs, and between two runs of the same statement. A deferring grid asks for
+	 * posts_per_page + N rows, so it hits that directly. Measured on larrybrownsports with
+	 * comment_count ordering, where 134,207 of 145,646 posts tie at zero: across 120 grid
+	 * renders, 20 differed between a LIMIT 6 and a LIMIT 13 read of the same grid, 5 of them
+	 * returning genuinely different posts rather than a reshuffle. The faster taxonomy query
+	 * (Mai_Post_Grid_Query_Optimizer) also needs an order with no ties before it can promise the
+	 * same posts as the statement it replaces.
 	 *
-	 * What this buys is a stable answer, not the same answer as before. It is applied only to
-	 * the deferred query, so on tied rows a deferring grid can legitimately show different
-	 * posts than the same grid with deferring off. That is the accepted trade: today's order
-	 * among tied rows is arbitrary and can change between page loads, and this makes it fixed.
+	 * Ties always show newest first, whatever the direction of the sort. A grid sorted by a field
+	 * nobody filled in, such as menu order on a site that never used it, then reads like a plain
+	 * latest posts list. What this buys is a fixed answer, which can differ from what the
+	 * database picked before among tied rows.
 	 *
 	 * @since 2.41.0
 	 * @since 2.41.0 Static, and registered once instead of around each grid's query.
+	 * @since 2.41.0 Always DESC, and applied to every grid that does not count rows.
 	 *
 	 * @param string   $orderby The ORDER BY clause.
 	 * @param WP_Query $query   The query.
@@ -1115,11 +1130,7 @@ class Mai_Grid {
 			return $orderby;
 		}
 
-		// Match the direction the last sort key uses, so the tiebreaker reads as a
-		// continuation of what the editor asked for rather than a reversal of it.
-		$direction = preg_match( '/\b(ASC|DESC)\s*$/i', trim( $orderby ), $matches ) ? strtoupper( $matches[1] ) : 'DESC';
-
-		return $orderby . ", {$wpdb->posts}.ID " . $direction;
+		return $orderby . ", {$wpdb->posts}.ID DESC";
 	}
 
 	/**

@@ -250,11 +250,8 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * What the tiebreaker actually buys: the same answer every time.
-	 *
-	 * Do NOT assert equality with the undeferred path here. The tiebreaker is added only to
-	 * the deferred query, so on tied rows the two paths legitimately return different posts.
-	 * That is the accepted behavior change, pinned by the next test.
+	 * What the tiebreaker actually buys: the same answer every time. The next test pins that
+	 * the undeferred path gives that same answer.
 	 */
 	public function test_tied_posts_come_back_in_a_stable_order(): void {
 		$this->make_everything_tie();
@@ -266,7 +263,7 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->assertSame( $first, $second );
 		$this->assertCount( 3, $first );
 
-		// Highest ids win, because the sort is DESC and the tiebreaker follows it.
+		// Highest ids win, because tied posts come back newest first.
 		$expected = array_slice( array_reverse( array_diff( $this->post_ids, [ $this->post_ids[0] ] ) ), 0, 3 );
 		sort( $expected );
 		$actual = $first;
@@ -276,14 +273,11 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * Pins the accepted behavior change so a future reader sees it was deliberate.
-	 *
-	 * On rows that tie, a deferring grid can show different posts than the same grid with
-	 * deferring off. Today's order among tied rows is whatever MySQL felt like and can vary
-	 * between page loads; the deferred order is fixed. This test asserts only that both
-	 * return a full grid of valid posts, not that they match.
+	 * On rows that tie, a deferring grid shows the same posts as the same grid with deferring
+	 * off, because both end their order with the ID tiebreaker. Before every grid had it, the
+	 * undeferred order among tied rows was whatever MySQL felt like.
 	 */
-	public function test_tied_posts_may_differ_from_the_undeferred_path(): void {
+	public function test_tied_posts_match_the_undeferred_path(): void {
 		$this->make_everything_tie();
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
 
@@ -291,28 +285,33 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$plain    = $this->ids( $this->undeferred( $this->grid_args() ) );
 
 		$this->assertCount( 3, $deferred );
-		$this->assertCount( 3, $plain );
 		$this->assertNotContains( $this->post_ids[0], $deferred );
-		$this->assertNotContains( $this->post_ids[0], $plain );
 		$this->assertSame( [], array_diff( $deferred, $this->post_ids ) );
+		$this->assertSame( $plain, $deferred );
 	}
 
-	public function test_tiebreaker_follows_the_requested_direction(): void {
+	public function test_tiebreaker_is_newest_first_whatever_the_direction(): void {
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
 
 		$query = ( new Mai_Grid( $this->grid_args( [ 'order' => 'ASC' ] ) ) )->get_query();
 
-		$this->assertStringContainsString( '.ID ASC', $query->request );
+		$this->assertStringContainsString( 'LIMIT 0, 4', $query->request, 'must actually have deferred' );
+		$this->assertStringContainsString( 'post_date ASC, ', $query->request, 'the sort itself is ascending' );
+		$this->assertStringContainsString( '.ID DESC', $query->request );
+		$this->assertStringNotContainsString( '.ID ASC', $query->request );
 	}
 
-	public function test_tiebreaker_is_not_applied_to_an_undeferred_grid(): void {
+	public function test_tiebreaker_is_applied_to_an_undeferred_grid(): void {
 		$this->go_to( get_permalink( $this->post_ids[0] ) );
 
-		// Prove the same grid does get a tiebreaker when it defers, or the assertion below
-		// passes for the wrong reason: with the feature off, nothing adds one anywhere.
+		// Prove the same grid does get a tiebreaker when it defers, so the assertion below
+		// cannot pass with the tiebreaker switched off everywhere.
 		$this->assertStringContainsString( '.ID DESC', ( new Mai_Grid( $this->grid_args() ) )->get_query()->request );
 
-		$this->assertStringNotContainsString( '.ID DESC', $this->undeferred( $this->grid_args() )->request );
+		$undeferred = $this->undeferred( $this->grid_args() );
+
+		$this->assertStringNotContainsString( 'LIMIT 0, 4', $undeferred->request, 'must not have deferred' );
+		$this->assertStringContainsString( '.ID DESC', $undeferred->request );
 	}
 
 	// ---- The cache key ----

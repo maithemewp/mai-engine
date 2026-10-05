@@ -404,9 +404,20 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 		$this->flush_result_cache();
 		$baseline = $this->ids( $this->run_grid( $args, 'copy_declined' ) );
 
+		// The grid sets mai_grid_keep on its query while it runs only when it defers. The padded
+		// LIMIT cannot tell here, because a grid with nothing to exclude has nothing to pad.
+		$deferred = false;
+		$watch    = static function ( $posts, $query ) use ( &$deferred ) {
+			$deferred = $deferred || isset( $query->mai_grid_keep );
+
+			return $posts;
+		};
+
 		$this->flush_result_cache();
+		add_filter( 'posts_pre_query', $watch, 9, 2 );
 		$miss = $this->run_grid( $args, $path );
-		$hit  = $this->run_grid( $args, $path );
+		remove_filter( 'posts_pre_query', $watch, 9 );
+		$hit = $this->run_grid( $args, $path );
 
 		$this->assertCount( self::PER_PAGE, $baseline, 'every scenario has enough posts left to fill the grid' );
 		$this->assertSame( $baseline, $this->ids( $miss ), 'a miss must show what the fallback shows' );
@@ -415,16 +426,14 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 
 		if ( $prepared['excluded'] ) {
 			$this->assertStringNotContainsString( 'NOT IN', $miss->request, 'must actually have deferred' );
-		} else {
-			// Nothing to exclude, so nothing defers, and every path is the same plain query.
-			$this->assertStringNotContainsString( '.ID DESC', $miss->request, 'a grid with nothing to exclude must not defer' );
 		}
 
-		// Tied rows are the one place the deferred order is allowed to differ from the plain
-		// query, because only the deferred query gets the ID tiebreaker.
-		if ( 'tied' !== $scenario ) {
-			$this->assertSame( $this->ids( $this->undeferred( $args ) ), $baseline );
-		}
+		// Nothing to exclude means nothing defers, and every path is the same plain query.
+		$this->assertSame( (bool) $prepared['excluded'], $deferred, 'a grid defers when it has something to exclude, and only then' );
+
+		// Every grid ends its order with the ID tiebreaker, so tied rows come back in the same
+		// order on every path and in the plain query too.
+		$this->assertSame( $this->ids( $this->undeferred( $args ) ), $baseline );
 	}
 
 	// ---- What posts_results and the_posts see ----
@@ -1292,7 +1301,7 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 		$prepared = $this->prepare( 'displayed_many' );
 		$window   = array_slice( $this->post_ids, 0, self::PER_PAGE + count( $prepared['excluded'] ) );
 
-		// Only the padded query carries the tiebreak marker. The grid's own check runs before it is set.
+		// The grid sets the tiebreak marker after its own check, so only the query as it runs carries it.
 		$decline = static fn( $cacheable, $query_vars ) => isset( $query_vars['mai_grid_tiebreak'] ) ? false : $cacheable;
 
 		$baseline = $this->ids( $this->run_grid( $prepared['args'], 'copy_declined' ) );
@@ -1752,7 +1761,7 @@ final class GridKeptOnlyTest extends MaiIntegrationTestCase {
 			);
 		};
 
-		// Only the padded query carries the tiebreak marker. The grid's own check runs before it is set.
+		// The grid sets the tiebreak marker after its own check, so only the query as it runs carries it.
 		$force = static fn( $cacheable, $query_vars ) => isset( $query_vars['mai_grid_tiebreak'] ) ? true : $cacheable;
 
 		add_action( 'pre_get_posts', $now );

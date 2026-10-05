@@ -151,11 +151,12 @@ final class GridCacheStoreTest extends MaiIntegrationTestCase {
 		remove_action( 'set_transient', $record, 10 );
 		remove_filter( 'posts_fields', $decline, 10 );
 
-		// A deferring grid gets the ID tiebreaker. Without it the path did not happen.
+		// A deferring grid asks for one row more than it shows, for the one entry Exclude current
+		// drops. Without that padded LIMIT the path did not happen.
 		if ( $defer ) {
-			$this->assertStringContainsString( '.ID DESC', $query->request, 'must actually have deferred' );
+			$this->assertStringContainsString( 'LIMIT 0, ' . ( self::PER_PAGE + 1 ), (string) $query->request, 'must actually have deferred' );
 		} else {
-			$this->assertStringNotContainsString( '.ID DESC', $query->request, 'must not have deferred' );
+			$this->assertStringContainsString( 'LIMIT 0, ' . self::PER_PAGE, (string) $query->request, 'must not have deferred' );
 		}
 
 		$this->assertNotSame( '', $key, 'the grid query must have reached the result cache' );

@@ -223,10 +223,12 @@ final class GridCacheDoNotCacheTest extends MaiIntegrationTestCase {
 		remove_filter( 'posts_pre_query', $capture_answer, 11 );
 		remove_filter( 'posts_pre_query', $capture_key, 9 );
 
+		// A deferring grid asks for one row more than it shows, for the entry Exclude current
+		// drops. A grid that does not defer asks for exactly what it shows.
 		if ( 'kept' === $path ) {
-			$this->assertStringContainsString( '.ID DESC', $query->request, 'must actually have deferred' );
+			$this->assertStringContainsString( 'LIMIT 0, ' . ( self::PER_PAGE + 1 ), (string) $query->request, 'must actually have deferred' );
 		} else {
-			$this->assertStringNotContainsString( '.ID DESC', $query->request, 'must not have deferred' );
+			$this->assertStringContainsString( 'LIMIT 0, ' . self::PER_PAGE, (string) $query->request, 'must not have deferred' );
 		}
 
 		$this->assertNotSame( '', $key, 'the grid query must have reached the result cache' );
