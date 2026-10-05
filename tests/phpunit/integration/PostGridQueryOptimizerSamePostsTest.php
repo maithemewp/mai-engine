@@ -14,10 +14,11 @@ use WP_UnitTest_Factory;
  * Every grid the optimizer covers shows the same posts in the same order with the swap on and
  * off.
  *
- * Each case builds the grid through Mai_Grid, as on a page, and renders it twice as a new
- * request: with the filter turning the optimizer off, then on. Between the runs the object
- * cache, Mai's stored grid results and the optimizer's per-request state are cleared, so the
- * second run reads nothing the first one left. A case passes when:
+ * Each case builds the grid through Mai_Grid, as on a page, and renders it as a new request
+ * three times: with the filter turning the optimizer off, then on, then on again with no
+ * taxonomy filter. Between the runs the object cache, Mai's stored grid results and the
+ * optimizer's per-request state are cleared, so a run reads nothing the one before it left. A
+ * case passes when:
  *
  * - both runs show the same post IDs in the same order,
  * - the first run sent no swapped statement and the second sent one,
@@ -126,6 +127,10 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 
 		wp_set_current_user( 0 );
 
+		// The optimizer is one object for the whole process. Drop this test's logger and its
+		// cached checks, so the next test starts as a new request.
+		Mai_Post_Grid_Query_Optimizer::instance()->reset();
+
 		parent::tear_down();
 	}
 
@@ -159,7 +164,7 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * Three shapes with three page sizes, three kinds of excludes and three contexts, by date.
+	 * Four shapes with three page sizes, three kinds of excludes and three contexts, by date.
 	 *
 	 * @return array<string,array{0:array,1:string}>
 	 */
@@ -176,7 +181,7 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 		];
 		$cases    = [];
 
-		foreach ( [ 'big with children', 'big AND tag', 'big IN and small NOT IN' ] as $shape ) {
+		foreach ( [ 'big with children', 'big AND tag', 'big IN and small NOT IN', 'big IN and custom NOT IN' ] as $shape ) {
 			foreach ( [ 2, 32, 200 ] as $per_page ) {
 				foreach ( $excludes as $exclude => $exclude_name ) {
 					foreach ( $contexts as $context => $context_name ) {
@@ -357,6 +362,7 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 		return match ( $shape ) {
 			'big with children', 'big IN and small NOT IN' => $f['posts']['big'],
 			'big AND tag'                                  => array_values( array_intersect( $f['posts']['big'], $f['posts']['tag'] ) ),
+			'big IN and custom NOT IN'                     => array_values( array_diff( $f['posts']['big'], $f['posts']['custom'] ) ),
 			default                                        => throw new LogicException( "No members listed for {$shape}." ),
 		};
 	}
