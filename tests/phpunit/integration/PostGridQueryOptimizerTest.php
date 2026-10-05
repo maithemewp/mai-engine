@@ -342,6 +342,51 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		$this->assertSame( 'failed', $outcome['status'] ?? null );
 	}
 
+	public function test_outcome_reports_a_changed_statement_that_failed_after_another_one(): void {
+		global $wpdb;
+
+		// A later query callback breaks the swapped text and sends a statement of its own, so
+		// neither the count nor the text pins the failure. The query's empty posts do.
+		$done    = false;
+		$breaker = static function ( $sql ) use ( &$done, $wpdb ) {
+			if ( ! $done && is_string( $sql ) && str_contains( $sql, self::SWAP ) ) {
+				$done = true;
+
+				$wpdb->query( 'SELECT 1' );
+
+				return $sql . ' BROKEN';
+			}
+
+			return $sql;
+		};
+
+		add_filter( 'query', $breaker, PHP_INT_MAX );
+
+		$suppress = $wpdb->suppress_errors( true );
+
+		try {
+			$run     = $this->run_marked( [] );
+			$outcome = Mai_Post_Grid_Query_Optimizer::instance()->outcome( $run['query'] );
+		} finally {
+			$wpdb->suppress_errors( $suppress );
+		}
+
+		$this->assertTrue( $done );
+		$this->assertSame( [], $run['ids'] );
+		$this->assertSame( 'failed', $outcome['status'] ?? null );
+		$this->assertSame( 'split', $outcome['form'] ?? null );
+	}
+
+	public function test_outcome_reports_an_empty_swapped_statement_as_ok(): void {
+		$run     = $this->run_marked( [ 'tax_query' => [ [ 'taxonomy' => 'category', 'terms' => [ self::$fixture['empty'] ] ] ] ] );
+		$outcome = Mai_Post_Grid_Query_Optimizer::instance()->outcome( $run['query'] );
+
+		$this->assertCount( 1, self::swapped( $run ) );
+		$this->assertSame( [], $run['ids'] );
+		$this->assertSame( 'ok', $outcome['status'] ?? null );
+		$this->assertSame( 'split', $outcome['form'] ?? null );
+	}
+
 	/** The hooks whose look a second run of the same query loses. */
 	public static function second_run_hooks(): array {
 		return [

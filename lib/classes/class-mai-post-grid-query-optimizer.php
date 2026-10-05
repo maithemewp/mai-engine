@@ -190,9 +190,19 @@ final class Mai_Post_Grid_Query_Optimizer {
 	/**
 	 * How a query's swapped statement went, and forgets it.
 	 *
-	 * Failed means $wpdb has an error, and either exactly one statement ran since the swap or
-	 * the last statement is the swapped text. The count holds whatever later query callbacks did
-	 * to the text. The text holds when a later callback sent a statement of its own.
+	 * Failed means $wpdb has an error, and any of these holds:
+	 *
+	 * - Exactly one statement ran since the swap. This holds whatever later query callbacks did
+	 *   to the text.
+	 * - The last statement is the swapped text. This holds when a later callback sent a
+	 *   statement of its own.
+	 * - The query has no posts and a statement ran since the swap. This holds when a later
+	 *   callback did both. A failed SELECT returns no rows, so an error that comes with an empty
+	 *   result counts against the swap, as Mai_Query_Cache::fetch_ids() counts it against an
+	 *   empty copy. Core has set the query's posts by the time posts_results runs, and when
+	 *   query() returns.
+	 *
+	 * A swapped statement that returns no rows without an error is ok.
 	 *
 	 * @since 2.41.0
 	 *
@@ -212,8 +222,13 @@ final class Mai_Post_Grid_Query_Optimizer {
 
 		unset( $this->records[ $query ] );
 
+		$sent   = (int) $wpdb->num_queries;
 		$failed = '' !== (string) $wpdb->last_error
-			&& ( $record['queries'] + 1 === (int) $wpdb->num_queries || $record['swapped'] === $wpdb->last_query );
+			&& (
+				$record['queries'] + 1 === $sent
+				|| $record['swapped'] === $wpdb->last_query
+				|| ( empty( $query->posts ) && $sent > $record['queries'] )
+			);
 
 		return [
 			'status'  => $failed ? 'failed' : 'ok',
