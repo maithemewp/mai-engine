@@ -142,7 +142,7 @@ There is only a lowest version per database, not a list to keep up to date. A ve
 
 ### 5. If a swapped statement fails or is slow
 
-When Mai swaps a statement, it records `$wpdb->num_queries`, the swapped text and the owner query. The swapped statement failed when `$wpdb->last_error` is set and either `$wpdb->num_queries` is exactly one more than recorded or `$wpdb->last_query` is the swapped text. The count holds whatever later `query` callbacks did to the text. The text holds when a later callback sent a statement of its own, or `$wpdb` reconnected and sent it twice. Either way the failure is pinned on the right query.
+When Mai swaps a statement, it records `$wpdb->num_queries`, the swapped text and the owner query. The swapped statement failed when `$wpdb->last_error` is set and either `$wpdb->num_queries` is exactly one more than recorded, or `$wpdb->last_query` is the swapped text, or the query got no rows and at least one statement was sent since the swap. The last rule is the one Mai's ID-only copy already uses today for an empty copy, and it catches a plugin that both rewrites the statement and sends its own. The count holds whatever later `query` callbacks did to the text. The text holds when a later callback sent a statement of its own, or `$wpdb` reconnected and sent it twice. Either way the failure is pinned on the right query.
 
 The 24-hour transient is read once per request, inside the `query` callback right before the first swap, and before the statement count is recorded, since on a site without a persistent object cache the read is a statement of its own.
 
