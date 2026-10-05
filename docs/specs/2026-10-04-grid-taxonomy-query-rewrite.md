@@ -1,6 +1,6 @@
 # Grids: cheaper taxonomy queries on big sites
 
-Status: built on the `grid-taxonomy-optimizer` branch and measured on local eurweb (MySQL 9.7.1, 2026-10-05, see "Results"), then revised after the whole-branch review. Task 8, the runs in Docker on MySQL 8.0 and 8.4 and on MariaDB, is still to come. It sets the MariaDB minimum and confirms the MySQL one. Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
+Status: built on the `grid-taxonomy-optimizer` branch and measured on local eurweb (MySQL 9.7.1, 2026-10-05, see "Results"), then revised after the whole-branch review, then measured in Docker on MySQL 8.0.16 to 8.4.11 and MariaDB 10.6 to 11.8 (2026-10-05, see "Results"). MySQL from 8.0.16 is confirmed, and MariaDB stays off. Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
 
 ## Why
 
@@ -136,8 +136,8 @@ Mai checks only when a swap is about to happen. The checks send no statement, so
 - **The database layer must be WordPress's own `wpdb` or Query Monitor's `QM_DB`,** which passes every statement through unchanged (`classes/DB.php`). Any other drop-in steps aside. That covers:
   - W3 Total Cache's database cache, which stores results under the text before the `query` filter, failures included. One failed swap could leave a grid empty until its cache expired.
   - HyperDB, LudicrousDB, the SQLite plugin, and anything unknown.
-- **MySQL from 8.0.16.** Live eurweb's 8.0.46 already picks the fast plan (section "What we found"). Version strings marked `sqlite`, `Vitess` or `TiDB` are not MySQL and step aside.
-- **MariaDB from the lowest tested version that passes** (section "Measurements"), provided every tested version above it passes too. Otherwise MariaDB keeps today's statement. Its version is the first `X.Y.Z` after an optional `5.5.5-` prefix (`5.5.5-10.11.6-MariaDB`). `$wpdb->db_version()` alone would read that as 5.5.5.
+- **MySQL from 8.0.16.** Live eurweb's 8.0.46 already picks the fast plan (section "What we found"). In Docker, 8.0.16, 8.0.28, 8.0.46 and 8.4.11 all met the bar (section "Results"). Version strings marked `sqlite`, `Vitess` or `TiDB` are not MySQL and step aside.
+- **MariaDB from the lowest tested version that passes** (section "Measurements"), provided every tested version above it passes too. Otherwise MariaDB keeps today's statement. No version passed in the Docker runs of 2026-10-05 (section "Results"), so MariaDB keeps today's statement for now. Its version is the first `X.Y.Z` after an optional `5.5.5-` prefix (`5.5.5-10.11.6-MariaDB`). `$wpdb->db_version()` alone would read that as 5.5.5.
 - **mysqli must not be in exception mode** (`MYSQLI_REPORT_STRICT`). WordPress turns it off when it connects (`mysqli_report( MYSQLI_REPORT_OFF )` in `wpdb::db_connect()`, `class-wpdb.php:1966`), but any code can turn it back on. A failed swapped statement would then throw out of `WP_Query`, before Mai could send it again.
 - **Anything else steps aside,** including when `db_server_info()` returns `false` or an empty string, or throws. Core throws when the connection is not mysqli (`class-wpdb.php:4218-4220`), so the read is wrapped in `try`/`catch ( Throwable )`. A MariaDB minimum that is not written as `X.Y.Z` keeps MariaDB off.
 
@@ -195,7 +195,7 @@ On a failure, in this order:
 - Grids that defer their excludes, and grids without excludes.
 - One or more taxonomy filters, joined with AND, or joined with OR when all are `IN` and share one table. `NOT IN`, `AND` and `EXISTS` filters can sit next to `IN` filters under AND.
 - Any taxonomy: categories, tags and custom taxonomies, such as recipe or product categories (Mike, 2026-10-04). They all use the same table, so the SQL is the same.
-- Sorted by date, author or ID, with the ID tiebreaker. Title, slug, modified date, menu order and comment count sorts were slower on a mid-size category in the speed test, so they keep today's statement (measured on MySQL 9.7.1, 2026-10-05).
+- Sorted by date, author or ID, with the ID tiebreaker. Title, slug, modified date, menu order and comment count sorts were slower on a mid-size category in the speed test, so they keep today's statement (measured on MySQL 9.7.1, 2026-10-05). Date, author and ID sorts met the bar on every MySQL version in the Docker runs.
 
 **Not covered, so today's statement:**
 
@@ -309,12 +309,13 @@ No release, tag or push without Mike asking.
 - **A WordPress update changes how core writes this SQL.** The checks stop matching and sites quietly keep today's speed. The "swap happens" tests catch it on the next test run.
 - **A brief database problem during a swapped statement turns the swap off for a day.** It costs only the speedup on that site.
 - **The tiebreaker changes which tied posts show** on grids that did not have it. See "Ties".
+- **A post with an invalid date can move.** A post whose `post_date` has a zero day or month, such as `2007-03-00`, can sit in a different place in the faster query than in today's. WordPress refuses such dates today, but old imports can carry them. A grid whose window reaches that post can show it somewhere else, or not at all. Its place already depends on the database's plan in WordPress's own queries. Mike accepted this on 2026-10-05. Post 203 on larrybrownsports is the one known case, and it is being fixed on live.
 
 ## Results
 
 ### Whole pages on local eurweb (2026-10-05)
 
-**A fully cold article view is about 1.8 s faster with the swap on.** With every note current, no difference showed above noise. This section covers local eurweb only, which runs MySQL 9.7.1. The results on MySQL 8.0, 8.4 and MariaDB come later, from the Docker runs (Task 8), and are not in this section.
+**A fully cold article view is about 1.8 s faster with the swap on.** With every note current, no difference showed above noise. This section covers local eurweb only, which runs MySQL 9.7.1. The results on MySQL 8.0, 8.4 and MariaDB are in the next section.
 
 **Numbers.** Medians in milliseconds, time to first byte, with 95% bootstrap intervals in square brackets. "Off minus on" is the time the swap saves.
 
@@ -350,3 +351,70 @@ No release, tag or push without Mike asking.
 **Machine load.** The 1-minute load average at the start and end of each run, all under 20 at the start: cold articles 7.84 and 8.99, warm home page 8.99 and 7.70, warm article 7.32 and 7.19, cold home page 7.19 and 14.92, cold article 14.92 and 7.60, warm home page repeat 6.36 and 7.03, warm article repeat 7.03 and 9.57. The earlier run on beta.5 sat near 4. The off arm took 3.58 s here against 2.96 s then, and a warm article view took 1.37 s against 1.05 s. I think the busier machine explains that, but I did not test it. The comparison inside this section is unaffected, since both arms alternated through the same minutes.
 
 **One stall.** In the repeat of the warm article run, five requests in a row took 2.6, 7.6, 33.4, 29.5 and 2.7 s, and the third was a 502 on the off arm (nginx: `upstream prematurely closed connection`). I did not find the cause. I kept those rows, because medians resist them. Dropping the two pairs they touch moves the pooled article difference from +11 to +13 ms.
+
+### Databases in Docker (2026-10-05)
+
+**MySQL 8.0.16 to 8.4.11 met the bar on every statement and returned the same posts on every site, apart from the one known invalid date. MariaDB 10.6 to 11.8 returned the same posts too, but grids sorted by ID were far slower swapped, so MariaDB stays off.**
+
+**Setup.**
+
+- **Docker:** Docker Desktop, engine 24.0.7, 10 CPUs and 8 GB for its VM, on an arm64 Mac. One container at a time on port 3380, each started with `--innodb-buffer-pool-size=2G` and removed with its volume before the next. Every `@@innodb_buffer_pool_size` read 2,147,483,648.
+- **Data:** the posts, term relationships and term taxonomy tables of local eurweb (223,510 posts rows, 896 MB with indexes), local larrybrownsports (201,094 rows) and local livingwaterguidewp, the small site (121 published posts in 7 categories, 1,982 rows). The small site's tables are MyISAM, as on the local copy, so it ran twice per database: as dumped, and as an InnoDB copy. Every import's row counts matched the local tables.
+- **Statements:** captured on one article and the home page of each site after the tiebreaker change, plus the synthetic set. Pairs per site: eurweb 224, larrybrownsports 182, small site 175. Each statement ran at its own `LIMIT`, at `LIMIT` 2, 32 and 1000, and with no `LIMIT` (IDs only).
+- **The bar:** today's median plus 2 ms or 10%, whichever is larger, 10 timed runs of each form, alternating.
+- **Machine load:** the 1-minute load average stayed between 3.4 and 9.9 for every run, under the limit of 20.
+- **Tools and raw data:** `bin/grid-optimizer-probe.php`, `bin/grid-optimizer-pairs.php` and `bin/grid-optimizer-replay.php`. The full numbers and plans were kept in `/tmp/task8-opt/`, not in the repository.
+
+**Expected, on every database:**
+
+- **eurweb:** 4 empty pairs, `mai_display` term 193304, which has no posts in this data.
+- **The small site:** 5 empty pairs, `mid AND tag`. The one tagged post is not in the mid-size category.
+- **larrybrownsports on MySQL:** one known difference, `29 terms | no LIMIT`, caused only by post 203 and its invalid date (section "Risks"). MariaDB ordered post 203 the same way in both forms.
+
+**Integration suite** (`WP_TESTS_DB_HOST=127.0.0.1:3380`, and `WP_TESTS_MARIADB_MIN=10.6.0` on MariaDB, so the swap was on in the tests):
+
+- **MySQL 8.4.11, MySQL 8.0.46, MariaDB 10.6.28 and MariaDB 10.11.19:** OK, 663 tests.
+- **MySQL 8.0.28, MySQL 8.0.16, MariaDB 11.4.13 and MariaDB 11.8.9:** 663 tests, 2 failures, both in `GridCacheAfterPageTest`: `test_failed_copy_statement_on_an_empty_grid_stores_nothing` and `test_failed_copy_statement_on_an_aged_empty_entry_deletes_it`.
+  - Both turn the swap off and make a statement fail with `max_join_size = 1`, which depends on the server's row estimate for an empty grid.
+  - They fail the same way at `ce73a9f52`, where this branch left `develop`, on the same containers. So they were already broken on these versions, and are not caused by this change.
+  - Every optimizer test passed on every version.
+
+**MySQL, all met the bar.** Each line is one database. Its numbers are eurweb / larrybrownsports / small site MyISAM / small site InnoDB, with the article statements today against swapped in ms (the six heavy grids, own `LIMIT` 2 to 32).
+
+- **MySQL 8.4.11:** bar met 178 / 146 / 136 / 136, missed 0, IDs differ 0, weedout 0. Article statements 204.69 to 212.81 against 0.99 to 1.15.
+- **MySQL 8.0.46** (latest 8.0): bar met 178 / 146 / 136 / 136, missed 0, IDs differ 0, weedout 0. Article statements 226.35 to 245.32 against 1.08 to 1.33.
+- **MySQL 8.0.28** (oldest 8.0 image for arm64): bar met 178 / 146 / 136 / 136, missed 0, IDs differ 0, weedout 0. Article statements 219.35 to 222.03 against 1.09 to 1.22.
+- **MySQL 8.0.16, emulated** (amd64 image, `@@version_compile_machine` x86_64): bar met 178 / 146 / 136 / 136, missed 0, IDs differ 0. Article statements 347.25 to 363.51 against 1.25 to 1.51. Emulation slows both forms alike.
+  - **Weedout, checked another way.** `EXPLAIN FORMAT=TREE` on 8.0.16 cannot print 228 of the swapped plans (`<not executable by iterator executor>`). So every swapped statement was also run through classic `EXPLAIN`, where duplicate weedout shows as `Start temporary` and `End temporary`.
+  - **Result: 0 weedout in 756 statements.** The check does show it on a statement forced to `SEMIJOIN(DUPSWEEDOUT)`.
+
+**MariaDB, all missed on ID sorts.** Every date and author pair, and every larrybrownsports and small-site pair, met the bar. The same 11 eurweb pairs missed on all four versions, all sorted by ID. Today walks the primary key and stops after a few posts. Swapped, MariaDB first reads every matching term row into a temporary table (about 500,000 rows for the biggest category).
+
+The misses, today against swapped in ms:
+
+- **MariaDB 10.6.28:**
+  - `big, ID ASC`: 1.05 / 49.19 (own 12), 0.96 / 48.60 (2), 1.11 / 48.95 (32), 3.16 / 50.67 (1000).
+  - `big, ID DESC`: 0.89 / 48.95, 0.80 / 48.77, 0.87 / 49.68, 4.31 / 51.21.
+  - `mid, ID DESC`: 0.71 / 6.00, 0.55 / 5.74, 1.14 / 6.62.
+  - Article statements 183.25 to 198.16 against 59.80 to 70.14.
+- **MariaDB 10.11.19:**
+  - `big, ID ASC`: 1.26 / 59.63, 1.07 / 59.30, 1.00 / 53.31, 3.21 / 54.68.
+  - `big, ID DESC`: 0.78 / 56.00, 0.93 / 57.03, 0.78 / 56.25, 4.74 / 59.95.
+  - `mid, ID DESC`: 0.79 / 6.02, 0.61 / 5.92, 1.23 / 6.59.
+  - Article statements 187.25 to 194.36 against 64.96 to 68.39.
+- **MariaDB 11.4.13:**
+  - `big, ID ASC`: 0.97 / 52.84, 0.99 / 52.87, 1.07 / 53.17, 3.25 / 54.83.
+  - `big, ID DESC`: 0.90 / 54.87, 0.79 / 53.56, 0.96 / 55.02, 4.77 / 58.69.
+  - `mid, ID DESC`: 0.73 / 6.41, 0.63 / 6.29, 1.31 / 7.11.
+  - Article statements 187.28 to 193.21 against 63.17 to 73.82.
+- **MariaDB 11.8.9:**
+  - `big, ID ASC`: 1.09 / 59.57, 1.00 / 58.37, 1.15 / 60.54, 3.26 / 61.82.
+  - `big, ID DESC`: 0.90 / 59.97, 0.89 / 59.70, 0.98 / 58.76, 4.41 / 63.23.
+  - `mid, ID DESC`: 0.88 / 7.02, 0.67 / 6.64, 1.38 / 7.57.
+  - Article statements 351.57 to 378.14 against 65.31 to 75.14.
+
+**The defaults, and why.**
+
+- **`MYSQL_MIN` stays `8.0.16`.** It is the lowest MySQL tested, and every tested version above it passed too.
+- **`$mariadb_min` stays empty, so MariaDB is off.** No MariaDB version passed every pair, so there is no lowest passing version. A per-database sort list (MariaDB without the ID sort) would let MariaDB take the swap for date and author grids, where it passed. That is a design choice, not part of this change.
+- **`SORT_COLUMNS` stays date, author and ID.** A sort is removed only when it misses on a database that stays on, and MySQL missed nothing.

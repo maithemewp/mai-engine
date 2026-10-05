@@ -40,6 +40,8 @@ final class PostGridQueryOptimizerDatabaseTest extends TestCase {
 			'Aurora'                            => [ '8.0.mysql_aurora.3.04.0', false ],
 			'MariaDB with the 5.5.5 prefix'     => [ '5.5.5-10.11.6-MariaDB', true ],
 			'MariaDB with a suffix'             => [ '10.11.6-MariaDB-log', true ],
+			'MariaDB in lowercase'              => [ '10.11.6-mariadb', true ],
+			'MariaDB in uppercase'              => [ '5.5.5-10.11.6-MARIADB-log', true ],
 			'MariaDB below the minimum'         => [ '10.6.18-MariaDB', false ],
 			'MariaDB 11'                        => [ '11.8.2-MariaDB', true ],
 			'false from a failed connection'    => [ false, false ],
@@ -53,10 +55,17 @@ final class PostGridQueryOptimizerDatabaseTest extends TestCase {
 		$this->assertSame( $expected, Mai_Post_Grid_Query_Optimizer_Database::allows( $info, '10.11.0' ) );
 	}
 
-	public function test_mariadb_is_off_by_default(): void {
-		Mai_Post_Grid_Query_Optimizer_Database::$mariadb_min = '';
+	public function test_the_shipped_mariadb_minimum_keeps_mariadb_off(): void {
+		// The value in the class, whatever a test or the integration suite set since.
+		$shipped = ( new \ReflectionProperty( Mai_Post_Grid_Query_Optimizer_Database::class, 'mariadb_min' ) )->getDefaultValue();
 
-		$this->assertFalse( Mai_Post_Grid_Query_Optimizer_Database::allows( '11.8.2-MariaDB' ) );
+		// Every MariaDB version measured on 2026-10-05 missed the speed bar on grids sorted by ID.
+		$this->assertSame( '', $shipped );
+
+		Mai_Post_Grid_Query_Optimizer_Database::$mariadb_min = $shipped;
+
+		$this->assertFalse( Mai_Post_Grid_Query_Optimizer_Database::allows( '11.8.9-MariaDB-ubu2404' ) );
+		$this->assertFalse( Mai_Post_Grid_Query_Optimizer_Database::allows( '5.5.5-10.6.28-MariaDB' ) );
 		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Database::allows( '8.0.46' ), 'MySQL does not need a MariaDB minimum' );
 	}
 

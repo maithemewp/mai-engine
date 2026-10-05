@@ -18,7 +18,9 @@ final class Mai_Post_Grid_Query_Optimizer_Database {
 
 	/**
 	 * The oldest MySQL that may take the faster query. Before 8.0.16 MySQL cannot plan an EXISTS
-	 * like a join, so the swap would be slower.
+	 * like a join, so the swap would be slower. 8.0.16, 8.0.28, 8.0.46 and 8.4.11 met the speed
+	 * bar on every statement and returned the same posts, apart from a post with an invalid date
+	 * (Docker runs, 2026-10-05, spec "Results" and "Risks").
 	 */
 	public const MYSQL_MIN = '8.0.16';
 
@@ -26,8 +28,10 @@ final class Mai_Post_Grid_Query_Optimizer_Database {
 	 * The oldest MariaDB that may take the faster query, as X.Y.Z. Empty, or anything that is not
 	 * X.Y.Z, means MariaDB is off.
 	 *
-	 * Off until the speed and same-posts runs on each MariaDB version show where the swap meets
-	 * the bar. MariaDB has its own query planner, so MySQL's results do not carry over to it.
+	 * Off. In the Docker runs of 2026-10-05, MariaDB 10.6, 10.11, 11.4 and 11.8 returned the same
+	 * posts, but a grid sorted by ID on eurweb's biggest category took 49 to 63 ms swapped against
+	 * 1 to 5 ms today, because MariaDB reads every matching term row before it walks the posts.
+	 * MariaDB has its own query planner, so MySQL's results do not carry over to it.
 	 *
 	 * @internal Set by the test suite and the Docker runs, never by a site.
 	 *
