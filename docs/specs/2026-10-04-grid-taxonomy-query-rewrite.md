@@ -1,6 +1,6 @@
 # Grids: cheaper taxonomy queries on big sites
 
-Status: draft for Mike's review (2026-10-04), revised after three independent reviews the same day. Not built. Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
+Status: built on the `grid-taxonomy-optimizer` branch and measured on local eurweb (MySQL 9.7.1, 2026-10-05, see "Results"), then revised after the whole-branch review. Task 8, the runs in Docker on MySQL 8.0 and 8.4 and on MariaDB, is still to come. It sets the MariaDB minimum and confirms the MySQL one. Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
 
 ## Why
 
@@ -33,7 +33,7 @@ Written with `EXISTS` instead, the same filter returns the same posts in under 1
 3. **Nothing more happens unless the statement actually goes to the database.** Most grid views are answered by Mai's or WordPress's cache and send nothing.
 4. **When the statement goes to the database,** Mai checks it at the last moment. It rebuilds WordPress's taxonomy SQL with WordPress's own code and compares. If anything differs, or anything changed between the two looks, the statement goes out unchanged. Otherwise Mai swaps it for the `EXISTS` form.
 5. **The database returns the same posts, fast.** Everything after that is today's code.
-6. **If a swapped statement fails, or takes over 1 second,** Mai turns the swap off on that site for 24 hours and writes one line to the debug log. A failed statement is sent again unswapped, so the page still shows its grid.
+6. **If a swapped statement fails, or takes over 1 second,** Mai turns the swap off on that site for 24 hours and writes one line to the PHP error log. A failed statement is sent again unswapped, so the page still shows its grid.
 
 The query's own SQL text, as WordPress stores it on the query, never changes. So Mai's key check and WordPress's query cache keys work exactly as they do today.
 
@@ -103,7 +103,7 @@ The mark is a property on the query, never a query var.
 
 All of these must hold. Any one failing means today's statement goes out unchanged.
 
-- **The swap is on:** the filter allows it, and it was not turned off for 24 hours or for this request after a problem (section 5).
+- **The swap is on:** the filter allows it, and it was not turned off for 24 hours or for this request after a problem (section 5). The `query` callback checks this again when the statement is sent, since something can turn the swap off after the swap was prepared.
 - **The database and database layer passed** (section 4).
 - **The query is marked** (section 2).
 - **The taxonomy filters are a covered shape:** one level, no nesting, any taxonomy, the rules in section 1, and at least one `IN` filter, so there is a join to remove.
@@ -115,12 +115,14 @@ All of these must hold. Any one failing means today's statement goes out unchang
 - **There is a `LIMIT`.** Swiftype removes it on its search pages.
 - **The statement is unchanged at `posts_request`.** Recorded at `PHP_INT_MIN` and compared at `PHP_INT_MAX` (Revisionary rewrites it during logged-in revision previews).
 - **The statement has no `%` placeholder escape.** WordPress strips those in its own `query` filter at priority 0 (`class-wpdb.php:2428`), so a statement with one would never match. Grids have none today.
-- **For the grid's own query, Mai's failure callback is still registered** on `posts_results`. My Content Dash and The Blog Fixer can remove every callback there, and then a failed swap could not be repaired.
+- **For the grid's own query, Mai's failure callback is still registered** on `posts_results`, both when the swap is prepared and when the statement is sent. My Content Dash and The Blog Fixer can remove every callback there, and then a failed swap could not be repaired.
 - **The statement reaching the database is the one WordPress finished.** The swap happens in `$wpdb`'s `query` filter at `PHP_INT_MAX`, on an exact text match only. A plugin that changed the statement on the way, including `posts_request_ids` or its own `query` callback, makes it not match.
 
 The tax rebuild (section 1) runs only at this last step, when the statement actually goes to the database. Its result is kept for the rest of the request, keyed by the tax filters and the posts table, so a grid and its copy rebuild once. Not keyed by the query object: PHP reuses an object's ID as soon as it is freed, so a later grid could pick up an earlier grid's rebuild. Reviewer's measure: 0.13 ms per rebuild for eurweb's biggest category, with no database queries.
 
-**How prepared swaps are kept.** At `posts_request` `PHP_INT_MAX`, for a marked query that passed the cheap checks, Mai adds an entry to a list: the original text, the owner query, and its form (copy, split, full). The `query` callback is registered once and returns at once when nothing is prepared, which costs about 0.2 µs per statement (reviewer's measure). Registering it once also lets tests watch the swapped statement with a later callback at the same priority. When a statement matches more than one entry, the most recent wins: a copy runs inside its grid's query, and its text equals the grid's split form. The copy's entry is dropped in a `finally` after `$copy->query()` returns. The grid's entries are dropped at `posts_results`, which every grid query reaches, including ones answered by a cache. The whole list is cleared on any failure.
+**How prepared swaps are kept.** At `posts_request` `PHP_INT_MAX`, for a marked query that passed the cheap checks, Mai adds an entry to a list: the original text, the owner query, and its form (copy, split, full). A query has at most one entry: one that runs again replaces its earlier entry. The `query` callback is registered once and returns at once when nothing is prepared, which costs about 0.2 µs per statement (reviewer's measure). Registering it once also lets tests watch the swapped statement with a later callback at the same priority. When a statement matches more than one entry, the most recent wins: a copy runs inside its grid's query, and its text equals the grid's split form. While a copy runs, from the moment it is marked until its entry is dropped, only a copy's entry can be taken, so a copy that prepared no entry of its own can never take its grid's. The copy's entry is dropped in a `finally` after `$copy->query()` returns. The grid's entry is dropped at `posts_results`, which every grid query reaches, including ones answered by a cache, and again in a `finally` after `$query->query()` in `Mai_Grid::get_query()`, for a query that throws before `posts_results`. The whole list is cleared on any failure.
+
+**Anything that throws inside the swap** (an object cache that fails on the transient read, a tax query holding a closure, a type error) sends the statement unchanged, turns the swap off for the rest of the request, clears the list and logs one line. The day-long transient is not written for it.
 
 **Gotchas for the build.**
 
@@ -129,36 +131,41 @@ The tax rebuild (section 1) runs only at this last step, when the statement actu
 
 ### 4. Which databases
 
-Mai checks once per request, only when a swap is about to happen, and keeps the answer. It sends no statement.
+Mai checks only when a swap is about to happen. The checks send no statement, so they come before the read of the 24-hour transient, which is a statement of its own on a site without a persistent object cache. A site that can never take the swap then pays nothing more. When a check fails, the swap is off for the rest of the request, so no more swaps are prepared, and the transient is not written. The server is read once per request and the answer kept. The layer and the mysqli mode are checked on every swap, since a plugin can change either during a request.
 
 - **The database layer must be WordPress's own `wpdb` or Query Monitor's `QM_DB`,** which passes every statement through unchanged (`classes/DB.php`). Any other drop-in steps aside. That covers:
   - W3 Total Cache's database cache, which stores results under the text before the `query` filter, failures included. One failed swap could leave a grid empty until its cache expired.
   - HyperDB, LudicrousDB, the SQLite plugin, and anything unknown.
 - **MySQL from 8.0.16.** Live eurweb's 8.0.46 already picks the fast plan (section "What we found"). Version strings marked `sqlite`, `Vitess` or `TiDB` are not MySQL and step aside.
 - **MariaDB from the lowest tested version that passes** (section "Measurements"), provided every tested version above it passes too. Otherwise MariaDB keeps today's statement. Its version is the first `X.Y.Z` after an optional `5.5.5-` prefix (`5.5.5-10.11.6-MariaDB`). `$wpdb->db_version()` alone would read that as 5.5.5.
-- **Anything else steps aside,** including when `db_server_info()` returns `false` or an empty string, or throws. Core throws when the connection is not mysqli (`class-wpdb.php:4218-4220`), so the read is wrapped in `try`/`catch ( Throwable )`.
+- **mysqli must not be in exception mode** (`MYSQLI_REPORT_STRICT`). WordPress turns it off when it connects (`mysqli_report( MYSQLI_REPORT_OFF )` in `wpdb::db_connect()`, `class-wpdb.php:1966`), but any code can turn it back on. A failed swapped statement would then throw out of `WP_Query`, before Mai could send it again.
+- **Anything else steps aside,** including when `db_server_info()` returns `false` or an empty string, or throws. Core throws when the connection is not mysqli (`class-wpdb.php:4218-4220`), so the read is wrapped in `try`/`catch ( Throwable )`. A MariaDB minimum that is not written as `X.Y.Z` keeps MariaDB off.
 
 There is only a lowest version per database, not a list to keep up to date. A version above it gets the swap without a Mai Engine update. The 1-second guard in section 5 turns the swap off on a site where a newer version plans it badly, and the speed test runs on each new major version.
 
 ### 5. If a swapped statement fails or is slow
 
-When Mai swaps a statement, it records `$wpdb->num_queries`, the swapped text and the owner query. The swapped statement failed when `$wpdb->last_error` is set and either `$wpdb->num_queries` is exactly one more than recorded, or `$wpdb->last_query` is the swapped text, or the query got no rows and at least one statement was sent since the swap. The last rule is the one Mai's ID-only copy already uses today for an empty copy, and it catches a plugin that both rewrites the statement and sends its own. The count holds whatever later `query` callbacks did to the text. The text holds when a later callback sent a statement of its own, or `$wpdb` reconnected and sent it twice. Either way the failure is pinned on the right query.
+When Mai swaps a statement, it records `$wpdb->num_queries`, the length of WordPress's list of failed statements (`$EZSQL_ERROR`), the swapped text and the owner query. The swapped statement failed when any of these holds:
 
-The 24-hour transient is read once per request, inside the `query` callback right before the first swap, and before the statement count is recorded, since on a site without a persistent object cache the read is a statement of its own.
+- **Nothing was sent after the swap:** `$wpdb->num_queries` is what was recorded. A later `query` callback that returns an empty string or `false` stops `wpdb::query()` before it sends anything or clears its last result, so `get_col()` and `get_results()` hand back the rows of the statement before, with no error.
+- **WordPress's list of failed statements gained one with the swapped text.** `wpdb::print_error()` adds every failed statement to `$EZSQL_ERROR` before it checks whether errors are shown, so this holds after a later statement cleared `$wpdb->last_error`.
+- **`$wpdb->last_error` is set** and either `$wpdb->num_queries` is exactly one more than recorded, or `$wpdb->last_query` is the swapped text, or the query got no rows and at least one statement was sent since the swap. The last rule is the one Mai's ID-only copy already uses today for an empty copy, and it catches a plugin that both rewrites the statement and sends its own. The count holds whatever later `query` callbacks did to the text. The text holds when a later callback sent a statement of its own, or `$wpdb` reconnected and sent it twice. Either way the failure is pinned on the right query.
+
+The 24-hour transient is read once per request, inside the `query` callback right before the first swap, after the database checks (section 4) and before the statement count is recorded, since on a site without a persistent object cache the read is a statement of its own.
 
 On a failure, in this order:
 
-1. Turn the swap off for the rest of this request, and for 24 hours with a transient.
-2. Clear every prepared swap.
-3. Reset WordPress's query cache (`forget_failure()`), because WordPress stored the failed empty result under the query's key before Mai saw it.
-4. Send the original statement once, unswapped:
+1. Read `$wpdb->last_error`, before anything else sends a statement.
+2. Reset WordPress's query cache (`Mai_Query_Cache::forget_failure()`, one helper for the copy and the grid), because WordPress stored the failed result under the query's key before Mai saw it. This comes before the transient write, which is a statement of its own and can fail too.
+3. Turn the swap off for the rest of this request, and clear every prepared swap and record. Then write the 24-hour transient, which holds the reason and the error (`failed: ` and `$wpdb->last_error`), and read it back.
+4. Write one line to the PHP error log, whatever `WP_DEBUG_LOG` says, with the error. It says "off for 24 hours", or "off for this request only" when the transient could not be read back.
+5. Send the original statement once, unswapped:
    - **The copy:** `fetch_ids()` runs `$wpdb->get_col( $copy->request )` and carries on with today's checks.
    - **The grid's own query:** a callback on `posts_results` at `PHP_INT_MIN`, which runs whether or not the grid uses the result cache, resends `$query->request` the way WordPress sent it. For the split form that is `get_col`, then `_prime_post_caches()` with the query's flags, then `get_post`. For the full form it is `get_results`, then `get_post`. The list is exactly today's, so it is stored as usual. If the resend fails too, today's failure path applies and nothing is stored.
-5. Write one line to the debug log when `WP_DEBUG_LOG` is on, with `$wpdb->last_error`.
 
-**Slow.** When a swapped copy statement takes over 1 second, Mai turns the swap off for 24 hours and logs one line. A good swap takes about a millisecond on the big categories it exists for, and mid-size ones take about as long as today (98 ms against 103 ms for a 33,408-post eurweb category). So the limit only catches a plan gone badly wrong, never a busy moment on a normal one. This only times the copy, whose statement is the only work inside `$copy->query()`.
+**Slow.** When a swapped statement takes over 1 second, Mai turns the swap off for 24 hours and logs one line, and the result stands. Both the copy's statement and the grid's own are timed: the copy from the swap until `$copy->query()` returns, whose statement is the only work inside it, and the grid from the swap until `posts_results`, so for the split form the time includes loading the posts. The line names the form (`copy form`, `grid split form`, `grid full form`), and the transient holds `slow: ` and the same. A good swap takes about a millisecond on the big categories it exists for, and mid-size ones take about as long as today (98 ms against 103 ms for a 33,408-post eurweb category). So the limit only catches a plan gone badly wrong, never a busy moment on a normal one.
 
-**Costs.** WordPress logs every failed statement to the PHP error log itself (`class-wpdb.php:1823`), and prints it on the page when `WP_DEBUG_DISPLAY` is on. With the 24-hour switch, that is at most one statement per site per day. A failure that is really something else, such as a deadlock, also turns the swap off for a day. That costs only the speedup.
+**Costs.** WordPress logs every failed statement to the PHP error log itself (`class-wpdb.php:1823`), and prints it on the page when `WP_DEBUG_DISPLAY` is on. Mai's own line goes to the PHP error log whatever `WP_DEBUG_LOG` says, so a turn-off shows on a live site. With the 24-hour switch, that is at most one failed statement and one line per site per day. A transient that cannot be stored, or something that throws inside the swap, turns the swap off for one request only, so its line can repeat on every request until the cause is fixed. A failure that is really something else, such as a deadlock, also turns the swap off for a day. That costs only the speedup.
 
 ### 6. Changes to existing code
 
@@ -169,9 +176,9 @@ On a failure, in this order:
   - The `mai_post_grid_tt_ids` check in `Mai_Query_Cache::is_cacheable()`, and its two tests in `tests/phpunit/unit/MaiQueryCacheabilityTest.php:28` and `:32`.
   - The comment about "the optimizer's fast path" in `class-mai-grid.php:927-928`, and the stale line numbers in `.agents/elasticpress-grid-cache.md:58`.
   - The new class takes the old name and filter, so Mai has one grid query optimizer.
-- **`Mai_Grid::get_query()`:** marks the query, sets the tiebreaker for every grid that does not count rows, and removes it afterwards for every grid.
-- **`Mai_Grid::add_deferred_orderby_tiebreaker()`:** always appends `, {posts}.ID DESC`, and its docblock says why.
-- **`Mai_Query_Cache::fetch_ids()`** (`class-mai-query-cache.php:942`): marks the copy, drops its prepared swap in a `finally`, and runs the failure and slow checks before its own checks. The key check (`:1006`) and the ID-only check (`:1002`) are unchanged, because the copy's request text is unchanged.
+- **`Mai_Grid::get_query()`:** marks the query, drops its prepared swap in a `finally` after the query runs, sets the tiebreaker for every grid that does not count rows, and removes it afterwards for every grid.
+- **`Mai_Grid::add_grid_orderby_tiebreaker()`** (new in 2.41.0, and called `add_deferred_orderby_tiebreaker()` until it applied to every grid): always appends `, {posts}.ID DESC`, and its docblock says why.
+- **`Mai_Query_Cache::fetch_ids()`** (`class-mai-query-cache.php:942`): marks the copy, drops its prepared swap in a `finally`, and runs the failure and slow checks before its own checks. The key check (`:1006`) and the ID-only check (`:1002`) are unchanged, because the copy's request text is unchanged. `forget_failure()` becomes public and static, so the optimizer resets WordPress's query cache with the same helper.
 - **`Mai_Query_Cache::posts_results()`:** unchanged. The new failure callback runs before it, at the same priority but registered first. After a successful resend `$wpdb->last_error` is empty, so it stores the list as usual.
 - **`mai_register_post_grid_query_optimizer()`** (`lib/functions/performance.php:300`), as today, but on `init` at priority 9: registers the first-look and last-look callbacks (including `posts_search` and both ends of `posts_request`), the `query` callback and the failure callback once. Priority 9 makes the failure callback on `posts_results` run before `Mai_Query_Cache::posts_results()`, which shares its priority and registers at 10. Each callback returns at once unless the query is marked.
 - **Tests that use `mai_grid_tiebreak` to spot a deferring grid** need another way, since every grid without Load More now carries it (`GridCacheStoreTest.php:139`, `GridKeptOnlyTest.php:228`, `:809`, `:846`, `:885`, `:894`, `:1074`, `:1486`). Tests that assert only deferring grids get it change (`GridDeferredExcludesTest.php:308-316`, `GridKeptOnlyTest.php:424-425`, `:1295-1296`).
@@ -234,8 +241,11 @@ Integration tests, on a real database:
 - **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids. It is `{posts}.ID DESC` on ascending and descending sorts alike.
 - **The rebuild after the page swaps too** (`run_queue()`), and the copy's key still matches the grid's, so the note is stored.
 - **Failure,** for the copy and for the grid's own query, split and full: a `query` callback added after Mai's breaks the swapped statement. The grid still shows the right posts, nothing wrong is stored, every prepared swap is cleared, the 24-hour transient is set, a second grid on the same page is not swapped, one log line is written, and WordPress's query cache was reset.
-- **Slow:** a swapped copy statement held over the limit (a test lowers the limit and a later `query` callback waits with `usleep()`) turns the swap off for the day.
-- **Database check** (unit tests, plain strings): MySQL `8.0.15` off, `8.0.16` on, `8.0.46-0ubuntu0.22.04.4` on, Percona `8.4.11-11` on, `5.7.44` off, `8.0.38-mysql-on-sqlite-3.0.2` off, a `-Vitess` string off, `8.0.11-TiDB-v7.5.0` off, MariaDB strings with and without `5.5.5-` against the minimum the measurements set, and `false`, `''` and a throw all off.
+- **Slow:** a swapped statement held over the limit, the copy's and the grid's own split and full forms (a test lowers the limit and a later `query` callback waits with `usleep()`), turns the swap off for the day and keeps the right list.
+- **Not sent, or failed out of sight:** a later `query` callback that returns an empty string for the swapped text, and a refused statement whose error a later statement cleared, both count as failed.
+- **Checked again at the last moment.** The swap was turned off, the filter says no, or the failure callback is gone after the swap was prepared, and the statement goes out unchanged. A copy cannot take its grid's entry. A query has one entry. A grid query that throws leaves nothing prepared.
+- **Robustness.** An exception inside the swap sends the statement unchanged and turns the swap off for the request. mysqli in exception mode steps aside. Another database layer on the same connection steps aside, end to end. A failed database check reads no transient.
+- **Database check** (unit tests, plain strings): MySQL `8.0.15` off, `8.0.16` on, `8.0.46-0ubuntu0.22.04.4` on, Percona `8.4.11-11` on, `5.7.44` off, `8.0.38-mysql-on-sqlite-3.0.2` off, a `-Vitess` string off, `8.0.11-TiDB-v7.5.0` off, MariaDB strings with and without `5.5.5-` against the minimum the measurements set, a MariaDB minimum that is not `X.Y.Z` (`'0'`, `'abc'`, `' '`) off, and `false`, `''` and a throw all off.
 
 The integration suite runs on local MySQL 9.7, and in Docker on MySQL 8.0 and 8.4 and MariaDB 10.6, 10.11, 11.4 and 11.8, through `WP_TESTS_DB_HOST`. Those four MariaDB versions are the most used today (about 9%, 19%, 9% and 16% of WordPress sites).
 
@@ -260,7 +270,7 @@ On each database above, in Docker, with copies of local eurweb (85,000 posts), l
 ## Rollout
 
 1. Ship in a beta, on by default. Live eurweb and larrybrownsports get it with the beta. Pushing to them is a write, so Mike runs the commands.
-2. Measure cold article views on live eurweb, and watch both sites' PHP error logs for the failure and slow lines.
+2. Measure cold article views on live eurweb, and watch both sites' PHP error logs for the failure and slow lines. Check `wp transient get mai_post_grid_optimize_off` on both through `mai-sites run` as well, since the transient holds the reason when the swap turned off.
 3. Once it feels solid, totalprosports.
 4. Then a release for every site.
 
