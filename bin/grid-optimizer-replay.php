@@ -480,7 +480,10 @@ function invalid_dates( mysqli $db, string $sql ): array {
  *         entries must be equal, where m is the shorter length after the removal, and m must be
  *         at least the number of valid-date posts in either list. So every valid-date post that
  *         either form shows sits at the same place among the valid-date posts of both orders,
- *         and the extra posts of the list that shows more are the next ones in both.
+ *         and the extra posts of the list that shows more are the next ones in both. It does not
+ *         check that an invalid-date post one form shows is in the other form's result at all:
+ *         today [1,2,3] against swapped [1,99,2], with 99 invalid, reads known. The same
+ *         statement's no-LIMIT pair compares the whole set and catches it.
  *
  * @param list<int>      $today        Today's IDs.
  * @param list<int>      $swapped      The swapped IDs.

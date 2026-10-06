@@ -198,11 +198,11 @@ On a failure, in this order:
 - One or more taxonomy filters, joined with AND, or joined with OR when all are `IN` and share one table. `NOT IN`, `AND` and `EXISTS` filters can sit next to `IN` filters under AND.
 - Any taxonomy: categories, tags and custom taxonomies, such as recipe or product categories (Mike, 2026-10-04). They all use the same table, so the SQL is the same.
 - Sorted by date or author, with the ID tiebreaker. Title, slug, modified date, menu order and comment count sorts were slower on a mid-size category in the speed test, so they keep today's statement (measured on MySQL 9.7.1, 2026-10-05). Date and author sorts met the bar on every MySQL version in the Docker runs.
-- Not sorted by the ID. Mike took ID sorts out on 2026-10-06: local MySQL 9.7.1 flipped an ID sort's plan between two runs, from about 1 ms to about 63 ms on eurweb's biggest category, and MariaDB missed the bar on ID sorts too ("Results"). The grid's Order By setting offers no ID sort (`lib/fields/wp-query.php:865-872`), so only code makes one, and such a grid keeps today's statement and its cache as before.
 
 **Not covered, so today's statement:**
 
 - Load More grids, random order, ID sorts, meta queries, search, nested taxonomy filters, OR with a filter that is not `IN`, grids with no `IN` filter, and filters whose terms no longer exist.
+- ID sorts: Mike took them out on 2026-10-06. Local MySQL 9.7.1 flipped an ID sort's plan between two runs, from about 1 ms to about 63 ms on eurweb's biggest category, and MariaDB missed the bar on ID sorts too ("Results"). The grid's Order By setting offers no ID sort (`lib/fields/wp-query.php:865-872`), so only code makes one, and such a grid keeps today's statement and its cache as before.
 - Pages where a plugin changes the grid's SQL: search pages with wpseo-local, secondary-title or Swiftype, author filters with co-authors-plus, Revisionary previews, and WP Fusion or WC Memberships when they hide content.
 - Sites with another database layer (W3 Total Cache's database cache, HyperDB, LudicrousDB, SQLite), and databases that did not pass.
 - On WordPress 6.4 and 6.5, a grid's own split statement. Those versions lay it out differently (core ticket 56841), so `split()` finds no match. Copies and full statements are still swapped there, since every other check compares WordPress's text with itself.
@@ -316,7 +316,7 @@ No release, tag or push without Mike asking.
 - **A WordPress update changes how core writes this SQL.** The checks stop matching and sites quietly keep today's speed. The "swap happens" tests catch it on the next test run.
 - **A brief database problem during a swapped statement turns the swap off for a day.** It costs only the speedup on that site.
 - **The tiebreaker changes which tied posts show** on grids that did not have it. See "Ties". It also changes the tied order on beta.5's deferring grids whose sort is not by date or author: menu order ascending, for example, went from `, {posts}.ID ASC` to `, {posts}.post_date DESC, {posts}.ID DESC`. Beta.5 is live on eurweb and larrybrownsports.
-- **A post with an invalid date can move.** A post whose `post_date` has a zero day or month, such as `2007-03-00`, can sit in a different place in the faster query than in today's. WordPress refuses such dates today, but old imports can carry them. A grid whose window reaches that post can show it somewhere else, or not at all. Its place already depends on the database's plan in WordPress's own queries. Mike accepted this on 2026-10-05. Post 203 on larrybrownsports is the only one found in the ten local copies checked. Mike chose to correct its date on live (2026-10-05).
+- **A post with an invalid date can move.** A post whose `post_date` has a zero day or month, such as `2007-03-00`, can sit in a different place in the faster query than in today's. WordPress refuses such dates today, but old imports can carry them. A grid whose window reaches that post can show it somewhere else, or not at all. Its place already depends on the database's plan in WordPress's own queries. Mike accepted this on 2026-10-05. Post 203 on larrybrownsports is the only one found in the ten local copies checked. Mike corrected its date on live on 2026-10-05.
 
 ## Results
 
@@ -439,7 +439,7 @@ The misses, today against swapped in ms:
 - Every timed run must return as many rows as the first.
 - A miss counts only when at least 2 of 3 reruns alone miss too.
 
-The method was the same as above: 2 GB buffer pool, port 3380, one container at a time, the same dumps (row counts matched local), load between 2.99 and 10.55.
+The Docker runs used the method above: 2 GB buffer pool, port 3380, one container at a time, the same dumps (row counts matched local). Local MySQL 9.7.1 ran on its own 128 MB pool on port 3306, reading the sites' databases in place. Load was between 2.99 and 10.55.
 
 **MySQL 8.0.46** (Docker, native arm64):
 
@@ -482,6 +482,6 @@ The method was the same as above: 2 GB buffer pool, port 3380, one container at 
 - `$mariadb_min` stays empty.
 - `SORT_COLUMNS` is date and author.
 
-MariaDB's only misses in the Docker runs were ID sorts, so every pair it would still take met the bar there. Whether to turn it on is a separate decision.
+MariaDB stays off. Without ID sorts its Task 8 pairs met the bar, but the hardened replay (full-form show-all pairs, row-count checks, the rerun rule) never ran on MariaDB, and its plan reads every matching term row first, the shape that made local MySQL 9.7.1 miss on the full form. Before turning it on, rerun the hardened replay on MariaDB 10.6, 10.11, 11.4 and 11.8.
 
 **Raw data:** `/tmp/task8-opt/tk2-*`, `tk2r-*` and `tk2id-*`, which are temporary and gone after a reboot. The full account is in `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/toolkit-2-fix-report.md`.

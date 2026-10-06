@@ -13,18 +13,13 @@ The grid taxonomy optimizer is built, reviewed and measured on branch `grid-taxo
 - 2.41.0-beta.5 is still what live eurweb and larrybrownsports run.
 
 ## Next
-1. The merge to local `develop` waits on the controller. All branch commits and the 13 local `develop` commits ahead of `origin/develop` are Mike's. Nothing is pushed.
+1. The controller is merging into local `develop` with a merge commit (Mike chose this 2026-10-05). All branch commits and the 13 local `develop` commits ahead of `origin/develop` are Mike's. Nothing is pushed.
 2. Beta push for eurweb and larrybrownsports, then totalprosports. Next header `2.41.0-beta.6`. Steps in `docs/specs/2026-10-01-grid-cache-beta-5.md` under "Release". `npm run beta` pushes, so it needs Mike's explicit yes. Afterwards `composer dump-autoload --no-dev`.
-3. Mike corrects post 203 on live larrybrownsports (a live write he runs himself):
-   ```
-   mai-sites run larrybrownsports.com -- wp eval 'global $wpdb; $wpdb->update( $wpdb->posts, [ "post_date" => "2007-02-28 04:00:58" ], [ "ID" => 203 ] ); clean_post_cache( 203 ); echo get_post( 203 )->post_date, "\n";'
-   ```
-   Then a session confirms with `mai-sites run larrybrownsports.com --yes --safe-to-rerun -- wp db query "SELECT ID, post_date FROM wp_posts WHERE ID = 203"`.
-4. Mike may decide whether MariaDB comes on (`$mariadb_min`): with ID sorts gone, every pair it would still take met the bar in Docker (`TODO.md`).
-5. Before 2.41.0 final: check the buffer pool size on the main hosts, then the rest of `TODO.md`.
+3. MariaDB stays off. Without ID sorts its Task 8 pairs met the bar, but the hardened replay (full-form show-all pairs, row-count checks, the rerun rule) never ran on MariaDB, and its plan reads every matching term row first, the shape that made local MySQL 9.7.1 miss on the full form. Before turning it on, rerun the hardened replay on MariaDB 10.6, 10.11, 11.4 and 11.8. (`TODO.md`)
+4. Before 2.41.0 final: check the buffer pool size on the main hosts, then the rest of `TODO.md`.
 
 ## Blocked / waiting on
-- The controller on the merge to `develop`.
+- Nothing. The controller is merging into local `develop`.
 - Hindsight is off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json`, `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
 
 ## Verify
