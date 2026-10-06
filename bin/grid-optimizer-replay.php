@@ -823,7 +823,7 @@ if ( ! is_readable( $pairs_file ) ) {
 }
 
 // When the pairs file was written, so a stale file is noticed before its numbers are trusted.
-$pairs_written = date( 'Y-m-d H:i:s', (int) filemtime( $pairs_file ) );
+$pairs_written = date( 'Y-m-d H:i:s T', (int) filemtime( $pairs_file ) );
 
 $out = $options['out'] ?? "/tmp/mai-optimizer-replay-{$engine}-{$database}-{$port}.json";
 
