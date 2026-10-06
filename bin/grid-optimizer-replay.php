@@ -56,17 +56,23 @@ declare(strict_types=1);
  *      unreadable.
  *   4. The bar passes when the swapped median is no more than today's median plus the larger of
  *      2 ms and 10%. Mike set 2 ms on 2026-10-05, because statements of 5 to 7 ms swing by about
- *      1 ms between runs on the test machine.
+ *      1 ms between runs on the test machine. A pair that misses runs alone 3 more times, each
+ *      timed the same way, and the miss counts only when at least 2 of those 3 miss too.
+ *      Otherwise the pair passes on rerun: it counts with the bar met, the Total line shows how
+ *      many did, and its line prints the first medians and each rerun's. Mike set this on
+ *      2026-10-05, because single runs of statements of 8 to 16 ms swing by several milliseconds
+ *      on a busy machine, and a real slowdown repeats.
  *
  * It prints one summary line per pair and a total, and writes every number as JSON, also when
  * the run stops early (the file then says "complete": false). Exit code:
  *   0  every compared pair passes, and at least one pair was timed. A pair whose IDs differ only
  *      by posts with invalid dates (known) leaves the exit code at 0 when it meets the bar and has
  *      no weedout.
- *   1  a timed pair misses the bar (a known one included), a swapped MySQL plan is flagged for
- *      weedout (a known pair's included), a swapped MySQL plan is unreadable, a timed run returned
- *      another number of rows, a pair failed to run, an option is wrong, the MariaDB query cache
- *      did not turn off, or the connection was lost.
+ *   1  a timed pair misses the bar and at least 2 of its 3 reruns (a known one included), a
+ *      swapped MySQL plan is flagged for weedout (a known pair's included), a swapped MySQL plan
+ *      is unreadable, a timed run returned another number of rows (reruns included), a pair
+ *      failed to run, an option is wrong, the MariaDB query cache did not turn off, or the
+ *      connection was lost.
  *   2  the IDs of a pair differ.
  *   3  the data cannot be trusted: no pairs to run, a pair line skipped, an empty posts or term
  *      relationships table, a synthetic pair empty, more than 10% of pairs empty, nothing
@@ -124,6 +130,14 @@ const LIMIT_AT_END = '/\sLIMIT\s+(\d+)(?:\s*,\s*(\d+))?\s*$/i';
  * The hint every swapped EXISTS carries on MySQL.
  */
 const HINT = '/*+ NO_SEMIJOIN(DUPSWEEDOUT) */';
+
+/**
+ * How many times a pair that missed the bar runs again alone, and how many of those must miss
+ * too for the miss to stand. Mike set these on 2026-10-05.
+ */
+const RERUNS = 3;
+
+const RERUNS_TO_MISS = 2;
 
 /**
  * Prints a message to stderr and stops.
@@ -650,14 +664,85 @@ function prepare_session( mysqli $db, string $engine ): array {
 }
 
 /**
+ * Times both forms of a pair: each runs $runs times, the form that goes first alternating run by
+ * run, so neither one always runs on a warmer cache. The medians are held to the bar: the swapped
+ * median may be no more than today's plus the larger of 2 ms and 10%.
+ *
+ * @param mysqli $db      The connection.
+ * @param string $today   Today's statement.
+ * @param string $swapped The swapped statement.
+ * @param int    $runs    Timed runs of each form.
+ *
+ * @return array{today_ms:list<float>,swapped_ms:list<float>,today_rows:list<int>,swapped_rows:list<int>,today_median:float,swapped_median:float,allowed:float,bar_met:bool}
+ */
+function time_pair( mysqli $db, string $today, string $swapped, int $runs ): array {
+	$today_runs   = [];
+	$swapped_runs = [];
+
+	for ( $run = 0; $run < $runs; $run++ ) {
+		if ( 0 === $run % 2 ) {
+			$today_runs[]   = timed_ms( $db, $today );
+			$swapped_runs[] = timed_ms( $db, $swapped );
+		} else {
+			$swapped_runs[] = timed_ms( $db, $swapped );
+			$today_runs[]   = timed_ms( $db, $today );
+		}
+	}
+
+	$today_ms       = array_column( $today_runs, 'ms' );
+	$swapped_ms     = array_column( $swapped_runs, 'ms' );
+	$today_median   = median( $today_ms );
+	$swapped_median = median( $swapped_ms );
+	$allowed        = $today_median + max( 2.0, 0.10 * $today_median );
+
+	return [
+		'today_ms'       => $today_ms,
+		'swapped_ms'     => $swapped_ms,
+		'today_rows'     => array_column( $today_runs, 'rows' ),
+		'swapped_rows'   => array_column( $swapped_runs, 'rows' ),
+		'today_median'   => $today_median,
+		'swapped_median' => $swapped_median,
+		'allowed'        => $allowed,
+		'bar_met'        => $swapped_median <= $allowed,
+	];
+}
+
+/**
+ * Times a pair that missed the bar RERUNS more times, alone, and decides whether the miss stands:
+ * it does when at least RERUNS_TO_MISS of the reruns miss too. Single runs of statements of 8 to
+ * 16 ms swing by several milliseconds on a busy machine, and a real slowdown repeats.
+ *
+ * @param callable(): array{bar_met:bool} $time Times the pair once, as time_pair() does.
+ *
+ * @return array{reruns:list<array>,stands:bool}
+ */
+function rerun_miss( callable $time ): array {
+	$reruns = [];
+
+	for ( $rerun = 0; $rerun < RERUNS; $rerun++ ) {
+		$reruns[] = $time();
+	}
+
+	$misses = count( array_filter( $reruns, static fn( array $timing ): bool => ! $timing['bar_met'] ) );
+
+	return [
+		'reruns' => $reruns,
+		'stands' => $misses >= RERUNS_TO_MISS,
+	];
+}
+
+/**
  * Runs one pair and returns what happened. It never prints.
  *
  * The status is "empty" when both forms return no rows, "known_invalid_date" when the IDs differ
  * only by posts with invalid dates (the rule in differs_only_by()), "diff" when they differ
  * otherwise, "ids_only" when the IDs match and the pair is not timed, "rows_changed" when a timed
- * run returned another number of rows than the form's first run, otherwise "pass" or "miss"
- * against the bar. A pair with a LIMIT is timed and held to the bar when its IDs match and when
- * they differ only by invalid dates (bar_met says how it did); a difference is never timed.
+ * run returned another number of rows than the form's first run, otherwise "pass", "miss" or
+ * "pass_on_rerun" against the bar. A pair that misses on its first timing runs alone RERUNS more
+ * times (rerun_miss()); it is "pass_on_rerun" when fewer than RERUNS_TO_MISS of those miss, and
+ * its reruns are kept. A pair with a LIMIT is timed and held to the bar when its IDs match and
+ * when they differ only by invalid dates (bar_met says how it did, after any reruns, and
+ * passed_on_rerun says when the reruns decided it); a difference is never timed.
  *
  * A difference keeps its status when the invalid-date check or the plan read fails afterwards:
  * the failure is kept in known_check_error or plan_error, with both ID lists and what plans were
@@ -744,42 +829,50 @@ function run_pair( mysqli $db, string $name, string $today, string $swapped, str
 	}
 
 	if ( $timed ) {
-		$today_runs   = [];
-		$swapped_runs = [];
+		$time  = static fn(): array => time_pair( $db, $today, $swapped, $runs );
+		$first = $time();
+		$round = static fn( float $value ): float => round( $value, 3 );
 
-		// The form that goes first alternates, so neither one always runs on a warmer cache.
-		for ( $run = 0; $run < $runs; $run++ ) {
-			if ( 0 === $run % 2 ) {
-				$today_runs[]   = timed_ms( $db, $today );
-				$swapped_runs[] = timed_ms( $db, $swapped );
-			} else {
-				$swapped_runs[] = timed_ms( $db, $swapped );
-				$today_runs[]   = timed_ms( $db, $today );
-			}
+		$result['today_runs_ms']     = array_map( $round, $first['today_ms'] );
+		$result['swapped_runs_ms']   = array_map( $round, $first['swapped_ms'] );
+		$result['today_median_ms']   = $round( $first['today_median'] );
+		$result['swapped_median_ms'] = $round( $first['swapped_median'] );
+		$result['allowed_ms']        = $round( $first['allowed'] );
+		$result['bar_met']           = $first['bar_met'];
+		$timings                     = [ $first ];
+
+		// A miss counts only when it repeats: the pair runs alone RERUNS more times, and the miss
+		// stands when at least RERUNS_TO_MISS of them miss too (Mike, 2026-10-05).
+		if ( ! $first['bar_met'] ) {
+			$rerun = rerun_miss( $time );
+
+			$result['reruns'] = array_map(
+				static fn( array $timing ): array => [
+					'today_median_ms'   => $round( $timing['today_median'] ),
+					'swapped_median_ms' => $round( $timing['swapped_median'] ),
+					'allowed_ms'        => $round( $timing['allowed'] ),
+					'bar_met'           => $timing['bar_met'],
+				],
+				$rerun['reruns']
+			);
+
+			$result['bar_met']         = ! $rerun['stands'];
+			$result['passed_on_rerun'] = ! $rerun['stands'];
+			$timings                   = array_merge( $timings, $rerun['reruns'] );
 		}
 
-		$today_ms       = array_column( $today_runs, 'ms' );
-		$swapped_ms     = array_column( $swapped_runs, 'ms' );
-		$today_median   = median( $today_ms );
-		$swapped_median = median( $swapped_ms );
-		$allowed        = $today_median + max( 2.0, 0.10 * $today_median );
-		$round          = static fn( float $value ): float => round( $value, 3 );
-
-		$result['today_runs_ms']     = array_map( $round, $today_ms );
-		$result['swapped_runs_ms']   = array_map( $round, $swapped_ms );
-		$result['today_median_ms']   = $round( $today_median );
-		$result['swapped_median_ms'] = $round( $swapped_median );
-		$result['allowed_ms']        = $round( $allowed );
-		$result['bar_met']           = $swapped_median <= $allowed;
-
 		if ( 'known_invalid_date' !== $result['status'] ) {
-			$result['status'] = $result['bar_met'] ? 'pass' : 'miss';
+			$result['status'] = match ( true ) {
+				$first['bar_met']  => 'pass',
+				$result['bar_met'] => 'pass_on_rerun',
+				default            => 'miss',
+			};
 		}
 
 		// A faster plan that returns fewer rows is the symptom of MySQL bug 120943, so every timed
-		// run must return as many rows as the form's first run.
-		$today_rows   = array_column( $today_runs, 'rows' );
-		$swapped_rows = array_column( $swapped_runs, 'rows' );
+		// run, reruns included, must return as many rows as the form's first run.
+		$today_rows   = array_merge( ...array_column( $timings, 'today_rows' ) );
+		$swapped_rows = array_merge( ...array_column( $timings, 'swapped_rows' ) );
 
 		if ( array_diff( $today_rows, [ count( $ids_today ) ] ) || array_diff( $swapped_rows, [ count( $ids_swapped ) ] ) ) {
 			$result['status']              = 'rows_changed';
@@ -857,6 +950,7 @@ $totals     = [
 	'known'           => 0,
 	'bar_met'         => 0,
 	'bar_missed'      => 0,
+	'pass_on_rerun'   => 0,
 	'weedout'         => 0,
 	'plan_classic'    => 0,
 	'plan_unreadable' => 0,
@@ -1098,12 +1192,23 @@ foreach ( $runnable as $pair ) {
 
 	// Every timed pair counts against the bar: those whose IDs match, and those that differ only
 	// by posts with invalid dates. A pair whose row count changed between runs is an error instead.
+	// A pair that passed only on its reruns counts as met, and is also counted on its own.
 	if ( isset( $result['bar_met'] ) && 'rows_changed' !== $result['status'] ) {
 		++$totals[ $result['bar_met'] ? 'bar_met' : 'bar_missed' ];
+		$totals['pass_on_rerun'] += empty( $result['passed_on_rerun'] ) ? 0 : 1;
 	}
 
 	$flag   = ( $result['weedout'] ? '  WEEDOUT' : '' ) . ( $result['plan_unreadable'] ? '  PLAN UNREADABLE' : '' ) . ( $classic ? '  (plan read with classic EXPLAIN)' : '' );
 	$timing = isset( $result['today_median_ms'] ) ? sprintf( '  today %.2f ms  swapped %.2f ms', $result['today_median_ms'], $result['swapped_median_ms'] ) : '';
+
+	// After a first miss: the allowed time, then each rerun's medians, today / swapped.
+	if ( isset( $result['reruns'] ) ) {
+		$timing .= sprintf(
+			' (allowed %.2f), reruns alone %s',
+			$result['allowed_ms'],
+			implode( ', ', array_map( static fn( array $rerun ): string => sprintf( '%.2f / %.2f%s', $rerun['today_median_ms'], $rerun['swapped_median_ms'], $rerun['bar_met'] ? '' : ' miss' ), $result['reruns'] ) )
+		);
+	}
 
 	switch ( $result['status'] ) {
 		case 'empty':
@@ -1129,7 +1234,7 @@ foreach ( $runnable as $pair ) {
 				$pair['name'],
 				implode( ', ', array_map( static fn( int $id, string $date ): string => "{$id} ({$date})", array_keys( $result['invalid_dates'] ), $result['invalid_dates'] ) ),
 				$timing,
-				isset( $result['bar_met'] ) ? ( $result['bar_met'] ? '  bar met' : '  BAR MISSED' ) : '  no LIMIT so not timed',
+				isset( $result['bar_met'] ) ? ( $result['bar_met'] ? ( empty( $result['passed_on_rerun'] ) ? '  bar met' : '  bar met on rerun' ) : '  BAR MISSED' ) : '  no LIMIT so not timed',
 				$flag
 			);
 			break;
@@ -1174,7 +1279,11 @@ foreach ( $runnable as $pair ) {
 
 			printf(
 				"%-6s %s%s  rows %d%s\n",
-				'pass' === $result['status'] ? 'PASS' : 'MISS',
+				match ( $result['status'] ) {
+					'pass'          => 'PASS',
+					'pass_on_rerun' => 'RERUN',
+					default         => 'MISS',
+				},
 				$pair['name'],
 				$timing,
 				$result['rows'],
@@ -1186,7 +1295,7 @@ foreach ( $runnable as $pair ) {
 $report['complete'] = true;
 
 printf(
-	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d (%d of them ID-only, no LIMIT so not timed or held to the bar), IDs differ %d, known %d (IDs differ only by posts with invalid dates), bar met %d, bar missed %d (every timed pair, known ones included), weedout %d, plans read with classic EXPLAIN %d, plans unreadable %d, row count changed %d, errors %d, skipped %d. Load at end: %s\n",
+	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d (%d of them ID-only, no LIMIT so not timed or held to the bar), IDs differ %d, known %d (IDs differ only by posts with invalid dates), bar met %d (%d of them only on rerun: missed once, then met in at least 2 of 3 reruns alone), bar missed %d (every timed pair, known ones included; a miss counts only when at least 2 of 3 reruns miss too), weedout %d, plans read with classic EXPLAIN %d, plans unreadable %d, row count changed %d, errors %d, skipped %d. Load at end: %s\n",
 	$totals['pairs'],
 	$totals['empty'],
 	$totals['empty_synthetic'],
@@ -1195,6 +1304,7 @@ printf(
 	$totals['ids_differ'],
 	$totals['known'],
 	$totals['bar_met'],
+	$totals['pass_on_rerun'],
 	$totals['bar_missed'],
 	$totals['weedout'],
 	$totals['plan_classic'],
