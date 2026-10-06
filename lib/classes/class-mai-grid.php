@@ -261,13 +261,20 @@ class Mai_Grid {
 					$asked     = $this->query_args;
 					$keep      = null;
 
+					// Ties in the sort are settled for every grid that does not count rows, in the
+					// way add_grid_orderby_tiebreaker() describes. Mai Load More counts them, so it
+					// is left out. Its next pages run from the saved args, which never carry the
+					// marker, so the first page would settle ties and the pages after it would not.
+					if ( ! empty( $asked['no_found_rows'] ) ) {
+						$this->query_args['mai_grid_tiebreak'] = true;
+					}
+
 					if ( $defer ) {
 						// Keep the per-view ids out of the SQL so every page sharing this
 						// grid's filters shares one cache entry, and ask for enough extra
 						// rows that the grid still fills once they are dropped.
-						$this->query_args['post__not_in']      = array_values( array_diff( $asked['post__not_in'], $effective ) );
-						$this->query_args['posts_per_page']    = $asked['posts_per_page'] + count( $effective );
-						$this->query_args['mai_grid_tiebreak'] = true;
+						$this->query_args['post__not_in']   = array_values( array_diff( $asked['post__not_in'], $effective ) );
+						$this->query_args['posts_per_page'] = $asked['posts_per_page'] + count( $effective );
 
 						// Mai_Query_Cache reads this in posts_pre_query and answers with only
 						// the posts that will be shown, so the rest are never loaded.
@@ -284,7 +291,12 @@ class Mai_Grid {
 						$this->query_args['cache_results'] = false;
 					}
 
-					$query = new WP_Query();
+					$query     = new WP_Query();
+					$optimizer = Mai_Post_Grid_Query_Optimizer::instance();
+
+					// Lets the grid query optimizer send a faster statement for this grid when it
+					// can prove it returns the same posts.
+					$optimizer->mark( $query, Mai_Post_Grid_Query_Optimizer::ROLE_GRID );
 
 					// Set on the query itself before it runs, never as a query var. A plugin
 					// that answers posts_pre_query by building its own query from this one's
@@ -295,7 +307,20 @@ class Mai_Grid {
 						$query->mai_grid_keep = $keep;
 					}
 
-					$query->query( $this->query_args );
+					try {
+						$query->query( $this->query_args );
+					} finally {
+						// The grid's statement has been sent or never will be. recover() drops the
+						// prepared swap at posts_results, which a query that throws never reaches.
+						$optimizer->drop( $query );
+					}
+
+					// The marker has done its work. Take it off the query and the args for every
+					// grid, so nothing that reads them later, such as a plugin that serializes the
+					// query's args and runs them again, finds it there.
+					unset( $query->query_vars['mai_grid_tiebreak'], $query->query['mai_grid_tiebreak'] );
+
+					$this->query_args = $asked;
 
 					if ( $defer ) {
 						// Mai_Query_Cache already dropped the excludes and kept the asked count,
@@ -377,13 +402,7 @@ class Mai_Grid {
 							unset( $query->query['cache_results'] );
 						}
 
-						unset(
-							$query->query_vars['mai_grid_tiebreak'],
-							$query->query['mai_grid_tiebreak'],
-							$query->mai_grid_keep
-						);
-
-						$this->query_args = $asked;
+						unset( $query->mai_grid_keep );
 
 						// Core left $query->post pointing at the unfiltered first post, which
 						// with exclude_current is very often the post being excluded.
@@ -864,12 +883,11 @@ class Mai_Grid {
 		// rather than a false check on purpose: WP_Query's own default is false, so an absent
 		// key means counting is ON and must be treated the same as an explicit false.
 		//
-		// This guard is also what keeps the tiebreaker from desynchronising offset pagination.
-		// Page one would be ordered by (sort key, ID) and page two by sort key alone, so on a
-		// tied sort a reader could see the same post on both pages. Mai Load More sets
-		// no_found_rows false today, so it is caught here, but for the stated reason above.
-		// Do not drop this guard on the strength of having made the total accurate under
-		// padding: the ordering half would still be broken.
+		// This guard also keeps a counting grid from deferring. get_query() gives counting grids
+		// no ID tiebreaker, because their later pages run from saved args that never carry it,
+		// so a padded LIMIT on one would break ties differently from run to run. Do not drop this
+		// guard on the strength of having made the total accurate under padding: the ordering
+		// half would still be broken.
 		if ( empty( $query_args['no_found_rows'] ) ) {
 			$can = false;
 		}
@@ -924,11 +942,11 @@ class Mai_Grid {
 
 		// No point paying for this on a grid whose result will not be cached: the whole
 		// benefit is a shared cache entry. Covers the mai_post_grid_cache opt-out, plus
-		// everything Mai_Query_Cache refuses (ElasticPress, random order, the optimizer's
-		// fast path), plus a store that cannot write at all (SCRIPT_DEBUG, or the
-		// mai_can_cache filter). Calling is_cacheable() rather than restating its rules means
-		// the two cannot drift apart. It fires the mai_query_cache filter a second time for
-		// this query, which is harmless for a filter that only answers a question.
+		// everything Mai_Query_Cache refuses (ElasticPress, random order), plus a store that
+		// cannot write at all (SCRIPT_DEBUG, or the mai_can_cache filter). Calling
+		// is_cacheable() rather than restating its rules means the two cannot drift apart. It
+		// fires the mai_query_cache filter a second time for this query, which is harmless for
+		// a filter that only answers a question.
 		if ( empty( $query_args['mai_cache'] ) ) {
 			$can = false;
 		}
@@ -1068,37 +1086,69 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Appends a post ID tiebreaker to a deferred grid's ORDER BY.
+	 * Appends a post ID tiebreaker to a grid's ORDER BY. A date or author sort breaks ties by ID in
+	 * its own direction. Any other sort shows tied posts newest first.
+	 *
+	 * Every post grid that does not count rows gets this, deferring its excludes or not. Mai Load
+	 * More counts rows, so its grids do not. get_query() asks for it with the mai_grid_tiebreak
+	 * query var, and removes the var again once the query has run.
 	 *
 	 * Public only because mai_add_grid_orderby_tiebreaker() calls it. That function is registered
 	 * once on posts_orderby, in mai_register_query_cache(), and it stays registered. It only
-	 * calls this for a query carrying the mai_grid_tiebreak query var that get_query() sets, so
-	 * Mai_Grid is not loaded for any other query and this cannot reach into one. Staying
-	 * registered means an ID-only copy of a grid's query, run after the page by
-	 * Mai_Query_Cache, gets the same ORDER BY as the grid did.
+	 * calls this for a query carrying the mai_grid_tiebreak query var, so Mai_Grid is not loaded
+	 * for any other query and this cannot reach into one. Staying registered means an ID-only
+	 * copy of a grid's query, run after the page by Mai_Query_Cache, gets the same ORDER BY as
+	 * the grid did.
 	 *
-	 * Why it is needed: the deferred path asks for posts_per_page + N rows. When rows tie on
-	 * the sort column, MySQL's LIMIT-aware sort is free to keep different ones for different
-	 * LIMITs, and it is free to answer differently between two runs of the same statement.
-	 * Measured on larrybrownsports with comment_count ordering, where 134,207 of 145,646 posts
-	 * tie at zero: across 120 grid renders, 20 differed between a LIMIT 6 and a LIMIT 13 read
-	 * of the same grid, 5 of them returning genuinely different posts rather than a reshuffle.
+	 * Why it is needed: when rows tie on the sort column, MySQL is free to answer differently for
+	 * different LIMITs, and between two runs of the same statement. A deferring grid asks for
+	 * posts_per_page + N rows, so it hits that directly. Measured on larrybrownsports with
+	 * comment_count ordering, where 134,207 of 145,646 posts tie at zero: across 120 grid
+	 * renders, 20 differed between a LIMIT 6 and a LIMIT 13 read of the same grid, 5 of them
+	 * returning genuinely different posts rather than a reshuffle. The faster taxonomy query
+	 * (Mai_Post_Grid_Query_Optimizer) also needs an order with no ties before it can promise the
+	 * same posts as the statement it replaces.
 	 *
-	 * What this buys is a stable answer, not the same answer as before. It is applied only to
-	 * the deferred query, so on tied rows a deferring grid can legitimately show different
-	 * posts than the same grid with deferring off. That is the accepted trade: today's order
-	 * among tied rows is arbitrary and can change between page loads, and this makes it fixed.
+	 * The rule, in this order:
+	 * 1. An empty ORDER BY, or one that already names the post ID, is returned as it is.
+	 * 2. When the last sort key is the post date or the post author, ", ID" follows in that key's
+	 *    direction. A key with no direction is ascending, as it is in SQL.
+	 * 3. Otherwise, when the post date is already named, ", ID DESC".
+	 * 4. Otherwise ", post_date DESC, ID DESC".
+	 *
+	 * Why an ascending date sort breaks ties ascending: the taxonomy query walks the posts index
+	 * in the sort's direction and stops at the LIMIT. A trailing ID DESC on an ascending date sort
+	 * does not match that index order, so MySQL sorts every matching row. Measured once, on local
+	 * eurweb's biggest category: the swapped statement sorted by date ascending with LIMIT 7 took
+	 * 68 ms with ID ASC and 254 ms with ID DESC, as medians that include the mysql client's
+	 * start-up. An author sort follows its direction the same way, for consistency. It was not
+	 * measured on its own. Beta.5's deferring grids followed the sort direction like this too.
+	 * Other sorts have no such index to match, so their tied posts show newest first. A grid
+	 * sorted by a field nobody filled in, such as menu order on a site that never used it, then
+	 * reads like a plain latest posts list. What this buys is a fixed answer, which can differ
+	 * from what the database picked before among tied rows.
 	 *
 	 * @since 2.41.0
 	 * @since 2.41.0 Static, and registered once instead of around each grid's query.
+	 * @since 2.41.0 Applied to every grid that does not count rows. Date and author sorts tie by ID in
+	 *               their own direction. On an ascending date sort, ID DESC forced a full sort in the
+	 *               one measurement, and author sorts follow for consistency. Other sorts tie newest
+	 *               first.
+	 * @since 2.41.0 Returns an ORDER BY that is not a string, or a query that is not a WP_Query,
+	 *               unchanged.
 	 *
-	 * @param string   $orderby The ORDER BY clause.
-	 * @param WP_Query $query   The query.
+	 * @param mixed $orderby The ORDER BY clause. Anything that is not a string comes back as it is.
+	 * @param mixed $query   The query. Anything that is not a WP_Query leaves the clause as it is.
 	 *
-	 * @return string
+	 * @return mixed
 	 */
-	public static function add_deferred_orderby_tiebreaker( $orderby, $query ) {
+	public static function add_grid_orderby_tiebreaker( mixed $orderby, mixed $query ): mixed {
 		global $wpdb;
+
+		// Another plugin's posts_orderby filter can hand down any value.
+		if ( ! is_string( $orderby ) || ! $query instanceof WP_Query ) {
+			return $orderby;
+		}
 
 		if ( empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
 			return $orderby;
@@ -1115,11 +1165,24 @@ class Mai_Grid {
 			return $orderby;
 		}
 
-		// Match the direction the last sort key uses, so the tiebreaker reads as a
-		// continuation of what the editor asked for rather than a reversal of it.
-		$direction = preg_match( '/\b(ASC|DESC)\s*$/i', trim( $orderby ), $matches ) ? strtoupper( $matches[1] ) : 'DESC';
+		$posts = preg_quote( $wpdb->posts, '/' );
 
-		return $orderby . ", {$wpdb->posts}.ID " . $direction;
+		// The last sort key is the date or the author, so the ID follows its direction. The
+		// pattern is anchored at the end and starts at the clause or at a comma, so a column
+		// inside a function, which a closing bracket follows, or in another table, does not match.
+		if ( preg_match( '/(?:^|,)\s*' . $posts . '\.post_(?:date|author)(?:\s+((?i:ASC|DESC)))?\s*$/', $orderby, $last ) ) {
+			$direction = 'DESC' === strtoupper( $last[1] ?? '' ) ? 'DESC' : 'ASC';
+
+			return "{$orderby}, {$wpdb->posts}.ID {$direction}";
+		}
+
+		// The post date is already named in the ORDER BY, so no extra post_date key is added. A
+		// whole-column match, so the GMT date does not count.
+		if ( preg_match( '/(?<!\w)' . $posts . '\.post_date\b/', $orderby ) ) {
+			return "{$orderby}, {$wpdb->posts}.ID DESC";
+		}
+
+		return "{$orderby}, {$wpdb->posts}.post_date DESC, {$wpdb->posts}.ID DESC";
 	}
 
 	/**

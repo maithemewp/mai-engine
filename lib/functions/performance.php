@@ -290,14 +290,19 @@ function mai_prime_featured_images_cache( $posts, $wp_query ) {
 	return $posts;
 }
 
-add_action( 'init', 'mai_register_post_grid_query_optimizer' );
+add_action( 'init', 'mai_register_post_grid_query_optimizer', 9 );
 /**
  * Registers the Mai Post Grid query optimizer.
+ *
+ * Priority 9, before the grid result cache registers on 10. Both put a callback on posts_results
+ * at the earliest priority, and the optimizer's recover() must run before
+ * Mai_Query_Cache::posts_results(), so the result cache sees a failed faster statement already
+ * sent again.
  *
  * @since 2.41.0
  *
  * @return void
  */
 function mai_register_post_grid_query_optimizer() {
-	( new Mai_Post_Grid_Query_Optimizer() )->register();
+	Mai_Post_Grid_Query_Optimizer::instance()->register();
 }

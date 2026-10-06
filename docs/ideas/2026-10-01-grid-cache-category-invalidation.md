@@ -24,7 +24,7 @@ A grid gets term stamps only when every one of these is true. Anything else keep
 2. The clauses are joined by `AND` or `OR`. Either is fine, because the grid depends on every term it names (see "Football and Basketball" below).
 3. No clause uses `NOT IN`, `EXISTS`, `NOT EXISTS` or a nested group.
 4. The parsed meta query is empty, and `meta_key` is not set on its own (it limits results too).
-5. None of these is set: `s`, any author var, `post__in`, `post_parent`, `post_parent__in`, `post_name__in`, `post_type` of `any`, the optimizer's `mai_post_grid_tt_ids`. `ignore_sticky_posts` must be true.
+5. None of these is set: `s`, any author var, `post__in`, `post_parent`, `post_parent__in`, `post_name__in`, `post_type` of `any`. `ignore_sticky_posts` must be true.
 6. Its order is one of: date, modified date, title, menu order, ID. These only change when the post itself is saved. Orders that change without a save (comment count, a custom field such as views, random) keep the post type stamp, or are not cached at all as today.
 7. The site has a persistent object cache. Without one, each stamp would be an autoloaded row in `wp_options`, and thousands of category stamps would bloat the table. Those sites keep the single post type stamp.
 

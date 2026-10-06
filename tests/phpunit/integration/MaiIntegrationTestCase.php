@@ -2,6 +2,7 @@
 
 namespace BizBudding\MaiEngine\Tests\Integration;
 
+use Mai_Post_Grid_Query_Optimizer;
 use Mai_Query_Cache;
 use Mai_Query_Cache_Queue;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
@@ -20,7 +21,8 @@ use WP_UnitTestCase;
 abstract class MaiIntegrationTestCase extends WP_UnitTestCase {
 
 	/**
-	 * Starts every test with a test queue on the grid cache. See install_test_queue().
+	 * Starts every test with a test queue on the grid cache (see install_test_queue()), and with
+	 * the grid query optimizer reset as at the start of a request.
 	 *
 	 * @return void
 	 */
@@ -28,16 +30,19 @@ abstract class MaiIntegrationTestCase extends WP_UnitTestCase {
 		parent::set_up();
 
 		self::install_test_queue();
+		Mai_Post_Grid_Query_Optimizer::instance()->reset();
 	}
 
 	/**
 	 * Ends every test with a test queue on the grid cache, so the next test class, and the
 	 * queue run at shutdown, never get the one this test installed. See install_test_queue().
+	 * The grid query optimizer is reset too, so no prepared swap or record outlives the test.
 	 *
 	 * @return void
 	 */
 	public function tear_down() {
 		self::install_test_queue();
+		Mai_Post_Grid_Query_Optimizer::instance()->reset();
 
 		parent::tear_down();
 	}
