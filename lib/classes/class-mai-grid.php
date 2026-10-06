@@ -1132,13 +1132,21 @@ class Mai_Grid {
 	 *               their own direction, because ID DESC on an ascending date sort forces a full sort.
 	 *               Other sorts tie newest first.
 	 *
-	 * @param string   $orderby The ORDER BY clause.
-	 * @param WP_Query $query   The query.
+	 * @since 2.41.0 Returns an ORDER BY that is not a string, or a query that is not a WP_Query,
+	 *               unchanged.
 	 *
-	 * @return string
+	 * @param mixed $orderby The ORDER BY clause. Anything that is not a string comes back as it is.
+	 * @param mixed $query   The query. Anything that is not a WP_Query leaves the clause as it is.
+	 *
+	 * @return mixed
 	 */
-	public static function add_grid_orderby_tiebreaker( $orderby, $query ) {
+	public static function add_grid_orderby_tiebreaker( mixed $orderby, mixed $query ): mixed {
 		global $wpdb;
+
+		// Another plugin's posts_orderby filter can hand down any value.
+		if ( ! is_string( $orderby ) || ! $query instanceof WP_Query ) {
+			return $orderby;
+		}
 
 		if ( empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
 			return $orderby;

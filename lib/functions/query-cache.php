@@ -56,14 +56,21 @@ function mai_register_query_cache() {
  * then loads Mai_Grid. A query without the var never loads Mai_Grid, so a page with no post grid
  * does not pay for the class on every filtered query.
  *
+ * Another plugin's posts_orderby filter can hand down any value, so anything that is not a string,
+ * or a query that is not a WP_Query, comes back unchanged.
+ *
  * @since 2.41.0
  *
- * @param string   $orderby The ORDER BY clause.
- * @param WP_Query $query   The query.
+ * @param mixed $orderby The ORDER BY clause.
+ * @param mixed $query   The query.
  *
- * @return string
+ * @return mixed
  */
-function mai_add_grid_orderby_tiebreaker( $orderby, $query ) {
+function mai_add_grid_orderby_tiebreaker( mixed $orderby, mixed $query ): mixed {
+	if ( ! is_string( $orderby ) || ! $query instanceof WP_Query ) {
+		return $orderby;
+	}
+
 	if ( empty( $query->query_vars['mai_grid_tiebreak'] ) ) {
 		return $orderby;
 	}

@@ -79,6 +79,15 @@ final class GridTiebreakerTest extends MaiIntegrationTestCase {
 		}
 	}
 
+	/** Gives every post the same author, so an author sort ties on every post. */
+	private function make_the_authors_tie(): void {
+		$author = self::factory()->user->create( [ 'role' => 'author' ] );
+
+		foreach ( $this->post_ids as $id ) {
+			wp_update_post( [ 'ID' => $id, 'post_author' => $author ] );
+		}
+	}
+
 	/**
 	 * Records the mai_grid_tiebreak query var while the query runs, one entry per query.
 	 *
@@ -157,11 +166,83 @@ final class GridTiebreakerTest extends MaiIntegrationTestCase {
 		$this->assertSame( str_replace( '{posts}', $wpdb->posts, $expected ), $this->order_by( $this->run_grid( $overrides ) ) );
 	}
 
-	public function test_a_date_sort_ascending_is_still_swapped(): void {
+	/**
+	 * Sorts on which every post ties, so the ID decides the whole order.
+	 *
+	 * @return array<string,array{0:string,1:string}>
+	 */
+	public static function tied_sorts(): array {
+		return [
+			'date, ascending'    => [ 'date', 'ASC' ],
+			'date, descending'   => [ 'date', 'DESC' ],
+			'author, ascending'  => [ 'author', 'ASC' ],
+			'author, descending' => [ 'author', 'DESC' ],
+		];
+	}
+
+	/**
+	 * Read back from a real grid: when every post ties on a date or author sort, the posts come
+	 * in ID order, in the sort's direction. The author cases tie the dates too, because in
+	 * set_up() the newest post has the lowest ID, so a date tiebreaker would give the same
+	 * answer as an ascending ID.
+	 */
+	#[DataProvider( 'tied_sorts' )]
+	public function test_a_sort_where_every_post_ties_shows_ids_in_its_direction( string $orderby, string $order ): void {
+		$this->make_the_dates_tie();
+
+		if ( 'author' === $orderby ) {
+			$this->make_the_authors_tie();
+		}
+
+		$expected = $this->post_ids;
+
+		if ( 'ASC' === $order ) {
+			sort( $expected );
+		} else {
+			rsort( $expected );
+		}
+
+		$query = $this->run_grid( [ 'orderby' => $orderby, 'order' => $order ] );
+
+		$this->assertSame( array_slice( $expected, 0, self::PER_PAGE ), wp_list_pluck( $query->posts, 'ID' ) );
+	}
+
+	/**
+	 * Each sort column the optimizer covers, other than the ID, ascending, descending and with no
+	 * direction.
+	 *
+	 * @return array<string,array{0:string,1:string}>
+	 */
+	public static function covered_sort_keys(): array {
+		$cases = [];
+
+		foreach ( Mai_Post_Grid_Query_Optimizer_Sql::SORT_COLUMNS as $column ) {
+			if ( 'ID' === $column ) {
+				continue;
+			}
+
+			foreach ( [ 'ASC', 'DESC', '' ] as $direction ) {
+				$cases[ '' === $direction ? "{$column}, no direction" : "{$column} {$direction}" ] = [ $column, $direction ];
+			}
+		}
+
+		return $cases;
+	}
+
+	/**
+	 * Checks orderby_ok(): a sort key the optimizer covers, once the tiebreaker is added, is one it
+	 * takes. PostGridQueryOptimizerSamePostsTest checks that such grids are swapped end to end.
+	 */
+	#[DataProvider( 'covered_sort_keys' )]
+	public function test_a_covered_sort_with_its_tiebreaker_passes_orderby_ok( string $column, string $direction ): void {
 		global $wpdb;
 
-		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $this->order_by( $this->run_grid( [ 'orderby' => 'date', 'order' => 'ASC' ] ) ), $wpdb->posts ), 'date ascending' );
-		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $this->order_by( $this->run_grid( [ 'orderby' => 'author', 'order' => 'ASC' ] ) ), $wpdb->posts ), 'author ascending' );
+		$query             = new WP_Query();
+		$query->query_vars = [ 'mai_grid_tiebreak' => true ];
+		$orderby           = Mai_Grid::add_grid_orderby_tiebreaker( trim( "{$wpdb->posts}.{$column} {$direction}" ), $query );
+
+		$this->assertStringEndsWith( '.ID ' . ( 'DESC' === $direction ? 'DESC' : 'ASC' ), $orderby, 'the ID follows the direction' );
+		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $orderby, $wpdb->posts ), $orderby );
 	}
 
 	/**
@@ -178,10 +259,11 @@ final class GridTiebreakerTest extends MaiIntegrationTestCase {
 			'author, no direction is ascending'  => [ '{posts}.post_author', '{posts}.post_author, {posts}.ID ASC' ],
 			'a key after a top-level comma'      => [ 'mt1.meta_value+0 DESC, {posts}.post_date ASC', 'mt1.meta_value+0 DESC, {posts}.post_date ASC, {posts}.ID ASC' ],
 			'date, then another key'             => [ '{posts}.post_date DESC, {posts}.menu_order ASC', '{posts}.post_date DESC, {posts}.menu_order ASC, {posts}.ID DESC' ],
+			'date ascending, then another key'   => [ '{posts}.post_date ASC, {posts}.menu_order ASC', '{posts}.post_date ASC, {posts}.menu_order ASC, {posts}.ID DESC' ],
 			'author, then date'                  => [ '{posts}.post_author ASC, {posts}.post_date DESC', '{posts}.post_author ASC, {posts}.post_date DESC, {posts}.ID DESC' ],
 			'the GMT date is not the date'       => [ '{posts}.post_date_gmt ASC', '{posts}.post_date_gmt ASC, {posts}.post_date DESC, {posts}.ID DESC' ],
 			'the date inside a function'         => [ 'COALESCE(mt1.meta_value, {posts}.post_date) ASC', 'COALESCE(mt1.meta_value, {posts}.post_date) ASC, {posts}.ID DESC' ],
-			'the date of another table'          => [ 'other_posts.post_date ASC', 'other_posts.post_date ASC, {posts}.post_date DESC, {posts}.ID DESC' ],
+			'the date of a table named x{posts}' => [ 'x{posts}.post_date ASC', 'x{posts}.post_date ASC, {posts}.post_date DESC, {posts}.ID DESC' ],
 			'random order gets the general rule' => [ 'RAND()', 'RAND(), {posts}.post_date DESC, {posts}.ID DESC' ],
 			'a sort with no date'                => [ '{posts}.comment_count DESC', '{posts}.comment_count DESC, {posts}.post_date DESC, {posts}.ID DESC' ],
 			'a clause that names the ID'         => [ 'FIELD({posts}.ID, 3,2,1)', 'FIELD({posts}.ID, 3,2,1)' ],
@@ -209,6 +291,43 @@ final class GridTiebreakerTest extends MaiIntegrationTestCase {
 		$query->query_vars = [];
 
 		$this->assertSame( "{$wpdb->posts}.menu_order ASC", Mai_Grid::add_grid_orderby_tiebreaker( "{$wpdb->posts}.menu_order ASC", $query ) );
+	}
+
+	/**
+	 * What another plugin's posts_orderby filter could hand down instead of a string.
+	 *
+	 * @return array<string,array{0:mixed}>
+	 */
+	public static function orderby_values_that_are_not_strings(): array {
+		return [
+			'an array'   => [ [ 'wptests_posts.post_date DESC' ] ],
+			'null'       => [ null ],
+			'an integer' => [ 5 ],
+		];
+	}
+
+	/** Both the hook callback and the method hand back anything that is not a string as it came. */
+	#[DataProvider( 'orderby_values_that_are_not_strings' )]
+	public function test_an_orderby_that_is_not_a_string_is_returned_unchanged( mixed $orderby ): void {
+		$query             = new WP_Query();
+		$query->query_vars = [ 'mai_grid_tiebreak' => true ];
+
+		$this->assertSame( $orderby, mai_add_grid_orderby_tiebreaker( $orderby, $query ) );
+		$this->assertSame( $orderby, Mai_Grid::add_grid_orderby_tiebreaker( $orderby, $query ) );
+	}
+
+	/** A query that is not a WP_Query, even one carrying the marker, is left alone. */
+	public function test_a_query_that_is_not_a_wp_query_is_left_alone(): void {
+		global $wpdb;
+
+		$orderby            = "{$wpdb->posts}.menu_order ASC";
+		$marked             = new \stdClass();
+		$marked->query_vars = [ 'mai_grid_tiebreak' => true ];
+
+		foreach ( [ null, $marked, 'a query' ] as $query ) {
+			$this->assertSame( $orderby, mai_add_grid_orderby_tiebreaker( $orderby, $query ) );
+			$this->assertSame( $orderby, Mai_Grid::add_grid_orderby_tiebreaker( $orderby, $query ) );
+		}
 	}
 
 	public function test_a_deferring_grid_on_a_sort_that_is_not_by_date_breaks_ties_newest_first(): void {

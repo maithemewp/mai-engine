@@ -69,7 +69,7 @@ final class PostGridQueryOptimizerDatabaseTest extends TestCase {
 		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Database::allows( '8.0.46' ), 'MySQL does not need a MariaDB minimum' );
 	}
 
-	public function test_mariadb_uses_the_shipped_minimum_when_none_is_passed(): void {
+	public function test_mariadb_falls_back_to_the_class_minimum_when_none_is_passed(): void {
 		Mai_Post_Grid_Query_Optimizer_Database::$mariadb_min = '10.11.0';
 
 		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Database::allows( '11.8.2-MariaDB' ) );

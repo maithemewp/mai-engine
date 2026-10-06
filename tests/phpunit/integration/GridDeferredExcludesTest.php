@@ -299,11 +299,13 @@ final class GridDeferredExcludesTest extends MaiIntegrationTestCase {
 		$this->assertStringContainsString( 'post_date ASC, ', $ascending->request, 'the sort itself is ascending' );
 		$this->assertStringContainsString( '.ID ASC', $ascending->request );
 		$this->assertStringNotContainsString( '.ID DESC', $ascending->request );
+		$this->assertSame( [ $this->post_ids[9], $this->post_ids[8], $this->post_ids[7] ], $this->ids( $ascending ), 'the three oldest, oldest first' );
 
 		$descending = ( new Mai_Grid( $this->grid_args( [ 'order' => 'DESC' ] ) ) )->get_query();
 
 		$this->assertStringContainsString( '.ID DESC', $descending->request );
 		$this->assertStringNotContainsString( '.ID ASC', $descending->request );
+		$this->assertSame( [ $this->post_ids[1], $this->post_ids[2], $this->post_ids[3] ], $this->ids( $descending ), 'the three newest after the current post' );
 	}
 
 	public function test_tiebreaker_is_applied_to_an_undeferred_grid(): void {

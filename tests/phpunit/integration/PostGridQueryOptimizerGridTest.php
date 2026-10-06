@@ -135,6 +135,29 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 		$this->assertSame( $expected, $next['ids'] );
 	}
 
+	public function test_an_ascending_deferring_grid_swaps_its_copy_and_stores_the_oldest_posts(): void {
+		global $wpdb;
+
+		$args     = array_merge( $this->deferring_args(), [ 'order' => 'ASC' ] );
+		$expected = $this->today( $args );
+
+		$this->fresh_start();
+
+		$run     = $this->render( $args );
+		$swapped = self::swapped( $run );
+		$oldest  = array_slice( array_reverse( self::$fixture['posts']['big'] ), 0, self::PER_PAGE + 1 );
+		$order   = preg_quote( "ORDER BY {$wpdb->posts}.post_date ASC, {$wpdb->posts}.ID ASC", '/' );
+
+		$this->assertCount( 1, self::grid_statements( $run ), 'only the copy ran, since the note answered the grid' );
+		$this->assertCount( 1, $swapped, 'the copy was swapped' );
+		$this->assertMatchesRegularExpression( "/{$order}\s+LIMIT 0, " . ( self::PER_PAGE + 1 ) . '\s*$/', $swapped[0], 'the padded copy, ascending, ID ascending' );
+		$this->assertSame( [ [ 'ids' => $oldest, 'found' => 0, 'by' => 'ids' ] ], $run['stored'], 'the oldest posts, oldest first' );
+		$this->assertSame( array_slice( $oldest, 0, self::PER_PAGE ), $run['ids'] );
+		$this->assertSame( $expected, $run['ids'] );
+		$this->assertSame( [], $this->logged );
+		$this->assertFalse( get_transient( Mai_Post_Grid_Query_Optimizer::TRANSIENT ) );
+	}
+
 	public function test_a_grid_without_excludes_swaps_its_own_query(): void {
 		global $wpdb;
 

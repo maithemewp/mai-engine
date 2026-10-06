@@ -69,6 +69,8 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 			'orderby menu order',
 			'tiebreaker removed',
 			'ORDER BY names the term table',
+			'term order put first after the tiebreaker',
+			'ID key taken off after the tiebreaker',
 			'no LIMIT',
 			'nested tax query',
 			'OR with NOT IN',
@@ -950,6 +952,17 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 			case 'ORDER BY names the term table':
 				// term_order is 0 on every row, so the order is still date, then ID.
 				add_filter( 'posts_orderby', static fn( $orderby ) => "{$terms}.term_order ASC, {$orderby}" );
+				break;
+
+			case 'term order put first after the tiebreaker':
+				// Priority 100, after Mai's tiebreaker at 99. term_order is 0 on every row.
+				add_filter( 'posts_orderby', static fn( $orderby ) => "{$terms}.term_order ASC, {$orderby}", 100 );
+				break;
+
+			case 'ID key taken off after the tiebreaker':
+				// Priority 100, after Mai's tiebreaker at 99. Big's dates all differ, so the order
+				// is the same without it.
+				add_filter( 'posts_orderby', static fn( $orderby ) => (string) preg_replace( '/,\s*' . preg_quote( "{$posts}.ID", '/' ) . '\s+(?:ASC|DESC)\s*$/', '', $orderby ), 100 );
 				break;
 
 			case 'no LIMIT':

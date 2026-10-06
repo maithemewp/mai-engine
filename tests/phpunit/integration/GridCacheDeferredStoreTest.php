@@ -156,17 +156,20 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 		Mai_Query_Cache::instance()->set_queue( $this->queue );
 	}
 
-	private function grid_args( string $path, int $per_page = self::PER_PAGE ): array {
-		return [
-			'type'           => 'post',
-			'post_type'      => [ 'post' ],
-			'query_by'       => 'tax_meta',
-			'posts_per_page' => $per_page,
-			'excludes'       => 'kept' === $path ? [ 'exclude_current' ] : [],
-			'taxonomies'     => [
-				[ 'taxonomy' => 'category', 'terms' => [ $this->term_id ], 'current' => false, 'operator' => 'IN' ],
+	private function grid_args( string $path, int $per_page = self::PER_PAGE, array $overrides = [] ): array {
+		return array_merge(
+			[
+				'type'           => 'post',
+				'post_type'      => [ 'post' ],
+				'query_by'       => 'tax_meta',
+				'posts_per_page' => $per_page,
+				'excludes'       => 'kept' === $path ? [ 'exclude_current' ] : [],
+				'taxonomies'     => [
+					[ 'taxonomy' => 'category', 'terms' => [ $this->term_id ], 'current' => false, 'operator' => 'IN' ],
+				],
 			],
-		];
+			$overrides
+		);
 	}
 
 	/**
@@ -186,9 +189,13 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 	 * just after pre_query(). A grid statement is one against the posts table with a LIMIT.
 	 * Priming reads have none.
 	 *
+	 * @param string $path      'kept' or 'the_posts'. See paths().
+	 * @param int    $per_page  How many posts the grid shows.
+	 * @param array  $overrides Grid args on top of grid_args().
+	 *
 	 * @return array{query:WP_Query,key:string,answered:?bool,selects:int}
 	 */
-	private function render( string $path, int $per_page = self::PER_PAGE ): array {
+	private function render( string $path, int $per_page = self::PER_PAGE, array $overrides = [] ): array {
 		global $wpdb;
 
 		$key      = '';
@@ -223,7 +230,7 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 		add_filter( 'posts_pre_query', $capture_answer, 11, 2 );
 		add_filter( 'query', $count_selects );
 
-		$query = ( new Mai_Grid( $this->grid_args( $path, $per_page ) ) )->get_query();
+		$query = ( new Mai_Grid( $this->grid_args( $path, $per_page, $overrides ) ) )->get_query();
 
 		remove_filter( 'query', $count_selects );
 		remove_filter( 'posts_pre_query', $capture_answer, 11 );
@@ -298,6 +305,39 @@ final class GridCacheDeferredStoreTest extends MaiIntegrationTestCase {
 		$this->assertSame( 4 * HOUR_IN_SECONDS, $envelope['s'] - $envelope['w'], 'the soft lifetime' );
 		$this->assertEqualsWithDelta( DAY_IN_SECONDS, $timeout - $envelope['w'], 1, 'the hard lifetime' );
 		$this->assertTrue( $this->queue->is_empty(), 'the list is emptied' );
+	}
+
+	/**
+	 * An ascending grid that excludes the current post, viewed on the oldest post: the cold view
+	 * stores the padded list oldest first, and the next view is answered from that entry with the
+	 * same posts in the same order, without a grid statement.
+	 */
+	public function test_an_ascending_deferring_grid_is_served_from_the_cache_in_its_order(): void {
+		$oldest = array_reverse( $this->post_ids );
+		$asc    = [ 'order' => 'ASC' ];
+
+		$this->go_to( get_permalink( $oldest[0] ) );
+
+		$cold = $this->render( 'kept', self::PER_PAGE, $asc );
+
+		$this->assertFalse( $cold['answered'], 'a cold miss' );
+		$this->assertSame( array_slice( $oldest, 1, self::PER_PAGE ), $this->ids( $cold['query'] ), 'the oldest posts, oldest first, without the current one' );
+
+		$this->run_queue();
+
+		$this->assertSame( array_slice( $oldest, 0, self::PER_PAGE + 1 ), $this->stored( $cold['key'] )['value']['ids'] ?? null, 'the padded list, oldest first' );
+
+		// The next request.
+		$this->install_queue();
+		wp_cache_flush_group( 'post-queries' );
+		$this->go_to( get_permalink( $oldest[0] ) );
+
+		$warm = $this->render( 'kept', self::PER_PAGE, $asc );
+
+		$this->assertSame( $cold['key'], $warm['key'] );
+		$this->assertTrue( $warm['answered'], 'answered from the cache' );
+		$this->assertSame( 0, $warm['selects'], 'no grid statement' );
+		$this->assertSame( $this->ids( $cold['query'] ), $this->ids( $warm['query'] ) );
 	}
 
 	/**

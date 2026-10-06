@@ -236,6 +236,57 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 	}
 
 	/**
+	 * The swapped sorts other than the ID, each way.
+	 *
+	 * @return array<string,array{0:string,1:string}>
+	 */
+	public static function tied_sorts(): array {
+		return [
+			'date ASC'    => [ 'date', 'ASC' ],
+			'date DESC'   => [ 'date', 'DESC' ],
+			'author ASC'  => [ 'author', 'ASC' ],
+			'author DESC' => [ 'author', 'DESC' ],
+		];
+	}
+
+	/**
+	 * When every post shares one date and one author, the ID tiebreaker decides the whole order.
+	 * The swapped statement must still show the same posts as today's, and those are big's posts by
+	 * ID in the sort's direction. The dates and authors are set inside the test, so they roll back.
+	 */
+	#[DataProvider( 'tied_sorts' )]
+	public function test_same_posts_when_every_date_and_author_ties( string $orderby, string $order ): void {
+		$this->tie_every_date_and_author();
+
+		[ $args ] = $this->prepare(
+			[
+				'shape'    => 'big with children',
+				'orderby'  => $orderby,
+				'order'    => $order,
+				'per_page' => 7,
+				'excludes' => 'none',
+			],
+			'visitor'
+		);
+
+		$off      = $this->render( $args, false );
+		$on       = $this->render( $args, true );
+		$expected = self::$fixture['posts']['big'];
+
+		if ( 'ASC' === $order ) {
+			sort( $expected );
+		} else {
+			rsort( $expected );
+		}
+
+		$this->assertSame( [], $off['swapped'], 'the off run was not swapped' );
+		$this->assertNotEmpty( $on['swapped'], 'the on run sent the swapped statement' );
+		$this->assertSame( $off['ids'], $on['ids'], 'the same posts in the same order' );
+		$this->assertSame( array_slice( $expected, 0, 7 ), $on['ids'], 'big\'s posts by ID, in the sort\'s direction' );
+		$this->assertSame( [], $this->logged, 'the swap did not fail or turn itself off' );
+	}
+
+	/**
 	 * Pins what the three contexts and the two kinds of excludes do, so the cases above are not
 	 * running the same grid under three names.
 	 */
@@ -444,6 +495,34 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 			'ids'     => array_map( 'intval', wp_list_pluck( $query->posts, 'ID' ) ),
 			'swapped' => array_values( array_filter( $statements, static fn( string $sql ): bool => str_contains( $sql, self::SWAP ) ) ),
 		];
+	}
+
+	/**
+	 * Gives every post of the fixture, and the posts made before it, one date and one author, so
+	 * date and author sorts tie on every post. Called inside a test, so the change rolls back.
+	 *
+	 * @return void
+	 */
+	private function tie_every_date_and_author(): void {
+		global $wpdb;
+
+		$f      = self::$fixture;
+		$ids    = array_unique( array_merge( self::$leading, ...array_values( $f['posts'] ), ...[ $f['private'], $f['newest'], [ $f['page'] ] ] ) );
+		$author = self::factory()->user->create( [ 'role' => 'author' ] );
+
+		foreach ( $ids as $id ) {
+			$wpdb->update(
+				$wpdb->posts,
+				[
+					'post_date'     => '2020-01-01 12:00:00',
+					'post_date_gmt' => '2020-01-01 12:00:00',
+					'post_author'   => $author,
+				],
+				[ 'ID' => $id ]
+			);
+
+			clean_post_cache( $id );
+		}
 	}
 
 	/**

@@ -352,6 +352,8 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			"{$p}.ID",
 			"{$p}.ID DESC\n",
 			"other_posts.post_date DESC, other_posts.ID DESC",
+			"{$p}.post_date_gmt ASC, {$p}.post_date DESC, {$p}.ID DESC",
+			"{$p}.post_date asc, {$p}.ID ASC",
 			'',
 		];
 
