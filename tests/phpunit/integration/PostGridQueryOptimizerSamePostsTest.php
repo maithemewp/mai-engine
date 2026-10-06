@@ -73,11 +73,12 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 	];
 
 	/**
-	 * The sorts above that the optimizer swaps: date, author and ID, the ones that met the speed bar.
-	 * Written out here, not read from SORT_COLUMNS, so adding a sort to that list fails these cases
-	 * until the sort is measured and listed here.
+	 * The sorts above that the optimizer swaps: date and author, the ones that met the speed bar.
+	 * ID sorts left on 2026-10-06, after local MySQL 9.7.1 flipped their plan between runs. Written
+	 * out here, not read from SORT_COLUMNS, so adding a sort to that list fails these cases until
+	 * the sort is measured and listed here.
 	 */
-	private const SWAPPED_SORTS = [ 'date', 'author', 'ID' ];
+	private const SWAPPED_SORTS = [ 'date', 'author' ];
 
 	/**
 	 * The fixture's IDs, built once for the class.

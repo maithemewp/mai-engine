@@ -67,6 +67,7 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 			'orderby rand',
 			'orderby RAND(7)',
 			'orderby menu order',
+			'orderby ID',
 			'tiebreaker removed',
 			'ORDER BY names the term table',
 			'term order put first after the tiebreaker',
@@ -943,6 +944,11 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 			case 'orderby menu order':
 				// A sort that is left out, since the swapped form was slower on a mid-size category.
 				$args = [ 'orderby' => 'menu_order' ];
+				break;
+
+			case 'orderby ID':
+				// Left out since 2026-10-06: local MySQL 9.7.1 flipped its plan between runs.
+				$args = [ 'orderby' => 'ID' ];
 				break;
 
 			case 'tiebreaker removed':

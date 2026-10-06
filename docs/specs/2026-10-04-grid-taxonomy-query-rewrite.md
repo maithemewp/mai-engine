@@ -1,6 +1,6 @@
 # Grids: cheaper taxonomy queries on big sites
 
-Status: built on the `grid-taxonomy-optimizer` branch and measured on local eurweb (MySQL 9.7.1, 2026-10-05, see "Results"), then revised after the whole-branch review, then measured in Docker on MySQL 8.0.16 to 8.4.11 and MariaDB 10.6 to 11.8 (2026-10-05, see "Results"). MySQL from 8.0.16 is confirmed, and MariaDB stays off. Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
+Status: built on the `grid-taxonomy-optimizer` branch and measured on local eurweb (MySQL 9.7.1, 2026-10-05, see "Results"), then revised after the whole-branch review, then measured in Docker on MySQL 8.0.16 to 8.4.11 and MariaDB 10.6 to 11.8 (2026-10-05, see "Results"). MySQL from 8.0.16 is confirmed, and MariaDB stays off. ID sorts left the swap on 2026-10-06 (see "Which grids"). Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
 
 ## Why
 
@@ -113,7 +113,7 @@ All of these must hold. Any one failing means today's statement goes out unchang
 - **Every part is as WordPress built it.** For join, where, group-by, DISTINCT and fields, the value after the last filter equals the value at the first filter. First looks are at `PHP_INT_MIN` on `posts_where`, `posts_join`, `posts_groupby`, `posts_distinct` and `posts_fields`. The last look is at `PHP_INT_MAX` on `posts_clauses_request`, after every clause filter (WC Memberships edits at `posts_clauses` 999).
 - **A missing record means step aside.** list-category-posts, My Content Dash and The Blog Fixer remove other plugins' filters mid-request (`remove_all_filters`), so a first look can be missing.
 - **The join and the taxonomy condition are exactly WordPress's,** rebuilt as in section 1. The first-look join must equal the rebuilt joins, so nothing else is joined. The first-look where must contain the rebuilt condition exactly once. Group-by must be exactly `{posts}.ID`, DISTINCT empty, and fields exactly `{posts}.*`, or `{posts}.ID` for Mai's copy.
-- **The order has no ties and needs no join.** The final `ORDER BY` ends with `{posts}.ID ASC` or `{posts}.ID DESC`, and does not mention the term table or any of its table names. The sort is one that passed the speed test (section "Measurements").
+- **The order has no ties and needs no join.** The final `ORDER BY` ends with `{posts}.ID ASC` or `{posts}.ID DESC`, and does not mention the term table or any of its table names. The sort is one that passed the speed test (section "Measurements"): one or more date or author keys come before the ID, so a sort by the ID alone is not covered.
 - **There is a `LIMIT`.** Swiftype removes it on its search pages.
 - **The statement is unchanged at `posts_request`.** Recorded at `PHP_INT_MIN` and compared at `PHP_INT_MAX` (Revisionary rewrites it during logged-in revision previews).
 - **The statement has no `%` placeholder escape.** WordPress strips those in its own `query` filter at priority 0 (`class-wpdb.php:2428`), so a statement with one would never match. Grids have none today.
@@ -197,11 +197,12 @@ On a failure, in this order:
 - Grids that defer their excludes, and grids without excludes.
 - One or more taxonomy filters, joined with AND, or joined with OR when all are `IN` and share one table. `NOT IN`, `AND` and `EXISTS` filters can sit next to `IN` filters under AND.
 - Any taxonomy: categories, tags and custom taxonomies, such as recipe or product categories (Mike, 2026-10-04). They all use the same table, so the SQL is the same.
-- Sorted by date, author or ID, with the ID tiebreaker. Title, slug, modified date, menu order and comment count sorts were slower on a mid-size category in the speed test, so they keep today's statement (measured on MySQL 9.7.1, 2026-10-05). Date, author and ID sorts met the bar on every MySQL version in the Docker runs.
+- Sorted by date or author, with the ID tiebreaker. Title, slug, modified date, menu order and comment count sorts were slower on a mid-size category in the speed test, so they keep today's statement (measured on MySQL 9.7.1, 2026-10-05). Date and author sorts met the bar on every MySQL version in the Docker runs.
+- Not sorted by the ID. Mike took ID sorts out on 2026-10-06: local MySQL 9.7.1 flipped an ID sort's plan between two runs, from about 1 ms to about 63 ms on eurweb's biggest category, and MariaDB missed the bar on ID sorts too ("Results"). The grid's Order By setting offers no ID sort (`lib/fields/wp-query.php:865-872`), so only code makes one, and such a grid keeps today's statement and its cache as before.
 
 **Not covered, so today's statement:**
 
-- Load More grids, random order, meta queries, search, nested taxonomy filters, OR with a filter that is not `IN`, grids with no `IN` filter, and filters whose terms no longer exist.
+- Load More grids, random order, ID sorts, meta queries, search, nested taxonomy filters, OR with a filter that is not `IN`, grids with no `IN` filter, and filters whose terms no longer exist.
 - Pages where a plugin changes the grid's SQL: search pages with wpseo-local, secondary-title or Swiftype, author filters with co-authors-plus, Revisionary previews, and WP Fusion or WC Memberships when they hide content.
 - Sites with another database layer (W3 Total Cache's database cache, HyperDB, LudicrousDB, SQLite), and databases that did not pass.
 - On WordPress 6.4 and 6.5, a grid's own split statement. Those versions lay it out differently (core ticket 56841), so `split()` finds no match. Copies and full statements are still swapped there, since every other check compares WordPress's text with itself.
@@ -253,7 +254,7 @@ Integration tests, on a real database:
   - the statement has a `%` placeholder escape
   - `$wpdb` is a class other than `wpdb` or `QM_DB`
   - a hook callback is handed `null`
-- **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids. Each case of the rule in "Ties" is tested: date and author sorts ascending and descending, a sort that is not by date, a sort that names `post_date` without ending on it, a last key with no direction, the GMT date, and an ORDER BY that already names `{posts}.ID`. Every covered sort column other than the ID, ascending, descending and with no direction, passes `orderby_ok()` once the tiebreaker is added. A grid on which every post ties on a date or author sort shows the posts by ID in the sort's direction. An ORDER BY that is not a string, and a query that is not a `WP_Query`, come back unchanged.
+- **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids. Each case of the rule in "Ties" is tested: date and author sorts ascending and descending, a sort that is not by date, a sort that names `post_date` without ending on it, a last key with no direction, the GMT date, and an ORDER BY that already names `{posts}.ID`. Every covered sort column (date and author), ascending, descending and with no direction, passes `orderby_ok()` once the tiebreaker is added, and a grid sorted by the ID does not. A grid on which every post ties on a date or author sort shows the posts by ID in the sort's direction. An ORDER BY that is not a string, and a query that is not a `WP_Query`, come back unchanged.
 - **The rebuild after the page swaps too** (`run_queue()`), and the copy's key still matches the grid's, so the note is stored.
 - **Failure,** for the copy and for the grid's own query, split and full: a `query` callback added after Mai's breaks the swapped statement. The grid still shows the right posts, nothing wrong is stored, every prepared swap is cleared, the 24-hour transient is set, a second grid on the same page is not swapped, one log line is written, and WordPress's query cache was reset.
 - **Slow:** a swapped statement held over the limit, the copy's and the grid's own split and full forms (a test lowers the limit and a later `query` callback waits with `usleep()`), turns the swap off for the day and keeps the right list.
@@ -425,4 +426,4 @@ The misses, today against swapped in ms:
 
 - **`MYSQL_MIN` stays `8.0.16`.** It is the lowest MySQL tested, and every tested version above it passed too.
 - **`$mariadb_min` stays empty, so MariaDB is off.** No MariaDB version passed every pair, so there is no lowest passing version. A per-database sort list (MariaDB without the ID sort) would let MariaDB take the swap for date and author grids, where it passed. That is a design choice, not part of this change.
-- **`SORT_COLUMNS` stays date, author and ID.** A sort is removed only when it misses on a database that stays on, and MySQL missed nothing.
+- **`SORT_COLUMNS` stayed date, author and ID in this run.** A sort is removed only when it misses on a database that stays on, and MySQL missed nothing here. The rerun with the hardened tools then found local MySQL 9.7.1 missing on ID sorts, and ID left on 2026-10-06 (next section).

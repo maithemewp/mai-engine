@@ -22,8 +22,13 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 	 * speed bar on MySQL are here. Modified date, title, slug, menu order and comment count sorts
 	 * ran slower swapped on a mid-size category, and parent and type sorts were never measured, so
 	 * those grids keep today's statement (spec "Which grids").
+	 *
+	 * The ID is not a sort key here. Local MySQL 9.7.1 flipped the plan of an ID sort on eurweb's
+	 * biggest category between two runs, from a 1 ms walk of the posts to a 63 ms read of every
+	 * matching term row, and MariaDB missed the bar on ID sorts too. The grid's sort setting offers
+	 * no ID sort, so only code makes one, and it keeps today's statement (Mike, 2026-10-06).
 	 */
-	public const SORT_COLUMNS = [ 'post_date', 'post_author', 'ID' ];
+	public const SORT_COLUMNS = [ 'post_date', 'post_author' ];
 
 	/**
 	 * Written right after SELECT inside each EXISTS on MySQL. It forbids the one plan that hits
@@ -254,7 +259,8 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 	/**
 	 * Whether an ORDER BY has no ties and needs no join.
 	 *
-	 * True when it sorts only by posts table columns in SORT_COLUMNS and ends with the ID.
+	 * True when it sorts by one or more posts table columns in SORT_COLUMNS, and only by them, then
+	 * ends with the ID tiebreaker. A sort by the ID alone is refused (see SORT_COLUMNS).
 	 *
 	 * @param string $orderby     The ORDER BY clause, without the keywords.
 	 * @param string $posts_table The posts table name.
@@ -265,7 +271,7 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 		$table   = preg_quote( $posts_table, '/' );
 		$columns = implode( '|', array_map( static fn( string $column ): string => preg_quote( $column, '/' ), self::SORT_COLUMNS ) );
 
-		return 1 === preg_match( "/\A(?:{$table}\.(?:{$columns})(?: (?:ASC|DESC))?, )*{$table}\.ID (?:ASC|DESC)\z/", $orderby );
+		return 1 === preg_match( "/\A(?:{$table}\.(?:{$columns})(?: (?:ASC|DESC))?, )+{$table}\.ID (?:ASC|DESC)\z/", $orderby );
 	}
 
 	/**

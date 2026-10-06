@@ -208,8 +208,7 @@ final class GridTiebreakerTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * Each sort column the optimizer covers, other than the ID, ascending, descending and with no
-	 * direction.
+	 * Each sort column the optimizer covers, ascending, descending and with no direction.
 	 *
 	 * @return array<string,array{0:string,1:string}>
 	 */
@@ -217,10 +216,6 @@ final class GridTiebreakerTest extends MaiIntegrationTestCase {
 		$cases = [];
 
 		foreach ( Mai_Post_Grid_Query_Optimizer_Sql::SORT_COLUMNS as $column ) {
-			if ( 'ID' === $column ) {
-				continue;
-			}
-
 			foreach ( [ 'ASC', 'DESC', '' ] as $direction ) {
 				$cases[ '' === $direction ? "{$column}, no direction" : "{$column} {$direction}" ] = [ $column, $direction ];
 			}
@@ -243,6 +238,23 @@ final class GridTiebreakerTest extends MaiIntegrationTestCase {
 
 		$this->assertStringEndsWith( '.ID ' . ( 'DESC' === $direction ? 'DESC' : 'ASC' ), $orderby, 'the ID follows the direction' );
 		$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $orderby, $wpdb->posts ), $orderby );
+	}
+
+	/**
+	 * A grid sorted by the ID keeps today's statement: its ORDER BY is the ID alone, which
+	 * orderby_ok() refuses. The grid's sort setting offers no ID sort, so only code makes one.
+	 */
+	public function test_an_id_sort_is_not_covered(): void {
+		global $wpdb;
+
+		$this->assertNotContains( 'ID', Mai_Post_Grid_Query_Optimizer_Sql::SORT_COLUMNS );
+
+		foreach ( [ 'ASC', 'DESC' ] as $order ) {
+			$orderby = $this->order_by( $this->run_grid( [ 'orderby' => 'ID', 'order' => $order ] ) );
+
+			$this->assertSame( "{$wpdb->posts}.ID {$order}", $orderby, 'the tiebreaker leaves it alone' );
+			$this->assertFalse( Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $orderby, $wpdb->posts ), $orderby );
+		}
 	}
 
 	/**

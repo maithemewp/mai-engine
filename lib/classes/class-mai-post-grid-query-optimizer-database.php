@@ -31,7 +31,9 @@ final class Mai_Post_Grid_Query_Optimizer_Database {
 	 * Off. In the Docker runs of 2026-10-05, MariaDB 10.6, 10.11, 11.4 and 11.8 returned the same
 	 * posts, but a grid sorted by ID on eurweb's biggest category took 49 to 63 ms swapped against
 	 * 1 to 5 ms today, because MariaDB reads every matching term row before it walks the posts.
-	 * MariaDB has its own query planner, so MySQL's results do not carry over to it.
+	 * MariaDB has its own query planner, so MySQL's results do not carry over to it. ID sorts are
+	 * not swapped on any database since 2026-10-06, so every pair MariaDB would still take met the
+	 * bar in those runs. It stays off until Mike decides to turn it on.
 	 *
 	 * @internal Set by the test suite and the Docker runs, never by a site.
 	 *

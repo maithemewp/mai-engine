@@ -11,14 +11,14 @@
  * differs from one run to the next.
  *
  * Some skips are expected: the one synthetic shape that is not covered on purpose, the sorts
- * other than date, author and ID, and any captured statement the optimizer would not cover. A
- * synthetic statement meant to be covered that is skipped for any reason (no tax filter, no tax
- * query from WordPress, an ORDER BY orderby_ok() refuses, a null rebuild or swap) is not
- * expected, and stops the run with an error. So does a covered synthetic statement whose ORDER BY
- * does not end in the post ID in the sort's direction, a swapped text that is the same as today's,
- * a MySQL text without the hint, a captured statements line that cannot be read, captured
- * statements with a tax filter none of which is covered, no pairs at all, a failed write, a
- * failed close and a failed term read.
+ * other than date and author (ID sorts included), and any captured statement the optimizer would
+ * not cover. A synthetic statement meant to be covered that is skipped for any reason (no tax
+ * filter, no tax query from WordPress, an ORDER BY orderby_ok() refuses, a null rebuild or swap)
+ * is not expected, and stops the run with an error. So does a covered synthetic statement whose
+ * ORDER BY does not end in the post ID in the sort's direction, a swapped text that is the same
+ * as today's, a MySQL text without the hint, a captured statements line that cannot be read,
+ * captured statements with a tax filter none of which is covered, no pairs at all, a failed
+ * write, a failed close and a failed term read.
  *
  * Two sources:
  *   1. The statements bin/grid-optimizer-probe.php captured from real page views, from
@@ -35,7 +35,7 @@
  *      the eight sorts, ascending and descending. Each statement gets Mai's own tiebreaker, from
  *      mai_add_grid_orderby_tiebreaker() on posts_orderby, not a copy of its rule, so it ends the
  *      way a grid's does: the ID in the sort's direction for date and author, and post_date DESC
- *      then the ID DESC for the other sorts. Only date, author and ID pass orderby_ok(); the others
+ *      then the ID DESC for the other sorts. Only date and author pass orderby_ok(); the others
  *      are logged as skipped. Then come tag, custom taxonomy, AND, OR, IN with NOT IN, 29 terms,
  *      no children, posts and pages, publish and private (as the first administrator, nothing is
  *      saved, and skipped with a warning on a site with no administrator) and other public post
@@ -294,11 +294,12 @@ function synthetic_specs( array $terms ): array {
 
 	$term_filter = static fn( array $term, string $operator = 'IN', bool $children = true ): array => tax_filter( $term['taxonomy'], [ $term['id'] ], $operator, $children );
 
-	// Each size of term, crossed with every sort the grid offers. Only date, author and ID pass
-	// orderby_ok(), so only those are meant to be covered; the others are logged as skipped. Written
-	// out here, not read from SORT_COLUMNS, so a sort that leaves that list fails the run.
+	// Each size of term, crossed with every sort the grid offers, and the ID. Only date and author
+	// pass orderby_ok(), so only those are meant to be covered; the others, the ID since 2026-10-06,
+	// are logged as skipped. Written out here, not read from SORT_COLUMNS, so a sort that leaves
+	// that list fails the run.
 	$sorts   = [ 'date', 'modified', 'title', 'name', 'menu_order', 'comment_count', 'author', 'ID' ];
-	$covered = [ 'date', 'author', 'ID' ];
+	$covered = [ 'date', 'author' ];
 
 	foreach ( [ 'big', 'mid', 'small', 'old' ] as $size ) {
 		if ( ! isset( $terms[ $size ] ) ) {

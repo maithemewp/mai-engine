@@ -326,15 +326,17 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 			"{$p}.post_date ASC, {$p}.ID ASC",
 			"{$p}.post_author DESC, {$p}.ID DESC",
 			"{$p}.post_author ASC, {$p}.ID ASC",
-			"{$p}.ID DESC",
-			"{$p}.ID ASC",
 		];
 
 		foreach ( $allowed as $orderby ) {
 			$this->assertTrue( Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $orderby, $p ), $orderby );
 		}
 
+		// A sort by the ID alone is refused: local MySQL 9.7.1 flipped its plan between runs.
 		$refused = [
+			"{$p}.ID DESC",
+			"{$p}.ID ASC",
+			"{$p}.ID DESC, {$p}.ID ASC",
 			"{$p}.post_title ASC, {$p}.ID DESC",
 			"{$p}.menu_order ASC, {$p}.post_date DESC, {$p}.ID DESC",
 			"{$p}.post_modified DESC, {$p}.ID DESC",
