@@ -10,16 +10,24 @@
  * one). Without that last check such a grid would report IDs that differ, since random order
  * differs from one run to the next.
  *
- * Some skips are expected: a statement with no tax filter, the one synthetic shape that is not
- * covered on purpose, a sort orderby_ok() refuses, and any captured statement the optimizer would
- * not cover. A synthetic statement meant to be covered that is skipped is not expected, and stops
- * the run with an error, as do no pairs at all, a failed write and a failed term read.
+ * Some skips are expected: the one synthetic shape that is not covered on purpose, the sorts
+ * other than date, author and ID, and any captured statement the optimizer would not cover. A
+ * synthetic statement meant to be covered that is skipped for any reason (no tax filter, no tax
+ * query from WordPress, an ORDER BY orderby_ok() refuses, a null rebuild or swap) is not
+ * expected, and stops the run with an error. So does a covered synthetic statement whose ORDER BY
+ * does not end in the post ID in the sort's direction, a swapped text that is the same as today's,
+ * a MySQL text without the hint, a captured statements line that cannot be read, captured
+ * statements with a tax filter none of which is covered, no pairs at all, a failed write, a
+ * failed close and a failed term read.
  *
  * Two sources:
  *   1. The statements bin/grid-optimizer-probe.php captured from real page views, from
  *      /tmp/mai-optimizer-statements-<site>.jsonl, where <site> is the host of home_url(). A
  *      grid's own statement is written in the ID-only form WordPress sends when it splits the
- *      query, since that is what the database receives.
+ *      query. WordPress splits only with a persistent object cache, or with a LIMIT under 500
+ *      posts (class-wp-query.php:3383-3389 in WordPress 7.1), so a grid set to show all entries on
+ *      a site without a persistent object cache sends the full form, SELECT {posts}.*, at
+ *      LIMIT 0, 1000. That variant is written too, see below.
  *   2. Synthetic statements for the site's real terms, found with SQL on the term tables
  *      (counts from term_taxonomy.count for category and post_tag): the biggest term, a mid-size
  *      one (10 to 50% of published posts, the nearest to 25%), a small one (under 20 posts) and
@@ -37,13 +45,17 @@
  * and with no LIMIT, each as its own pair line:
  *   { "name", "original", "swapped_mysql", "swapped_mariadb" }
  * LIMIT 0, 1000 is what a grid set to show all entries sends (mai_post_grid_max_posts_per_page in
- * Mai_Grid). The replay compares only the IDs of the no LIMIT line, since the optimizer never
- * swaps a statement without a LIMIT. A statement text that an earlier pair already has, from
- * another statement or from the same one at a LIMIT that matches, is written once, so the replay
- * never times it twice.
+ * Mai_Grid). Every grid statement, captured or synthetic but not a copy, is also written in its
+ * full form at LIMIT 0, 1000 ("full form, LIMIT 0, 1000"), as WordPress writes it without the
+ * split: SELECT {posts}.* in place of SELECT {posts}.ID. The replay compares the IDs of the no
+ * LIMIT line and reads its plan, but does not time it, since the optimizer never swaps a statement
+ * without a LIMIT. A statement text that an earlier pair already has, from another statement or
+ * from the same one at a LIMIT that matches, is written once, so the replay never times it twice.
  *
- * Output: /tmp/mai-optimizer-pairs-<site>.jsonl, with <site> as above. The file is replaced on
- * every run. Nothing is written to the database.
+ * Output: /tmp/mai-optimizer-pairs-<site>.jsonl, with <site> as above. An old file is deleted
+ * first, the pairs go to the same name with .part added, and that file takes the name only after
+ * the last check passes. So a run that stops leaves no pairs file to replay by mistake. Nothing is
+ * written to the database.
  *
  * Usage (from the WP root, local sites only):
  *   wp eval-file wp-content/plugins/mai-engine/bin/grid-optimizer-pairs.php
@@ -65,16 +77,6 @@ use WP_Tax_Query;
 
 if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
 	return;
-}
-
-if ( ! class_exists( 'Mai_Post_Grid_Query_Optimizer_Sql' ) || ! class_exists( 'Mai_Post_Grid_Query_Optimizer_Database' ) ) {
-	WP_CLI::error( 'Mai Engine with the grid query optimizer is not loaded on this site.' );
-}
-
-// The synthetic statements ask Mai's own filter for their tiebreaker. Without it a date or author
-// sort would fail orderby_ok() and be skipped as not covered, and the run would look healthy.
-if ( false === has_filter( 'posts_orderby', 'mai_add_grid_orderby_tiebreaker' ) ) {
-	WP_CLI::error( 'Mai Engine\'s grid tiebreaker is not registered on posts_orderby on this site.' );
 }
 
 /**
@@ -251,22 +253,24 @@ function best_term( array $taxonomies ): ?array {
 
 /**
  * The synthetic statements to build: name, WP_Query args, whether to build it as the first
- * administrator, and whether the optimizer is meant to cover it.
+ * administrator, whether the optimizer is meant to cover it, and the direction of its sort, which
+ * the ID tiebreaker must follow.
  *
  * @param array<string,array{id:int,taxonomy:string,count:int}> $terms What find_terms() found.
  *
- * @return list<array{name:string,args:array,admin:bool,covered:bool}>
+ * @return list<array{name:string,args:array,admin:bool,covered:bool,direction:string}>
  */
 function synthetic_specs( array $terms ): array {
 	global $wpdb;
 
 	$specs = [];
-	$make  = static function ( string $name, array $tax_query, array $over = [], bool $admin = false, bool $covered = true ) use ( &$specs ): void {
+	$make  = static function ( string $name, array $tax_query, array $over = [], bool $admin = false, bool $covered = true, string $direction = 'DESC' ) use ( &$specs ): void {
 		$specs[] = [
-			'name'    => $name,
-			'admin'   => $admin,
-			'covered' => $covered,
-			'args'    => array_merge(
+			'name'      => $name,
+			'admin'     => $admin,
+			'covered'   => $covered,
+			'direction' => $direction,
+			'args'      => array_merge(
 				[
 					'post_type'              => 'post',
 					'post_status'            => 'publish',
@@ -291,8 +295,10 @@ function synthetic_specs( array $terms ): array {
 	$term_filter = static fn( array $term, string $operator = 'IN', bool $children = true ): array => tax_filter( $term['taxonomy'], [ $term['id'] ], $operator, $children );
 
 	// Each size of term, crossed with every sort the grid offers. Only date, author and ID pass
-	// orderby_ok(); the others are logged as skipped.
-	$sorts = [ 'date', 'modified', 'title', 'name', 'menu_order', 'comment_count', 'author', 'ID' ];
+	// orderby_ok(), so only those are meant to be covered; the others are logged as skipped. Written
+	// out here, not read from SORT_COLUMNS, so a sort that leaves that list fails the run.
+	$sorts   = [ 'date', 'modified', 'title', 'name', 'menu_order', 'comment_count', 'author', 'ID' ];
+	$covered = [ 'date', 'author', 'ID' ];
 
 	foreach ( [ 'big', 'mid', 'small', 'old' ] as $size ) {
 		if ( ! isset( $terms[ $size ] ) ) {
@@ -307,7 +313,10 @@ function synthetic_specs( array $terms ): array {
 					[ $term_filter( $terms[ $size ] ) ],
 					// Only the sort. Mai's filter adds the tiebreaker, which follows the direction for date
 					// and author, and is newest first for the others. Sorting by the ID needs none.
-					[ 'orderby' => [ $sort => $direction ] ]
+					[ 'orderby' => [ $sort => $direction ] ],
+					false,
+					in_array( $sort, $covered, true ),
+					$direction
 				);
 			}
 		}
@@ -447,6 +456,9 @@ function with_limit( string $statement, ?string $limit ): string {
 /**
  * Writes the swapped statement for both engines.
  *
+ * Stops the run when a swapped text is the statement itself, or the MySQL text lacks the hint:
+ * the replay would then compare a statement with itself, or time a form the optimizer never sends.
+ *
  * @param string     $statement The statement, at the LIMIT being written.
  * @param array|null $rebuilt   What rebuild() returned for its tax filters.
  * @param string     $posts     The posts table.
@@ -483,10 +495,38 @@ function swaps( string $statement, ?array $rebuilt, string $posts, string $terms
 			];
 		}
 
+		if ( $swapped === $statement ) {
+			WP_CLI::error( "The {$key} text is the statement itself, so swap() changed nothing: {$statement}" );
+		}
+
+		if ( 'swapped_mysql' === $key && ! str_contains( $swapped, '/*+ NO_SEMIJOIN(DUPSWEEDOUT) */' ) ) {
+			WP_CLI::error( "The {$key} text does not carry the hint /*+ NO_SEMIJOIN(DUPSWEEDOUT) */: {$swapped}" );
+		}
+
 		$out[ $key ] = $swapped;
 	}
 
 	return $out;
+}
+
+/**
+ * The full form of a grid's ID-only statement: SELECT {posts}.* where WordPress's split wrote
+ * SELECT {posts}.ID. The reverse of Mai_Post_Grid_Query_Optimizer_Sql::split(), with the same
+ * three spaces, since both come from one template.
+ *
+ * @param string $statement The ID-only statement.
+ * @param string $posts     The posts table.
+ *
+ * @return string|null Null when the statement does not start the way split() writes it.
+ */
+function full_form( string $statement, string $posts ): ?string {
+	$prefix = "SELECT   {$posts}.ID";
+
+	if ( ! str_starts_with( $statement, $prefix ) ) {
+		return null;
+	}
+
+	return "SELECT   {$posts}.*" . substr( $statement, strlen( $prefix ) );
 }
 
 /**
@@ -550,7 +590,8 @@ function skip( array &$tally, bool $must_cover, string $why ): void {
 }
 
 /**
- * Writes the pair lines for one statement: its own LIMIT and four more.
+ * Writes the pair lines for one statement: its own LIMIT and four more, and for a grid's own
+ * statement its full form at LIMIT 0, 1000.
  *
  * @param resource             $handle     The open output file.
  * @param string               $name       The statement's name.
@@ -558,33 +599,35 @@ function skip( array &$tally, bool $must_cover, string $why ): void {
  * @param array                $queries    The tax filters WordPress used.
  * @param string               $posts      The posts table.
  * @param string               $terms      The term relationships table.
- * @param bool                 $must_cover Whether the optimizer is meant to cover it, when its sort
- *                                         is one orderby_ok() takes. A skip is then unexpected.
+ * @param bool                 $must_cover Whether the optimizer is meant to cover it. Any skip is
+ *                                         then unexpected.
+ * @param bool                 $grid       Whether it is a grid's own statement, not Mai's ID-only
+ *                                         copy, so WordPress can send its full form.
  * @param array<string,mixed>  $tally      Counts, the pair texts written and skipped names, updated here.
  *
- * @return void
+ * @return bool Whether the statement is covered: it was not skipped.
  */
-function write_pairs( $handle, string $name, string $statement, array $queries, string $posts, string $terms, bool $must_cover, array &$tally ): void {
+function write_pairs( $handle, string $name, string $statement, array $queries, string $posts, string $terms, bool $must_cover, bool $grid, array &$tally ): bool {
 	++$tally['statements'];
 
 	// No tax filter: a grid with no taxonomies, which the optimizer never touches.
 	if ( ! array_filter( $queries, 'is_array' ) ) {
-		skip( $tally, false, "{$name} (no tax filter)" );
-		return;
+		skip( $tally, $must_cover, "{$name} (no tax filter)" );
+		return false;
 	}
 
 	$orderby = orderby_of( $statement );
 
 	if ( null === $orderby || ! Mai_Post_Grid_Query_Optimizer_Sql::orderby_ok( $orderby, $posts ) ) {
-		skip( $tally, false, "{$name} (ORDER BY is not covered: " . ( $orderby ?? 'none' ) . ')' );
-		return;
+		skip( $tally, $must_cover, "{$name} (ORDER BY is not covered: " . ( $orderby ?? 'none' ) . ')' );
+		return false;
 	}
 
 	$rebuilt = Mai_Post_Grid_Query_Optimizer_Sql::rebuild( new WP_Tax_Query( $queries ), $posts );
 
 	if ( null === $rebuilt ) {
 		skip( $tally, $must_cover, "{$name} (rebuild returned null: " . describe( $queries ) . ')' );
-		return;
+		return false;
 	}
 
 	// The own LIMIT, written the way the variant labels are, so a variant at the same LIMIT is left
@@ -603,6 +646,19 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 		++$tally['duplicate_pairs'];
 	}
 
+	// A grid set to show all entries, on a site without a persistent object cache, sends the full
+	// form, since WordPress splits only below 500 posts or with such a cache. A captured grid
+	// statement split() could not rewrite is in its full form already, so its LIMIT 0, 1000 line
+	// is that form.
+	$full = $grid ? full_form( with_limit( $statement, 'LIMIT 0, 1000' ), $posts ) : null;
+
+	if ( null !== $full ) {
+		$variants['full form, LIMIT 0, 1000'] = $full;
+	}
+
+	// Covered once one variant is written, or was already written from another statement.
+	$covered = false;
+
 	foreach ( $variants as $label => $text ) {
 		// Another statement can differ only by its LIMIT. Each text is written and timed once,
 		// compared with its runs of whitespace made single spaces, since a captured statement has
@@ -611,6 +667,7 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 
 		if ( isset( $tally['seen'][ $key ] ) ) {
 			++$tally['duplicate_pairs'];
+			$covered = true;
 			continue;
 		}
 
@@ -620,6 +677,8 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 			skip( $tally, $must_cover, "{$name} | {$label} (swap returned null)" );
 			continue;
 		}
+
+		$covered = true;
 
 		$tally['seen'][ $key ] = true;
 
@@ -637,28 +696,55 @@ function write_pairs( $handle, string $name, string $statement, array $queries, 
 			WP_CLI::error( "Could not encode the pair {$name} | {$label} as JSON." );
 		}
 
-		if ( false === fwrite( $handle, $line . "\n" ) ) {
+		$bytes = fwrite( $handle, $line . "\n" );
+
+		if ( strlen( $line ) + 1 !== $bytes ) {
 			WP_CLI::error( "Could not write the pair {$name} | {$label} to the pairs file." );
 		}
 
 		++$tally['pairs'];
 	}
+
+	return $covered;
 }
 
 global $wpdb;
 
 $site = site_slug();
 $out  = "/tmp/mai-optimizer-pairs-{$site}.jsonl";
+$part = "{$out}.part";
 $in   = isset( $args[0] ) && is_string( $args[0] ) ? $args[0] : "/tmp/mai-optimizer-statements-{$site}.jsonl";
 
-$handle = fopen( $out, 'w' );
+// An old pairs file goes first, before any check can stop the run, so a failed run never leaves
+// an earlier run's pairs behind to be replayed by mistake.
+foreach ( [ $out, $part ] as $old ) {
+	if ( file_exists( $old ) && ! unlink( $old ) ) {
+		WP_CLI::error( "Cannot delete the old {$old}." );
+	}
+}
+
+if ( ! class_exists( 'Mai_Post_Grid_Query_Optimizer_Sql' ) || ! class_exists( 'Mai_Post_Grid_Query_Optimizer_Database' ) ) {
+	WP_CLI::error( 'Mai Engine with the grid query optimizer is not loaded on this site.' );
+}
+
+// The synthetic statements ask Mai's own filter for their tiebreaker. Without it a date or author
+// sort would fail orderby_ok() and be skipped as not covered, and the run would look healthy.
+if ( false === has_filter( 'posts_orderby', 'mai_add_grid_orderby_tiebreaker' ) ) {
+	WP_CLI::error( 'mai_add_grid_orderby_tiebreaker is not hooked on posts_orderby. Check that Mai Engine is active on this site and is the build from this branch.' );
+}
+
+$handle = fopen( $part, 'w' );
 
 if ( false === $handle ) {
-	WP_CLI::error( "Cannot write {$out}." );
+	WP_CLI::error( "Cannot write {$part}." );
 }
 
 $tally = [
 	'captured'        => 0,
+	'captured_bad'    => 0,
+	'captured_taxed'  => 0,
+	'captured_untax'  => 0,
+	'captured_cover'  => 0,
 	'duplicates'      => 0,
 	'duplicate_pairs' => 0,
 	'statements'      => 0,
@@ -675,7 +761,8 @@ if ( is_readable( $in ) ) {
 		$data = json_decode( (string) $row, true );
 
 		if ( ! is_array( $data ) || ! is_string( $data['statement'] ?? null ) || ! is_array( $data['queries'] ?? null ) ) {
-			WP_CLI::warning( "Line " . ( $number + 1 ) . " of {$in} is not a captured statement. Skipped." );
+			WP_CLI::warning( 'Line ' . ( $number + 1 ) . " of {$in} is not a captured statement." );
+			++$tally['captured_bad'];
 			continue;
 		}
 
@@ -705,8 +792,15 @@ if ( is_readable( $in ) ) {
 
 		$seen[ $statement ] = true;
 
+		// Only a statement with a tax filter can be covered. The others are counted apart.
+		$taxed = (bool) array_filter( $data['queries'], 'is_array' );
+
+		++$tally[ $taxed ? 'captured_taxed' : 'captured_untax' ];
+
 		// A real page can hold any grid, so a captured statement that is not covered is expected.
-		write_pairs( $handle, 'captured ' . $role . ' ' . ( $tally['captured'] ) . ' [' . describe( $data['queries'] ) . ']', $statement, $data['queries'], $posts, $terms, false, $tally );
+		if ( write_pairs( $handle, 'captured ' . $role . ' ' . ( $tally['captured'] ) . ' [' . describe( $data['queries'] ) . ']', $statement, $data['queries'], $posts, $terms, false, 'grid' === $role, $tally ) ) {
+			++$tally['captured_cover'];
+		}
 	}
 } else {
 	WP_CLI::warning( "No captured statements at {$in}. Only the synthetic statements are written." );
@@ -723,8 +817,14 @@ foreach ( synthetic_specs( $found ) as $spec ) {
 	$built = build( $spec['args'], $spec['admin'] );
 
 	if ( null === $built ) {
-		skip( $tally, false, "{$spec['name']} (WordPress wrote no tax query)" );
+		skip( $tally, $spec['covered'], "{$spec['name']} (WordPress wrote no tax query)" );
 		continue;
+	}
+
+	// Mai's own tiebreaker must have ended a covered statement's ORDER BY with the post ID, in the
+	// sort's direction. Otherwise the tiebreaker is broken, and orderby_ok() would only skip it.
+	if ( $spec['covered'] && ! str_ends_with( (string) orderby_of( $built['statement'] ), "{$wpdb->posts}.ID {$spec['direction']}" ) ) {
+		WP_CLI::error( "{$spec['name']}: the ORDER BY does not end in {$wpdb->posts}.ID {$spec['direction']}, so Mai's tiebreaker did not run as expected: " . ( orderby_of( $built['statement'] ) ?? 'none' ) );
 	}
 
 	if ( isset( $seen[ $built['statement'] ] ) ) {
@@ -734,10 +834,12 @@ foreach ( synthetic_specs( $found ) as $spec ) {
 
 	$seen[ $built['statement'] ] = true;
 
-	write_pairs( $handle, $spec['name'], $built['statement'], $built['queries'], $wpdb->posts, $wpdb->term_relationships, $spec['covered'], $tally );
+	write_pairs( $handle, $spec['name'], $built['statement'], $built['queries'], $wpdb->posts, $wpdb->term_relationships, $spec['covered'], true, $tally );
 }
 
-fclose( $handle );
+if ( ! fclose( $handle ) ) {
+	WP_CLI::error( "Could not close {$part}, so its pairs may be incomplete." );
+}
 
 foreach ( $tally['expected'] as $why ) {
 	WP_CLI::log( "Skipped, not covered: {$why}" );
@@ -751,14 +853,31 @@ if ( $tally['unexpected'] ) {
 	WP_CLI::error( count( $tally['unexpected'] ) . ' synthetic statements meant to be covered were skipped, listed above. The optimizer no longer covers a shape it should, or the site writes it differently.' );
 }
 
+if ( $tally['captured_bad'] > 0 ) {
+	WP_CLI::error( "{$tally['captured_bad']} lines of {$in} are not captured statements, listed above. Capture the statements again." );
+}
+
+WP_CLI::log( "Captured statements covered: {$tally['captured_cover']} of {$tally['captured_taxed']} with a tax filter ({$tally['captured_untax']} more have none, which the optimizer never takes)." );
+
+if ( $tally['captured_taxed'] > 0 && 0 === $tally['captured_cover'] ) {
+	WP_CLI::error( "None of the {$tally['captured_taxed']} captured statements with a tax filter is covered, so no real grid statement would be replayed." );
+}
+
 if ( 0 === $tally['pairs'] ) {
-	WP_CLI::error( "No pairs were written to {$out}, so there is nothing to replay." );
+	WP_CLI::error( "No pairs were written to {$part}, so there is nothing to replay." );
+}
+
+// Every check passed, so the pairs take their name.
+if ( ! rename( $part, $out ) ) {
+	WP_CLI::error( "Could not rename {$part} to {$out}." );
 }
 
 WP_CLI::success(
 	sprintf(
-		'%d captured statements read, %d duplicate statements and %d duplicate pair texts left out, %d statements checked, %d skipped as not covered, %d pairs written to %s.',
+		'%d captured statements read (covered: %d of %d with a tax filter), %d duplicate statements and %d duplicate pair texts left out, %d statements checked, %d skipped as not covered, %d pairs written to %s.',
 		$tally['captured'],
+		$tally['captured_cover'],
+		$tally['captured_taxed'],
 		$tally['duplicates'],
 		$tally['duplicate_pairs'],
 		$tally['statements'],

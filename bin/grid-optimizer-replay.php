@@ -8,51 +8,69 @@ declare(strict_types=1);
  * and compares today's statement with the swapped EXISTS form. The session is set up the way
  * WordPress sets up its own: utf8mb4, without the SQL modes wpdb::set_sql_mode() removes, such as
  * ONLY_FULL_GROUP_BY and the STRICT modes. On MariaDB the query cache is turned off for the
- * session, so a repeat run is never a cache hit, and the setting is read back and recorded.
+ * session, so a repeat run is never a cache hit. The setting is read back, and the run stops
+ * unless it reads OFF or 0.
  *
- * Before any pair runs, it counts the rows of the posts table and of the term relationships table,
- * and stops when either is zero, so a database import that loaded nothing cannot read as a pass.
- * It also prints the size of the posts table and the server's InnoDB buffer pool, and warns when
- * the pool is the smaller. A statement then
- * reads some pages from disk or the operating system's cache on every run, and its time depends
- * on what ran before it: the same fast statement was measured at 7 ms and at 30 ms on a server
- * with a 128 MB pool and a 900 MB posts table. Start the server with a pool larger than the data
- * before trusting a small difference. For each pair:
+ * It prints when the pairs file was last written. Before any pair runs, it counts the rows of the
+ * posts table and of the term relationships table, and stops when either is zero, so a database
+ * import that loaded nothing cannot read as a pass. It also prints the size of the posts table and
+ * the server's InnoDB buffer pool, and warns when the pool is the smaller. A statement then reads
+ * some pages from disk or the operating system's cache on every run, and its time depends on what
+ * ran before it: the same fast statement was measured at 7 ms and at 30 ms on a server with a
+ * 128 MB pool and a 900 MB posts table. Start the server with a pool larger than the data before
+ * trusting a small difference.
+ *
+ * A pair line is skipped, and the run ends with exit 3, when it is not a pair of SELECT
+ * statements, when the swapped text is today's text, when a MySQL run's swapped text does not
+ * carry the hint, or when its statement has a LIMIT written in a way the replay cannot read (such
+ * as LIMIT n OFFSET m), which would otherwise pass as a statement with no LIMIT. For each pair:
  *
  *   1. The IDs of both forms must match, in the same order. A pair whose IDs differ is a
- *      correctness bug. It is not timed and not counted against the bar. The one known exception
- *      is a post whose post_date has a zero day or month, such as 2007-03-00 (Mike accepted it on
- *      2026-10-05): a date-sorted pair whose IDs differ only by such posts, under the rule in
- *      differs_only_by(), is counted as known, prints them, and is not timed. Anything else that
- *      differs is still a bug. A pair where both forms return no rows is counted as empty, and is
- *      not compared or timed. The pairs script builds its synthetic statements from terms that
- *      have posts, so one of those coming back empty means the data is wrong, and so do more than
- *      10% of all pairs coming back empty.
+ *      correctness bug. It is not timed and not counted against the bar, and its JSON keeps both
+ *      ID lists and both plans. The one known exception is a post whose post_date has a zero day
+ *      or month, such as 2007-03-00 (Mike accepted it on 2026-10-05): a date-sorted pair whose IDs
+ *      differ only by such posts, under the rule in differs_only_by(), is counted as known and
+ *      prints them. Anything else that differs is still a bug, and so is a pair whose check for
+ *      invalid dates failed (its error is kept as known_check_error). A pair where both forms
+ *      return no rows is counted as empty, and is not compared or timed. The pairs script builds
+ *      its synthetic statements from terms that have posts, so one of those coming back empty
+ *      means the data is wrong, and so do more than 10% of all pairs coming back empty.
  *   2. Both forms run in one session, timed on the server with NOW(6). Each runs 10 times by
  *      default, and --runs changes it. The form that goes first alternates run by run. The time
  *      runs from one NOW(6) to the next, around the statement and the transfer of its rows, so it
  *      includes two short round trips. Both forms carry the same extra. The medians are compared.
- *      A pair whose statement has no LIMIT is checked for its IDs and its plan only, and is not
- *      timed or held to the bar: the optimizer never swaps a statement without a LIMIT, and the
- *      pairs script writes that variant so the whole set of IDs is compared.
+ *      Every timed run must return as many rows as that form's first run, or the pair counts as
+ *      "row count changed": a faster plan that returns fewer rows is what MySQL bug 120943 looks
+ *      like. A pair whose statement has no LIMIT is checked for its IDs and its plan only, and is
+ *      not timed or held to the bar: the optimizer never swaps a statement without a LIMIT, and
+ *      the pairs script writes that variant so the whole set of IDs is compared. A known pair with
+ *      a LIMIT is timed and held to the bar like any other.
  *   3. EXPLAIN FORMAT=TREE on MySQL, plain EXPLAIN on MariaDB. A swapped MySQL plan containing
  *      "weedout", in any case, is flagged. MySQL's LooseScan plan reads "Remove duplicates from
  *      input sorted on ..." and is not flagged: the hint allows it, and MySQL 8.4 builds exactly
- *      that plan when a statement is forced to SEMIJOIN(LOOSESCAN).
+ *      that plan when a statement is forced to SEMIJOIN(LOOSESCAN). MySQL 8.0.16 and 8.0.17
+ *      cannot print many of these plans as a tree and write "<not executable by iterator
+ *      executor>" instead. For such a plan, or an empty one, the replay reads classic EXPLAIN and
+ *      flags weedout when its Extra column has "Start temporary". The JSON keeps that plan as
+ *      plan_swapped_classic, and the total counts them. A plan neither form can show counts as
+ *      unreadable.
  *   4. The bar passes when the swapped median is no more than today's median plus the larger of
  *      2 ms and 10%. Mike set 2 ms on 2026-10-05, because statements of 5 to 7 ms swing by about
  *      1 ms between runs on the test machine.
  *
  * It prints one summary line per pair and a total, and writes every number as JSON, also when
  * the run stops early (the file then says "complete": false). Exit code:
- *   0  every compared pair passes. A pair whose IDs differ only by posts with invalid dates (known)
- *      leaves the exit code at 0.
- *   1  a pair misses the bar, a swapped MySQL plan is flagged, a pair failed to run, an option is
- *      wrong, or the connection was lost.
+ *   0  every compared pair passes, and at least one pair was timed. A pair whose IDs differ only
+ *      by posts with invalid dates (known) leaves the exit code at 0 when it meets the bar and has
+ *      no weedout.
+ *   1  a timed pair misses the bar (a known one included), a swapped MySQL plan is flagged for
+ *      weedout (a known pair's included), a swapped MySQL plan is unreadable, a timed run returned
+ *      another number of rows, a pair failed to run, an option is wrong, the MariaDB query cache
+ *      did not turn off, or the connection was lost.
  *   2  the IDs of a pair differ.
  *   3  the data cannot be trusted: no pairs to run, a pair line skipped, an empty posts or term
- *      relationships table, a synthetic pair empty, more than 10% of pairs empty, or nothing
- *      compared.
+ *      relationships table, a synthetic pair empty, more than 10% of pairs empty, nothing
+ *      compared, or no pair timed.
  *   4  the run would have exited 0, but the JSON file could not be written.
  *
  * Usage:
@@ -95,6 +113,17 @@ if ( 'cli' !== PHP_SAPI ) {
  * The SQL modes WordPress takes out of its connection. The list in wpdb::$incompatible_modes.
  */
 const INCOMPATIBLE_MODES = [ 'NO_ZERO_DATE', 'ONLY_FULL_GROUP_BY', 'STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL', 'ANSI' ];
+
+/**
+ * A LIMIT at the end of a statement, LIMIT n or LIMIT o, n, as WordPress writes it. Only a
+ * statement that ends in one is timed, since the optimizer swaps no other.
+ */
+const LIMIT_AT_END = '/\sLIMIT\s+(\d+)(?:\s*,\s*(\d+))?\s*$/i';
+
+/**
+ * The hint every swapped EXISTS carries on MySQL.
+ */
+const HINT = '/*+ NO_SEMIJOIN(DUPSWEEDOUT) */';
 
 /**
  * Prints a message to stderr and stops.
@@ -209,22 +238,29 @@ function server_micros( mysqli $db ): int {
 }
 
 /**
- * Runs a statement and returns the milliseconds it took, rows transferred included.
+ * Runs a statement and returns the milliseconds it took, rows transferred included, and how many
+ * rows it returned.
  *
  * @param mysqli $db  The connection.
  * @param string $sql The statement.
  *
- * @return float
+ * @return array{ms:float,rows:int} The rows are -1 when the statement returned no result set.
  */
-function timed_ms( mysqli $db, string $sql ): float {
+function timed_ms( mysqli $db, string $sql ): array {
 	$start  = server_micros( $db );
 	$result = $db->query( $sql );
+	$rows   = -1;
 
 	if ( $result instanceof mysqli_result ) {
+		$rows = (int) $result->num_rows;
+
 		$result->free();
 	}
 
-	return ( server_micros( $db ) - $start ) / 1000;
+	return [
+		'ms'   => ( server_micros( $db ) - $start ) / 1000,
+		'rows' => $rows,
+	];
 }
 
 /**
@@ -285,34 +321,118 @@ function plan_of( mysqli $db, string $sql, string $engine ): string {
 }
 
 /**
- * The posts among some IDs whose post_date has a zero day or a zero month, such as 2007-03-00,
- * but is not 0000-00-00 00:00:00. A database can place such a post differently when it sorts
- * than when it walks the date index, so the two forms may disagree about it.
+ * Reads a swapped MySQL plan for duplicate weedout, the plan the hint forbids.
+ *
+ * EXPLAIN FORMAT=TREE names it "weedout". MySQL 8.0.16 and 8.0.17 cannot print many plans as a
+ * tree and write "<not executable by iterator executor>" instead. For such a plan, or an empty
+ * one, classic EXPLAIN is read, where duplicate weedout shows as "Start temporary" in the Extra
+ * column. A plan neither form can show is unreadable, and the run fails on it.
+ *
+ * @param mysqli $db   The connection.
+ * @param string $sql  The swapped statement.
+ * @param string $tree Its EXPLAIN FORMAT=TREE text.
+ *
+ * @return array{weedout:bool,unreadable:bool,classic:?string} The classic plan, when it was read.
+ */
+function weedout_check( mysqli $db, string $sql, string $tree ): array {
+	if ( '' !== trim( $tree ) && ! str_contains( $tree, 'not executable by iterator executor' ) ) {
+		return [
+			'weedout'    => 1 === preg_match( '/weedout/i', $tree ),
+			'unreadable' => false,
+			'classic'    => null,
+		];
+	}
+
+	$result = $db->query( 'EXPLAIN ' . $sql );
+	$rows   = [];
+
+	if ( $result instanceof mysqli_result ) {
+		$rows = $result->fetch_all( MYSQLI_ASSOC );
+
+		$result->free();
+	}
+
+	// Every row must have the Extra column, or the plan cannot be judged.
+	if ( ! $rows || array_filter( $rows, static fn( array $row ): bool => ! array_key_exists( 'Extra', $row ) ) ) {
+		return [
+			'weedout'    => false,
+			'unreadable' => true,
+			'classic'    => null,
+		];
+	}
+
+	return [
+		'weedout'    => (bool) array_filter( $rows, static fn( array $row ): bool => str_contains( (string) $row['Extra'], 'Start temporary' ) ),
+		'unreadable' => false,
+		'classic'    => implode( "\n", array_map( static fn( array $row ): string => implode( ' | ', array_map( 'strval', $row ) ), $rows ) ),
+	];
+}
+
+/**
+ * Both plans of a pair, and on MySQL whether the swapped one uses duplicate weedout.
+ *
+ * @param mysqli $db      The connection.
+ * @param string $today   Today's statement.
+ * @param string $swapped The swapped statement.
+ * @param string $engine  mysql or mariadb.
+ *
+ * @return array<string,mixed> plan_today, plan_swapped, weedout, plan_unreadable, and
+ *                             plan_swapped_classic when classic EXPLAIN was read.
+ */
+function read_plans( mysqli $db, string $today, string $swapped, string $engine ): array {
+	$plans = [
+		'plan_today'      => plan_of( $db, $today, $engine ),
+		'plan_swapped'    => plan_of( $db, $swapped, $engine ),
+		'weedout'         => false,
+		'plan_unreadable' => false,
+	];
+
+	// MariaDB has no hint and is not checked for weedout.
+	if ( 'mysql' !== $engine ) {
+		return $plans;
+	}
+
+	$check = weedout_check( $db, $swapped, $plans['plan_swapped'] );
+
+	$plans['weedout']         = $check['weedout'];
+	$plans['plan_unreadable'] = $check['unreadable'];
+
+	if ( null !== $check['classic'] ) {
+		$plans['plan_swapped_classic'] = $check['classic'];
+	}
+
+	return $plans;
+}
+
+/**
+ * Every post in the posts table whose post_date has a zero day or a zero month, such as
+ * 2007-03-00, but is not 0000-00-00 00:00:00. A database can place such a post differently when
+ * it sorts than when it walks the date index, so the two forms may disagree about it.
  *
  * Read as text, so it works the same on MySQL and MariaDB whatever the session's date modes.
  *
- * @param mysqli    $db  The connection.
- * @param string    $sql A statement of the pair, to read the posts table from its first FROM.
- * @param list<int> $ids The IDs of both forms.
+ * @param mysqli $db  The connection.
+ * @param string $sql A statement of the pair, to read the posts table from its first FROM.
+ *
+ * @throws RuntimeException When the statement names no posts table, or the read returns nothing.
  *
  * @return array<int,string> The post_date of each such post, keyed by its ID.
  */
-function invalid_dates( mysqli $db, string $sql, array $ids ): array {
+function invalid_dates( mysqli $db, string $sql ): array {
 	if ( 1 !== preg_match( '/^\s*SELECT\b.*?\bFROM\s+`?([A-Za-z0-9_$]+)`?/s', $sql, $match ) ) {
-		return [];
+		throw new RuntimeException( 'Cannot find the posts table, to read the invalid dates.' );
 	}
 
 	$result = $db->query( "SELECT ID, CAST( post_date AS CHAR ) FROM `{$match[1]}` WHERE SUBSTRING( CAST( post_date AS CHAR ), 6, 2 ) = '00' OR SUBSTRING( CAST( post_date AS CHAR ), 9, 2 ) = '00'" );
 
 	if ( ! $result instanceof mysqli_result ) {
-		return [];
+		throw new RuntimeException( 'The read of the invalid dates returned no result set.' );
 	}
 
-	$wanted = array_flip( $ids );
-	$dates  = [];
+	$dates = [];
 
 	foreach ( $result->fetch_all() as [ $id, $date ] ) {
-		if ( isset( $wanted[ (int) $id ] ) && ! str_starts_with( (string) $date, '0000-00-00 00:00:00' ) ) {
+		if ( ! str_starts_with( (string) $date, '0000-00-00 00:00:00' ) ) {
 			$dates[ (int) $id ] = (string) $date;
 		}
 	}
@@ -332,30 +452,34 @@ function invalid_dates( mysqli $db, string $sql, array $ids ): array {
  *   2. No LIMIT ($rows null), or a LIMIT the rows did not fill (today returned fewer than $rows,
  *      so each list is the whole result): both lists hold the same posts, the same number of
  *      them, and with the invalid-date posts taken out they are in the same order.
- *   3. A LIMIT o, n that the rows filled: both lists have n entries. Let k be the number of
- *      distinct invalid-date posts in either list. The caller runs both statements again at
- *      LIMIT o, n + k ($wide_today, $wide_swapped). Each list must be the first n entries of its
- *      own widened run, so the widened run is the same statement giving the same order. Then:
- *      a. When either widened run has fewer than n + k entries, the rows ran out and its whole
+ *   3. A LIMIT o, n that the rows filled: both lists have n entries. The caller runs both
+ *      statements again at LIMIT o, n + w ($wide_rows is n + w, the runs are $wide_today and
+ *      $wide_swapped), where w is the number of invalid-date posts in the whole posts table. So a
+ *      widened run that is full holds at least n posts with valid dates, however many invalid-date
+ *      posts it pulls in. w must be at least the number of distinct invalid-date posts in either
+ *      list. Each list must be the first n entries of its own widened run, so the widened run is
+ *      the same statement giving the same order. Then:
+ *      a. When either widened run has fewer than n + w entries, the rows ran out and its whole
  *         result is visible. Both widened runs must then pass rule 2's test: the same posts, the
  *         same number of them, and the same order with the invalid-date posts taken out.
  *      b. Otherwise, with the invalid-date posts taken out of both widened runs, their first m
  *         entries must be equal, where m is the shorter length after the removal, and m must be
- *         at least n - k. So every post either form shows, other than the invalid-date ones, is
- *         in the same place in the other form's order, and whatever filled the places of the
- *         invalid-date posts is the next post in both.
+ *         at least the number of valid-date posts in either list. So every valid-date post that
+ *         either form shows sits at the same place among the valid-date posts of both orders,
+ *         and the extra posts of the list that shows more are the next ones in both.
  *
  * @param list<int>      $today        Today's IDs.
  * @param list<int>      $swapped      The swapped IDs.
  * @param list<int>      $invalid      The posts with invalid dates, among every list given.
  * @param bool           $date_sort    Whether today's ORDER BY names {posts}.post_date.
  * @param int|null       $rows         The n of LIMIT o, n. Null when there is no LIMIT.
- * @param list<int>|null $wide_today   Today's IDs at LIMIT o, n + k. Unused without a LIMIT.
- * @param list<int>|null $wide_swapped The swapped IDs at LIMIT o, n + k.
+ * @param list<int>|null $wide_today   Today's IDs at LIMIT o, n + w. Unused without a LIMIT.
+ * @param list<int>|null $wide_swapped The swapped IDs at LIMIT o, n + w.
+ * @param int|null       $wide_rows    n + w, the row count the widened runs asked for.
  *
  * @return bool
  */
-function differs_only_by( array $today, array $swapped, array $invalid, bool $date_sort, ?int $rows = null, ?array $wide_today = null, ?array $wide_swapped = null ): bool {
+function differs_only_by( array $today, array $swapped, array $invalid, bool $date_sort, ?int $rows = null, ?array $wide_today = null, ?array $wide_swapped = null, ?int $wide_rows = null ): bool {
 	$skip = array_flip( $invalid );
 	$seen = array_intersect_key( $skip, array_flip( array_merge( $today, $swapped ) ) );
 
@@ -381,7 +505,7 @@ function differs_only_by( array $today, array $swapped, array $invalid, bool $da
 		return $same( $today, $swapped );
 	}
 
-	if ( count( $today ) !== $rows || count( $swapped ) !== $rows || null === $wide_today || null === $wide_swapped ) {
+	if ( count( $today ) !== $rows || count( $swapped ) !== $rows || null === $wide_today || null === $wide_swapped || null === $wide_rows || $wide_rows < $rows + count( $seen ) ) {
 		return false;
 	}
 
@@ -389,7 +513,7 @@ function differs_only_by( array $today, array $swapped, array $invalid, bool $da
 		return false;
 	}
 
-	if ( count( $wide_today ) < $rows + count( $seen ) || count( $wide_swapped ) < $rows + count( $seen ) ) {
+	if ( count( $wide_today ) < $wide_rows || count( $wide_swapped ) < $wide_rows ) {
 		return $same( $wide_today, $wide_swapped );
 	}
 
@@ -397,12 +521,13 @@ function differs_only_by( array $today, array $swapped, array $invalid, bool $da
 	$b = $strip( $wide_swapped );
 	$m = min( count( $a ), count( $b ) );
 
-	return $m >= $rows - count( $seen ) && array_slice( $a, 0, $m ) === array_slice( $b, 0, $m );
+	return $m >= max( count( $strip( $today ) ), count( $strip( $swapped ) ) ) && array_slice( $a, 0, $m ) === array_slice( $b, 0, $m );
 }
 
 /**
  * Whether a pair whose IDs differ is explained only by posts with invalid dates, under the rule
- * in differs_only_by(). Runs both statements again at a wider LIMIT when the rule needs it.
+ * in differs_only_by(). Runs both statements again at a wider LIMIT when the rule needs it,
+ * widened by every invalid-date post in the posts table.
  *
  * @param mysqli    $db          The connection.
  * @param string    $today       Today's statement.
@@ -410,39 +535,48 @@ function differs_only_by( array $today, array $swapped, array $invalid, bool $da
  * @param list<int> $ids_today   Today's IDs.
  * @param list<int> $ids_swapped The swapped IDs.
  *
- * @return array{known:bool,invalid:array<int,string>} The invalid-date posts found, keyed by ID.
+ * @throws RuntimeException|mysqli_sql_exception When a read fails. The caller keeps the pair a
+ *                                               difference.
+ *
+ * @return array{known:bool,invalid:array<int,string>,widened_by:int} The invalid-date posts in the
+ *                                                                    lists, keyed by ID, and how
+ *                                                                    many rows the LIMIT was
+ *                                                                    widened by.
  */
 function invalid_date_difference( mysqli $db, string $today, string $swapped, array $ids_today, array $ids_swapped ): array {
-	$invalid = invalid_dates( $db, $today, array_values( array_unique( array_merge( $ids_today, $ids_swapped ) ) ) );
+	$all     = invalid_dates( $db, $today );
+	$among   = static fn( array ...$lists ): array => array_intersect_key( $all, array_flip( array_merge( ...$lists ) ) );
+	$invalid = $among( $ids_today, $ids_swapped );
 	$table   = 1 === preg_match( '/^\s*SELECT\b.*?\bFROM\s+`?([A-Za-z0-9_$]+)`?/s', $today, $match ) ? $match[1] : '';
 	$dated   = '' !== $table && 1 === preg_match( '/\bORDER BY\b.*\b' . preg_quote( $table, '/' ) . '\.post_date\b/is', $today );
-	$limit   = '/\sLIMIT\s+(\d+)(?:\s*,\s*(\d+))?\s*$/i';
 
 	if ( ! $invalid || ! $dated ) {
-		return [ 'known' => false, 'invalid' => $invalid ];
+		return [ 'known' => false, 'invalid' => $invalid, 'widened_by' => 0 ];
 	}
 
-	if ( 1 !== preg_match( $limit, $today, $match ) ) {
-		return [ 'known' => differs_only_by( $ids_today, $ids_swapped, array_keys( $invalid ), true ), 'invalid' => $invalid ];
+	if ( 1 !== preg_match( LIMIT_AT_END, $today, $match ) ) {
+		return [ 'known' => differs_only_by( $ids_today, $ids_swapped, array_keys( $invalid ), true ), 'invalid' => $invalid, 'widened_by' => 0 ];
 	}
 
-	$offset = isset( $match[2] ) ? (int) $match[1] : 0;
-	$rows   = isset( $match[2] ) ? (int) $match[2] : (int) $match[1];
-	$wider  = " LIMIT {$offset}, " . ( $rows + count( $invalid ) );
-	$sql_a  = (string) preg_replace( $limit, $wider, $today, 1, $count_a );
-	$sql_b  = (string) preg_replace( $limit, $wider, $swapped, 1, $count_b );
+	$offset    = isset( $match[2] ) ? (int) $match[1] : 0;
+	$rows      = isset( $match[2] ) ? (int) $match[2] : (int) $match[1];
+	$wide_rows = $rows + count( $all );
+	$wider     = " LIMIT {$offset}, {$wide_rows}";
+	$sql_a     = (string) preg_replace( LIMIT_AT_END, $wider, $today, 1, $count_a );
+	$sql_b     = (string) preg_replace( LIMIT_AT_END, $wider, $swapped, 1, $count_b );
 
 	if ( 1 !== $count_a || 1 !== $count_b ) {
-		return [ 'known' => false, 'invalid' => $invalid ];
+		return [ 'known' => false, 'invalid' => $invalid, 'widened_by' => 0 ];
 	}
 
 	$wide_today   = fetch_ids( $db, $sql_a );
 	$wide_swapped = fetch_ids( $db, $sql_b );
-	$invalid     += invalid_dates( $db, $today, array_values( array_unique( array_merge( $wide_today, $wide_swapped ) ) ) );
+	$invalid      = $among( $ids_today, $ids_swapped, $wide_today, $wide_swapped );
 
 	return [
-		'known'   => differs_only_by( $ids_today, $ids_swapped, array_keys( $invalid ), true, $rows, $wide_today, $wide_swapped ),
-		'invalid' => $invalid,
+		'known'      => differs_only_by( $ids_today, $ids_swapped, array_keys( $invalid ), true, $rows, $wide_today, $wide_swapped, $wide_rows ),
+		'invalid'    => $invalid,
+		'widened_by' => count( $all ),
 	];
 }
 
@@ -461,8 +595,8 @@ function load_average(): array {
  * Sets the session up the way WordPress sets up its own connection.
  *
  * The character set is utf8mb4. The SQL modes are the server's, less the ones wpdb::set_sql_mode()
- * removes. On MariaDB the query cache is turned off and the setting read back, and an error from a
- * server that has no such variable is recorded in the result instead of stopping the run.
+ * removes. On MariaDB the query cache is turned off and the setting read back. The run stops
+ * unless it reads OFF or 0, since a repeat run could otherwise be a cache hit.
  *
  * @param mysqli $db     The connection.
  * @param string $engine mysql or mariadb.
@@ -489,12 +623,19 @@ function prepare_session( mysqli $db, string $engine ): array {
 		try {
 			$db->query( 'SET SESSION query_cache_type = OFF' );
 
-			$result      = $db->query( 'SELECT @@session.query_cache_type' );
-			$row         = $result instanceof mysqli_result ? $result->fetch_row() : null;
-			$query_cache = 'query_cache_type ' . ( is_array( $row ) ? (string) $row[0] : 'unread' ) . ' for the session';
+			$result = $db->query( 'SELECT @@session.query_cache_type' );
+			$row    = $result instanceof mysqli_result ? $result->fetch_row() : null;
 		} catch ( mysqli_sql_exception $exception ) {
-			$query_cache = 'not set: ' . $exception->getMessage();
+			fail( 'Cannot turn the MariaDB query cache off for the session: ' . $exception->getMessage() );
 		}
+
+		$value = is_array( $row ) ? (string) $row[0] : '';
+
+		if ( ! in_array( strtoupper( $value ), [ 'OFF', '0' ], true ) ) {
+			fail( "The MariaDB query cache reads \"{$value}\" for the session, not OFF, so a repeat run could be a cache hit." );
+		}
+
+		$query_cache = "query_cache_type {$value} for the session";
 	}
 
 	$result = $db->query( 'SELECT @@SESSION.sql_mode, @@character_set_connection' );
@@ -513,8 +654,14 @@ function prepare_session( mysqli $db, string $engine ): array {
  *
  * The status is "empty" when both forms return no rows, "known_invalid_date" when the IDs differ
  * only by posts with invalid dates (the rule in differs_only_by()), "diff" when they differ
- * otherwise, "ids_only" when the IDs match and the pair is not timed, otherwise "pass" or "miss"
- * against the bar. Only a pass or a miss is timed.
+ * otherwise, "ids_only" when the IDs match and the pair is not timed, "rows_changed" when a timed
+ * run returned another number of rows than the form's first run, otherwise "pass" or "miss"
+ * against the bar. A pair with a LIMIT is timed and held to the bar when its IDs match and when
+ * they differ only by invalid dates (bar_met says how it did); a difference is never timed.
+ *
+ * A difference keeps its status when the invalid-date check or the plan read fails afterwards:
+ * the failure is kept in known_check_error or plan_error, with both ID lists and what plans were
+ * read.
  *
  * @param mysqli $db      The connection.
  * @param string $name    The pair's name.
@@ -533,13 +680,14 @@ function run_pair( mysqli $db, string $name, string $today, string $swapped, str
 	$ids_swapped = fetch_ids( $db, $swapped );
 
 	$result = [
-		'name'         => $name,
-		'status'       => 'pass',
-		'error'        => null,
-		'ids_match'    => $ids_today === $ids_swapped,
-		'rows'         => count( $ids_today ),
-		'rows_swapped' => count( $ids_swapped ),
-		'weedout'      => false,
+		'name'            => $name,
+		'status'          => 'pass',
+		'error'           => null,
+		'ids_match'       => $ids_today === $ids_swapped,
+		'rows'            => count( $ids_today ),
+		'rows_swapped'    => count( $ids_swapped ),
+		'weedout'         => false,
+		'plan_unreadable' => false,
 	];
 
 	if ( [] === $ids_today && [] === $ids_swapped ) {
@@ -558,60 +706,89 @@ function run_pair( mysqli $db, string $name, string $today, string $swapped, str
 			}
 		}
 
-		$known = invalid_date_difference( $db, $today, $swapped, $ids_today, $ids_swapped );
-
-		$result['status']           = $known['known'] ? 'known_invalid_date' : 'diff';
-		$result['invalid_dates']    = $known['invalid'];
 		$result['first_difference'] = $first;
-		$result['plan_today']       = plan_of( $db, $today, $engine );
-		$result['plan_swapped']     = plan_of( $db, $swapped, $engine );
-		$result['weedout']          = 'mysql' === $engine && 1 === preg_match( '/weedout/i', $result['plan_swapped'] );
 
-		return $result;
+		// A failed read here must not turn a difference into a general error.
+		try {
+			$known = invalid_date_difference( $db, $today, $swapped, $ids_today, $ids_swapped );
+		} catch ( Throwable $exception ) {
+			$known = [
+				'known'      => false,
+				'invalid'    => [],
+				'widened_by' => 0,
+			];
+
+			$result['known_check_error'] = $exception->getMessage();
+		}
+
+		$result['invalid_dates'] = $known['invalid'];
+		$result['widened_by']    = $known['widened_by'];
+
+		if ( ! $known['known'] ) {
+			$result['status']      = 'diff';
+			$result['ids_today']   = $ids_today;
+			$result['ids_swapped'] = $ids_swapped;
+
+			try {
+				$result = array_merge( $result, read_plans( $db, $today, $swapped, $engine ) );
+			} catch ( Throwable $exception ) {
+				$result['plan_error'] = $exception->getMessage();
+			}
+
+			return $result;
+		}
+
+		$result['status'] = 'known_invalid_date';
+	} elseif ( ! $timed ) {
+		$result['status'] = 'ids_only';
 	}
 
-	if ( ! $timed ) {
-		$result['status']       = 'ids_only';
-		$result['plan_today']   = plan_of( $db, $today, $engine );
-		$result['plan_swapped'] = plan_of( $db, $swapped, $engine );
-		$result['weedout']      = 'mysql' === $engine && 1 === preg_match( '/weedout/i', $result['plan_swapped'] );
+	if ( $timed ) {
+		$today_runs   = [];
+		$swapped_runs = [];
 
-		return $result;
-	}
+		// The form that goes first alternates, so neither one always runs on a warmer cache.
+		for ( $run = 0; $run < $runs; $run++ ) {
+			if ( 0 === $run % 2 ) {
+				$today_runs[]   = timed_ms( $db, $today );
+				$swapped_runs[] = timed_ms( $db, $swapped );
+			} else {
+				$swapped_runs[] = timed_ms( $db, $swapped );
+				$today_runs[]   = timed_ms( $db, $today );
+			}
+		}
 
-	$today_ms   = [];
-	$swapped_ms = [];
+		$today_ms       = array_column( $today_runs, 'ms' );
+		$swapped_ms     = array_column( $swapped_runs, 'ms' );
+		$today_median   = median( $today_ms );
+		$swapped_median = median( $swapped_ms );
+		$allowed        = $today_median + max( 2.0, 0.10 * $today_median );
+		$round          = static fn( float $value ): float => round( $value, 3 );
 
-	// The form that goes first alternates, so neither one always runs on a warmer cache.
-	for ( $run = 0; $run < $runs; $run++ ) {
-		if ( 0 === $run % 2 ) {
-			$today_ms[]   = timed_ms( $db, $today );
-			$swapped_ms[] = timed_ms( $db, $swapped );
-		} else {
-			$swapped_ms[] = timed_ms( $db, $swapped );
-			$today_ms[]   = timed_ms( $db, $today );
+		$result['today_runs_ms']     = array_map( $round, $today_ms );
+		$result['swapped_runs_ms']   = array_map( $round, $swapped_ms );
+		$result['today_median_ms']   = $round( $today_median );
+		$result['swapped_median_ms'] = $round( $swapped_median );
+		$result['allowed_ms']        = $round( $allowed );
+		$result['bar_met']           = $swapped_median <= $allowed;
+
+		if ( 'known_invalid_date' !== $result['status'] ) {
+			$result['status'] = $result['bar_met'] ? 'pass' : 'miss';
+		}
+
+		// A faster plan that returns fewer rows is the symptom of MySQL bug 120943, so every timed
+		// run must return as many rows as the form's first run.
+		$today_rows   = array_column( $today_runs, 'rows' );
+		$swapped_rows = array_column( $swapped_runs, 'rows' );
+
+		if ( array_diff( $today_rows, [ count( $ids_today ) ] ) || array_diff( $swapped_rows, [ count( $ids_swapped ) ] ) ) {
+			$result['status']              = 'rows_changed';
+			$result['today_rows_by_run']   = $today_rows;
+			$result['swapped_rows_by_run'] = $swapped_rows;
 		}
 	}
 
-	$plan_today     = plan_of( $db, $today, $engine );
-	$plan_swapped   = plan_of( $db, $swapped, $engine );
-	$today_median   = median( $today_ms );
-	$swapped_median = median( $swapped_ms );
-	$allowed        = $today_median + max( 2.0, 0.10 * $today_median );
-	$round          = static fn( float $value ): float => round( $value, 3 );
-
-	$result['today_runs_ms']     = array_map( $round, $today_ms );
-	$result['swapped_runs_ms']   = array_map( $round, $swapped_ms );
-	$result['today_median_ms']   = $round( $today_median );
-	$result['swapped_median_ms'] = $round( $swapped_median );
-	$result['allowed_ms']        = $round( $allowed );
-	$result['bar_met']           = $swapped_median <= $allowed;
-	$result['status']            = $result['bar_met'] ? 'pass' : 'miss';
-	$result['weedout']           = 'mysql' === $engine && 1 === preg_match( '/weedout/i', $plan_swapped );
-	$result['plan_today']        = $plan_today;
-	$result['plan_swapped']      = $plan_swapped;
-
-	return $result;
+	return array_merge( $result, read_plans( $db, $today, $swapped, $engine ) );
 }
 
 $options = read_options( $_SERVER['argv'], [ 'pairs', 'db', 'engine', 'host', 'port', 'user', 'pass', 'out', 'runs' ] );
@@ -644,6 +821,9 @@ $runs = (int) $runs;
 if ( ! is_readable( $pairs_file ) ) {
 	fail( "Cannot read {$pairs_file}." );
 }
+
+// When the pairs file was written, so a stale file is noticed before its numbers are trusted.
+$pairs_written = date( 'Y-m-d H:i:s', (int) filemtime( $pairs_file ) );
 
 $out = $options['out'] ?? "/tmp/mai-optimizer-replay-{$engine}-{$database}-{$port}.json";
 
@@ -678,6 +858,9 @@ $totals     = [
 	'bar_met'         => 0,
 	'bar_missed'      => 0,
 	'weedout'         => 0,
+	'plan_classic'    => 0,
+	'plan_unreadable' => 0,
+	'rows_changed'    => 0,
 	'errors'          => 0,
 	'skipped'         => 0,
 ];
@@ -690,6 +873,7 @@ $report = [
 	'database'       => $database,
 	'port'           => $port,
 	'pairs_file'     => $pairs_file,
+	'pairs_written'  => $pairs_written,
 	'runs'           => $runs,
 	'session'        => $session,
 	'tables'         => [],
@@ -724,6 +908,7 @@ register_shutdown_function(
 );
 
 echo "Server {$version}, database {$database}, {$runs} runs of each form.\n";
+echo "Pairs file {$pairs_file}, last written {$pairs_written}.\n";
 echo "Session: character set {$session['charset']}, sql_mode '{$session['sql_mode']}', query cache {$session['query_cache']}.\n";
 echo 'Load at start: ' . implode( ' ', $load_start ) . "\n";
 
@@ -758,12 +943,35 @@ foreach ( (array) file( $pairs_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LIN
 		continue;
 	}
 
+	// A pair whose swapped text is today's would compare a statement with itself.
+	if ( $swapped === $pair['original'] ) {
+		echo "SKIP  {$name}: the {$key} text is today's statement, not swapped\n";
+		++$totals['skipped'];
+		continue;
+	}
+
+	if ( 'mysql' === $engine && ! str_contains( $swapped, HINT ) ) {
+		echo "SKIP  {$name}: the {$key} text does not carry " . HINT . "\n";
+		++$totals['skipped'];
+		continue;
+	}
+
+	// Only a statement that ends in a LIMIT is timed, since the optimizer swaps no other. One with
+	// a LIMIT written another way, such as LIMIT n OFFSET m or a trailing semicolon, would
+	// otherwise pass as a statement with no LIMIT and never be timed.
+	$timed = 1 === preg_match( LIMIT_AT_END, $pair['original'] );
+
+	if ( ! $timed && 1 === preg_match( '/\bLIMIT\b/i', $pair['original'] ) ) {
+		echo "SKIP  {$name}: it has a LIMIT the replay cannot read, so it cannot be timed\n";
+		++$totals['skipped'];
+		continue;
+	}
+
 	$runnable[] = [
 		'name'    => $name,
 		'today'   => $pair['original'],
 		'swapped' => $swapped,
-		// Only a statement that ends in a LIMIT is timed. The optimizer swaps no other.
-		'timed'   => 1 === preg_match( '/\sLIMIT\s+\d+(?:\s*,\s*\d+)?\s*$/i', $pair['original'] ),
+		'timed'   => $timed,
 	];
 }
 
@@ -882,9 +1090,20 @@ foreach ( $runnable as $pair ) {
 
 	$report['results'][] = $result;
 
-	$totals['weedout'] += $result['weedout'] ? 1 : 0;
+	$classic = isset( $result['plan_swapped_classic'] );
 
-	$flag = $result['weedout'] ? '  WEEDOUT' : '';
+	$totals['weedout']         += $result['weedout'] ? 1 : 0;
+	$totals['plan_unreadable'] += $result['plan_unreadable'] ? 1 : 0;
+	$totals['plan_classic']    += $classic ? 1 : 0;
+
+	// Every timed pair counts against the bar: those whose IDs match, and those that differ only
+	// by posts with invalid dates. A pair whose row count changed between runs is an error instead.
+	if ( isset( $result['bar_met'] ) && 'rows_changed' !== $result['status'] ) {
+		++$totals[ $result['bar_met'] ? 'bar_met' : 'bar_missed' ];
+	}
+
+	$flag   = ( $result['weedout'] ? '  WEEDOUT' : '' ) . ( $result['plan_unreadable'] ? '  PLAN UNREADABLE' : '' ) . ( $classic ? '  (plan read with classic EXPLAIN)' : '' );
+	$timing = isset( $result['today_median_ms'] ) ? sprintf( '  today %.2f ms  swapped %.2f ms', $result['today_median_ms'], $result['swapped_median_ms'] ) : '';
 
 	switch ( $result['status'] ) {
 		case 'empty':
@@ -906,9 +1125,11 @@ foreach ( $runnable as $pair ) {
 			++$totals['known'];
 
 			printf(
-				"KNOWN  %s  IDs differ only by posts with invalid dates: %s%s\n",
+				"KNOWN  %s  IDs differ only by posts with invalid dates: %s%s%s%s\n",
 				$pair['name'],
 				implode( ', ', array_map( static fn( int $id, string $date ): string => "{$id} ({$date})", array_keys( $result['invalid_dates'] ), $result['invalid_dates'] ) ),
+				$timing,
+				isset( $result['bar_met'] ) ? ( $result['bar_met'] ? '  bar met' : '  BAR MISSED' ) : '  no LIMIT so not timed',
 				$flag
 			);
 			break;
@@ -917,11 +1138,12 @@ foreach ( $runnable as $pair ) {
 			++$totals['ids_differ'];
 
 			printf(
-				"DIFF   %s  IDS DIFFER at %d (%d rows today, %d swapped)%s\n",
+				"DIFF   %s  IDS DIFFER at %d (%d rows today, %d swapped)%s%s\n",
 				$pair['name'],
 				$result['first_difference'],
 				$result['rows'],
 				$result['rows_swapped'],
+				isset( $result['known_check_error'] ) ? "  (the invalid-date check failed: {$result['known_check_error']})" : '',
 				$flag
 			);
 			break;
@@ -933,17 +1155,28 @@ foreach ( $runnable as $pair ) {
 			printf( "IDS    %s  IDs match, no LIMIT so not timed  rows %d%s\n", $pair['name'], $result['rows'], $flag );
 			break;
 
-		default:
-			// The bar counts only pairs whose IDs match and that were timed.
-			++$totals['ids_match'];
-			++$totals[ 'pass' === $result['status'] ? 'bar_met' : 'bar_missed' ];
+		case 'rows_changed':
+			++$totals['rows_changed'];
 
 			printf(
-				"%-6s %s  today %.2f ms  swapped %.2f ms  rows %d%s\n",
+				"ROWS   %s  a timed run returned another number of rows: today %s (first run %d), swapped %s (first run %d)%s\n",
+				$pair['name'],
+				implode( ' ', $result['today_rows_by_run'] ),
+				$result['rows'],
+				implode( ' ', $result['swapped_rows_by_run'] ),
+				$result['rows_swapped'],
+				$flag
+			);
+			break;
+
+		default:
+			++$totals['ids_match'];
+
+			printf(
+				"%-6s %s%s  rows %d%s\n",
 				'pass' === $result['status'] ? 'PASS' : 'MISS',
 				$pair['name'],
-				$result['today_median_ms'],
-				$result['swapped_median_ms'],
+				$timing,
 				$result['rows'],
 				$flag
 			);
@@ -953,7 +1186,7 @@ foreach ( $runnable as $pair ) {
 $report['complete'] = true;
 
 printf(
-	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d (%d of them ID-only, no LIMIT so not timed or held to the bar), IDs differ %d, known %d (IDs differ only by posts with invalid dates), bar met %d, bar missed %d, weedout %d, errors %d, skipped %d. Load at end: %s\n",
+	"Total: %d pairs, %d empty (both forms returned 0 rows, not compared, %d of them synthetic), IDs match %d (%d of them ID-only, no LIMIT so not timed or held to the bar), IDs differ %d, known %d (IDs differ only by posts with invalid dates), bar met %d, bar missed %d (every timed pair, known ones included), weedout %d, plans read with classic EXPLAIN %d, plans unreadable %d, row count changed %d, errors %d, skipped %d. Load at end: %s\n",
 	$totals['pairs'],
 	$totals['empty'],
 	$totals['empty_synthetic'],
@@ -964,6 +1197,9 @@ printf(
 	$totals['bar_met'],
 	$totals['bar_missed'],
 	$totals['weedout'],
+	$totals['plan_classic'],
+	$totals['plan_unreadable'],
+	$totals['rows_changed'],
 	$totals['errors'],
 	$totals['skipped'],
 	implode( ' ', load_average() )
@@ -973,7 +1209,7 @@ if ( $totals['ids_differ'] > 0 ) {
 	finish( 2 );
 }
 
-if ( $totals['bar_missed'] + $totals['weedout'] + $totals['errors'] > 0 ) {
+if ( $totals['bar_missed'] + $totals['weedout'] + $totals['plan_unreadable'] + $totals['rows_changed'] + $totals['errors'] > 0 ) {
 	finish( 1 );
 }
 
@@ -993,6 +1229,10 @@ if ( $totals['empty'] * 10 > $totals['pairs'] ) {
 
 if ( 0 === $totals['ids_match'] ) {
 	fail( 'Nothing was compared. Every pair was empty or skipped.', 3 );
+}
+
+if ( 0 === $totals['bar_met'] + $totals['bar_missed'] ) {
+	fail( 'No pair was timed. Only a pair whose statement ends in a LIMIT is timed, so the speed was not checked.', 3 );
 }
 
 finish( 0 );
