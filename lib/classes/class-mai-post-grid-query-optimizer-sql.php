@@ -19,15 +19,17 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 
 	/**
 	 * The post columns a grid may sort by, before the ID tiebreaker. Only the sorts that met the
-	 * speed bar are here. Modified date, title, slug, menu order and comment count sorts ran slower
-	 * swapped on a mid-size category, and parent and type sorts were never measured, so those grids
-	 * keep today's statement (spec "Which grids").
+	 * speed bar on MySQL are here. Modified date, title, slug, menu order and comment count sorts
+	 * ran slower swapped on a mid-size category, and parent and type sorts were never measured, so
+	 * those grids keep today's statement (spec "Which grids").
 	 */
 	public const SORT_COLUMNS = [ 'post_date', 'post_author', 'ID' ];
 
 	/**
 	 * Written right after SELECT inside each EXISTS on MySQL. It forbids the one plan that hits
-	 * MySQL bug 120943 on 8.0 and 8.4, and nothing else.
+	 * MySQL bug 120943 on 8.0 and 8.4, and nothing else. MySQL can still pick that plan when
+	 * FirstMatch, LooseScan and materialization are all switched off in optimizer_switch, which
+	 * no fleet server does (spec "Risks").
 	 */
 	private const HINT = '/*+ NO_SEMIJOIN(DUPSWEEDOUT) */ ';
 

@@ -18,6 +18,7 @@
 - Hook callbacks take `mixed` and return anything that is not the expected type unchanged.
 - On `WP_Query`, assign whole property values. `$query->prop['k'] = $v` on an unset property is silently dropped (`class-wp-query.php:4117`).
 - Exact values: filter `mai_post_grid_optimize_query` (default `true`); transient `mai_post_grid_optimize_off` for `DAY_IN_SECONDS`; slow limit `1.0` second; MySQL minimum `8.0.16`; MySQL hint `/*+ NO_SEMIJOIN(DUPSWEEDOUT) */ ` right after `SELECT ` inside each `EXISTS`; allowed `$wpdb` classes exactly `wpdb` and `QM_DB`; version strings containing `sqlite`, `vitess` or `tidb` (case-insensitive) are not MySQL; tiebreaker always `, {posts}.ID DESC`.
+  - Superseded on 2026-10-05: see spec "Ties" for the tiebreaker rule.
 - Tests that look for Mai's swap match `EXISTS ( SELECT ` (core's own `EXISTS` operator writes `EXISTS (` too).
 - No em-dashes in code comments, `CHANGES.md` or commit messages. Commit bodies are one line per paragraph and end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - The committed `vendor/composer` autoloader must stay no-dev; `php vendor/bin/deployable-guard check` passes before every commit (the pre-commit hook runs it).
@@ -142,6 +143,8 @@
 - [ ] **Step 5: Commit**: "Grid optimizer: swap covered grid statements for the EXISTS form, replacing the old optimizer".
 
 ### Task 4: The ID tiebreaker for every grid without Load More, newest first
+
+Superseded on 2026-10-05: see spec "Ties" for the tiebreaker rule.
 
 **Files:**
 - Modify: `lib/classes/class-mai-grid.php:257-386`: set `$this->query_args['mai_grid_tiebreak'] = true` right after `$asked = $this->query_args;` for every grid with `no_found_rows` (remove the line inside `if ( $defer )`); after the query, remove it from `query_vars` and `query` for every grid, deferring or not.

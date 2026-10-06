@@ -19,7 +19,7 @@ final class Mai_Post_Grid_Query_Optimizer_Database {
 	/**
 	 * The oldest MySQL that may take the faster query. Before 8.0.16 MySQL cannot plan an EXISTS
 	 * like a join, so the swap would be slower. 8.0.16, 8.0.28, 8.0.46 and 8.4.11 met the speed
-	 * bar on every statement and returned the same posts, apart from a post with an invalid date
+	 * bar on every timed pair and returned the same posts, apart from a post with an invalid date
 	 * (Docker runs, 2026-10-05, spec "Results" and "Risks").
 	 */
 	public const MYSQL_MIN = '8.0.16';

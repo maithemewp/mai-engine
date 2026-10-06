@@ -264,7 +264,7 @@ class Mai_Grid {
 					// Ties in the sort are settled for every grid that does not count rows, in the
 					// way add_grid_orderby_tiebreaker() describes. Mai Load More counts them, so it
 					// is left out. Its next pages run from the saved args, which never carry the
-					// marker, so the first page would break ties by ID and the pages after it would not.
+					// marker, so the first page would settle ties and the pages after it would not.
 					if ( ! empty( $asked['no_found_rows'] ) ) {
 						$this->query_args['mai_grid_tiebreak'] = true;
 					}
@@ -1116,22 +1116,24 @@ class Mai_Grid {
 	 * 3. Otherwise, when the post date is already named, ", ID DESC".
 	 * 4. Otherwise ", post_date DESC, ID DESC".
 	 *
-	 * Why the ascending date sort breaks ties ascending: the taxonomy query walks the posts index
+	 * Why an ascending date sort breaks ties ascending: the taxonomy query walks the posts index
 	 * in the sort's direction and stops at the LIMIT. A trailing ID DESC on an ascending date sort
-	 * does not match that index order, so MySQL sorts every matching row. Measured on eurweb's
-	 * biggest category, date ASC with LIMIT 7 took 68 ms with ID ASC and 254 ms with ID DESC.
-	 * Beta.5's deferring grids followed the sort direction like this too. Other sorts have no such
-	 * index to match, so their tied posts show newest first. A grid sorted by a field nobody filled
-	 * in, such as menu order on a site that never used it, then reads like a plain latest posts
-	 * list. What this buys is a fixed answer, which can differ from what the database picked
-	 * before among tied rows.
+	 * does not match that index order, so MySQL sorts every matching row. Measured once, on local
+	 * eurweb's biggest category: the swapped statement sorted by date ascending with LIMIT 7 took
+	 * 68 ms with ID ASC and 254 ms with ID DESC, as medians that include the mysql client's
+	 * start-up. An author sort follows its direction the same way, for consistency. It was not
+	 * measured on its own. Beta.5's deferring grids followed the sort direction like this too.
+	 * Other sorts have no such index to match, so their tied posts show newest first. A grid
+	 * sorted by a field nobody filled in, such as menu order on a site that never used it, then
+	 * reads like a plain latest posts list. What this buys is a fixed answer, which can differ
+	 * from what the database picked before among tied rows.
 	 *
 	 * @since 2.41.0
 	 * @since 2.41.0 Static, and registered once instead of around each grid's query.
 	 * @since 2.41.0 Applied to every grid that does not count rows. Date and author sorts tie by ID in
-	 *               their own direction, because ID DESC on an ascending date sort forces a full sort.
-	 *               Other sorts tie newest first.
-	 *
+	 *               their own direction. On an ascending date sort, ID DESC forced a full sort in the
+	 *               one measurement, and author sorts follow for consistency. Other sorts tie newest
+	 *               first.
 	 * @since 2.41.0 Returns an ORDER BY that is not a string, or a query that is not a WP_Query,
 	 *               unchanged.
 	 *
@@ -1174,8 +1176,8 @@ class Mai_Grid {
 			return "{$orderby}, {$wpdb->posts}.ID {$direction}";
 		}
 
-		// The post date is already one of the sort keys, so a second date key would add nothing.
-		// A whole-column match, so the GMT date does not count.
+		// The post date is already named in the ORDER BY, so no extra post_date key is added. A
+		// whole-column match, so the GMT date does not count.
 		if ( preg_match( '/(?<!\w)' . $posts . '\.post_date\b/', $orderby ) ) {
 			return "{$orderby}, {$wpdb->posts}.ID DESC";
 		}

@@ -15,7 +15,7 @@ Written with `EXISTS` instead, the same filter returns the same posts in under 1
 - Grid queries filtered by taxonomy cost a fraction of today's on big sites, on every Mai Engine site where it is proven safe. Mike, 2026-10-04: worth it, fast, and able to run on 5,000 sites.
 - On by default. The filter only turns it off.
 - Every grid shows the posts it shows today, in the same order. The one known exception is a post with a zero day or month in its date (see "Risks").
-- Never slower than today, on any site or database.
+- Never slower than today, beyond the bar in "Measurements", on any site or database.
 - Not brittle. Mai never parses SQL. It rebuilds what WordPress would have written, with WordPress's own code, and compares it exactly. Any difference means today's statement goes out unchanged. A failed check costs the speedup, never correctness.
 
 ## Non-goals
@@ -38,6 +38,8 @@ Written with `EXISTS` instead, the same filter returns the same posts in under 1
 The query's own SQL text, as WordPress stores it on the query, never changes. So Mai's key check and WordPress's query cache keys work exactly as they do today.
 
 ## What ships
+
+Mai Engine line numbers in this section are from `develop` at `ce73a9f52`, where this branch started. WordPress line numbers are from core.
 
 ### 1. The swap
 
@@ -219,7 +221,7 @@ Mike decided on 2026-10-05 (option a of a walk) that the tiebreaker follows the 
 
 Random order gets the general rule, with no special case.
 
-**Why the ascending date sort changed back.** An `ID DESC` after `post_date ASC` does not match the order the database walks the posts index, so it sorts every matching row. Measured on local eurweb's biggest category, date ascending with `LIMIT 7`, swapped, took 68 ms with `ID ASC` and 254 ms with `ID DESC`. That is about 190 ms more on every rebuild. Date and author are the sorts the swap covers, so they are the ones that follow their direction.
+**Why an ascending date sort breaks ties ascending.** An `ID DESC` after `post_date ASC` does not match the order the database walks the posts index, so it sorts every matching row. Measured once, on local eurweb's biggest category: the swapped statement sorted by date ascending with `LIMIT 7` took 68 ms with `ID ASC` and 254 ms with `ID DESC`, as medians that include the mysql client's start-up. That is about 190 ms more on every rebuild of such a grid. Only the date sort was measured. Author sorts follow their direction too, for consistency, since date and author are the sorts the swap covers.
 
 **Why the other sorts show newest first.** A grid where nobody set the sort field, such as menu order on a site that never used it, then looks like a normal latest-posts list instead of showing posts from years ago. Today it shows whatever order the database happens to pick.
 
@@ -237,7 +239,7 @@ Integration tests, on a real database:
   - an OR case that returns wrong posts if the brackets are dropped
   - category `IN` with category `NOT IN` (lamag's and orangecoast's shape), with `mai_display` `NOT IN` (eurweb's home page), and with `AND` and `EXISTS` filters
   - with `post__not_in`, several post types, publish and private, an offset
-  - `LIMIT` 2, 32 and 200, posts with the same date, each covered sort
+  - `LIMIT` 2, 32 and 200, posts with the same date, every date and author the same (date and author sorts each way), each covered sort
   - the copy, the grid's own split statement, and its full statement
 - **The swap happens** when every check passes. These tests fail if a WordPress update changes how core writes this SQL, which would otherwise go unnoticed.
 - **Today's statement goes out unchanged** when the filter returns false, and for each case below:
@@ -251,7 +253,7 @@ Integration tests, on a real database:
   - the statement has a `%` placeholder escape
   - `$wpdb` is a class other than `wpdb` or `QM_DB`
   - a hook callback is handed `null`
-- **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids. Each case of the rule in "Ties" is tested: date and author sorts ascending and descending, a sort that is not by date, a sort that names `post_date` without ending on it, a last key with no direction, the GMT date, and an ORDER BY that already names `{posts}.ID`. A date or author ascending grid still passes `orderby_ok()`, so it is still swapped.
+- **The tiebreaker** is added to grids that do not count rows and removed afterwards, and is not added to Load More grids. Each case of the rule in "Ties" is tested: date and author sorts ascending and descending, a sort that is not by date, a sort that names `post_date` without ending on it, a last key with no direction, the GMT date, and an ORDER BY that already names `{posts}.ID`. Every covered sort column other than the ID, ascending, descending and with no direction, passes `orderby_ok()` once the tiebreaker is added. A grid on which every post ties on a date or author sort shows the posts by ID in the sort's direction. An ORDER BY that is not a string, and a query that is not a `WP_Query`, come back unchanged.
 - **The rebuild after the page swaps too** (`run_queue()`), and the copy's key still matches the grid's, so the note is stored.
 - **Failure,** for the copy and for the grid's own query, split and full: a `query` callback added after Mai's breaks the swapped statement. The grid still shows the right posts, nothing wrong is stored, every prepared swap is cleared, the 24-hour transient is set, a second grid on the same page is not swapped, one log line is written, and WordPress's query cache was reset.
 - **Slow:** a swapped statement held over the limit, the copy's and the grid's own split and full forms (a test lowers the limit and a later `query` callback waits with `usleep()`), turns the swap off for the day and keeps the right list.
@@ -273,10 +275,11 @@ On each database above, in Docker, with copies of local eurweb (85,000 posts), l
   - several post types, and publish plus private
   - every covered shape and every sort Mai offers
   - each at the grid's `LIMIT`, at `LIMIT` 2 and 32, at `LIMIT` 1000 (what a grid set to show all entries sends, `mai_post_grid_max_posts_per_page`), and with no `LIMIT`
+  - every grid statement also in its full form, `SELECT {posts}.*`, at `LIMIT` 1000. WordPress splits a query into an ID-only statement only with a persistent object cache or under 500 posts per page (`class-wp-query.php:3383-3389` in WordPress 7.1), so a show-all grid on a site without a persistent object cache sends this form
 - **Same posts** from both forms, every time. The variant with no `LIMIT` compares the whole set of IDs. It is not timed or held to the bar, since the swap needs a `LIMIT` (section 3). The one known exception to same posts is a post with a zero day or month in its date (see "Risks").
 - **Speed:** both forms alternating in one session, at least 10 runs each, medians, plus the plan from `EXPLAIN`.
-- **No duplicate weedout on MySQL.** Every plan on MySQL 8.0 and 8.4 is checked for the plan the hint forbids, by the word `weedout` in it. MySQL's LooseScan plan ("Remove duplicates from input sorted on ...") is allowed: the hint permits it, and MySQL 8.4 builds exactly that plan when a statement is forced to `SEMIJOIN(LOOSESCAN)`. A plan forced to `SEMIJOIN(DUPSWEEDOUT)` on MySQL 8.4.11 reads `Remove duplicate t1 rows using temporary table (weedout)`, so the word is there to find.
-- **The bar:** for every statement with a `LIMIT`, the swapped median is no more than today's median plus 2 ms or 10%, whichever is larger. Mike set 2 ms on 2026-10-05, replacing 0.5 ms, because statements of 5 to 7 ms swing by about 1 ms between runs on the test machine. A database version, shape or sort that misses the bar on any statement is left out. That sets the MariaDB minimum, confirms the MySQL one, and sets the list of sorts.
+- **No duplicate weedout on MySQL.** Every plan on MySQL 8.0 and 8.4 is checked for the plan the hint forbids, by the word `weedout` in it. MySQL's LooseScan plan ("Remove duplicates from input sorted on ...") is allowed: the hint permits it, and MySQL 8.4 builds exactly that plan when a statement is forced to `SEMIJOIN(LOOSESCAN)`. On MySQL 8.4.11, a small two-table test statement forced to `SEMIJOIN(DUPSWEEDOUT)` gave a plan that reads `Remove duplicate <table> rows using temporary table (weedout)`, with the test's own table name, so the word is there to find. MySQL 8.0.16 and 8.0.17 cannot print many of these plans as a tree and write `<not executable by iterator executor>`. For those plans the replay reads classic `EXPLAIN` instead, where duplicate weedout shows as `Start temporary` in the Extra column, and a plan neither form can show fails the run.
+- **The bar:** for every statement with a `LIMIT`, including a pair whose posts differ only by an invalid date, the swapped median is no more than today's median plus 2 ms or 10%, whichever is larger. Mike set 2 ms on 2026-10-05, replacing 0.5 ms, because statements of 5 to 7 ms swing by about 1 ms between runs on the test machine. A database version, shape or sort that misses the bar on any statement is left out. That sets the MariaDB minimum, confirms the MySQL one, and sets the list of sorts.
 - **The checks' own cost:** time added to a page with ten grids, answered from the cache and on a miss. It should be well under a millisecond.
 - **Whole pages:** cold article views on local eurweb with the swap on and off, following `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`, to confirm the 1.5 s gain.
 
@@ -303,13 +306,16 @@ No release, tag or push without Mike asking.
 
 ## Risks
 
-- **A database bug we do not know about.** The MySQL weedout bug shows they exist. The hint rules out the known one while MySQL has another way to run the semijoin. On MySQL 8.4.11 with FirstMatch, LooseScan and materialization all switched off in `optimizer_switch`, it used weedout despite the hint. All three are on by default. On 2026-10-05 `@@optimizer_switch` was read on one site per live server (22 servers: d1, hmg-1, hmg-2, hmg-3, hwh-1, rd2, tmwsm12 to tmwsm24, tsm-1, wpe-ampers, wpe-warriormfg), and every one has semijoin, firstmatch, loosescan and materialization on, so Mai adds no check for it. The Docker plans are checked, and the tests compare posts on every database version. A new major version gets the same tests.
+- **The known MySQL weedout bug.** MySQL 8.0 and 8.4 can drop rows when they run a semijoin with duplicate weedout (bug 120943). Every swapped `EXISTS` carries `NO_SEMIJOIN(DUPSWEEDOUT)`, which rules that plan out while MySQL has another way to run the semijoin, and the Docker plans are checked for it.
+- **MySQL can ignore the hint.** On MySQL 8.4.11 with FirstMatch, LooseScan and materialization all switched off in `optimizer_switch`, it used weedout despite the hint. All three are on by default.
+- **The fleet keeps those switches on.** On 2026-10-05 `@@optimizer_switch` was read on one site per live server (22 servers: d1, hmg-1, hmg-2, hmg-3, hwh-1, rd2, tmwsm12 to tmwsm24, tsm-1, wpe-ampers, wpe-warriormfg), and every one has semijoin, firstmatch, loosescan and materialization on, so Mai adds no check for it.
+- **A database bug we do not know about.** The weedout bug shows they exist. The tests compare posts on every database version, and a new major version gets the same tests.
 - **A plugin's `query` callback registered at `PHP_INT_MAX` after Mai's sees the swapped statement.** Harmless unless it looks for the join text. None in the fleet does.
 - **A plugin that edits the clauses at `PHP_INT_MAX` on `posts_clauses_request`, registered after Mai.** Mai would not see the change. It most likely ends in a database error and the fallback, not wrong posts. None in the fleet does.
 - **A WordPress update changes how core writes this SQL.** The checks stop matching and sites quietly keep today's speed. The "swap happens" tests catch it on the next test run.
 - **A brief database problem during a swapped statement turns the swap off for a day.** It costs only the speedup on that site.
-- **The tiebreaker changes which tied posts show** on grids that did not have it. See "Ties".
-- **A post with an invalid date can move.** A post whose `post_date` has a zero day or month, such as `2007-03-00`, can sit in a different place in the faster query than in today's. WordPress refuses such dates today, but old imports can carry them. A grid whose window reaches that post can show it somewhere else, or not at all. Its place already depends on the database's plan in WordPress's own queries. Mike accepted this on 2026-10-05. Post 203 on larrybrownsports is the one known case. Mike chose to correct its date on live (2026-10-05).
+- **The tiebreaker changes which tied posts show** on grids that did not have it. See "Ties". It also changes the tied order on beta.5's deferring grids whose sort is not by date or author: menu order ascending, for example, went from `, {posts}.ID ASC` to `, {posts}.post_date DESC, {posts}.ID DESC`. Beta.5 is live on eurweb and larrybrownsports.
+- **A post with an invalid date can move.** A post whose `post_date` has a zero day or month, such as `2007-03-00`, can sit in a different place in the faster query than in today's. WordPress refuses such dates today, but old imports can carry them. A grid whose window reaches that post can show it somewhere else, or not at all. Its place already depends on the database's plan in WordPress's own queries. Mike accepted this on 2026-10-05. Post 203 on larrybrownsports is the only one found in the ten local copies checked. Mike chose to correct its date on live (2026-10-05).
 
 ## Results
 
@@ -354,7 +360,7 @@ No release, tag or push without Mike asking.
 
 ### Databases in Docker (2026-10-05)
 
-**MySQL 8.0.16 to 8.4.11 met the bar on every statement and returned the same posts on every site, apart from the one known invalid date. MariaDB 10.6 to 11.8 returned the same posts too, but grids sorted by ID on eurweb were far slower swapped, so MariaDB stays off. On larrybrownsports the ID sorts met the bar.**
+**MySQL 8.0.16 to 8.4.11 met the bar on every timed pair and returned the same posts on every site, apart from the one known invalid date. MariaDB 10.6 to 11.8 returned the same posts too, but grids sorted by ID on eurweb were far slower swapped, so MariaDB stays off. On larrybrownsports the ID sorts met the bar.**
 
 **Setup.**
 
@@ -363,12 +369,12 @@ No release, tag or push without Mike asking.
 - **Statements:** captured on one article and the home page of each site after the tiebreaker change, plus the synthetic set. Pairs per site: eurweb 224, larrybrownsports 182, small site 175. Each statement ran at its own `LIMIT`, at `LIMIT` 2, 32 and 1000, and with no `LIMIT` (IDs only).
 - **The bar:** today's median plus 2 ms or 10%, whichever is larger, 10 timed runs of each form, alternating.
 - **Machine load:** the 1-minute load average was between 4.24 and 9.90 at the start and end of every replay, and between 3.41 and 8.24 when each integration suite started. All under the limit of 20.
-- **Tools and raw data:** `bin/grid-optimizer-probe.php`, `bin/grid-optimizer-pairs.php` and `bin/grid-optimizer-replay.php`. The full numbers and plans were kept in `/tmp/task8-opt/`, not in the repository.
+- **Tools and raw data:** `bin/grid-optimizer-probe.php`, `bin/grid-optimizer-pairs.php` and `bin/grid-optimizer-replay.php`. The full numbers and plans were kept in `/tmp/task8-opt/`, not in the repository. That folder is temporary and is gone after a reboot.
 
 **Expected, on every database:**
 
 - **eurweb:** 4 empty pairs, `mai_display` term 193304, which has no posts in this data.
-- **The small site:** 5 empty pairs, `mid AND tag`. The one tagged post is not in the mid-size category.
+- **The small site:** 5 empty pairs, `mid AND tag`. The one tagged post is not in the mid-size category. The replay treats an empty synthetic pair as wrong data, so it exits 3 on the small site on every database. That was accepted: these 5 are genuinely empty, and the row counts after each import prove the data loaded.
 - **larrybrownsports on MySQL:** one known difference, `29 terms | no LIMIT`, caused only by post 203 and its invalid date (section "Risks"). MariaDB ordered post 203 the same way in both forms.
 
 **Integration suite** (`WP_TESTS_DB_HOST=127.0.0.1:3380`, and `WP_TESTS_MARIADB_MIN=10.6.0` on MariaDB, so the swap was on in the tests):
@@ -388,6 +394,7 @@ No release, tag or push without Mike asking.
 - **MySQL 8.0.16, emulated** (amd64 image, `@@version_compile_machine` x86_64): bar met 178 / 146 / 136 / 136, missed 0, IDs differ 0. Article statements 347.25 to 363.51 against 1.25 to 1.51. Emulation slows both forms alike.
   - **Weedout, checked another way.** `EXPLAIN FORMAT=TREE` on 8.0.16 cannot print 228 of the swapped plans (`<not executable by iterator executor>`). So every swapped statement was also run through classic `EXPLAIN`, where duplicate weedout shows as `Start temporary` and `End temporary`.
   - **Result: 0 weedout in 756 statements.** The check does show it on a statement forced to `SEMIJOIN(DUPSWEEDOUT)`.
+  - Since then the replay reads classic `EXPLAIN` by itself for a plan the tree form cannot show (see "Measurements").
 
 **MariaDB, all missed on ID sorts.** Every date and author pair, and every larrybrownsports and small-site pair (ID sorts included), met the bar. The same 11 eurweb pairs missed on all four versions, all sorted by ID. Today walks the primary key and stops after a few posts. Swapped, MariaDB first reads every matching term row into a temporary table. For the biggest category, whose `IN` list holds 16 term IDs with its child categories, MariaDB's plan estimates about 500,000 rows.
 
