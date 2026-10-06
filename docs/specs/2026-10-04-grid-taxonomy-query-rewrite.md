@@ -1,6 +1,6 @@
 # Grids: cheaper taxonomy queries on big sites
 
-Status: built on the `grid-taxonomy-optimizer` branch and measured on local eurweb (MySQL 9.7.1, 2026-10-05, see "Results"), then revised after the whole-branch review, then measured in Docker on MySQL 8.0.16 to 8.4.11 and MariaDB 10.6 to 11.8 (2026-10-05, see "Results"). MySQL from 8.0.16 is confirmed, and MariaDB stays off. ID sorts left the swap on 2026-10-06 (see "Which grids"). Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
+Status: built on the `grid-taxonomy-optimizer` branch and measured on local eurweb (MySQL 9.7.1, 2026-10-05, see "Results"), then revised after the whole-branch review, then measured in Docker on MySQL 8.0.16 to 8.4.11 and MariaDB 10.6 to 11.8 (2026-10-05, see "Results"). Then rerun with hardened tools on MySQL 8.0.46, 8.0.16 and local 9.7.1 (2026-10-05 and 2026-10-06). MySQL from 8.0.16 is confirmed, and MariaDB stays off. ID sorts left the swap on 2026-10-06 (see "Which grids"). Comes from `docs/ideas/2026-10-04-grid-related-posts-query-cost.md`.
 
 ## Why
 
@@ -427,3 +427,61 @@ The misses, today against swapped in ms:
 - **`MYSQL_MIN` stays `8.0.16`.** It is the lowest MySQL tested, and every tested version above it passed too.
 - **`$mariadb_min` stays empty, so MariaDB is off.** No MariaDB version passed every pair, so there is no lowest passing version. A per-database sort list (MariaDB without the ID sort) would let MariaDB take the swap for date and author grids, where it passed. That is a design choice, not part of this change.
 - **`SORT_COLUMNS` stayed date, author and ID in this run.** A sort is removed only when it misses on a database that stays on, and MySQL missed nothing here. The rerun with the hardened tools then found local MySQL 9.7.1 missing on ID sorts, and ID left on 2026-10-06 (next section).
+
+### Rerun with the hardened tools (2026-10-05 and 2026-10-06)
+
+**MySQL 8.0.46, MySQL 8.0.16 and local MySQL 9.7.1 met the bar on every timed date and author pair, and returned the same posts, apart from post 203. Local 9.7.1 missed on ID sorts in a way that repeated, so ID sorts left the swap (Mike, 2026-10-06).**
+
+**What changed in the tools.** After the second review the pairs script and the replay were tightened, and the rerun used them:
+
+- Every grid statement is also written in its full form, `SELECT {posts}.*`, at `LIMIT 0, 1000`.
+- The replay reads classic `EXPLAIN` when MySQL cannot print a plan as a tree.
+- Every timed run must return as many rows as the first.
+- A miss counts only when at least 2 of 3 reruns alone miss too.
+
+The method was the same as above: 2 GB buffer pool, port 3380, one container at a time, the same dumps (row counts matched local), load between 2.99 and 10.55.
+
+**MySQL 8.0.46** (Docker, native arm64):
+
+- eurweb 220 timed pairs met the bar, larrybrownsports 182, the small site 170 in each copy. 0 missed, 0 differ, 0 weedout.
+- In the first pass, one larrybrownsports pair missed by 0.55 ms: `mid AND tag` at its own `LIMIT 12`, 10.06 against 12.60 ms. It passed three reruns alone at about 8.3 against 8.1 ms, and passed on its first timing in the second pass. This is why the rerun rule exists.
+- The integration suite passed, 685 tests.
+
+**MySQL 8.0.16** (Docker, emulated amd64):
+
+- eurweb 220, larrybrownsports 182, the small site 170 in each copy. 0 missed, 0 differ, 0 weedout.
+- `EXPLAIN FORMAT=TREE` could not print 272 swapped plans. The replay read each of them with classic `EXPLAIN`: 116 FirstMatch, 136 materialized, 14 LooseScan and 6 dependent subquery. None was duplicate weedout, and none was unreadable.
+- The integration suite had only the 2 `GridCacheAfterPageTest` failures described above.
+
+**Local MySQL 9.7.1** (128 MB buffer pool, so its small timings are the noisiest):
+
+- **The first pass, with ID sorts,** stopped on eurweb with 5 misses that repeated in all 3 reruns:
+  - `big, ID ASC` at four LIMITs: about 1 ms today against 62 to 64 ms swapped.
+  - `big, ID DESC` in its full form at `LIMIT 0, 1000`: 30 against 77 ms.
+  - The swapped plan read all 478,486 matching term rows into a temporary table before it walked the posts. That is the shape that turned MariaDB off. Earlier on 2026-10-05 the same server ran the same statement as a FirstMatch walk in 0.73 ms. So the plan for an ID sort can change between runs on one MySQL version.
+- **The second pass, without ID sorts:** eurweb 180 timed pairs met, larrybrownsports 142, the small site 130 in each copy. 0 missed, 0 differ, 0 weedout.
+- The six article statements went from 262 to 272 ms today to 0.69 to 0.77 ms swapped.
+
+**The full form at `LIMIT 0, 1000`** is what a show-all grid sends on a site without a persistent object cache:
+
+- **Every full-form pair met the bar** on every database: eurweb 42 (8.0.46 and 8.0.16) and 34 (9.7.1, without ID sorts), larrybrownsports 36 and 28, the small site 34 and 26.
+- **Big term sets gain the most.** 29 categories went from 1,603 to 11 ms on 8.0.46, from 1,085 to 14 ms on 8.0.16, and from 2,742 to 15 ms on 9.7.1.
+- **Mid-size terms gain little at this LIMIT.** eurweb's custom `author` term (28,154 posts) took 455 ms today against 457 ms swapped on 9.7.1, inside the bar.
+
+**Not rerun after ID sorts left.** MySQL 8.0.46 and 8.0.16 were not run again: taking a sort out only removes its pairs, so their date and author results stand.
+
+**Expected, as before:**
+
+- eurweb has 5 empty pairs (`mai_display` term 193304, now with its full form).
+- The small site has 6 empty `mid AND tag` pairs (its full form added), so its replay exits 3.
+- larrybrownsports has its one known pair, `29 terms | no LIMIT` (post 203).
+
+**The defaults now:**
+
+- `MYSQL_MIN` stays 8.0.16.
+- `$mariadb_min` stays empty.
+- `SORT_COLUMNS` is date and author.
+
+MariaDB's only misses in the Docker runs were ID sorts, so every pair it would still take met the bar there. Whether to turn it on is a separate decision.
+
+**Raw data:** `/tmp/task8-opt/tk2-*`, `tk2r-*` and `tk2id-*`, which are temporary and gone after a reboot. The full account is in `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/toolkit-2-fix-report.md`.
