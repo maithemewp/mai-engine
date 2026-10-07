@@ -14,8 +14,8 @@ The grid taxonomy optimizer is built, reviewed and measured, and merged into loc
 - Next timed against current on local eurweb and larrybrownsports (2026-10-06): slower on eurweb's first view after Mai's cache is emptied and on larrybrownsports' burrow article, faster or the same elsewhere. Spec "Results", "Next against current (2026-10-06)".
 
 ## Next
-1. Local `develop` is ahead of GitHub's `develop` by 60 commits, all Mike's. None are on GitHub yet. The beta push below publishes them.
-2. Beta push for eurweb and larrybrownsports, then totalprosports. Next header `2.41.0-beta.6`. Steps in `docs/specs/2026-10-01-grid-cache-beta-5.md` under "Release". `npm run beta` pushes, so it needs Mike's explicit yes. Afterwards `composer dump-autoload --no-dev`.
+1. Watch live eurweb and larrybrownsports until 2026-10-08 (Mike, 2026-10-07): their error logs for `Mai Engine:` lines and fatals, and grids after new posts. Read-only checks through `mai-sites run`; the logs are in `../logs/error.log` from each site's root.
+2. Then release beta.6 with ACF 6.8.10 (`13355b231`) and push eurweb and larrybrownsports again, then totalprosports. Local `develop` is 61 commits ahead of GitHub, all Mike's; the release publishes them. ACF 6.8.9 moves ACF blocks that declare no version to Blocks v3 on WordPress 7.1 or later (mai-locations' 7 blocks, mai-publisher's ad-unit-audio, mai-testimonials); Mike accepted that on 2026-10-07. Next header `2.41.0-beta.6`. Steps in `docs/specs/2026-10-01-grid-cache-beta-5.md` under "Release". `npm run beta` pushes, so it needs Mike's explicit yes. Afterwards `composer dump-autoload --no-dev`.
 3. MariaDB stays off. Without ID sorts its Task 8 pairs met the bar, but the hardened replay (full-form show-all pairs, row-count checks, the rerun rule) never ran on MariaDB, and its plan reads every matching term row first, the shape that made local MySQL 9.7.1 miss on the full form. Before turning it on, rerun the hardened replay on MariaDB 10.6, 10.11, 11.4 and 11.8. (`TODO.md`)
 4. Before 2.41.0 final: check the buffer pool size on the main hosts, then the rest of `TODO.md`.
 
