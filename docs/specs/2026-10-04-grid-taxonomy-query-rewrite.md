@@ -485,3 +485,16 @@ The Docker runs used the method above: 2 GB buffer pool, port 3380, one containe
 MariaDB stays off. Without ID sorts its Task 8 pairs met the bar, but the hardened replay (full-form show-all pairs, row-count checks, the rerun rule) never ran on MariaDB, and its plan reads every matching term row first, the shape that made local MySQL 9.7.1 miss on the full form. Before turning it on, rerun the hardened replay on MariaDB 10.6, 10.11, 11.4 and 11.8.
 
 **Raw data:** `/tmp/task8-opt/tk2-*`, `tk2r-*` and `tk2id-*`, which are temporary and gone after a reboot. The full account is in `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/toolkit-2-fix-report.md`.
+
+### Next against current (2026-10-06)
+
+**Next is slower than current on two kinds of view that send grid statements, and faster or the same everywhere else.** Next is local `develop` at `3f248b299`, current is 2.40.1. Local eurweb (Redis) and larrybrownsports (no persistent object cache), both on local MySQL 9.7.1 with a 128 MB buffer pool. Medians of time to first byte, next minus current, with 95% bootstrap intervals. Versions alternated in blocks.
+
+- **eurweb, the first view after Mai's cache is emptied, with WordPress's query cache warm:** +66 ms [+38, +88] over the front page and four articles, the front page +575 [+554, +613]. Current answers these grids from WordPress's query cache and sends nothing. Next sends every grid's ID-only copy: 18 statements on the front page, 10 per article.
+  - With the term table's primary key in the pool, MySQL runs next's swapped copies in about 1 ms, and the articles were +20 to +48 ms, each interval including 0.
+  - With it out of the pool, MySQL picks a materialization plan (59 to 124 ms per copy), and every page was slower: +595 ms [+573, +618], articles +570 to +645. Current's statements keep that index in the pool. Next's do not.
+- **larrybrownsports, the football article burrow:** +87 ms after a save, +66 after Mai's cache is emptied, +97 fully cold, every interval above 0. The basketball article schroder, fully cold: +60 [+11, +113]. The two big-category swapped copies take 40 to 50 ms longer each on this pool, while examining fewer rows. The site as a whole was 75 to 95 ms faster on next in those states.
+- **Faster or the same:** eurweb cached −32 ms [−67, −11], after a save −1,217, fully cold −1,760. larrybrownsports cached −1 [−9, +9].
+- **The 1-second guard turned the swap off three times on local larrybrownsports** (1.36 to 1.68 s), each among the first views after the site sat idle, each a grid's own split statement. Run alone on a cold pool, the front page hero grid's statement read the same rows and pages on both versions, so the cold cache is the cause. Current has no guard. After a trip, next runs without the swap for 24 hours.
+
+Full account, with causes per statement: `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/next-vs-current-report.md`. Raw data in `/tmp/nvc/`, which is temporary.

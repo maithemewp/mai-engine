@@ -11,6 +11,7 @@ The grid taxonomy optimizer is built, reviewed and measured, and merged into loc
 - The second pr-review-toolkit run's fix wave is finished. The pairs and replay tools are hardened: full form at `LIMIT 0, 1000`, classic EXPLAIN fallback, row-count check, and a miss counts only when 2 of 3 reruns alone miss too (Mike, 2026-10-05). Report: `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/toolkit-2-fix-report.md`.
 - Rerun with those tools: MySQL 8.0.46, 8.0.16 and local 9.7.1 met the bar on every timed date and author pair of all three sites. 0 differ apart from post 203, and 0 weedout. Spec "Results", "Rerun with the hardened tools".
 - 2.41.0-beta.5 is still what live eurweb and larrybrownsports run.
+- Next timed against current on local eurweb and larrybrownsports (2026-10-06): slower on eurweb's first view after Mai's cache is emptied and on larrybrownsports' burrow article, faster or the same elsewhere. Spec "Results", "Next against current (2026-10-06)".
 
 ## Next
 1. Local `develop` is ahead of `origin/develop` by the 13 earlier commits plus this merge, all Mike's. Nothing is pushed. The beta push below publishes them.
