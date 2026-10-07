@@ -3,7 +3,7 @@
         'name' => 'maithemewp/mai-engine',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '6cd628ef3bb0d56fc3314e8417f4be967748f3b0',
+        'reference' => '490d38b1d5d8f2d41f8e4593168134c67aff4ee3',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -139,7 +139,7 @@
         'maithemewp/mai-engine' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '6cd628ef3bb0d56fc3314e8417f4be967748f3b0',
+            'reference' => '490d38b1d5d8f2d41f8e4593168134c67aff4ee3',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -517,18 +517,18 @@
         'wpackagist-plugin/advanced-custom-fields' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '6.8.7',
+                0 => '6.8.10',
             ),
         ),
         'wpengine/advanced-custom-fields' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '6.8.7',
+                0 => '6.8.10',
             ),
         ),
         'wpengine/advanced-custom-fields-pro' => array(
-            'pretty_version' => '6.8.7',
-            'version' => '6.8.7.0',
+            'pretty_version' => '6.8.10',
+            'version' => '6.8.10.0',
             'reference' => null,
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../wpengine/advanced-custom-fields-pro',

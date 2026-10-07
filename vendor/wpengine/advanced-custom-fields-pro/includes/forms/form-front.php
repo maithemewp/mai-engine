@@ -357,7 +357,7 @@ if ( ! class_exists( 'acf_form_front' ) ) :
 
 			// Fallback to encrypted JSON.
 			if ( ! $form ) {
-				$form = json_decode( acf_decrypt( sanitize_text_field( $_POST['_acf_form'] ) ), true );
+				$form = $this->decode_primary_form( $_POST['_acf_form'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Sanitized inside decode_primary_form().
 				if ( ! $form ) {
 					return false;
 				}
@@ -452,6 +452,73 @@ if ( ! class_exists( 'acf_form_front' ) ) :
 		}
 
 		/**
+		 * Decrypts and verifies the primary `_acf_form` blob, enforcing token
+		 * freshness (TTL) and binding to the current page render.
+		 *
+		 * Returns the original `$args` map — with the internal `_acf_token_*`
+		 * bookkeeping keys stripped — so callers see the same shape the pre-6.8.8
+		 * decrypt path produced.
+		 *
+		 * @since 6.8.10
+		 *
+		 * @param mixed $raw The raw `$_POST['_acf_form']` value.
+		 * @return array|false Decoded form args on success, false otherwise.
+		 */
+		protected function decode_primary_form( $raw ) {
+			if ( ! is_scalar( $raw ) ) {
+				return false;
+			}
+
+			$decoded = json_decode( acf_decrypt( sanitize_text_field( (string) $raw ), 'form_primary' ), true );
+			if ( ! is_array( $decoded ) ) {
+				return false;
+			}
+
+			if ( ! isset( $decoded['_acf_token_issued_at'] ) || ! is_numeric( $decoded['_acf_token_issued_at'] ) ) {
+				return false;
+			}
+
+			if ( ! isset( $decoded['_acf_token_render_id'] ) || ! is_string( $decoded['_acf_token_render_id'] ) || '' === $decoded['_acf_token_render_id'] ) {
+				return false;
+			}
+
+			/**
+			 * Filters how long a primary `_acf_form` bearer token remains valid
+			 * after the page that emitted it was rendered.
+			 *
+			 * @since 6.8.8
+			 *
+			 * @param int $ttl Allowed age of a primary form token, in seconds.
+			 */
+			$ttl = (int) apply_filters( 'acf/form/primary_ttl', DAY_IN_SECONDS );
+			// A non-positive TTL is a kill switch — reject every token
+			// unconditionally, including future-dated ones that would otherwise
+			// bypass the `age >= ttl` check because the age is negative.
+			if ( $ttl <= 0 ) {
+				return false;
+			}
+			if ( ( time() - (int) $decoded['_acf_token_issued_at'] ) >= $ttl ) {
+				return false;
+			}
+
+			// phpcs:disable WordPress.Security.NonceVerification.Missing -- Verified above in check_submit_form().
+			$expected_render_id = ( isset( $_POST['_acf_render_id'] ) && is_scalar( $_POST['_acf_render_id'] ) )
+				? sanitize_text_field( wp_unslash( $_POST['_acf_render_id'] ) )
+				: '';
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
+			if ( '' === $expected_render_id ) {
+				return false;
+			}
+			if ( ! hash_equals( $expected_render_id, (string) $decoded['_acf_token_render_id'] ) ) {
+				return false;
+			}
+
+			unset( $decoded['_acf_token_issued_at'], $decoded['_acf_token_render_id'] );
+
+			return $decoded;
+		}
+
+		/**
 		 * Folds metadata from `_acf_form_meta[]` inputs into the primary form
 		 * configuration so the multi-`acf_form()`-in-one-outer-`<form>` pattern works.
 		 *
@@ -502,7 +569,7 @@ if ( ! class_exists( 'acf_form_front' ) ) :
 					continue;
 				}
 
-				$decoded = json_decode( acf_decrypt( sanitize_text_field( $token ) ), true );
+				$decoded = json_decode( acf_decrypt( sanitize_text_field( $token ), 'form_meta' ), true );
 				if ( ! is_array( $decoded ) ) {
 					continue;
 				}
@@ -787,8 +854,23 @@ if ( ! class_exists( 'acf_form_front' ) ) :
 			endif;
 
 			// Render hidden form data.
-			$render_id      = $this->get_render_id();
-			$acf_form_value = $is_registered ? $args['id'] : acf_encrypt( wp_json_encode( $args ) );
+			$render_id = $this->get_render_id();
+			if ( $is_registered ) {
+				$acf_form_value = $args['id'];
+			} else {
+				// Merge freshness (_acf_token_issued_at) and per-render binding
+				// (_acf_token_render_id) into the encrypted primary blob. Keys
+				// are namespaced to avoid colliding with args a third-party
+				// `acf/validate_form` filter may have added.
+				$payload_args   = array_merge(
+					$args,
+					array(
+						'_acf_token_issued_at' => time(),
+						'_acf_token_render_id' => $render_id,
+					)
+				);
+				$acf_form_value = acf_encrypt( wp_json_encode( $payload_args ), 'form_primary' );
+			}
 			acf_form_data(
 				array(
 					'screen'    => 'acf_form',
@@ -819,7 +901,7 @@ if ( ! class_exists( 'acf_form_front' ) ) :
 			acf_hidden_input(
 				array(
 					'name'  => '_acf_form_meta[]',
-					'value' => acf_encrypt( $meta ),
+					'value' => acf_encrypt( $meta, 'form_meta' ),
 				)
 			);
 

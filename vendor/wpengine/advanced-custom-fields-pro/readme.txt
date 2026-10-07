@@ -2,9 +2,9 @@
 Contributors: deliciousbrains, wpengine, elliotcondon, mattshaw, lgladdy, antpb, johnstonphilip, dalewilliams, polevaultweb
 Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 6.2
-Tested up to: 7.0.2
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 6.8.7
+Stable tag: 6.8.10
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,32 @@ ACF includes an optional email signup to receive plugin updates and news. No dat
 
 
 == Changelog ==
+
+= 6.8.10 =
+*Release Date 10th September 2026*
+
+* Security - ACF now validates that uploaded PDF files begin with the standard `%PDF-` header before further processing, rejecting files that do not match the expected format
+* Security - The Relationship, Post Object, Image, Gallery, and File fields now enforce WordPress read permissions on referenced posts and attachments when returned in REST API responses
+* Security - ACF now verifies both preview context and the caller's edit capability before substituting revision data when field values are retrieved for a post
+* Security - The `_acf_form` token used by frontend forms now expires and is bound to its issuing render, and `acf_encrypt()` / `acf_decrypt()` gain an optional `$context` argument for domain separation between token uses
+* Security - ACF now consistently runs field validation on frontend form submissions containing field data, ensuring required-field checks and custom `acf/validate_value` filters cannot be circumvented
+* Security - ACF's REST API schema no longer discloses per-object field-group configuration in OPTIONS requests to callers who lack read permission on the target object
+* Security - The User field AJAX endpoint now validates that the request nonce was created for a User field
+
+= 6.8.9 =
+*Release Date 27th August 2026*
+
+* [View Release Post](https://www.advancedcustomfields.com/blog/acf-6-8-9-released/)
+* Enhancement - ACF Blocks registered via `acf_register_block_type()` or `block.json` without an explicit version now default to v3 on WordPress 7.1 or later. Blocks that specify a version continue to use the version they declare, and the default can be customized via the `acf/blocks/default_block_version` filter
+* Enhancement - ACF Blocks v3 now supports a `renderPreview` option in `block.json`. Setting `"renderPreview": false` shows a placeholder with the block's icon, title, and an "Edit Block" button in the editor instead of rendering the block's template as a live preview. The block continues to render normally on the front-end, and legacy v2 blocks combining `"mode": "edit"` with `"supports": { "mode": false }` are automatically migrated when upgraded to v3
+* Fix - Inline editable fields in ACF Blocks V3 no longer require a second click before they can be edited
+* Fix - Radio buttons now appear correctly in ACF admin screens
+* Fix - Image and Gallery fields no longer reject SVG uploads when the Safe SVG plugin is active
+
+= 6.8.8 =
+*Release Date 19th August 2026*
+
+* Fix - Image and Gallery fields no longer reject SVG files
 
 = 6.8.7 =
 *Release Date 4th August 2026*
