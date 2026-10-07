@@ -498,3 +498,23 @@ MariaDB stays off. Without ID sorts its Task 8 pairs met the bar, but the harden
 - **The 1-second guard turned the swap off three times on local larrybrownsports** (1.36 to 1.68 s), each among the first views after the site sat idle, each a grid's own split statement. Run alone on a cold pool, the front page hero grid's statement read the same rows and pages on both versions, so the cold cache is the cause. Current has no guard. After a trip, next runs without the swap for 24 hours.
 
 Full account, with causes per statement: `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/next-vs-current-report.md`. Raw data in `/tmp/nvc/`, which is temporary.
+
+### Live databases (2026-10-07)
+
+**On the live eurweb and larrybrownsports databases, next's swapped statements ran in 0.09 to 0.21 ms where current's took 276 to 373 ms, and both returned the same posts.** Both servers run MySQL 8.0.46. Medians of 10 runs per form, alternating, 1 second apart, reads only through `mai-sites run ... wp db query`.
+
+- **eurweb, the six article grids (category IN 6 terms, LIMIT 2 to 32):** current 362.8 to 369.4 ms, next 0.088 to 0.197 ms.
+- **eurweb, home grid 23** (category AND `mai_display` NOT IN, LIMIT 2): current 372.5 ms, next 0.106 ms.
+- **larrybrownsports, the two football grids (LIMIT 7 and 24):** current 276.3 and 277.9 ms, next 0.137 and 0.206 ms.
+- **larrybrownsports, home grid 12** (category 6842, LIMIT 3): current 51.3 ms, next 45.5 ms. Both forms read from the term side here, as on a local 8.0.46 copy, so next gains little.
+- **IDs:** current and next returned the same list in every round, for every statement.
+
+**Next was timed without its hint.** The live read rules refuse a comment, so the swapped statement ran without `/*+ NO_SEMIJOIN(DUPSWEEDOUT) */`. Locally, on MySQL 9.7.1 and on an 8.0.46 copy of the same tables, every one of these statements had the same plan with and without the hint, in `EXPLAIN`, classic `EXPLAIN` and `EXPLAIN ANALYZE`, and none used weedout. The hint added 0.07 to 0.29 ms of planning there.
+
+**How the time was read.** Inside MySQL, so ssh and WP-CLI start-up do not count: `SELECT SYSDATE(6) AS t0, (SELECT GROUP_CONCAT(x.ID ORDER BY x.n) FROM (SELECT ROW_NUMBER() OVER () AS n, s.ID FROM ( <statement> ) AS s) AS x) AS ids, SYSDATE(6) AS t1`, timing `t1 - t0`.
+
+- **Checked locally against MySQL's own statement timer** on both servers: within 6.6 ms and 4.7% whenever a form takes over 5 ms, with the same IDs in the same order and the inner plan unchanged.
+- **It times execution only.** Planning falls outside the window, 0.1 to 0.6 ms locally for next's statements. Next's whole statement on live is therefore estimated at under about 1 ms. That part was not measured on live.
+- **It cannot time a `LIMIT 1` statement,** because MySQL reads a one-row result while planning, before `t0`. larrybrownsports' grid 11 was left out for that reason.
+
+Full account: `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/live-queries-report.md`.
