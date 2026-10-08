@@ -98,7 +98,7 @@ final class PostGridQueryOptimizerGridTest extends MaiIntegrationTestCase {
 		];
 	}
 
-	/** A failed copy, and a failed grid statement. */
+	/** The copy, and a grid's own statement in its split form. */
 	public static function owners(): array {
 		return [
 			'the copy' => [ 'copy' ],

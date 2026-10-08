@@ -286,9 +286,9 @@ final class Mai_Post_Grid_Query_Optimizer {
 	 *
 	 * @param WP_Query $query The query.
 	 *
-	 * @return array{status:string,form:string,error:string}|null Null when nothing
-	 *         was swapped for it. The error is what to log for a failure: "statement never sent",
-	 *         or the database error. Empty when ok.
+	 * @return array{status:string,form:string,error:string}|null Null when nothing was swapped
+	 *         for it. The error is what to log for a failure: "statement never sent", or the
+	 *         database error. Empty when ok.
 	 */
 	public function outcome( WP_Query $query ): ?array {
 		global $wpdb;
