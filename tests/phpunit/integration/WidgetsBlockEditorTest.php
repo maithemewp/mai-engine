@@ -289,6 +289,7 @@ class WidgetsBlockEditorTest extends MaiIntegrationTestCase {
 		mai_do_upgrade();
 
 		$this->assertTrue( get_option( 'mai-engine' )['widgets-block-editor'] );
+		$this->assertSame( '2.41.0', get_option( 'mai-engine' )['db-version'] );
 
 		// A plugin or import adds a classic widget later.
 		$this->use_widgets( [ 'search-2' ] );

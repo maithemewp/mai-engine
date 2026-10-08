@@ -138,6 +138,20 @@ if ( ! function_exists( 'mai_get_version' ) ) {
 	}
 }
 
+// mai_do_upgrade() waits for the next admin page until the code its 2.41.0 steps call is loaded,
+// and that includes this function. Its file, lib/customize/typography.php, needs Kirki and
+// registers Kirki fields on init, so the harness can't load it. This no-op stands in for it.
+if ( ! function_exists( 'mai_typography_flush_local_fonts' ) ) {
+	/**
+	 * Test-harness no-op for the real mai_typography_flush_local_fonts().
+	 *
+	 * @return string
+	 */
+	function mai_typography_flush_local_fonts() {
+		return '';
+	}
+}
+
 require_once $plugin_root . '/lib/functions/utilities.php';
 require_once $plugin_root . '/lib/functions/options.php';
 require_once $plugin_root . '/lib/functions/widgets.php';

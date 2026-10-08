@@ -82,6 +82,14 @@ function mai_do_upgrade() {
 		return;
 	}
 
+	// Wait for the next admin page if the code the 2.41.0 steps call is not all loaded.
+	// Nothing runs and db-version stays, so the whole upgrade runs again on that page.
+	$runs_2_41_0 = ! $db_version || version_compare( $db_version, '2.41.0', '<' );
+
+	if ( $runs_2_41_0 && ! mai_upgrade_2_41_0_code_is_loaded() ) {
+		return;
+	}
+
 	// Only run upgrades if we have an existing version.
 	if ( $db_version ) {
 
@@ -112,6 +120,36 @@ function mai_do_upgrade() {
 
 	// Update database version after upgrade.
 	mai_update_option( 'db-version', $plugin_version );
+}
+
+/**
+ * Whether the functions the 2.41.0 upgrade steps call are all loaded.
+ *
+ * They live in other files than this one. A request can run this file next to an older
+ * copy of those files, for example from a stale opcode cache or in the middle of a
+ * plugin update. Calling a missing function there is a fatal error that white screens
+ * wp-admin, so the upgrade waits for a request that has all the code.
+ *
+ * Only this version's steps are checked, and only while they still have to run.
+ *
+ * @since 2.41.0
+ *
+ * @return bool
+ */
+function mai_upgrade_2_41_0_code_is_loaded() {
+	$functions = [
+		'mai_get_saved_widgets_block_editor',
+		'mai_get_widgets_block_editor_default',
+		'mai_typography_flush_local_fonts',
+	];
+
+	foreach ( $functions as $function ) {
+		if ( ! function_exists( $function ) ) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 /**
