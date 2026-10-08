@@ -9,11 +9,14 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 /**
- * The 2.41.0 upgrade steps wait for the next admin page when the code they call is not loaded.
+ * The 2.41.0 upgrade steps wait for the next admin page when the widget code they call is not loaded.
  *
  * A live site once ran the new lib/admin/upgrade.php next to an older lib/functions/widgets.php
  * and fataled in wp-admin. Only lib/admin/upgrade.php is loaded here, so the functions the
  * steps call are really undefined unless a test stubs them.
+ *
+ * The font flush is the exception. Its file only loads when Kirki does, so the upgrade does
+ * not wait for it.
  *
  * Every test runs in its own process. Stubbing a function defines it for the rest of the
  * process, which would hide the missing function from the next test. Each test also asserts
@@ -22,12 +25,14 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
  */
 final class UpgradeWaitsForCodeTest extends TestCase {
 
-	/** Functions the 2.41.0 steps call that live outside lib/admin/upgrade.php. */
-	private const NEEDED = [
+	/** The widget functions the upgrade waits for. They live in lib/functions/widgets.php. */
+	private const WIDGET_CODE = [
 		'mai_get_saved_widgets_block_editor',
 		'mai_get_widgets_block_editor_default',
-		'mai_typography_flush_local_fonts',
 	];
+
+	/** The font flush, which the upgrade skips when it is missing. It lives in lib/customize/typography.php. */
+	private const FONT_FLUSH = 'mai_typography_flush_local_fonts';
 
 	/** Saved options of an upgrade from 2.40.0. */
 	private const FROM_2_40 = [ 'first-version' => '2.30.0', 'db-version' => '2.40.0' ];
@@ -48,7 +53,7 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 	 *
 	 * @param array    $options Saved options. Leave out `db-version` for a new install.
 	 * @param string   $version The plugin version.
-	 * @param string[] $loaded  The NEEDED functions that are loaded. The rest stay undefined.
+	 * @param string[] $loaded  The WIDGET_CODE functions and FONT_FLUSH that are loaded. The rest stay undefined.
 	 *
 	 * @return void
 	 */
@@ -56,7 +61,7 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 		// Loaded here, after Brain Monkey is up, because the file calls add_action() as it loads.
 		require_once dirname( __DIR__, 3 ) . '/lib/admin/upgrade.php';
 
-		foreach ( self::NEEDED as $function ) {
+		foreach ( [ ...self::WIDGET_CODE, self::FONT_FLUSH ] as $function ) {
 			$this->assertFalse( function_exists( $function ), "{$function} starts undefined" );
 		}
 
@@ -100,18 +105,18 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 
 	#[RunInSeparateProcess]
 	#[DataProvider( 'sites' )]
-	public function test_nothing_runs_while_all_the_needed_code_is_missing( array $options ): void {
+	public function test_nothing_runs_while_all_the_code_is_missing( array $options ): void {
 		$this->upgrade( $options, '2.41.0', [] );
 
 		$this->assertUpgradeWaits();
 	}
 
 	/** @return array<string, array{0: array, 1: string}> */
-	public static function sites_missing_one_function(): array {
+	public static function sites_missing_one_widget_function(): array {
 		$cases = [];
 
 		foreach ( self::sites() as $site => [ $options ] ) {
-			foreach ( self::NEEDED as $missing ) {
+			foreach ( self::WIDGET_CODE as $missing ) {
 				$cases[ "{$site}, without {$missing}" ] = [ $options, $missing ];
 			}
 		}
@@ -119,17 +124,31 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 		return $cases;
 	}
 
+	/** The font flush is loaded here, so only the missing widget function can hold the upgrade back. */
 	#[RunInSeparateProcess]
-	#[DataProvider( 'sites_missing_one_function' )]
-	public function test_nothing_runs_while_any_one_needed_function_is_missing( array $options, string $missing ): void {
-		$this->upgrade( $options, '2.41.0', array_values( array_diff( self::NEEDED, [ $missing ] ) ) );
+	#[DataProvider( 'sites_missing_one_widget_function' )]
+	public function test_nothing_runs_while_one_widget_function_is_missing( array $options, string $missing ): void {
+		$loaded = array_diff( [ ...self::WIDGET_CODE, self::FONT_FLUSH ], [ $missing ] );
+
+		$this->upgrade( $options, '2.41.0', array_values( $loaded ) );
 
 		$this->assertUpgradeWaits();
 	}
 
+	/** A site without Kirki never loads the font flush. The upgrade must still finish. */
+	#[RunInSeparateProcess]
+	#[DataProvider( 'sites' )]
+	public function test_the_upgrade_finishes_when_only_the_font_flush_is_missing( array $options ): void {
+		$this->upgrade( $options, '2.41.0', self::WIDGET_CODE );
+
+		$this->assertSame( 0, $this->flushes );
+		$this->assertTrue( $this->saved['widgets-block-editor'] );
+		$this->assertSame( '2.41.0', $this->saved['db-version'] );
+	}
+
 	#[RunInSeparateProcess]
 	public function test_an_upgrade_runs_every_step_once_the_code_is_loaded(): void {
-		$this->upgrade( self::FROM_2_40, '2.41.0', self::NEEDED );
+		$this->upgrade( self::FROM_2_40, '2.41.0', [ ...self::WIDGET_CODE, self::FONT_FLUSH ] );
 
 		$this->assertSame( 1, $this->flushes );
 		$this->assertTrue( $this->saved['widgets-block-editor'] );
@@ -138,7 +157,7 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 
 	#[RunInSeparateProcess]
 	public function test_a_new_install_saves_its_widget_choice_once_the_code_is_loaded(): void {
-		$this->upgrade( self::NEW_INSTALL, '2.41.0', self::NEEDED );
+		$this->upgrade( self::NEW_INSTALL, '2.41.0', [ ...self::WIDGET_CODE, self::FONT_FLUSH ] );
 
 		$this->assertSame( 0, $this->flushes );
 		$this->assertTrue( $this->saved['widgets-block-editor'] );

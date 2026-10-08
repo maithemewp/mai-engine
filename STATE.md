@@ -25,7 +25,7 @@ The grid taxonomy optimizer is built, reviewed and measured, and merged into loc
 - Hindsight is off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json`, `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
 
 ## Verify
-- `composer test-unit` (247 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (684 tests), `php vendor/bin/deployable-guard check` (OK). All pass as of 2026-10-07.
+- `composer test-unit` (258 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (684 tests), `php vendor/bin/deployable-guard check` (OK). All pass as of 2026-10-08.
 - `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also on `develop` (see `TODO.md`). Not a regression.
 - Integration tests on another database: `WP_TESTS_DB_HOST=127.0.0.1:<port> composer test-integration`. Add `WP_TESTS_MARIADB_MIN=10.6.0` on MariaDB.
 - Tools in `bin/`: `grid-optimizer-probe.php` (temporary mu-plugin), `grid-optimizer-pairs.php` (`wp eval-file`), `grid-optimizer-replay.php` (plain PHP CLI). Usage and exit codes are in each docblock.
