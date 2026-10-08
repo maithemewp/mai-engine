@@ -925,7 +925,7 @@ class Mai_Query_Cache {
 	 * When that statement failed, or never reached the database, core is made to forget the
 	 * copy's cached result, the optimizer is turned off, and the copy's own statement is sent
 	 * once more. The checks described above then judge that statement. When the faster statement
-	 * took longer than the optimizer's limit, the optimizer is turned off and the IDs stand.
+	 * worked, its IDs stand, however long it took.
 	 *
 	 * @since 2.41.0 Takes the args, the asked cache_results and the expected key instead of the
 	 *            live query, and returns the copy's found_posts with the IDs.
@@ -988,10 +988,6 @@ class Mai_Query_Cache {
 			$optimizer->turn_off( 'failed', $error );
 
 			$copy->posts = $wpdb->get_col( (string) $copy->request );
-		} elseif ( Mai_Post_Grid_Query_Optimizer::STATUS_OK === ( $outcome['status'] ?? null ) && $outcome['seconds'] > Mai_Post_Grid_Query_Optimizer::$slow ) {
-			// The swapped statement worked, but it was slow enough that the database planned it
-			// badly. The IDs stand.
-			$optimizer->turn_off( 'slow', sprintf( '%.3f s, copy form', $outcome['seconds'] ) );
 		}
 
 		// Only an error from the copy's own statement, which is the last one it runs. When core

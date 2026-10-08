@@ -1,5 +1,5 @@
 # State
-Updated: 2026-10-06 by Claude
+Updated: 2026-10-07 by Claude
 
 ## Now
 The grid taxonomy optimizer is built, reviewed and measured, and merged into local `develop` on 2026-10-06 (merge commit `6863ebc30`; the branch is deleted). Nothing is pushed to GitHub. On 2026-10-07 Mike pushed local `develop` as is to live eurweb.com and larrybrownsports.com with `mai-sites push`, so both run next's code while their header still says `2.41.0-beta.5`. A read-only check that morning found no Mai Engine lines and no fatal errors in either error log, and the grids matched on fresh renders. Spec `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`, plan `docs/plans/2026-10-04-grid-taxonomy-query-rewrite.md`.
@@ -12,10 +12,11 @@ The grid taxonomy optimizer is built, reviewed and measured, and merged into loc
 - Rerun with those tools: MySQL 8.0.46, 8.0.16 and local 9.7.1 met the bar on every timed date and author pair of all three sites. 0 differ apart from post 203, and 0 weedout. Spec "Results", "Rerun with the hardened tools".
 - 2.41.0-beta.5 is still what live eurweb and larrybrownsports run.
 - Next timed against current on local eurweb and larrybrownsports (2026-10-06): slower on eurweb's first view after Mai's cache is emptied and on larrybrownsports' burrow article, faster or the same elsewhere. Spec "Results", "Next against current (2026-10-06)".
+- The 1-second slow guard is removed on local `develop` (Mike, 2026-10-07). It tripped three times on live that day, each within seconds of a new post going live, while every statement timed on the live databases was faster or the same swapped. It could not time the database alone. A failed or unsent swapped statement still turns the swap off for 24 hours. Live eurweb and larrybrownsports keep the guard until the next push. Spec section 5.
 
 ## Next
 1. Watch live eurweb and larrybrownsports until 2026-10-08 (Mike, 2026-10-07): their error logs for `Mai Engine:` lines and fatals, and grids after new posts. Read-only checks through `mai-sites run`; the logs are in `../logs/error.log` from each site's root.
-2. Then release beta.6 with ACF 6.8.10 (`13355b231`) and push eurweb and larrybrownsports again, then totalprosports. Local `develop` is 61 commits ahead of GitHub, all Mike's; the release publishes them. ACF 6.8.9 moves ACF blocks that declare no version to Blocks v3 on WordPress 7.1 or later (mai-locations' 7 blocks, mai-publisher's ad-unit-audio, mai-testimonials); Mike accepted that on 2026-10-07. Next header `2.41.0-beta.6`. Steps in `docs/specs/2026-10-01-grid-cache-beta-5.md` under "Release". `npm run beta` pushes, so it needs Mike's explicit yes. Afterwards `composer dump-autoload --no-dev`.
+2. Then release beta.6 with ACF 6.8.10 (`13355b231`) and push eurweb and larrybrownsports again, then totalprosports. Local `develop` is 64 commits ahead of GitHub, all Mike's; the release publishes them. ACF 6.8.9 moves ACF blocks that declare no version to Blocks v3 on WordPress 7.1 or later (mai-locations' 7 blocks, mai-publisher's ad-unit-audio, mai-testimonials); Mike accepted that on 2026-10-07. Next header `2.41.0-beta.6`. Steps in `docs/specs/2026-10-01-grid-cache-beta-5.md` under "Release". `npm run beta` pushes, so it needs Mike's explicit yes. Afterwards `composer dump-autoload --no-dev`.
 3. MariaDB stays off. Without ID sorts its Task 8 pairs met the bar, but the hardened replay (full-form show-all pairs, row-count checks, the rerun rule) never ran on MariaDB, and its plan reads every matching term row first, the shape that made local MySQL 9.7.1 miss on the full form. Before turning it on, rerun the hardened replay on MariaDB 10.6, 10.11, 11.4 and 11.8. (`TODO.md`)
 4. Before 2.41.0 final: check the buffer pool size on the main hosts, then the rest of `TODO.md`.
 
@@ -24,7 +25,7 @@ The grid taxonomy optimizer is built, reviewed and measured, and merged into loc
 - Hindsight is off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json`, `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
 
 ## Verify
-- `composer test-unit` (247 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (687 tests), `php vendor/bin/deployable-guard check` (OK). All pass as of 2026-10-06.
+- `composer test-unit` (247 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (684 tests), `php vendor/bin/deployable-guard check` (OK). All pass as of 2026-10-07.
 - `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also on `develop` (see `TODO.md`). Not a regression.
 - Integration tests on another database: `WP_TESTS_DB_HOST=127.0.0.1:<port> composer test-integration`. Add `WP_TESTS_MARIADB_MIN=10.6.0` on MariaDB.
 - Tools in `bin/`: `grid-optimizer-probe.php` (temporary mu-plugin), `grid-optimizer-pairs.php` (`wp eval-file`), `grid-optimizer-replay.php` (plain PHP CLI). Usage and exit codes are in each docblock.

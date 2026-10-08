@@ -118,7 +118,6 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 
 		$this->assertSame( 'ok', $outcome['status'] ?? null );
 		$this->assertSame( 'split', $outcome['form'] ?? null );
-		$this->assertIsFloat( $outcome['seconds'] ?? null );
 		$this->assertNull( $again, 'outcome() forgets the record.' );
 	}
 
@@ -402,14 +401,6 @@ final class PostGridQueryOptimizerTest extends MaiIntegrationTestCase {
 		unlink( $file );
 
 		$this->assertStringContainsString( 'Mai Engine: Grid query optimizer off for 24 hours (failed): x', $log );
-	}
-
-	public function test_reset_puts_the_slow_limit_back(): void {
-		Mai_Post_Grid_Query_Optimizer::$slow = 5.0;
-
-		Mai_Post_Grid_Query_Optimizer::instance()->reset();
-
-		$this->assertSame( 1.0, Mai_Post_Grid_Query_Optimizer::$slow );
 	}
 
 	public function test_steps_aside_when_the_database_check_fails(): void {

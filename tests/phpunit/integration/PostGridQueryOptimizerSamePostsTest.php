@@ -464,10 +464,6 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 			}
 		);
 
-		// After reset(), which puts the limit back. A busy machine must not turn the swap off for
-		// being slow. PostGridQueryOptimizerGridTest covers that.
-		Mai_Post_Grid_Query_Optimizer::$slow = 60.0;
-
 		$statements = [];
 		$answer     = $optimize ? '__return_true' : '__return_false';
 
