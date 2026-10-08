@@ -164,9 +164,32 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 		$this->assertSame( '2.41.0', $this->saved['db-version'] );
 	}
 
-	/** A site already past 2.41.0 runs none of its steps, so it never waits on their code. */
+	/** @return array<string, array{0: string}> */
+	public static function db_versions_below_2_41_0(): array {
+		return [
+			'2.10.0, which also needs an older step' => [ '2.10.0' ],
+			'2.41.0-beta.3, a beta before 2.41.0'    => [ '2.41.0-beta.3' ],
+		];
+	}
+
+	/**
+	 * The wait comes before every step, so a site that also needs an older step saves nothing.
+	 *
+	 * The 2.10.0 site would run the 2.11.0 step if the wait moved down into the 2.41.0 blocks.
+	 * That step builds a WP_Query, which does not exist here, so it would fail loudly.
+	 */
 	#[RunInSeparateProcess]
-	public function test_a_site_past_2_41_0_is_not_held_back(): void {
+	#[DataProvider( 'db_versions_below_2_41_0' )]
+	public function test_a_db_version_below_2_41_0_waits_before_any_step( string $db_version ): void {
+		$this->upgrade( [ 'first-version' => '2.0.0', 'db-version' => $db_version ], '2.41.0', [] );
+
+		$this->assertSame( [], $this->saved );
+		$this->assertSame( 0, $this->flushes );
+	}
+
+	/** A site already at 2.41.0 runs none of its steps, so it never waits on their code. */
+	#[RunInSeparateProcess]
+	public function test_a_db_version_of_2_41_0_is_not_held_back(): void {
 		$this->upgrade( [ 'first-version' => '2.30.0', 'db-version' => '2.41.0' ], '2.41.1', [] );
 
 		$this->assertSame( '2.41.1', $this->saved['db-version'] );

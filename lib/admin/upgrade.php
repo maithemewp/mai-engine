@@ -126,9 +126,9 @@ function mai_do_upgrade() {
  * Whether the widget functions the 2.41.0 upgrade steps call are loaded.
  *
  * They live in lib/functions/widgets.php, not in this file. A request can run this file
- * next to an older copy of that one, for example from a stale opcode cache or in the
- * middle of a plugin update. Calling a missing function there is a fatal error that white
- * screens wp-admin, so the upgrade waits for a request that has all the code.
+ * next to an older copy of that one, for example when PHP's cache of compiled files is out
+ * of date, or in the middle of a plugin update. Calling a missing function there is a fatal
+ * error that white screens wp-admin, so the upgrade waits for a request that has all the code.
  *
  * The font flush is not checked. Its file only loads when Kirki does, so waiting on it
  * could hold every upgrade back on a site without Kirki. mai_upgrade_2_41_0() skips it
@@ -159,8 +159,8 @@ function mai_upgrade_2_41_0_widget_code_is_loaded() {
  * @return void
  */
 function mai_upgrade_2_41_0() {
-	// Defined in lib/customize/typography.php, which loads on init in every context,
-	// so this should always pass. Guarded anyway because a fatal here would white
+	// Defined in lib/customize/typography.php, which lib/init.php loads only when Kirki
+	// is present, so it can be missing. Guarded because a fatal here would white
 	// screen wp-admin for every site in the fleet on the same update.
 	if ( ! function_exists( 'mai_typography_flush_local_fonts' ) ) {
 		return;

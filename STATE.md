@@ -1,5 +1,5 @@
 # State
-Updated: 2026-10-07 by Claude
+Updated: 2026-10-08 by Claude
 
 ## Now
 The grid taxonomy optimizer is built, reviewed and measured, and merged into local `develop` on 2026-10-06 (merge commit `6863ebc30`; the branch is deleted). Nothing is pushed to GitHub. On 2026-10-07 Mike pushed local `develop` as is to live eurweb.com and larrybrownsports.com with `mai-sites push`, so both run next's code while their header still says `2.41.0-beta.5`. A read-only check that morning found no Mai Engine lines and no fatal errors in either error log, and the grids matched on fresh renders. Spec `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`, plan `docs/plans/2026-10-04-grid-taxonomy-query-rewrite.md`.
@@ -11,21 +11,23 @@ The grid taxonomy optimizer is built, reviewed and measured, and merged into loc
 - The second pr-review-toolkit run's fix wave is finished. The pairs and replay tools are hardened: full form at `LIMIT 0, 1000`, classic EXPLAIN fallback, row-count check, and a miss counts only when 2 of 3 reruns alone miss too (Mike, 2026-10-05). Report: `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/toolkit-2-fix-report.md`.
 - Rerun with those tools: MySQL 8.0.46, 8.0.16 and local 9.7.1 met the bar on every timed date and author pair of all three sites. 0 differ apart from post 203, and 0 weedout. Spec "Results", "Rerun with the hardened tools".
 - 2.41.0-beta.6 is released (2026-10-07, `ee509aaa7` on GitHub's `develop` and `beta`) and pushed with `mai-sites push` to the 11 sites in `mai-sites.json`: eurweb, larrybrownsports, totalprosports, musekirwan, and 7 beta-channel sites the updater could not move past their August `2.41.0` build (beyondamenities, healthy-foodie, bizbudding, ournutrikitchen, collegemagazine, sugarmakers, stretchy-pants). Checked at 21:20: all 11 report beta.6 with files matching `develop`, no fatal errors, no Mai Engine lines and no 5xx since the pushes. The off notes on eurweb and larrybrownsports were cleared. At 21:33 Mike also pushed the 7 sites that were on `2.41.0-beta.3` with the Mai tester setting (annmariegianni, nutrivore, naturesoma, naturebasedtherapytraining, spiceandzest, midwivesofnj, pregnancybydesign); all 18 now run beta.6, checked with no fatal errors, Mai Engine lines or 5xx.
+- A beta-channel site (WP Engine `flyingorange`, not in the registry) hit a one-request fatal in the 2.41.0 widget upgrade step after updating to beta.6 on 2026-10-08. `develop` now holds the upgrade back until the widget code is loaded (commits `6d70cce26`, `8aa022603` and the follow-up that pins the guard's position). Not released yet.
 - Next timed against current on local eurweb and larrybrownsports (2026-10-06): slower on eurweb's first view after Mai's cache is emptied and on larrybrownsports' burrow article, faster or the same elsewhere. Spec "Results", "Next against current (2026-10-06)".
 - The 1-second slow guard is removed on local `develop` (Mike, 2026-10-07). It tripped three times on live that day, each within seconds of a new post going live, while no statement timed on the live databases was slower swapped beyond the speed bar of 2 ms or 10%. It could not time the database alone. A failed or unsent swapped statement still turns the swap off for 24 hours. Live eurweb and larrybrownsports keep the guard until the next push. Spec section 5.
 
 ## Next
-1. After the beta.6 push: clear `mai_post_grid_optimize_off` on eurweb and larrybrownsports (left by the old slow guard), then watch the error logs of the pushed sites for `Mai Engine:` lines and fatals, and grids after new posts. Read-only checks through `mai-sites run`; the logs are in `../logs/error.log` from each site root. Baseline: `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/live-baseline-2026-10-07.md`.
-2. Plugin pushes overwrite files one by one, so a big version jump can error for a few seconds (totalprosports, 2026-10-07). Fix tracked in maithemewp/mai-sites#11.
-3. MariaDB stays off. Without ID sorts its Task 8 pairs met the bar, but the hardened replay (full-form show-all pairs, row-count checks, the rerun rule) never ran on MariaDB, and its plan reads every matching term row first, the shape that made local MySQL 9.7.1 miss on the full form. Before turning it on, rerun the hardened replay on MariaDB 10.6, 10.11, 11.4 and 11.8. (`TODO.md`)
-4. Before 2.41.0 final: check the buffer pool size on the main hosts, then the rest of `TODO.md`.
+1. Release beta.7 with the upgrade guard fix, then push the 18 beta.6 sites with `mai-sites push`.
+2. After the beta.6 push: clear `mai_post_grid_optimize_off` on eurweb and larrybrownsports (left by the old slow guard), then watch the error logs of the pushed sites for `Mai Engine:` lines and fatals, and grids after new posts. Read-only checks through `mai-sites run`; the logs are in `../logs/error.log` from each site root. Baseline: `.superpowers/sdd/2026-10-04-grid-taxonomy-query-rewrite/live-baseline-2026-10-07.md`.
+3. Plugin pushes overwrite files one by one, so a big version jump can error for a few seconds (totalprosports, 2026-10-07). Fix tracked in maithemewp/mai-sites#11.
+4. MariaDB stays off. Without ID sorts its Task 8 pairs met the bar, but the hardened replay (full-form show-all pairs, row-count checks, the rerun rule) never ran on MariaDB, and its plan reads every matching term row first, the shape that made local MySQL 9.7.1 miss on the full form. Before turning it on, rerun the hardened replay on MariaDB 10.6, 10.11, 11.4 and 11.8. (`TODO.md`)
+5. Before 2.41.0 final: check the buffer pool size on the main hosts, then the rest of `TODO.md`.
 
 ## Blocked / waiting on
 - Nothing for the release; Mike chose to release beta.6 on 2026-10-07.
 - Hindsight is off on purpose: top-level `"disabled": true` in `~/.agents/hindsight/coding-agent.json`, `launchctl` service `com.jivedig.hindsight` booted out and disabled. Turn it back on only when Mike says.
 
 ## Verify
-- `composer test-unit` (258 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (684 tests), `php vendor/bin/deployable-guard check` (OK). All pass as of 2026-10-08.
+- `composer test-unit` (260 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (684 tests), `php vendor/bin/deployable-guard check` (OK). All pass as of 2026-10-08.
 - `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also on `develop` (see `TODO.md`). Not a regression.
 - Integration tests on another database: `WP_TESTS_DB_HOST=127.0.0.1:<port> composer test-integration`. Add `WP_TESTS_MARIADB_MIN=10.6.0` on MariaDB.
 - Tools in `bin/`: `grid-optimizer-probe.php` (temporary mu-plugin), `grid-optimizer-pairs.php` (`wp eval-file`), `grid-optimizer-replay.php` (plain PHP CLI). Usage and exit codes are in each docblock.
