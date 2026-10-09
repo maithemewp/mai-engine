@@ -1,5 +1,5 @@
 # State
-Updated: 2026-10-08 by Claude
+Updated: 2026-10-09 by Claude
 
 ## Now
 The grid taxonomy optimizer is built, reviewed and measured, and merged into local `develop` on 2026-10-06 (merge commit `6863ebc30`; the branch is deleted). Nothing is pushed to GitHub. On 2026-10-07 Mike pushed local `develop` as is to live eurweb.com and larrybrownsports.com with `mai-sites push`, so both run next's code while their header still says `2.41.0-beta.5`. A read-only check that morning found no Mai Engine lines and no fatal errors in either error log, and the grids matched on fresh renders. Spec `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`, plan `docs/plans/2026-10-04-grid-taxonomy-query-rewrite.md`.
@@ -14,6 +14,8 @@ The grid taxonomy optimizer is built, reviewed and measured, and merged into loc
 - A beta-channel site (WP Engine `flyingorange`, not in the registry) hit a one-request fatal in the 2.41.0 widget upgrade step after updating to beta.6 on 2026-10-08. `develop` now holds the upgrade back until the widget code is loaded (commits `6d70cce26`, `8aa022603` and the follow-up that pins the guard's position). Not released yet.
 - Next timed against current on local eurweb and larrybrownsports (2026-10-06): slower on eurweb's first view after Mai's cache is emptied and on larrybrownsports' burrow article, faster or the same elsewhere. Spec "Results", "Next against current (2026-10-06)".
 - The 1-second slow guard is removed on local `develop` (Mike, 2026-10-07). It tripped three times on live that day, each within seconds of a new post going live, while no statement timed on the live databases was slower swapped beyond the speed bar of 2 ms or 10%. It could not time the database alone. A failed or unsent swapped statement still turns the swap off for 24 hours. Live eurweb and larrybrownsports keep the guard until the next push. Spec section 5.
+
+- 2.41.0-beta.8 (2026-10-09) adds the `mai_metabox_post_types` filter through the private `mai_get_metabox_post_types()`: which post types get the Hide Elements and Page Header boxes. Nothing removed by default. Written for a client whose GravityView Views stay draft on Publish when ACF fields are on the View editor, a GravityView and ACF bug; the filter is a workaround, not a fix.
 
 ## Next
 1. beta.7 (the upgrade guard fix) is released (`9c07c2054`, 2026-10-08) and pushed to all 18 sites; checked at 16:18 with no fatal errors or Mai Engine lines. Keep watching their error logs. Before 2.41.0 final: the buffer pool check below and another clean day.
