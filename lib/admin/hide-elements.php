@@ -70,6 +70,7 @@ add_filter( 'acf/location/rule_match/mai_public_post_type', 'mai_acf_public_post
  * Shows "Hide Elements" metabox on all public post types.
  *
  * @since 2.0.0
+ * @since 2.41.0 Uses mai_get_metabox_post_types(), so the `mai_metabox_post_types` filter applies.
  *
  * @param bool      $result Whether the rule matches.
  * @param array     $rule   Current rule to match (param, operator, value).
@@ -78,9 +79,11 @@ add_filter( 'acf/location/rule_match/mai_public_post_type', 'mai_acf_public_post
  * @return bool
  */
 function mai_acf_public_post_type_rule_match( $result, $rule, $screen, $field_group ) {
-	$post_types = get_post_types( [ 'public' => true ] );
+	if ( ! isset( $screen['post_type'] ) ) {
+		return false;
+	}
 
-	return $post_types && isset( $screen['post_type'] ) && isset( $post_types[ $screen['post_type'] ] );
+	return in_array( $screen['post_type'], mai_get_metabox_post_types( 'hide-elements' ), true );
 }
 
 add_filter( 'acf/location/rule_match/mai_public_taxonomy', 'mai_acf_public_taxonomy_rule_match', 10, 4 );

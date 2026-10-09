@@ -28,6 +28,9 @@ require_once $plugin_root . '/lib/blocks/general.php';
 // ! is_admin(), so the Genesis-dependent service providers are never constructed here.
 require_once $plugin_root . '/lib/admin/setup-wizard.php';
 
+// Only registers ACF hooks at load. The tests call its location rule directly.
+require_once $plugin_root . '/lib/admin/hide-elements.php';
+
 // Mirrors the runtime autoloader in lib/functions/autoload.php without loading it, because
 // that file depends on mai_get_dir() from lib/init.php, which drags in Genesis. Same mapping:
 // Mai_Grid -> lib/classes/class-mai-grid.php.
@@ -93,7 +96,7 @@ if ( ! function_exists( 'mai_do_entry' ) ) {
 
 // Widget editor setting (#672). The real mai_get_handle(), mai_get_config() and mai_get_version() live in
 // lib/init.php, and the real config pulls in Genesis-dependent helpers. These stand-ins
-// return the plugin handle and only the settings the widget code reads. Tests change the
+// return the plugin handle and only the settings the widget and page header code read. Tests change the
 // config through $GLOBALS['mai_test_config'].
 if ( ! function_exists( 'mai_get_handle' ) ) {
 	/**
@@ -117,7 +120,8 @@ if ( ! function_exists( 'mai_get_config' ) ) {
 	function mai_get_config( $sub_config ) {
 		$config = $GLOBALS['mai_test_config'] ?? [
 			'settings' => [
-				'widgets' => [
+				'page-header' => '*',
+				'widgets'     => [
 					'block-editor' => true,
 				],
 			],

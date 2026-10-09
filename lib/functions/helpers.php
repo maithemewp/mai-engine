@@ -824,6 +824,50 @@ function mai_get_page_header_types( $context ) {
 }
 
 /**
+ * Gets the post types that get one of Mai's metaboxes on their edit screen.
+ *
+ * Hide Elements goes on every public post type, and Page Header on the single types
+ * enabled for it. Some plugins register a public post type whose editor breaks when ACF
+ * fields are on it. GravityView is one: ACF validates the form before saving, the View
+ * editor submits it a second time, and the Publish button is lost, so the View stays a
+ * draft. The `mai_metabox_post_types` filter lets a site remove a post type like that, or
+ * add one. Front end output is unchanged.
+ *
+ * Not cached. It runs a few times per edit screen, and a cache would ignore a filter
+ * added after the first call.
+ *
+ * Private: sites change the list with the filter, not by calling this.
+ *
+ * @access private
+ *
+ * @since 2.41.0
+ *
+ * @param string $metabox The metabox, 'hide-elements' or 'page-header'.
+ *
+ * @return string[] Post type names.
+ */
+function mai_get_metabox_post_types( string $metabox ): array {
+	$post_types = match ( $metabox ) {
+		'hide-elements' => array_values( get_post_types( [ 'public' => true ] ) ),
+		'page-header'   => mai_get_page_header_types( 'single' ),
+		default         => [],
+	};
+
+	/**
+	 * Filters the post types that get one of Mai's metaboxes on their edit screen.
+	 *
+	 * @since 2.41.0
+	 *
+	 * @param string[] $post_types Post type names.
+	 * @param string   $metabox    The metabox, 'hide-elements' or 'page-header'.
+	 */
+	$post_types = apply_filters( 'mai_metabox_post_types', $post_types, $metabox );
+
+	// Names are only compared and passed to ACF, never printed, so strings are enough.
+	return is_array( $post_types ) ? array_values( array_unique( array_filter( $post_types, 'is_string' ) ) ) : [];
+}
+
+/**
  * Gets page header opacity, with fallbacks.
  *
  * @since  2.6.0

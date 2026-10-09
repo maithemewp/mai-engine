@@ -28,7 +28,7 @@ function mai_add_page_header_metabox() {
 
 	$fields         = [];
 	$locations      = [];
-	$singles        = mai_get_page_header_types( 'single' );
+	$singles        = mai_get_metabox_post_types( 'page-header' );
 	$archives       = mai_get_page_header_types( 'archive' );
 	$current_id     = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 	$page_for_posts = get_option( 'page_for_posts' );
