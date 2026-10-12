@@ -51,12 +51,14 @@ function mai_do_entries_open( $args, $query = null ) {
 		$atts['style'] .= sprintf( '--entry-title-font-size:var(--font-size-%s);', $args['title_size'] );
 	}
 
+	$is_masonry = in_array( 'image', $args['show'], true ) && 'masonry' === $args['image_orientation'];
+
 	// Image position.
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
 		$atts['class'] .= ' has-image-' . $args['image_position'];
 
-		// Aspect ratio.
-		if ( in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
+		// Aspect ratio. Not for masonry, where each image keeps its own shape.
+		if ( ! $is_masonry && in_array( $args['image_position'], [ 'background', 'left-full', 'right-full' ], true ) ) {
 			$aspect_ratio   = mai_has_image_orientiation( $args['image_orientation'] ) ? mai_get_aspect_ratio_from_orientation( $args['image_orientation'] ) : mai_get_image_aspect_ratio( $args['image_size'] );
 			$atts['style'] .= sprintf( '--aspect-ratio:%s;', $aspect_ratio );
 		}
@@ -158,6 +160,11 @@ function mai_do_entries_open( $args, $query = null ) {
 		], $args['image_position'] ) ) {
 
 		$wrap_atts['class'] = mai_add_classes( 'has-image-stack', $wrap_atts['class'] );
+	}
+
+	// On entries-wrap, since that is the element with has-columns.
+	if ( $is_masonry ) {
+		$wrap_atts['class'] = mai_add_classes( 'is-masonry', $wrap_atts['class'] );
 	}
 
 	genesis_markup(

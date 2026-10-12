@@ -759,7 +759,11 @@ class Mai_Entry {
 	 * @return string
 	 */
 	public function get_image_size() {
-		if ( mai_has_image_orientiation( $this->args['image_orientation'] ) ) {
+		// Masonry keeps each image's own shape, so it needs an uncropped size.
+		if ( 'masonry' === $this->args['image_orientation'] ) {
+			$image_size = 'large';
+
+		} elseif ( mai_has_image_orientiation( $this->args['image_orientation'] ) ) {
 			// $image_size = $this->get_image_size_by_cols();
 			$image_size = sprintf( '%s-sm', $this->args['image_orientation'] );
 			// $image_size = $this->get_fallback_image_size( $image_size );

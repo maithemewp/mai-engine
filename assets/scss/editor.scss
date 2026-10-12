@@ -15,6 +15,7 @@
 @use "base/typography" as *;
 @use "components/blocks/_index-editor" as *;
 @use "components/entry/_index" as *;
+@use "layout/masonry" as *;
 @use "utilities/_index" as *;
 
 html {

@@ -744,7 +744,27 @@ function mai_get_image_orientation_choices() {
 		$choices[ $orientation ] = isset( $default[ $orientation ] ) ? $default[ $orientation ] : mai_convert_case( $orientation, 'title' );
 	}
 
-	$choices['custom'] = esc_html__( 'Custom', 'mai-engine' );
+	$choices['custom']  = esc_html__( 'Custom', 'mai-engine' );
+	$choices['masonry'] = esc_html__( 'Masonry', 'mai-engine' );
+
+	return $choices;
+}
+
+/**
+ * Gets the image orientation choices for single entries.
+ *
+ * Masonry is a layout for many entries, so a single entry doesn't offer it.
+ *
+ * @since 2.41.0
+ *
+ * @return array|null Null outside the admin and Customizer, like mai_get_image_orientation_choices().
+ */
+function mai_get_single_image_orientation_choices() {
+	$choices = mai_get_image_orientation_choices();
+
+	if ( is_array( $choices ) ) {
+		unset( $choices['masonry'] );
+	}
 
 	return $choices;
 }

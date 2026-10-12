@@ -950,7 +950,7 @@ function mai_get_single_content_settings( $name = 'post' ) {
 			'type'            => 'select',
 			'sanitize'        => 'esc_html',
 			'default'         => $defaults['image_orientation'],
-			'choices'         => mai_get_image_orientation_choices(),
+			'choices'         => mai_get_single_image_orientation_choices(),
 			'active_callback' => [
 				[
 					'setting'  => 'show',

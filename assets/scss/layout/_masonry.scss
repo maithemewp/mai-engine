@@ -1,0 +1,27 @@
+// Masonry. Items keep their own height and flow down each column, then across.
+// Used by Mai Post Grid, Mai Term Grid, content archives and Mai Gallery.
+// The extra parentheses matter: --columns is a fraction like `1 / 3`.
+.has-columns.is-masonry {
+	--columns-display: block;
+	column-count: calc(1 / (var(--columns)));
+	column-gap: var(--column-gap);
+
+	> * {
+		break-inside: avoid;
+		margin: 0 0 var(--row-gap);
+	}
+
+	// Fill the column. With sizes="auto" the chosen file can be narrower than the column.
+	// Height stays with the img base rule (auto) and the entry image positions that crop.
+	// Never set aspect-ratio here. Lazy images with sizes="auto" get `contain: size` from
+	// the browser, so their shape comes only from the width and height attributes.
+	> * > img,
+	> * > * > img {
+		width: 100%;
+	}
+}
+
+// No specificity, so items with their own display keep it. Entries stay flex.
+:where(.has-columns.is-masonry) > * {
+	display: block;
+}
