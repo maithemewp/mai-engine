@@ -8,7 +8,7 @@ Updated: 2026-10-12 by Claude
 
 ## Next
 1. Mai Galleries `develop` (`cf9875e`, unreleased 1.3.0) now takes Masonry and its CSS from here, and turns masonry on only when `mai_get_single_image_orientation_choices()` exists. Don't rename or remove that function. Release Mai Engine with masonry before or with Mai Galleries 1.3.0.
-2. morgastudio theme can then drop its `is-masonry` filter in `includes/products.php` and the `.entries.is-masonry .entries-wrap` block in `style.css`, and set `image_orientation` to `masonry` in `config.php`.
+2. The morgastudio theme (`ec0cf40`, local) now uses Masonry from config and dropped its own workaround, so its product archives need a Mai Engine with masonry on that site before the theme goes live. A note under Image Orientation says entries fill each column top to bottom (`8d9e31f13`).
 3. Keep watching the 18 pushed sites' error logs for `Mai Engine:` lines and fatals (read-only via `mai-sites run`, logs in `../logs/error.log`).
 4. MariaDB stays off for the grid optimizer until the hardened replay runs on MariaDB 10.6, 10.11, 11.4 and 11.8 (`TODO.md`).
 5. Before 2.41.0 final: check the buffer pool size on the main hosts, then the rest of `TODO.md`.
