@@ -113,6 +113,12 @@ function mai_get_columns_atts( $atts, $args, $nested = false ) {
 	// Columns class.
 	$atts['class'] = mai_add_classes( 'has-columns', $atts['class'] );
 
+	// Masonry, for any caller whose args pick it: grids, archives and Mai Gallery.
+	// When the args list what shows, the image has to be one of them.
+	if ( mai_is_masonry( $args ) ) {
+		$atts['class'] = mai_add_classes( 'is-masonry', $atts['class'] );
+	}
+
 	// Get columns arrangement. Reverse order so it's mobile first.
 	$columns = array_reverse( mai_get_breakpoint_columns( $args ) );
 

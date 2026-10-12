@@ -51,7 +51,7 @@ function mai_do_entries_open( $args, $query = null ) {
 		$atts['style'] .= sprintf( '--entry-title-font-size:var(--font-size-%s);', $args['title_size'] );
 	}
 
-	$is_masonry = in_array( 'image', $args['show'], true ) && 'masonry' === $args['image_orientation'];
+	$is_masonry = mai_is_masonry( $args );
 
 	// Image position.
 	if ( in_array( 'image', $args['show'], true ) && $args['image_position'] ) {
@@ -160,11 +160,6 @@ function mai_do_entries_open( $args, $query = null ) {
 		], $args['image_position'] ) ) {
 
 		$wrap_atts['class'] = mai_add_classes( 'has-image-stack', $wrap_atts['class'] );
-	}
-
-	// On entries-wrap, since that is the element with has-columns.
-	if ( $is_masonry ) {
-		$wrap_atts['class'] = mai_add_classes( 'is-masonry', $wrap_atts['class'] );
 	}
 
 	genesis_markup(

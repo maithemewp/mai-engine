@@ -13,7 +13,7 @@ use ReflectionClass;
  * entries-wrap, no --aspect-ratio, and the Large image size.
  *
  * Mai's config and Genesis can't load here, so the theme's orientations and genesis_markup()
- * are stubbed. The stub prints each element's opening tag with its class and style.
+ * are stubbed. The genesis_markup() stub prints each element's opening tag with its class and style.
  */
 final class MasonryTest extends TestCase {
 
@@ -27,12 +27,18 @@ final class MasonryTest extends TestCase {
 		require_once $root . '/lib/functions/images.php';
 		require_once $root . '/lib/functions/entries.php';
 		require_once $root . '/lib/blocks/mai-grid/functions.php';
+		require_once $root . '/lib/functions/columns.php';
 
 		Functions\when( 'mai_get_config' )->justReturn( [ 'add' => [ 'landscape' => '4:3', 'portrait' => '3:4', 'square' => '1:1' ] ] );
 		Functions\when( 'is_admin' )->justReturn( true );
 		Functions\when( 'esc_html__' )->returnArg();
 		Functions\when( 'esc_attr' )->returnArg();
-		Functions\when( 'mai_get_columns_atts' )->alias( static fn( $atts ) => [ 'class' => $atts['class'] . ' has-columns' ] );
+		// mai_get_columns_atts() asks what page this is, and here it's none.
+		foreach ( [ 'is_home', 'is_post_type_archive', 'is_category', 'is_tag', 'is_tax', 'is_author', 'is_date', 'is_year', 'is_month', 'is_day', 'is_time', 'is_archive', 'is_search', 'is_front_page', 'is_single', 'is_page', 'is_404', 'is_attachment', 'is_singular' ] as $conditional ) {
+			Functions\when( $conditional )->justReturn( false );
+		}
+
+		Functions\when( 'wp_parse_args' )->alias( static fn( $args, $defaults ) => array_merge( $defaults, $args ) );
 		Functions\when( 'genesis_markup' )->alias(
 			static function ( $args ) {
 				printf( '<div class="%s" style="%s">', $args['atts']['class'], $args['atts']['style'] ?? '' );
@@ -104,6 +110,14 @@ final class MasonryTest extends TestCase {
 		$args['show'] = [ 'title' ];
 
 		$this->assertStringNotContainsString( 'is-masonry', $this->open( $args ) );
+	}
+
+	public function test_any_columns_caller_gets_is_masonry_from_its_args(): void {
+		$gallery = [ 'image_orientation' => 'masonry' ];
+
+		$this->assertStringContainsString( 'has-columns is-masonry', mai_get_columns_atts( [ 'class' => 'mai-gallery' ], $gallery )['class'] );
+		$this->assertStringNotContainsString( 'is-masonry', mai_get_columns_atts( [], [ 'image_orientation' => 'square' ] )['class'] );
+		$this->assertStringNotContainsString( 'is-masonry', mai_get_columns_atts( [], [ 'show' => [ 'name' ] ] )['class'] );
 	}
 
 	public function test_masonry_uses_the_large_image_size(): void {

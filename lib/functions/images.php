@@ -751,6 +751,25 @@ function mai_get_image_orientation_choices() {
 }
 
 /**
+ * Whether the args use the masonry layout.
+ *
+ * mai_get_columns_atts() uses this to add is-masonry next to has-columns.
+ *
+ * @since 2.41.0
+ *
+ * @param array $args Grid, archive or gallery args.
+ *
+ * @return bool
+ */
+function mai_is_masonry( $args ) {
+	if ( ! isset( $args['image_orientation'] ) || 'masonry' !== $args['image_orientation'] ) {
+		return false;
+	}
+
+	return ! isset( $args['show'] ) || in_array( 'image', (array) $args['show'], true );
+}
+
+/**
  * Gets the note shown under Image Orientation when Masonry is picked.
  *
  * @since 2.41.0
