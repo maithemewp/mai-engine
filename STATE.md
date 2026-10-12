@@ -7,7 +7,7 @@ Updated: 2026-10-12 by Claude
 - 2.41.0-beta.8 (2026-10-09) is the last release: the `mai_metabox_post_types` filter. beta.7 (upgrade guard) and beta.6 (grid taxonomy optimizer, spec `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`) are on 18 sites via `mai-sites push`.
 
 ## Next
-1. Mai Galleries, once it requires this Mai Engine version: drop its own Masonry choice in `blocks/mai-gallery/block.php` and the `.is-masonry` rules in `assets/css/mai-galleries.css`. Its `+` union means no duplicate meanwhile.
+1. Mai Galleries `develop` (`cf9875e`, unreleased 1.3.0) now takes Masonry and its CSS from here, and turns masonry on only when `mai_get_single_image_orientation_choices()` exists. Don't rename or remove that function. Release Mai Engine with masonry before or with Mai Galleries 1.3.0.
 2. morgastudio theme can then drop its `is-masonry` filter in `includes/products.php` and the `.entries.is-masonry .entries-wrap` block in `style.css`, and set `image_orientation` to `masonry` in `config.php`.
 3. Keep watching the 18 pushed sites' error logs for `Mai Engine:` lines and fatals (read-only via `mai-sites run`, logs in `../logs/error.log`).
 4. MariaDB stays off for the grid optimizer until the hardened replay runs on MariaDB 10.6, 10.11, 11.4 and 11.8 (`TODO.md`).
