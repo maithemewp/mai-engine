@@ -248,6 +248,26 @@ function mai_get_grid_display_fields() {
 			],
 		],
 		[
+			'key'               => 'mai_grid_block_image_orientation_masonry',
+			'label'             => '',
+			'type'              => 'message',
+			'message'           => mai_get_masonry_order_note(),
+			'conditional_logic' => [
+				[
+					[
+						'field'    => 'mai_grid_block_show',
+						'operator' => '==',
+						'value'    => 'image',
+					],
+					[
+						'field'    => 'mai_grid_block_image_orientation',
+						'operator' => '==',
+						'value'    => 'masonry',
+					],
+				],
+			],
+		],
+		[
 			'key'               => 'mai_grid_block_image_size',
 			'name'              => 'image_size',
 			'label'             => esc_html__( 'Image Size', 'mai-engine' ),

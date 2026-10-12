@@ -197,6 +197,25 @@ function mai_get_content_archive_settings( $name = 'post' ) {
 			],
 		],
 		[
+			'type'            => 'custom',
+			'settings'        => 'image_orientation_masonry',
+			'label'           => '',
+			'description'     => mai_get_masonry_order_note(),
+			'default'         => '',
+			'active_callback' => [
+				[
+					'setting'  => 'show',
+					'operator' => 'contains',
+					'value'    => 'image',
+				],
+				[
+					'setting'  => 'image_orientation',
+					'operator' => '==',
+					'value'    => 'masonry',
+				],
+			],
+		],
+		[
 			'settings'        => 'image_size',
 			'label'           => __( 'Image Size', 'mai-engine' ),
 			'type'            => 'select',

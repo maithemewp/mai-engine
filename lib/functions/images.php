@@ -751,6 +751,17 @@ function mai_get_image_orientation_choices() {
 }
 
 /**
+ * Gets the note shown under Image Orientation when Masonry is picked.
+ *
+ * @since 2.41.0
+ *
+ * @return string
+ */
+function mai_get_masonry_order_note() {
+	return esc_html__( 'Entries fill each column top to bottom, then the next column. Best when order doesn\'t matter.', 'mai-engine' );
+}
+
+/**
  * Gets the image orientation choices for single entries.
  *
  * Masonry is a layout for many entries, so a single entry doesn't offer it.
