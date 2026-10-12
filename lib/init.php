@@ -443,6 +443,10 @@ function mai_load_files() {
 		$files[] = 'support/woocommerce';
 	}
 
+	if ( class_exists( 'GFForms' ) ) {
+		$files[] = 'support/gravity-forms';
+	}
+
 	if ( class_exists( 'WPForms' ) || function_exists( 'wpforms' ) ) {
 		$files[] = 'support/wpforms';
 	}
