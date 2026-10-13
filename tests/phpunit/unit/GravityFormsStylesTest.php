@@ -32,7 +32,7 @@ final class GravityFormsStylesTest extends TestCase {
 				'primary'    => '#5c5b33',
 			]
 		);
-		Functions\when( 'mai_get_color_variant' )->justReturn( '#e9ddc8' );
+		Functions\when( 'mai_get_input_border_color' )->justReturn( '#9a938d' );
 		Functions\when( 'mai_get_dir' )->justReturn( dirname( __DIR__, 3 ) . '/' );
 		Functions\when( 'sanitize_file_name' )->returnArg();
 	}
@@ -57,7 +57,7 @@ final class GravityFormsStylesTest extends TestCase {
 		$styles = $this->styles( 'default' );
 
 		$this->assertSame( 'orbital', $styles['theme'] );
-		$this->assertSame( '#e9ddc8', $styles['inputBorderColor'] );
+		$this->assertSame( '#9a938d', $styles['inputBorderColor'] );
 		$this->assertSame( '#2e2418', $styles['labelColor'] );
 		$this->assertSame( '#5c5b33', $styles['buttonPrimaryBackgroundColor'] );
 		$this->assertSame( '#ffffff', $styles['buttonPrimaryColor'] );

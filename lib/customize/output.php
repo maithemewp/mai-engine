@@ -442,6 +442,13 @@ function mai_add_colors_css( $css ) {
 		}
 	}
 
+	// Text input borders, only where nothing sets --input-border. See mai_get_input_border_color().
+	$input_border = mai_get_input_border_color();
+
+	if ( $input_border ) {
+		$css['global'][':root']['--input-border-color'] = $input_border;
+	}
+
 	return $css;
 }
 

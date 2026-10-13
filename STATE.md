@@ -8,6 +8,8 @@ Updated: 2026-10-12 by Claude
 
 - **Gravity Forms defaults are committed on local `develop`, not pushed.** `lib/support/gravity-forms.php`, loaded only when `GFForms` exists, styles every form from `mai_get_colors()` through `gform_default_styles`. Radius and font sizes come from config `extra`, then the active Mai theme's `assets/css/themes/<theme>.min.css` `:root`, then Mai's defaults (4px, 16px, scale 1.25). Checked headless on morgastudio `/contact/` (form 1) and the homepage (form 2): the `--gf-*` variables match the palette, a form block's own settings win key by key, and a 0 radius renders 0px.
 
+- **Input borders reach 3:1, committed on local `develop`, not pushed.** `mai_get_input_border_color()` (`lib/functions/colors.php`) blends body into background until the border has 3:1 contrast. `mai_add_colors_css()` outputs it as `--input-border-color`, used only inside the `--input-border` fallback in `base/_form.scss` and the search block, so a theme's own `--input-border` wins and boxed entries (`--border`, `--color-border`) don't change. Gravity Forms uses the same color. Checked headless on eurweb, larrybrownsports and morgastudio.
+
 ## Next
 1. Mai Galleries `develop` (`c119ee3`, unreleased 1.3.0) takes the Masonry choice, the `is-masonry` class (from `mai_get_columns_atts()`) and the CSS from here. It forces the Large size only when `mai_is_masonry()` exists. Don't rename or remove that function. Release Mai Engine with masonry before or with Mai Galleries 1.3.0.
 2. The morgastudio theme (`ec0cf40`, local) now uses Masonry from config and dropped its own workaround, so its product archives need a Mai Engine with masonry on that site before the theme goes live. A note under Image Orientation says entries fill each column top to bottom (`8d9e31f13`).
@@ -25,6 +27,7 @@ Updated: 2026-10-12 by Claude
 - `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also before this work. Not a regression.
 
 ## Gotchas
+- `--input-border-color` is printed in Mai's `mai-inline-styles` `:root` block, which loads after the child theme's `style.css` (checked on morgastudio), so a child theme setting it on `:root` in `style.css` loses. Set it in config `extra` or on `body`. A full `--input-border` in `style.css` still wins, because Mai never sets that.
 - Gravity Forms writes its style values into a block scoped to `#gform_wrapper_<id>[data-form-index]` and adds `px` itself, so radius and font sizes must be plain numbers in PHP, never CSS variables. A child theme's `style.css` is not read, so a radius set only there (morgastudio's 2px) needs config `extra` or the `mai_gform_default_styles` filter.
 - Masonry: never set `aspect-ratio` on the images, not even `auto`. Lazy images with `sizes="auto"` get `contain: size` from Chrome, so their shape comes only from the width/height attributes; `aspect-ratio: auto` made them 1500px tall.
 - Masonry with Background, Left Full or Right Full positions gives 4:3 tiles (the entry rules fall back to `4/3`), with images cropped by `object-fit: cover`, not stretched.

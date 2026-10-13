@@ -39,8 +39,8 @@ function mai_gform_default_styles( $styles ) {
 		'theme'                        => 'orbital',
 		'inputSize'                    => 'md',
 		'inputBorderRadius'            => (string) mai_gform_get_root_px( 'border-radius', 4 ),
-		// Mai has no border color, so use a slightly darker alt.
-		'inputBorderColor'             => mai_get_color_variant( $colors['alt'], 'dark', 7 ),
+		// The same 3:1 border Mai gives its own text inputs.
+		'inputBorderColor'             => mai_get_input_border_color(),
 		'inputBackgroundColor'         => $colors['background'],
 		'inputColor'                   => $colors['heading'],
 		'inputPrimaryColor'            => $colors['primary'],

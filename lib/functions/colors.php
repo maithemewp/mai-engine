@@ -406,3 +406,76 @@ function mai_get_color_variant( $color, $light_or_dark = 'dark', $amount = 7 ) {
 
 	return $variant->toCSS( 'hex' );
 }
+
+/**
+ * Gets the default text input border color.
+ *
+ * The body color blended into the background until the border has 3:1 contrast with
+ * it, the WCAG 1.4.11 minimum for the edge of a form field. Output as
+ * `--input-border-color`, which only applies where nothing sets `--input-border`.
+ *
+ * @since 2.41.0
+ *
+ * @return string A hex color, or an empty string when the colors can't be read.
+ */
+function mai_get_input_border_color() {
+	static $cache = [];
+
+	if ( ! class_exists( 'ariColor' ) ) {
+		return '';
+	}
+
+	$colors = mai_get_colors();
+	$body   = isset( $colors['body'] ) ? mai_get_color_value( $colors['body'] ) : '';
+	$bg     = isset( $colors['background'] ) ? mai_get_color_value( $colors['background'] ) : '';
+	$key    = $body . '|' . $bg;
+
+	if ( isset( $cache[ $key ] ) ) {
+		return $cache[ $key ];
+	}
+
+	if ( ! ( $body && $bg ) ) {
+		$cache[ $key ] = '';
+		return '';
+	}
+
+	$body = ariColor::newColor( $body );
+	$bg   = ariColor::newColor( $bg );
+
+	// WCAG relative luminance from 0-255 channels.
+	$luminance = function ( $rgb ) {
+		$rgb = array_map(
+			function ( $channel ) {
+				$channel = $channel / 255;
+				return $channel <= 0.03928 ? $channel / 12.92 : ( ( $channel + 0.055 ) / 1.055 ) ** 2.4;
+			},
+			$rgb
+		);
+
+		return 0.2126 * $rgb[0] + 0.7152 * $rgb[1] + 0.0722 * $rgb[2];
+	};
+
+	$bg_rgb = [ $bg->red, $bg->green, $bg->blue ];
+	$bg_lum = $luminance( $bg_rgb );
+	$mix    = [ $body->red, $body->green, $body->blue ];
+
+	// Stop at the first blend that reaches 3:1. A body color with less contrast than that ends at the body color itself.
+	for ( $amount = 5; $amount <= 100; $amount++ ) {
+		$mix = [];
+
+		foreach ( [ 'red', 'green', 'blue' ] as $i => $channel ) {
+			$mix[] = (int) round( ( $body->$channel * $amount + $bg_rgb[ $i ] * ( 100 - $amount ) ) / 100 );
+		}
+
+		$lum   = $luminance( $mix );
+		$ratio = ( max( $lum, $bg_lum ) + 0.05 ) / ( min( $lum, $bg_lum ) + 0.05 );
+
+		if ( $ratio >= 3 ) {
+			break;
+		}
+	}
+
+	$cache[ $key ] = vsprintf( '#%02x%02x%02x', $mix );
+
+	return $cache[ $key ];
+}

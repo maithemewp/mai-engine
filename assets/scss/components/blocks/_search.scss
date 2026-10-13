@@ -25,7 +25,7 @@
 
 	.wp-block-search__input {
 		flex: 1;
-		border: var(--input-border, 1px solid rgba(0, 0, 0, 0.1)); // Overides WP core styles.
+		border: var(--input-border, 1px solid var(--input-border-color, rgba(0, 0, 0, 0.1))); // Overides WP core styles.
 
 		&:focus {
 			border-color: var(--input-border-color-focus, var(--color-link));
