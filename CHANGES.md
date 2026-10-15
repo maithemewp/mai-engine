@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.41.0 (TBD)
+* Fixed: Buttons in WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes, such as category descriptions) now look like Mai buttons, including the secondary, outline, link, small and large styles. Before, they showed as plain links.
 * Fixed: [Performance] Opening the block editor no longer makes the site send a request to itself for Mai's WYSIWYG editor styles. Those styles now go only to WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes), where the browser loads them. The block editor already gets the same CSS from Kirki.
 * Changed: Text and search fields get a clearer border, worked out from the site's body and background colors so it has 3:1 contrast, the accessibility minimum for form fields. Sites or themes that set their own `--input-border` keep it. Boxed entries and other borders don't change. [Developers] Set just the color with the new `--input-border-color` property, in the theme config's `extra` settings.
 * Added: Gravity Forms now take their colors from the site's Mai palette: inputs, labels, descriptions and the submit button, using Gravity Forms' Orbital theme. Input corners and label sizes follow the Mai theme too. A form's own Style settings still win, and the form block's settings in the editor start from the same values. [Developers] Change any value with the new `mai_gform_default_styles` filter. Values another plugin sets on `gform_default_styles` first are kept.

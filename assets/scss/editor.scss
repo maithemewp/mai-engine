@@ -641,3 +641,38 @@ input[type="submit"],
 .wp-block[data-type="acf/mai-accordion-item"] + .wp-block[data-type="acf/mai-accordion-item"] {
 	margin-top: 0;
 }
+
+// WYSIWYG editors (the classic editor, ACF WYSIWYG fields, other wp_editor() boxes) load this
+// stylesheet too. Their content isn't inside .wp-block, so the button rules above miss it.
+.mce-content-body {
+
+	.button {
+
+		@extend %button;
+	}
+
+	.button-secondary {
+
+		@extend %button-secondary;
+	}
+
+	.button-link {
+
+		@extend %button-link;
+	}
+
+	.button-outline {
+
+		@extend %button-outline;
+	}
+
+	.button-small {
+
+		@extend %button-small;
+	}
+
+	.button-large {
+
+		@extend %button-large;
+	}
+}
