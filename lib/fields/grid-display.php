@@ -249,6 +249,7 @@ function mai_get_grid_display_fields() {
 		],
 		[
 			'key'               => 'mai_grid_block_image_orientation_masonry',
+			'name'              => 'image_orientation_masonry',
 			'label'             => '',
 			'type'              => 'message',
 			'message'           => mai_get_masonry_order_note(),
