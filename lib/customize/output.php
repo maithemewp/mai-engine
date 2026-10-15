@@ -719,6 +719,7 @@ add_filter( 'mce_css', 'mai_add_classic_editor_styles' );
  * block editor on its own. In a WYSIWYG editor the browser loads the URL.
  *
  * First in the list, as add_editor_style() put it, so Mai's editor.min.css still loads after it.
+ * Mai's own stylesheets in the list get its file-date version.
  *
  * @since 2.25.0
  * @since 2.41.0 Through `mce_css`, so the block editor makes no request to the site itself.
@@ -728,9 +729,29 @@ add_filter( 'mce_css', 'mai_add_classic_editor_styles' );
  * @return string
  */
 function mai_add_classic_editor_styles( $stylesheets ) {
-	$url = add_query_arg( 'action', 'mai_classic_editor_styles', admin_url( 'admin-ajax.php' ) );
+	$urls = array_filter( explode( ',', (string) $stylesheets ) );
 
-	return $stylesheets ? $url . ',' . $stylesheets : $url;
+	// TinyMCE's own cache suffix only changes with WordPress, so give Mai's stylesheets
+	// the file date, as on the front end, or browsers keep an old copy after an update.
+	$assets = '/' . basename( mai_get_dir() ) . '/assets/css/';
+
+	foreach ( $urls as $i => $url ) {
+		$pos = strpos( $url, $assets );
+
+		if ( false === $pos ) {
+			continue;
+		}
+
+		$file = mai_get_dir() . 'assets/css/' . strtok( substr( $url, $pos + strlen( $assets ) ), '?' );
+
+		if ( is_file( $file ) ) {
+			$urls[ $i ] = add_query_arg( 'ver', mai_get_version() . '.' . date( 'njYHi', filemtime( $file ) ), $url );
+		}
+	}
+
+	array_unshift( $urls, add_query_arg( 'action', 'mai_classic_editor_styles', admin_url( 'admin-ajax.php' ) ) );
+
+	return implode( ',', $urls );
 }
 
 add_action( 'wp_ajax_nopriv_mai_classic_editor_styles', 'mai_do_classic_editor_styles' );
