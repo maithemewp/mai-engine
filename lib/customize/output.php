@@ -708,17 +708,29 @@ function mai_add_page_header_content_type_css( $css ) {
 	return $css;
 }
 
-add_filter( 'after_setup_theme', 'mai_add_classic_editor_styles' );
+add_filter( 'mce_css', 'mai_add_classic_editor_styles' );
 /**
- * Adds Kirki styles to classic editor.
- * This also works for ACF WYSIWYG fields.
+ * Adds Kirki styles to every WYSIWYG editor: the classic editor, ACF WYSIWYG fields and
+ * any other wp_editor().
+ *
+ * Only through `mce_css`, never add_editor_style(). The block editor fetches every URL
+ * added with add_editor_style() over HTTP from the server on each load, a request back to
+ * the site itself. It doesn't need this file anyway, since Kirki adds the same CSS to the
+ * block editor on its own. In a WYSIWYG editor the browser loads the URL.
+ *
+ * First in the list, as add_editor_style() put it, so Mai's editor.min.css still loads after it.
  *
  * @since 2.25.0
+ * @since 2.41.0 Through `mce_css`, so the block editor makes no request to the site itself.
  *
- * @return void
+ * @param string $stylesheets Comma-separated stylesheet URLs.
+ *
+ * @return string
  */
-function mai_add_classic_editor_styles() {
-	add_editor_style( admin_url( 'admin-ajax.php' ) . '?action=mai_classic_editor_styles' ); // Default styles from Kirki. Mostly for WYSIWYG.
+function mai_add_classic_editor_styles( $stylesheets ) {
+	$url = add_query_arg( 'action', 'mai_classic_editor_styles', admin_url( 'admin-ajax.php' ) );
+
+	return $stylesheets ? $url . ',' . $stylesheets : $url;
 }
 
 add_action( 'wp_ajax_nopriv_mai_classic_editor_styles', 'mai_do_classic_editor_styles' );
