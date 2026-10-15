@@ -60,6 +60,40 @@ function mai_gform_default_styles( $styles ) {
 	return array_merge( $mai, $styles );
 }
 
+add_filter( 'gform_form_block_attributes', 'mai_gform_block_attribute_defaults' );
+/**
+ * Shows the same default styles in the form block's editor settings.
+ *
+ * Gravity Forms reads `gform_default_styles` for the block's defaults once, early, and
+ * keeps the result, before this file is loaded. It applies this filter again when it
+ * builds the editor's settings, so the defaults are set here from the same styles the
+ * front end gets.
+ *
+ * @since 2.41.0
+ *
+ * @param array $attributes The form block attributes.
+ *
+ * @return array
+ */
+function mai_gform_block_attribute_defaults( $attributes ) {
+	if ( ! is_array( $attributes ) || ! class_exists( 'GFFormDisplay' ) ) {
+		return $attributes;
+	}
+
+	$styles = GFFormDisplay::validate_form_styles( apply_filters( 'gform_default_styles', false ) );
+
+	foreach ( (array) $styles as $key => $value ) {
+		// The theme attribute stays empty in the editor, meaning "inherit the default".
+		if ( 'theme' === $key || ! isset( $attributes[ $key ] ) || ! array_key_exists( 'default', $attributes[ $key ] ) ) {
+			continue;
+		}
+
+		$attributes[ $key ]['default'] = $value;
+	}
+
+	return $attributes;
+}
+
 /**
  * Gets a Mai root size in px, as a number.
  *

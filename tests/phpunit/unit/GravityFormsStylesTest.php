@@ -117,4 +117,28 @@ final class GravityFormsStylesTest extends TestCase {
 		$this->assertArrayNotHasKey( 'labelColor', $styles );
 		$this->assertSame( '#2e2418', $styles['inputColor'] );
 	}
+
+	public function test_the_editor_defaults_get_the_same_styles(): void {
+		if ( ! class_exists( 'GFFormDisplay', false ) ) {
+			eval( 'class GFFormDisplay { public static function validate_form_styles( $styles ) { return is_array( $styles ) ? $styles : []; } }' );
+		}
+
+		Functions\when( 'mai_get_active_theme' )->justReturn( 'default' );
+		Functions\when( 'mai_get_global_styles' )->justReturn( [] );
+		Filters\expectApplied( 'gform_default_styles' )->once()->andReturnUsing( 'mai_gform_default_styles' );
+
+		$attributes = mai_gform_block_attribute_defaults(
+			[
+				'theme'             => [ 'type' => 'string', 'default' => '' ],
+				'inputBorderRadius' => [ 'type' => 'string', 'default' => 3 ],
+				'labelColor'        => [ 'type' => 'string', 'default' => '#112337' ],
+				'formId'            => [ 'type' => 'string' ],
+			]
+		);
+
+		$this->assertSame( '', $attributes['theme']['default'] );
+		$this->assertSame( '4', $attributes['inputBorderRadius']['default'] );
+		$this->assertSame( '#2e2418', $attributes['labelColor']['default'] );
+		$this->assertArrayNotHasKey( 'default', $attributes['formId'] );
+	}
 }
