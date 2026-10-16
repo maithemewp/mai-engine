@@ -15,9 +15,11 @@ composer.lock export-ignore
 Gulpfile.js export-ignore
 phpcs.xml.dist export-ignore
 phpmd.xml export-ignore
-phpcs.xml.dist export-ignore
 
 /bin export-ignore
 /tests export-ignore
 /docs export-ignore
 /.agents export-ignore
+
+STATE.md export-ignore
+TODO.md export-ignore

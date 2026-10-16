@@ -13,7 +13,7 @@ Everything below went out in 2.41.0-beta.9. It was 14 commits after 2.41.0-beta.
 ## Next
 1. Release beta.9 when Mike says go (`npm run beta`, then `composer dump-autoload --no-dev`).
 2. Mai Galleries `develop` (`c119ee3`, unreleased 1.3.0) takes Masonry, the class and the CSS from here, and forces Large only when `mai_is_masonry()` exists. Don't rename or remove it. Release Mai Engine first.
-3. The morgastudio theme (`ec0cf40`, local) uses Masonry from config and still has its own `includes/forms.php` Gravity Forms filter, which wins over Mai's. It can delete that file once this ships; for 2px corners set `'border-radius' => '2px'` in config `extra`.
+3. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it once this ships; for its own corner radius it sets `'border-radius'` in config `extra`.
 4. Fixed in `bin/styles.js`: built CSS gets the build time, so its `?ver=` changes on every build. Before, it kept the SCSS entry file's date and a rebuild could keep serving the old file.
 5. Keep watching the 18 pushed sites' error logs (read-only via `mai-sites run`). MariaDB stays off for the grid optimizer (`TODO.md`). Before 2.41.0 final: buffer pool sizes, then `TODO.md`.
 
@@ -33,8 +33,8 @@ Everything below went out in 2.41.0-beta.9. It was 14 commits after 2.41.0-beta.
 - `--input-border-color` prints in `mai-inline-styles` after the child theme's `style.css`, so a child theme setting it on `:root` there loses. Use config `extra` or `body`.
 - ACF fields in `mai_get_grid_display_fields()` need a `name`, even message fields, or `mai_get_editor_localized_data()` logs "Undefined array key".
 - Masonry: never set `aspect-ratio` on the images, not even `auto` (lazy `sizes="auto"` images get `contain: size`; they rendered 1500px tall). Background, Left Full and Right Full positions give 4:3 tiles, cropped not stretched. Items flow down each column, then across.
-- Mai Performance Enhancer double-encodes UTF-8 (`loadHTML()` without a charset). Mike is archiving it; it must not run anywhere. Deactivated on local livingwaterguidewp.
-- totalprosports.test loads its CSS from the live domain, so it can't show local CSS changes.
+- Mai Performance Enhancer double-encodes UTF-8 (`loadHTML()` without a charset). Mike is archiving it; it must not run anywhere.
+- A local copy whose asset URLs still point at the live domain can't show local CSS changes. Check the stylesheet URLs before testing CSS on it.
 - `npm run beta` leaves a dev autoloader. Run `composer dump-autoload --no-dev`, or every site crashes.
 - `vendor/composer/installed.php` shows a modified commit reference after `composer` runs. Leave it out of feature commits.
 - Never `wp cache flush` on Redis sites. Use `mai_cache( 'css' )->flush()` (or `'grid'`) through `wp eval`.
