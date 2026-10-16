@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.41.0 (TBD)
+* Fixed: Updated Mai stylesheets reach browsers after every build. Their version is based on the file date, which used to stay the same when only a partial changed.
 * Fixed: Buttons in WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes, such as category descriptions) now look like Mai buttons, including the secondary, outline, link, small and large styles. Before, they showed as plain links.
 * Fixed: [Performance] Opening the block editor no longer makes the site send a request to itself for Mai's WYSIWYG editor styles. Those styles now go only to WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes), where the browser loads them. The block editor already gets the same CSS from Kirki.
 * Changed: Text and search fields get a clearer border, worked out from the site's body and background colors so it has 3:1 contrast, the accessibility minimum for form fields. Sites or themes that set their own `--input-border` keep it. Boxed entries and other borders don't change. [Developers] Set just the color with the new `--input-border-color` property, in the theme config's `extra` settings.

@@ -47,6 +47,18 @@ function nativeSass(options = {}) {
     });
 }
 
+// Stamps each built file with the build time. gulp.dest keeps the source's date, which for a
+// stylesheet is the entry file's (main.scss), not the partial that changed. WordPress versions
+// Mai's CSS by file date, so without this a rebuild could keep the old ?ver= and browsers the old file.
+function stampBuildTime() {
+    return through2.obj(function(file, enc, cb) {
+        if (file.stat) {
+            file.stat.mtime = file.stat.atime = new Date();
+        }
+        cb(null, file);
+    });
+}
+
 // Post-processing configuration
 const postProcessors = [
     sortMediaQueries(),
@@ -73,6 +85,7 @@ module.exports.main = function mainTask() {
         .pipe(nativeSass())
         .pipe(rename('main.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -84,6 +97,7 @@ module.exports.header = function headerTask() {
         .pipe(nativeSass())
         .pipe(rename('header.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -95,6 +109,7 @@ module.exports.pageheader = function pageheaderTask() {
         .pipe(nativeSass())
         .pipe(rename('page-header.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -106,6 +121,7 @@ module.exports.blocks = function blocksTaskStyles() {
         .pipe(nativeSass())
         .pipe(rename('blocks.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -117,6 +133,7 @@ module.exports.utilities = function utilitiesTask() {
         .pipe(nativeSass())
         .pipe(rename('utilities.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -128,6 +145,7 @@ module.exports.footer = function footerTask() {
         .pipe(nativeSass())
         .pipe(rename('footer.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -141,6 +159,7 @@ module.exports.editor = function editorTask() {
         .pipe(nativeSass())
         .pipe(rename('editor.min.css')) // Rename to add .min
         .pipe(postcss(editorPostProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -168,6 +187,7 @@ module.exports.themes = function themesTask() {
             pxtoremConfig,
         ]))
         .pipe(gulpif(config.css.sourcemaps, sourcemap.write('./')))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/themes/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -189,6 +209,7 @@ module.exports.plugins = function pluginsTask() {
             .pipe(nativeSass())
             .pipe(rename({ basename: stylesheet.replace('.scss', ''), suffix: '.min', extname: '.css' })) // Correctly rename with .css extension
             .pipe(postcss(pluginPostProcessors))
+            .pipe(stampBuildTime())
             .pipe(gulp.dest('./assets/css/')) // Output to top-level directory
             .pipe(notify({ message: config.messages.css }));
     }));
@@ -203,6 +224,7 @@ module.exports.maiplugins = function maipluginsTask() {
         .pipe(nativeSass())
         .pipe(rename('plugins.min.css')) // Rename to add .min
         .pipe(postcss(maipluginsPostProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -214,6 +236,7 @@ module.exports.admin = function adminTask() {
         .pipe(nativeSass())
         .pipe(rename('admin.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -225,6 +248,7 @@ module.exports.desktop = function desktopTask() {
         .pipe(nativeSass())
         .pipe(rename('desktop.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };
@@ -236,6 +260,7 @@ module.exports.deprecated = function deprecatedTask() {
         .pipe(nativeSass())
         .pipe(rename('deprecated.min.css')) // Rename to add .min
         .pipe(postcss(postProcessors))
+        .pipe(stampBuildTime())
         .pipe(gulp.dest('./assets/css/'))
         .pipe(notify({ message: config.messages.css }));
 };

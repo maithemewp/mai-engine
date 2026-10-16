@@ -2,7 +2,7 @@
 Updated: 2026-10-16 by Claude
 
 ## Now
-Everything below is on local `develop`, 14 commits after 2.41.0-beta.8 (`1fac2d345`), not pushed. Mike tested each piece in his browser on local sites; it is ready for beta.9 on his go.
+Everything below went out in 2.41.0-beta.9. It was 14 commits after 2.41.0-beta.8 (`1fac2d345`), not pushed. Mike tested each piece in his browser on local sites; it is ready for beta.9 on his go.
 
 - **Masonry image orientation** for Mai Post Grid, Mai Term Grid and content archives (not single content, via `mai_get_single_image_orientation_choices()`). Large size, Image Size hidden, no `--aspect-ratio`, and a note under the setting saying entries fill each column top to bottom. `mai_get_columns_atts()` adds `is-masonry` next to `has-columns` whenever `mai_is_masonry( $args )` is true, so grids, archives and Mai Gallery all get it from one place. Shared CSS: `assets/scss/layout/_masonry.scss`, in `main.min.css` and `editor.min.css`.
 - **Gravity Forms defaults** (`lib/support/gravity-forms.php`, loaded only when `GFForms` exists): Orbital, colors from `mai_get_colors()`, radius and font sizes from config `extra`, then the active Mai theme's `assets/css/themes/<theme>.min.css` `:root`, then 4px / 16px / scale 1.25. `mai_gform_default_styles` filter. A form block's own settings win key by key. `gform_form_block_attributes` sets the same values as the block's editor defaults.
@@ -14,7 +14,7 @@ Everything below is on local `develop`, 14 commits after 2.41.0-beta.8 (`1fac2d3
 1. Release beta.9 when Mike says go (`npm run beta`, then `composer dump-autoload --no-dev`).
 2. Mai Galleries `develop` (`c119ee3`, unreleased 1.3.0) takes Masonry, the class and the CSS from here, and forces Large only when `mai_is_masonry()` exists. Don't rename or remove it. Release Mai Engine first.
 3. The morgastudio theme (`ec0cf40`, local) uses Masonry from config and still has its own `includes/forms.php` Gravity Forms filter, which wins over Mai's. It can delete that file once this ships; for 2px corners set `'border-radius' => '2px'` in config `extra`.
-4. Build bug, not fixed: gulp stamps built CSS with the SCSS entry file's date, so `?ver=` doesn't change on a rebuild unless that entry file changed. Releases are fine (the version changes); `develop` pushes without a version bump serve stale CSS. Fix in `bin/styles.js` by setting each file's mtime to now before `gulp.dest`.
+4. Fixed in `bin/styles.js`: built CSS gets the build time, so its `?ver=` changes on every build. Before, it kept the SCSS entry file's date and a rebuild could keep serving the old file.
 5. Keep watching the 18 pushed sites' error logs (read-only via `mai-sites run`). MariaDB stays off for the grid optimizer (`TODO.md`). Before 2.41.0 final: buffer pool sizes, then `TODO.md`.
 
 ## Blocked / waiting on
