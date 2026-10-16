@@ -23,7 +23,7 @@ final class Mai_Post_Grid_Query_Optimizer_Sql {
 	 * ran slower swapped on a mid-size category, and parent and type sorts were never measured, so
 	 * those grids keep today's statement (spec "Which grids").
 	 *
-	 * The ID is not a sort key here. Local MySQL 9.7.1 flipped the plan of an ID sort on eurweb's
+	 * The ID is not a sort key here. Local MySQL 9.7.1 flipped the plan of an ID sort on a large news site's
 	 * biggest category between two runs, from a 1 ms walk of the posts to a 63 ms read of every
 	 * matching term row, and MariaDB missed the bar on ID sorts too. The grid's sort setting offers
 	 * no ID sort, so only code makes one, and it keeps today's statement (Mike, 2026-10-06).

@@ -29,7 +29,7 @@ final class Mai_Post_Grid_Query_Optimizer_Database {
 	 * X.Y.Z, means MariaDB is off.
 	 *
 	 * Off. In the Docker runs of 2026-10-05, MariaDB 10.6, 10.11, 11.4 and 11.8 returned the same
-	 * posts, but a grid sorted by ID on eurweb's biggest category took 49 to 63 ms swapped against
+	 * posts, but a grid sorted by ID on a large news site's biggest category took 49 to 63 ms swapped against
 	 * 1 to 5 ms today, because MariaDB reads every matching term row before it walks the posts.
 	 * MariaDB has its own query planner, so MySQL's results do not carry over to it. Without ID
 	 * sorts (none are swapped since 2026-10-06) those pairs met the bar, but the hardened replay

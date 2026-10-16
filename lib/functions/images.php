@@ -454,13 +454,13 @@ function mai_get_fallback_image_id( $post_id ) {
  * relative: it earns its value by being scarce, and only pays off when it points at
  * the LCP element. On a grid layout the LCP is an entry image, so claiming high
  * priority for a logo puts a small, or entirely hidden, image ahead of the one that
- * actually paints the LCP. Measured on allhiphop.com, the LCP element is
+ * actually paints the LCP. Measured on a client news site, the LCP element is
  * img.entry-image.
  *
  * Dropping our own fetchpriority="high" was not enough on its own, because WordPress
  * adds it back. It reads the loading="eager" above as "this is in the viewport", then
  * judges LCP candidacy on the file's own width times height against a 50,000 pixel
- * threshold. A logo uploaded large for retina clears that easily. totalprosports
+ * threshold. A logo uploaded large for retina clears that easily. One sports site
  * ships a 1251x365 file, 456,615 pixels, that paints at 160x47, so WordPress spends
  * the page's single high-priority slot on a logo 61 times smaller than it measured.
  *

@@ -554,7 +554,7 @@ final class PostGridQueryOptimizerSqlTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * 29 categories, as many as eurweb's biggest filter. Category $k holds big's posts $k and
+	 * 29 categories, as many as the biggest filter on a large news site. Category $k holds big's posts $k and
 	 * $k + 7, so most posts sit in two of them and the join lists them twice.
 	 *
 	 * @return int[]

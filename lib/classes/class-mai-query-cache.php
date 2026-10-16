@@ -482,7 +482,7 @@ class Mai_Query_Cache {
 		$cacheable = true;
 
 		// ElasticPress offloads to ES and hooks posts_pre_query itself; that interaction is
-		// unverified (eurweb is not on EP), so skip ep_integrate grids until it is tested.
+		// unverified (the measured site is not on EP), so skip ep_integrate grids until it is tested.
 		if ( ! empty( $query_vars['ep_integrate'] ) ) {
 			$cacheable = false;
 		}

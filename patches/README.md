@@ -64,7 +64,7 @@ Upstream fixed the root cause by changing the user-agent in commit `6908691b`, 4
 
 Verified before removal against the live Google Fonts v1 API using Kirki's exact request shape and user-agent: 222 URLs across 16 families, including icon, emoji, variable and CJK fonts, all carry a `.woff2` extension, and deduplicated basenames are collision free both within and across families.
 
-Confirmed in production on larrybrownsports.com, which had both naming styles side by side on the same Kontrol v4 stack:
+Confirmed in production on a client site, which had both naming styles side by side on the same Kontrol v4 stack:
 
 | File | Content-Type | Cache-Control |
 |---|---|---|

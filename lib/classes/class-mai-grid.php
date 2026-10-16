@@ -1102,7 +1102,7 @@ class Mai_Grid {
 	 *
 	 * Why it is needed: when rows tie on the sort column, MySQL is free to answer differently for
 	 * different LIMITs, and between two runs of the same statement. A deferring grid asks for
-	 * posts_per_page + N rows, so it hits that directly. Measured on larrybrownsports with
+	 * posts_per_page + N rows, so it hits that directly. Measured on a large sports site with
 	 * comment_count ordering, where 134,207 of 145,646 posts tie at zero: across 120 grid
 	 * renders, 20 differed between a LIMIT 6 and a LIMIT 13 read of the same grid, 5 of them
 	 * returning genuinely different posts rather than a reshuffle. The faster taxonomy query
@@ -1119,7 +1119,7 @@ class Mai_Grid {
 	 * Why an ascending date sort breaks ties ascending: the taxonomy query walks the posts index
 	 * in the sort's direction and stops at the LIMIT. A trailing ID DESC on an ascending date sort
 	 * does not match that index order, so MySQL sorts every matching row. Measured once, on local
-	 * eurweb's biggest category: the swapped statement sorted by date ascending with LIMIT 7 took
+	 * a large news site's biggest category: the swapped statement sorted by date ascending with LIMIT 7 took
 	 * 68 ms with ID ASC and 254 ms with ID DESC, as medians that include the mysql client's
 	 * start-up. An author sort follows its direction the same way, for consistency. It was not
 	 * measured on its own. Beta.5's deferring grids followed the sort direction like this too.

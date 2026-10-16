@@ -93,7 +93,7 @@ final class PostGridQueryOptimizerSamePostsTest extends MaiIntegrationTestCase {
 	private static int $editor = 0;
 
 	/**
-	 * 29 categories, as many as eurweb's biggest filter.
+	 * 29 categories, as many as the biggest filter on a large news site.
 	 *
 	 * @var int[]
 	 */

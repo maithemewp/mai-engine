@@ -12,7 +12,7 @@
  * Usage (from WP root):
  *   wp eval-file wp-content/plugins/mai-engine/bin/grid-cache-benefit.php
  *
- * Term/tag/meta IDs are totalprosports-specific; edit for another site.
+ * Term/tag/meta IDs are specific to the site it was written for; edit for another site.
  *
  * @package BizBudding\MaiEngine
  */
