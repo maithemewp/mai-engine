@@ -321,7 +321,7 @@ cp ~/LocalPackages/mai-cache/init.php ~/LocalPackages/mai-cache/CHANGES.md ~/Loc
 
 Follow the spec's "Verification on local sites" section. Concrete procedure:
 
-- [ ] **Step 1: Prepare a beta.4 copy for comparisons** without a worktree: `rm -rf /tmp/mai-engine-beta4 && mkdir /tmp/mai-engine-beta4 && git -C ~/Plugins/mai-engine archive 1bb05a8fa | tar -x -C /tmp/mai-engine-beta4`. eurweb and larrybrownsports symlink `wp-content/plugins/mai-engine` to `~/Plugins/mai-engine`. To compare, repoint one site's symlink at a time to `/tmp/mai-engine-beta4`, run, and repoint back. Reload PHP-FPM after each switch (`kill -USR2` on the pool master) and probe that the expected code is live before trusting numbers.
+- [ ] **Step 1: Prepare a beta.4 copy for comparisons** without a worktree: `rm -rf /tmp/mai-engine-beta4 && mkdir /tmp/mai-engine-beta4 && git -C ~/Plugins/mai-engine archive 1bb05a8fa | tar -x -C /tmp/mai-engine-beta4`. news-site-a and sports-site-a symlink `wp-content/plugins/mai-engine` to `~/Plugins/mai-engine`. To compare, repoint one site's symlink at a time to `/tmp/mai-engine-beta4`, run, and repoint back. Reload PHP-FPM after each switch (`kill -USR2` on the pool master) and probe that the expected code is live before trusting numbers.
 - [ ] **Step 2: For every speed test, protect `wp-config.php`:**
 
 ```bash
@@ -335,7 +335,7 @@ cmp wp-config.php /tmp/<site>-wp-config.bak
 
   `cmp` must print nothing. Never restore with `wp config set`.
 - [ ] **Step 3: Measure** with a temporary mu-plugin that logs each grid query (count) and each job's duration to a file. Delete it afterwards. Time to first byte with `curl -s -o /dev/null -w '%{time_starttransfer}'`, medians of at least 20 runs, bypassing WP Rocket with a query string it does not cache or a subscriber's cookie.
-- [ ] **Step 4: Run each check in the spec** (eurweb timings; WP Rocket after a save; busy site saving every 30 seconds for 10 minutes, beta.4 against beta.5; larrybrownsports expiry concurrency; two small sites without Redis, churn; visitsleepyhollow event grids; identical rendered IDs with the cache on and off).
+- [ ] **Step 4: Run each check in the spec** (news-site-a timings; WP Rocket after a save; busy site saving every 30 seconds for 10 minutes, beta.4 against beta.5; sports-site-a expiry concurrency; two small sites without Redis, churn; tourism-site-a event grids; identical rendered IDs with the cache on and off).
 - [ ] **Step 5: Write the results** into the spec under a new "Results" heading (numbers, not adjectives) and commit `"Grid cache beta.5: local verification results"`. If any check fails its bar, stop and tell Mike before release.
 - [ ] **Step 6: Clean up:** symlinks point at `~/Plugins/mai-engine`, mu-plugin deleted, `rm -rf /tmp/mai-engine-beta4`.
 

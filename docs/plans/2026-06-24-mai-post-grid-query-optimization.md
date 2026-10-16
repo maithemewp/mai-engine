@@ -812,7 +812,7 @@ foreach ( (array) $wpdb->get_results( "EXPLAIN {$last}" ) as $row ) {
 
 - [ ] **Step 2: Run it on a real site**
 
-Run (on eurweb staging or a Herd mai site, picking a real taxonomy + term ids):
+Run (on news-site-a staging or a Herd mai site, picking a real taxonomy + term ids):
 `wp eval-file bin/grid-query-equivalence.php category 1,94150`
 
 Expected:
@@ -832,7 +832,7 @@ git commit -m "test: add wp-cli grid query equivalence and EXPLAIN check"
 
 **Files:** none (verification only)
 
-- [ ] **Step 1: Deploy the branch to eurweb (or a large staging clone)**
+- [ ] **Step 1: Deploy the branch to news-site-a (or a large staging clone)**
 
 Check out `feature/mai-post-grid-query-optimization` on the site and disable the throwaway test filter (`includes/performance.php`) and the caching code, so only the real optimizer runs.
 

@@ -26,17 +26,17 @@
 
 Read all of this before Task 1. Several tasks look arbitrary without it.
 
-**The problem.** `Mai_Grid::get_post_query_args()` (`lib/classes/class-mai-grid.php:583-618`) merges `get_the_ID()` and every already-rendered post ID into `post__not_in`. That reaches the SQL as `wp_posts.ID NOT IN (766283)`, and `Mai_Query_Cache::cache_key()` hashes both the query vars and the final SQL. One cache key per page view. On larrybrownsports that is 145,646 possible keys against a 4-hour TTL, while the average post is re-viewed every 8 hours, so nearly every read is a cold miss that stores an entry nobody will read.
+**The problem.** `Mai_Grid::get_post_query_args()` (`lib/classes/class-mai-grid.php:583-618`) merges `get_the_ID()` and every already-rendered post ID into `post__not_in`. That reaches the SQL as `wp_posts.ID NOT IN (766283)`, and `Mai_Query_Cache::cache_key()` hashes both the query vars and the final SQL. One cache key per page view. On sports-site-a that is 145,646 possible keys against a 4-hour TTL, while the average post is re-viewed every 8 hours, so nearly every read is a cold miss that stores an entry nobody will read.
 
 **What a version bump actually does.** A publish does not wipe the cache. mai-cache stamps the version inside the stored envelope (`vendor/maithemewp/mai-cache/src/Cache.php:271-298`), so a mismatch returns stale-but-servable and `pre_query` serves it while one lock winner recomputes. Key cardinality is the problem, not publish cadence. **Do not touch invalidation as part of this work.**
 
-**Why a longer TTL cannot fix it.** With one key per post, executions per view can never fall below (distinct posts viewed per day) / (views per day). On larrybrownsports that is 51,348 / 169,373 = 0.30, worse than the 0.2 target, even with an infinite TTL. Keys must be shared.
+**Why a longer TTL cannot fix it.** With one key per post, executions per view can never fall below (distinct posts viewed per day) / (views per day). On sports-site-a that is 51,348 / 169,373 = 0.30, worse than the 0.2 target, even with an infinite TTL. Keys must be shared.
 
 **Why the restore is load-bearing.** mai-load-more serializes `$query->query_vars` into a DOM attribute (`mai-load-more/classes/class-post-grid.php:96`) and rebuilds its own `WP_Query` from them in an AJAX request (`classes/class-ajax.php:126-187`). `Mai_Grid` is never constructed on that second request. A padded `posts_per_page` leaking out would make page 2 stride past posts; a missing `post__not_in` would drop the exclusions.
 
 **Scope of the guarantee, stated precisely.** Anything reading the query object **after `get_query()` returns** sees the original request. Anything running **inside** `WP_Query::get_posts()` sees the padded, stripped version: `pre_get_posts`, `posts_where`, `posts_orderby`, `posts_clauses`, `post_limits`, `posts_request`, `posts_pre_query`, `the_posts`. Nothing in the Mai fleet depends on that, but do not write the broader claim anywhere.
 
-**Ties are a real failure mode, and the tiebreaker is not optional.** `Mai_Grid` emits a bare `ORDER BY wp_posts.post_date DESC` with no tiebreaker (`:568-576`). When rows tie on the sort column, MySQL's LIMIT-aware sort may keep different ones for `LIMIT 6` than for `LIMIT 13`. Measured on larrybrownsports with a tie-heavy sort (`comment_count`, where 134,207 of 145,646 posts are tied at zero), across 120 grid renders:
+**Ties are a real failure mode, and the tiebreaker is not optional.** `Mai_Grid` emits a bare `ORDER BY wp_posts.post_date DESC` with no tiebreaker (`:568-576`). When rows tie on the sort column, MySQL's LIMIT-aware sort may keep different ones for `LIMIT 6` than for `LIMIT 13`. Measured on sports-site-a with a tie-heavy sort (`comment_count`, where 134,207 of 145,646 posts are tied at zero), across 120 grid renders:
 
 | | mismatches | same posts, reordered | genuinely different posts |
 | --- | --- | --- | --- |
@@ -45,7 +45,7 @@ Read all of this before Task 1. Several tasks look arbitrary without it.
 
 Date ordering never showed this in roughly 10,000 earlier cases, because two articles rarely publish in the same second. It is `meta_value_num` (trending, views), `comment_count` and `title` that have large tie groups.
 
-**Measured on local mirrors** of larrybrownsports (145,646 posts), totalprosports (114,981) and tvnewscheck (180,083):
+**Measured on local mirrors** of sports-site-a (145,646 posts), sports-site-b (114,981) and news-site-b (180,083):
 
 - 1,400 real grid renders across 700 articles, date ordering: 0 mismatches.
 - 9,594 hostile cases aimed at short results, including excluding every article in a term: 0 mismatches. Grids showing 0, 1, 2, 3, 4 and 5 of 6 all matched.
@@ -54,10 +54,10 @@ Date ordering never showed this in roughly 10,000 earlier cases, because two art
 - Cache keys collapse 107x, 20x and 583x on the three sites.
 - `offset > 0` genuinely differs, in roughly 1 of 150 articles. Hence the guard.
 
-**How to re-take the 500-row split numbers.** The site is the larrybrownsports mirror and the category is Football, `term_id` 5, which holds 54,461 of that mirror's 145,646 posts. Confirm the category first, because the counts move as the mirror is refreshed:
+**How to re-take the 500-row split numbers.** The site is the sports-site-a mirror and the category is Football, `term_id` 5, which holds 54,461 of that mirror's 145,646 posts. Confirm the category first, because the counts move as the mirror is refreshed:
 
 ```bash
-cd ~/Herd/larrybrownsports && wp --path=. db query "SELECT t.term_id, t.name, tt.count FROM wp_term_taxonomy tt JOIN wp_terms t ON t.term_id = tt.term_id WHERE tt.taxonomy = 'category' ORDER BY tt.count DESC LIMIT 5;"
+cd ~/Herd/sports-site-a && wp --path=. db query "SELECT t.term_id, t.name, tt.count FROM wp_term_taxonomy tt JOIN wp_terms t ON t.term_id = tt.term_id WHERE tt.taxonomy = 'category' ORDER BY tt.count DESC LIMIT 5;"
 ```
 
 Then time a plain `WP_Query` for that category at each page size. Flush the object cache between runs so the priming cost is real, pass `mai_cache => false` so the grid result cache does not answer instead of the database, and warm the buffer pool once before timing anything. Run it with `wp --path=. eval-file`:
@@ -127,7 +127,7 @@ composer dump-autoload --no-dev
 git status --porcelain vendor/
 ```
 
-The working tree can carry a with-dev autoloader from ordinary local tooling. Committing one fatals every site on deploy; it took eurweb.com down on 2026-06-29. Expect at most `vendor/composer/installed.php` to differ afterwards, which is a commit-hash reference and harmless. If the four `autoload_*.php` files still show as modified, stop and find out why before continuing.
+The working tree can carry a with-dev autoloader from ordinary local tooling. Committing one fatals every site on deploy; it took news-site-a.com down on 2026-06-29. Expect at most `vendor/composer/installed.php` to differ afterwards, which is a commit-hash reference and harmless. If the four `autoload_*.php` files still show as modified, stop and find out why before continuing.
 
 Every commit in this plan uses a targeted `git add`. Never `git add -A` or `git commit -a` on this branch.
 
@@ -1109,7 +1109,7 @@ Add to `lib/classes/class-mai-grid.php`, after `can_defer_excludes()`:
 	 * Why it is needed: the deferred path asks for posts_per_page + N rows. When rows tie on
 	 * the sort column, MySQL's LIMIT-aware sort is free to keep different ones for different
 	 * LIMITs, and it is free to answer differently between two runs of the same statement.
-	 * Measured on larrybrownsports with comment_count ordering, where 134,207 of 145,646 posts
+	 * Measured on sports-site-a with comment_count ordering, where 134,207 of 145,646 posts
 	 * tie at zero: across 120 grid renders, 20 differed between a LIMIT 6 and a LIMIT 13 read
 	 * of the same grid, 5 of them returning genuinely different posts rather than a reshuffle.
 	 *
@@ -1376,17 +1376,17 @@ Note the guard means a load-more grid should not defer at all: mai-load-more set
 
 - [ ] **Step 1: Install Mai Load More on a mirror**
 
-The user has approved installing it anywhere. Use `~/Herd/totalprosports`, whose `mai-engine` is already a symlink to this repo, so the branch under test is live there.
+The user has approved installing it anywhere. Use `~/Herd/sports-site-b`, whose `mai-engine` is already a symlink to this repo, so the branch under test is live there.
 
 ```bash
-ln -s ~/Plugins/mai-load-more ~/Herd/totalprosports/wp-content/plugins/mai-load-more
-cd ~/Herd/totalprosports && wp --path=. plugin activate mai-load-more
+ln -s ~/Plugins/mai-load-more ~/Herd/sports-site-b/wp-content/plugins/mai-load-more
+cd ~/Herd/sports-site-b && wp --path=. plugin activate mai-load-more
 ```
 
 - [ ] **Step 2: Pick a category with enough posts**
 
 ```bash
-cd ~/Herd/totalprosports && nice -n 19 wp --path=. db query \
+cd ~/Herd/sports-site-b && nice -n 19 wp --path=. db query \
   "SELECT tt.term_id, COUNT(*) c FROM wp_term_taxonomy tt
    JOIN wp_term_relationships tr ON tr.term_taxonomy_id=tt.term_taxonomy_id
    JOIN wp_posts p ON p.ID=tr.object_id AND p.post_type='post' AND p.post_status='publish'
@@ -1458,7 +1458,7 @@ $id = wp_insert_post( [
 
 echo "page id: {$id}\n" . get_permalink( $id ) . "\n";
 PHP
-cd ~/Herd/totalprosports && wp --path=. eval-file /tmp/lm-page.php
+cd ~/Herd/sports-site-b && wp --path=. eval-file /tmp/lm-page.php
 ```
 
 Then confirm it renders, **over HTTP, not through WP-CLI**:
@@ -1480,7 +1480,7 @@ If `grids` is 0, the term ID is wrong. If `load-more class` is 0, `className` en
 Add a temporary mu-plugin that writes each grid's SQL to a file you can read without hunting for the PHP error log:
 
 ```bash
-cat > ~/Herd/totalprosports/wp-content/mu-plugins/grid-probe.php <<'PHP'
+cat > ~/Herd/sports-site-b/wp-content/mu-plugins/grid-probe.php <<'PHP'
 <?php
 add_filter( 'posts_request', function ( $sql, $query ) {
 	if ( ! empty( $query->query_vars['mai_cache'] ) ) {
@@ -1493,13 +1493,13 @@ add_filter( 'posts_request', function ( $sql, $query ) {
 	return $sql;
 }, 10, 2 );
 PHP
-rm -f ~/Herd/totalprosports/wp-content/grid-probe.log
+rm -f ~/Herd/sports-site-b/wp-content/grid-probe.log
 ```
 
 Reload the page, then read it:
 
 ```bash
-cat ~/Herd/totalprosports/wp-content/grid-probe.log
+cat ~/Herd/sports-site-b/wp-content/grid-probe.log
 ```
 
 Expected: the first grid's SQL has **no** `NOT IN`, a `LIMIT` of 7 (6 plus the current post), and `, wp_posts.ID DESC` on the end. The second grid's SQL **does** have `NOT IN`, a `LIMIT` of 6, and no tiebreaker, because `no_found_rows` was turned off for it.
@@ -1525,8 +1525,8 @@ This is the cross-grid case that only works because the first grid's rendered ID
 - [ ] **Step 7: Clean up and record what happened**
 
 ```bash
-rm ~/Herd/totalprosports/wp-content/mu-plugins/grid-probe.php ~/Herd/totalprosports/wp-content/grid-probe.log
-cd ~/Herd/totalprosports && wp --path=. post delete <page id from Step 3> --force
+rm ~/Herd/sports-site-b/wp-content/mu-plugins/grid-probe.php ~/Herd/sports-site-b/wp-content/grid-probe.log
+cd ~/Herd/sports-site-b && wp --path=. post delete <page id from Step 3> --force
 ```
 
 Create `.agents/grid-deferred-excludes-verification.md` recording the category used, both grids' logged SQL, the two batches of titles, and whether anything was repeated or missing. Write what was observed, not what was expected. This is the only record that the load-more path was exercised at all.
@@ -1652,10 +1652,10 @@ remove_filter( 'posts_pre_query', $capture, 9 );
 
 - [ ] **Step 2: Sanity check the script before trusting it**
 
-Run it on larrybrownsports first and check the `today` line, not the `deferred` one.
+Run it on sports-site-a first and check the `today` line, not the `deferred` one.
 
 ```bash
-cd ~/Herd/larrybrownsports && nice -n 19 wp --path=. eval-file ~/Plugins/mai-engine/bin/grid-key-collapse.php 2>&1 | grep -vE "^(Deprecated|Notice|Warning)"
+cd ~/Herd/sports-site-a && nice -n 19 wp --path=. eval-file ~/Plugins/mai-engine/bin/grid-key-collapse.php 2>&1 | grep -vE "^(Deprecated|Notice|Warning)"
 ```
 
 Expected: `today` produces close to one key per article, around 300. If it does not, `is_singular()` is still false and the script is measuring nothing; fix that before reading the `deferred` number.
@@ -1663,13 +1663,13 @@ Expected: `today` produces close to one key per article, around 300. If it does 
 - [ ] **Step 3: Run it on all three mirrors**
 
 ```bash
-for s in larrybrownsports totalprosports tvnewscheck; do
+for s in sports-site-a sports-site-b news-site-b; do
   echo "=== $s ==="
   cd ~/Herd/$s && nice -n 19 wp --path=. eval-file ~/Plugins/mai-engine/bin/grid-key-collapse.php 2>&1 | grep -vE "^(Deprecated|Notice|Warning)"
 done
 ```
 
-Expected: a large drop on larrybrownsports and totalprosports. **tvnewscheck is expected to show no collapse at all**, because Mai ElasticPress sets `ep_integrate` on every grid and `can_defer_excludes()` refuses those. That is the correct result there, not a failure. See `.agents/elasticpress-grid-cache.md`.
+Expected: a large drop on sports-site-a and sports-site-b. **news-site-b is expected to show no collapse at all**, because Mai ElasticPress sets `ep_integrate` on every grid and `can_defer_excludes()` refuses those. That is the correct result there, not a failure. See `.agents/elasticpress-grid-cache.md`.
 
 - [ ] **Step 4: Add the changelog entry**
 
@@ -1703,7 +1703,7 @@ git commit -m "feat(grid): add key-collapse measurement script and changelog ent
 Do not push, do not open a PR, do not tag. Ask first.
 
 1. Code review before this merges. The branch deploys as-is to client sites.
-2. **Decide how to roll this out, because deploying it empties the grid cache.** Every deferring grid's key changes, since both the padded `LIMIT` and the appended tiebreaker are hashed. So the moment this ships, every grid on every site goes cold at once and recomputes. Single-flight blunts it, but only on hosts with a persistent object cache (`lib/classes/class-mai-query-cache.php:281-283`), and larrybrownsports is exactly the site where a stampede hurts. Options worth weighing: deploy off-peak, or ship with `mai_post_grid_defer_excludes` filtered off and turn it on per site. This is an operational call, not a code change, and it is not decided.
+2. **Decide how to roll this out, because deploying it empties the grid cache.** Every deferring grid's key changes, since both the padded `LIMIT` and the appended tiebreaker are hashed. So the moment this ships, every grid on every site goes cold at once and recomputes. Single-flight blunts it, but only on hosts with a persistent object cache (`lib/classes/class-mai-query-cache.php:281-283`), and sports-site-a is exactly the site where a stampede hurts. Options worth weighing: deploy off-peak, or ship with `mai_post_grid_defer_excludes` filtered off and turn it on per site. This is an operational call, not a code change, and it is not decided.
 3. Soak on one site before wider rollout.
 3. Once soaked, revisit deleting `Mai_Post_Grid_Query_Optimizer`, its four test files, its two bin scripts, and the now-dead `mai_post_grid_tt_ids` check at `lib/classes/class-mai-query-cache.php:169`. That check also carries a stale comment describing a `post__in` fast path the optimizer does not use.
 4. Still open, deliberately: ElasticPress sites get nothing from this. See `.agents/elasticpress-grid-cache.md`.

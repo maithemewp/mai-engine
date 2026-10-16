@@ -6,7 +6,7 @@ Component: `mai-engine` `Mai_Grid` (`lib/classes/class-mai-grid.php`) plus a reu
 
 ## Background and the confirmed root cause
 
-The initiative's goal is to cut server load by caching expensive, rarely-changing work. The grid sub-project was driven by a real, observed symptom: on eurweb (a busy news site running Redis + WP 7.0), post-grid queries hammered the database even though a persistent object cache was active. We diagnosed this on a synced copy (`eurweb.test`) with Redis engaged, and the cause is now measured, not assumed:
+The initiative's goal is to cut server load by caching expensive, rarely-changing work. The grid sub-project was driven by a real, observed symptom: on news-site-a (a busy news site running Redis + WP 7.0), post-grid queries hammered the database even though a persistent object cache was active. We diagnosed this on a synced copy (`news-site-a.test`) with Redis engaged, and the cause is now measured, not assumed:
 
 - WP core 6.1+ already caches `WP_Query` results (post IDs + found count) in the object cache, and on a healthy Redis a warm grid query costs **zero** database queries. So core's caching is not broken, and the optimizer's SQL rewrite does not make grids uncacheable (both verified by measurement).
 - Core salts every query-result cache key with the `posts` `last_changed` value (plus `terms` for tax queries). On a write-heavy editorial site, `last_changed` churns continuously: real edits, **autosave revisions** (every open editor autosaves on a ~60s heartbeat, and each revision insert calls `clean_post_cache`), and the revisionary plugin all bump it. We measured `last_changed` taking four distinct values in 30 seconds on production during editorial hours.
@@ -22,7 +22,7 @@ On write-heavy sites, core's `last_changed`-salted query caching is invalidated 
 
 Cache the resolved grid result (ordered post IDs plus the found count) under a salt we control — a group-flush token rotated only on changes that affect grid output — instead of core's `last_changed`. A repeat request then skips the filtering query and hydrates posts straight from the object cache. Reduce aggregate database and server load on write-heavy sites (the proven pain), and provide the same benefit on sites with no persistent object cache (via a DB-backed store), where core's caching gives nothing cross-request at all.
 
-Proven on `eurweb.test`: a token-keyed IDs cache served a full 12-post grid in **0 database queries immediately after a `last_changed` bump**, where core's cache took 2. That is the entire point of this design, validated against the real churn.
+Proven on `news-site-a.test`: a token-keyed IDs cache served a full 12-post grid in **0 database queries immediately after a `last_changed` bump**, where core's cache took 2. That is the entire point of this design, validated against the real churn.
 
 ## Non-goals
 
@@ -75,8 +75,8 @@ On a hit — fresh, or stale (the stale path serves these same ids while one req
 
 Same key, shape, and logic; only the store differs, abstracted by the mai-cache foundation:
 
-- **Object-cache mode** when `wp_using_ext_object_cache()` is true (eurweb and any Redis site): no `wp_options` writes, entries ride Redis.
-- **Transient / DB mode** otherwise (e.g. totalprosports today, low-traffic theme customers with no object cache): the token and values persist in `wp_options`, swapping each heavy filtering query for a light indexed `wp_options` read. This is the case core cannot help with at all, since `last_changed` itself does not persist without an object cache.
+- **Object-cache mode** when `wp_using_ext_object_cache()` is true (news-site-a and any Redis site): no `wp_options` writes, entries ride Redis.
+- **Transient / DB mode** otherwise (e.g. sports-site-b today, low-traffic theme customers with no object cache): the token and values persist in `wp_options`, swapping each heavy filtering query for a light indexed `wp_options` read. This is the case core cannot help with at all, since `last_changed` itself does not persist without an object cache.
 
 The token must live in the same persistent store as the data (so it survives without Redis); this is exactly mai-cache's existing group-flush behavior.
 
@@ -92,7 +92,7 @@ The cache sits above the query engine, so it is EP-agnostic and reduces ES load 
 - Cache everything else — multi-clause tax, `meta_query`, and any bail shape — since those are the churn-vulnerable, expensive ones.
 - A `mai_post_grid_cache` filter forces a specific grid in or out; a TTL filter overrides the backstop per grid.
 
-The cache is shape-agnostic: it stores whatever IDs the query returns, so single-IN, multiple tax clauses, AND/OR, NOT IN, `meta_query`, and any non-`RAND` sort all get free warm hits. The cache reduces the *frequency* of cold queries, not their *cost* — a cold single-IN miss on a large term measured ~250ms on eurweb's 80k-post category (stock; ~0.5ms with an optimizer). With the optimizer off, every cold miss pays that stock cost, but the cache plus single-flight make misses rare and keep them off the user's critical path (served stale while one request refreshes). Whether that residual cold load justifies adding a validated optimizer is a measured follow-on (see Optimizer).
+The cache is shape-agnostic: it stores whatever IDs the query returns, so single-IN, multiple tax clauses, AND/OR, NOT IN, `meta_query`, and any non-`RAND` sort all get free warm hits. The cache reduces the *frequency* of cold queries, not their *cost* — a cold single-IN miss on a large term measured ~250ms on news-site-a's 80k-post category (stock; ~0.5ms with an optimizer). With the optimizer off, every cold miss pays that stock cost, but the cache plus single-flight make misses rare and keep them off the user's critical path (served stale while one request refreshes). Whether that residual cold load justifies adding a validated optimizer is a measured follow-on (see Optimizer).
 
 ### Optimizer (decoupled, off by default for this work)
 
@@ -100,10 +100,10 @@ This work does not ship or harden a query optimizer. The cache makes warm hits f
 
 Decoupling it is deliberate, because **neither existing optimizer is validated**:
 
-- The **args-strip** version (on develop) is the more-reviewed of the two (subagent review, equivalence matrix on totalprosports, EP guard + test) but fails *dangerous*: it strips `tax_query` from the args, so any query-offloader that reads the args (ElasticPress, FacetWP, and others we cannot enumerate) can silently return the wrong posts. Guarding each offloader is whack-a-mole.
-- The **`posts_clauses`** version (currently on eurweb prod) is an ~18-hour-old temporary fix, verified only to *cache* — not its correctness across shapes, its regex robustness, or its bail behavior. It fails *safe* (a regex miss bails to stock), but it is not proven.
+- The **args-strip** version (on develop) is the more-reviewed of the two (subagent review, equivalence matrix on sports-site-b, EP guard + test) but fails *dangerous*: it strips `tax_query` from the args, so any query-offloader that reads the args (ElasticPress, FacetWP, and others we cannot enumerate) can silently return the wrong posts. Guarding each offloader is whack-a-mole.
+- The **`posts_clauses`** version (currently on news-site-a prod) is an ~18-hour-old temporary fix, verified only to *cache* — not its correctness across shapes, its regex robustness, or its bail behavior. It fails *safe* (a regex miss bails to stock), but it is not proven.
 
-If the measurement below shows the residual cold-miss load is worth optimizing, adopting an optimizer is its own task: do the real validation — equivalence across shapes on eurweb data, a `post_date`-orderby gate (today neither version bails on non-date sorts, where the subquery has no early-LIMIT win and can be *slower* than stock), and a robustness review — and choose on that plus the failure mode, not on which one happens to be deployed. Note that eurweb prod currently relies on the unvalidated temp fix for grid speed; shipping the cache reduces that reliance, and retiring or validating that temp code is a related cleanup.
+If the measurement below shows the residual cold-miss load is worth optimizing, adopting an optimizer is its own task: do the real validation — equivalence across shapes on news-site-a data, a `post_date`-orderby gate (today neither version bails on non-date sorts, where the subquery has no early-LIMIT win and can be *slower* than stock), and a robustness review — and choose on that plus the failure mode, not on which one happens to be deployed. Note that news-site-a prod currently relies on the unvalidated temp fix for grid speed; shipping the cache reduces that reliance, and retiring or validating that temp code is a related cleanup.
 
 ### `wp cache flush` and full-flush coverage
 
@@ -138,12 +138,12 @@ We deliberately scope this to grids rather than hijacking all `WP_Query`s, even 
 
 ## Verification (mandatory before ship)
 
-- **Churn survival (the core claim)**, on `eurweb.test` with Redis engaged: reproduce `_probes/churn-fix-demo.php` — after a `last_changed` bump, the token cache serves the grid in 0 queries while core takes >0. Already passing; keep as a regression check.
+- **Churn survival (the core claim)**, on `news-site-a.test` with Redis engaged: reproduce `_probes/churn-fix-demo.php` — after a `last_changed` bump, the token cache serves the grid in 0 queries while core takes >0. Already passing; keep as a regression check.
 - **Correctness / equivalence**: a hit returns the same ordered IDs and found count as a fresh compute for the same args, across single-IN, multi-tax, and meta grids (extend `bin/grid-equivalence-matrix.php`).
 - **Invalidation**: publishing / unpublishing / trashing / deleting, and editing an already-published post, rotate the right per-type token and force a recompute; draft saves, autosaves, and revisions do **not**.
 - **No-Redis path**: with the object cache disabled, the transient store persists across requests and swaps the filtering query for a `wp_options` read; `wp cache flush` (via the WP-CLI hook) and `wp mai flush` both clear it.
-- **Stampede / stale-while-revalidate** (the stampede claim, currently unproven): fire N concurrent requests at one grid immediately after a token rotation and confirm exactly one recompute runs while the rest serve the stale ids (and the served ids match the pre-rotation result); and that a fully cold key (after `wp cache flush`) funnels to one recompute per key, not N. Build a concurrency probe on `eurweb.test` (parallel `wp eval` / HTTP). This is a hard gate, not an assumption.
-- **Cold-miss load (informs the optimizer decision, not a gate)**: with the cache live and the optimizer off, measure the background DB load from cold misses / single-flight refreshes on eurweb (count and total query time per editorial hour). This is the input to whether a validated optimizer is worth building later — not a pass/fail gate for the cache.
+- **Stampede / stale-while-revalidate** (the stampede claim, currently unproven): fire N concurrent requests at one grid immediately after a token rotation and confirm exactly one recompute runs while the rest serve the stale ids (and the served ids match the pre-rotation result); and that a fully cold key (after `wp cache flush`) funnels to one recompute per key, not N. Build a concurrency probe on `news-site-a.test` (parallel `wp eval` / HTTP). This is a hard gate, not an assumption.
+- **Cold-miss load (informs the optimizer decision, not a gate)**: with the cache live and the optimizer off, measure the background DB load from cold misses / single-flight refreshes on news-site-a (count and total query time per editorial hour). This is the input to whether a validated optimizer is worth building later — not a pass/fail gate for the cache.
 
 ## Testing (unit, where practical)
 

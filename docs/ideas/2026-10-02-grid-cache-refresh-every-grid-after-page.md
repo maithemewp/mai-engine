@@ -8,7 +8,7 @@ In 2.41.0-beta.5 every grid is served from the cache while its note is current. 
 
 The reason is how notes are built. An Exclude grid builds its note with a cheap copy of its query that asks only for post IDs (`fetch_ids()`), and a refresh after the page reruns that same copy, so it stores exactly what the page would. Every other grid builds its note from its full query, after other plugins' `posts_results` and `the_posts` filters have run. Rerunning that full query after the page would run those filters at a different moment, so the stored list could differ from what visitors normally see. The beta.5 spec ruled that out.
 
-Measured on local eurweb (2026-10-02): the front page's top slider grid has no Exclude setting. When its note aged, the page took 342 ms longer than with fresh notes, with WordPress's own query cache cold.
+Measured on local news-site-a (2026-10-02): the front page's top slider grid has no Exclude setting. When its note aged, the page took 342 ms longer than with fresh notes, with WordPress's own query cache cold.
 
 ## The idea
 
@@ -27,5 +27,5 @@ Build every eligible grid's note with the ID-only copy, the way Exclude grids do
 1. Scan the fleet for plugins that hook `posts_pre_query`, `posts_results` or `the_posts` and could touch a grid's query. List what each does.
 2. Count how many grids across the fleet use no Exclude setting, to size the benefit.
 3. Build it behind a filter that defaults to off, with no-drift tests for every non-Exclude grid shape (fixed category, views or trending order, taxonomy and meta queries, multiple post types, custom order).
-4. Measure on local eurweb, larrybrownsports (with Redis), two small sites without Redis, and visitsleepyhollow: time to first byte with aged notes, grid queries per minute, and identical post IDs with the cache on and off.
+4. Measure on local news-site-a, sports-site-a (with Redis), two small sites without Redis, and tourism-site-a: time to first byte with aged notes, grid queries per minute, and identical post IDs with the cache on and off.
 5. Turn it on for a handful of sites in a beta, watch error logs and page timings for a week, then decide on the default.

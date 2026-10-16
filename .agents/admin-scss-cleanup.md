@@ -27,7 +27,7 @@ This catalog labels every block so we can decide block-by-block what to keep, re
 
 ## Separate workstream — light-island text on dark sites (login + `.has-light-background`) — added 2026-06-01
 
-**Surfaced while testing the cleanup on `sportsdataio.test` (a dark-themed site).** Not part of `admin.scss`; tracked here so it's not lost.
+**Surfaced while testing the cleanup on `sports-data-site.test` (a dark-themed site).** Not part of `admin.scss`; tracked here so it's not lost.
 
 ### Symptom
 wp-login.php: dark page background, but the white form card showed white text (white-on-white, invisible inputs/labels).
@@ -75,7 +75,7 @@ No new cache. The token rides the existing **`mai_dynamic_css` transient** (1h T
 ### Verification
 - **Login: VERIFIED.** Computed input text flipped `rgb(255,255,255)` → `rgb(42,41,41)` (#2a2929 = site background) on the white card; screenshot confirms legible dark labels. Tokens emit `#2a2929` in page HTML.
 - **Editor MPG `.has-boxed`: VERIFIED.** Token reaches the iframe (`#2a2929`); after rebuild + reload, boxed entry cards compute white bg + `rgb(42,41,41)` text + dark title links; screenshot of TECH/FINANCE/LIFESTYLE grids shows readable dark titles on white cards (was white-on-white). Non-boxed grids (transparent, white text on dark canvas) were always fine.
-- **Frontend: VERIFIED across all four quadrants** via a built test page (`?page_id=2884` on sportsdataio, "Mai Light-Dark Nesting Test"). On the dark site: light island → `rgb(42,41,41)` dark; dark island → white; light-nested-in-dark → dark; dark-nested-in-light → white; form input (white) → dark. Loaded rule confirmed `var(--color-body-on-light,var(--color-body))`. (Test page can be deleted: `wp post delete 2884 --force`.)
+- **Frontend: VERIFIED across all four quadrants** via a built test page (`?page_id=2884` on sports-data-site, "Mai Light-Dark Nesting Test"). On the dark site: light island → `rgb(42,41,41)` dark; dark island → white; light-nested-in-dark → dark; dark-nested-in-light → white; form input (white) → dark. Loaded rule confirmed `var(--color-body-on-light,var(--color-body))`. (Test page can be deleted: `wp post delete 2884 --force`.)
 - **Sub-menu fix:** same mechanism + compiled rule verified; not separately eyeballed (test page has no nav sub-menu).
 - **No light-site regression:** guaranteed by construction (on light sites the token isn't emitted → fallback resolves to `--color-body`, the pre-change value); not yet exercised on a live light site.
 - **Cache-busting gotcha (LOCAL TESTING ONLY):** Mai versions CSS by filemtime, but the gulp build's `gulp.dest` preserves the *source* mtime, so rebuilt `.min.css` keep a stale mtime → `?ver=` doesn't change → browsers serve cached pre-fix CSS. Fix while testing: `touch assets/css/*.min.css` then hard-reload. NON-ISSUE on release — the mai-engine version bump changes the `?ver=` prefix and busts every CSS URL.
@@ -92,11 +92,11 @@ No new cache. The token rides the existing **`mai_dynamic_css` transient** (1h T
   - **Skip `contrast-color()`** for now. All engines support it in current versions (Chrome/Edge 147+, FF 146+, Safari 26+) but only ~67% global usage (1/3 of visitors unsupported → still needs the `-on-light` fallback = more code, not less), AND it returns black/white only (not our themed `#2a2929`). The eventual endgame once usage is high + B/W contrast is acceptable: `color: contrast-color(var(--surface-bg))` could retire the `-on-light` tokens + most PHP luminance. Not yet.
 - **Split global vs context-dependent dynamic CSS into separate transients** (user suggested 2026-06-01). The single `mai_dynamic_css` blob mixes truly-global CSS (colors/breakpoints/fonts) with context-dependent page-header CSS, forcing the blunt `save_post` flush of everything. Deferred — hot-path refactor, marginal perf win, possible latent per-context caching subtlety; deserves its own investigation, not bundled with this bugfix.
 
-### wp-cli on `sportsdataio.test` — was BROKEN, now FIXED 2026-06-01
+### wp-cli on `sports-data-site.test` — was BROKEN, now FIXED 2026-06-01
 **Symptom:** every `wp` command returned empty output / exit-0; `wp eval` didn't even run (file_put_contents never fired). **Root cause:** `mai-debugger` (`~/Plugins/mai-debugger`, symlinked) registered Whoops' `PrettyPageHandler` *unconditionally* — including under WP-CLI. Whoops' error handler converts PHP notices/deprecations into exceptions, then renders an (invisible-in-CLI) HTML page and exits. `wp-loupe`'s MCP server emits PHP 8.4 "implicitly nullable param" **deprecations** during bootstrap (`includes/class-wp-loupe-mcp-server.php:743,819`) → Whoops turned that into an exception → silent exit before the wp command ran. Either plugin alone = fine; together = dead wp-cli.
 **Fix — RELEASED in mai-debugger 0.3.0** (commit `369333c`, pushed to `main`+`develop`, tag `0.3.0`): guard the Whoops registration with `$is_cli = ( defined('WP_CLI') && WP_CLI ) || 'cli' === PHP_SAPI;` and skip it in CLI. Verified: `wp eval`, `wp option get`, `wp transient delete` all work with the full plugin set. **No more MySQL workaround needed.** (That release also: bumped deps — PUC 5.6→5.7, var-dumper→6.4.36 LTS; added `Requires PHP: 8.1` header; switched PUC from branch-based to tag-based to match sibling mai-* plugins.)
 **Note:** this fixes wp-cli on EVERY Herd site running mai-debugger once that plugin is committed/released. Secondary, harmless: wp-loupe's PHP 8.4 deprecation warnings still print (warnings only now) — could report upstream / bump wp-loupe.
-(Old MySQL transient-bust recipe, no longer needed: `mysql -uroot -p"$PW" -h127.0.0.1 sportsdataio -e "DELETE FROM wp_options WHERE option_name LIKE '_transient_%mai_dynamic_css';"`. No persistent object cache present.)
+(Old MySQL transient-bust recipe, no longer needed: `mysql -uroot -p"$PW" -h127.0.0.1 sports-data-site -e "DELETE FROM wp_options WHERE option_name LIKE '_transient_%mai_dynamic_css';"`. No persistent object cache present.)
 
 ---
 
@@ -106,8 +106,8 @@ No new cache. The token rides the existing **`mai_dynamic_css` transient** (1h T
 
 - **Branch**: `cleanup/wp-69-iframe-css` (local; NEVER pushed; user wants to test all locally first).
 - **Last commit**: `45b67122f` — "Block editor iframe: register admin/Kirki styles via enqueue_block_assets" (Pass 1 complete).
-- **Working tree**: Pass 2 + several follow-on cleanups applied but **NOT yet committed**. Awaiting final test on `sportsdataio.test` before commit.
-- **Test site**: `~/Herd/sportsdataio` (WP 7.0). Symlinks `~/Plugins/mai-engine` → live updates on rebuild. User edits posts to verify behavior.
+- **Working tree**: Pass 2 + several follow-on cleanups applied but **NOT yet committed**. Awaiting final test on `sports-data-site.test` before commit.
+- **Test site**: `~/Herd/sports-data-site` (WP 7.0). Symlinks `~/Plugins/mai-engine` → live updates on rebuild. User edits posts to verify behavior.
 
 ### Constraints from the user (don't violate)
 
@@ -145,7 +145,7 @@ Plus pre-existing in working tree (DON'T commit, NOT this branch's work):
 - `vendor/composer/*` (6 files) — user's prior composer regen
 - `.agents/admin-scss-cleanup.md` (this doc) — working doc, untracked
 
-### Status — VERIFIED on sportsdataio.test (2026-05-29)
+### Status — VERIFIED on sports-data-site.test (2026-05-29)
 
 All confirmed by the user, frontend + editor:
 - **Frontend**: full-bleed edge-to-edge; persistent thin scrollbar; no jump, no gap, no horizontal scroll. `getComputedStyle(body).getPropertyValue('--scrollbar-width')` = `0px` even with a guaranteed scrollbar → the `calc(100vw-100%)`+`@property` trick is **confirmed DEAD** (it was never the fix; `overflow-x: hidden` + `scrollbar-gutter` are).
@@ -292,7 +292,7 @@ Discussed but **not changed**. The current `:not(.has-text-color)` guards in `%b
    - Fix the typo at admin.scss:156 (`1px solid 1px solid …`).
    - Add `enqueue_block_assets` hook in `enqueue.php` so the `mai-engine-admin` handle registers through the iframe-correct channel (silences WP 6.9 warning).
    - Rebuild via `npm run styles`.
-   - Commit, push to develop, verify warning is gone in browser on poinstitute.
+   - Commit, push to develop, verify warning is gone in browser on member-site-a.
 
 2. **Phase B — strip-and-restore loop**
    - Move all remaining iframe-content rules out of admin.scss into a scratch section (commented or in a separate `admin-iframe-attic.scss` we don't load).
@@ -356,7 +356,7 @@ Discussed but **not changed**. The current `:not(.has-text-color)` guards in `%b
 - **Intent**: When Mai dark-body theme option is set, force heading/body/appender text white in the editor canvas (so dark backgrounds look right).
 - **Scope**: `body.has-dark-body` is on **outer admin doc** (set via `admin_body_class` filter). `.editor-styles-wrapper` is **inside the iframe**. CSS descendant combinators do not cross documents.
 - **Status**: **Suspected broken since 6.9.** The descendant cannot match across the iframe boundary.
-- **Test plan**: With a dark-body site (poinstitute may have one), edit a post — confirm whether headings inside the editor canvas currently render dark on dark (broken) or white on dark (working). If broken: this rule was already non-functional and the fix is to set `--heading-color` / `--body-color` inside the iframe (via `editor.scss`) keyed off a body class that DOES exist in the iframe (or via a runtime body-class mirror).
+- **Test plan**: With a dark-body site (member-site-a may have one), edit a post — confirm whether headings inside the editor canvas currently render dark on dark (broken) or white on dark (working). If broken: this rule was already non-functional and the fix is to set `--heading-color` / `--body-color` inside the iframe (via `editor.scss`) keyed off a body class that DOES exist in the iframe (or via a runtime body-class mirror).
 - **Decision target**: **Needs verification.** If broken: delete and rewrite in `editor.scss` against an iframe-side body class.
 
 ### Block 6 — `body.has-boxed-container .editor-styles-wrapper { --body-background-color: white; --mai-block-appender-color: #1e1e1e }` (lines 41–44)
@@ -687,7 +687,7 @@ Discussed but **not changed**. The current `:not(.has-text-color)` guards in `%b
 
 ## Phase B test matrix (when stripping iframe rules)
 
-For each of these visual states, edit a page on poinstitute and screenshot before/after:
+For each of these visual states, edit a page on member-site-a and screenshot before/after:
 
 1. Default body, layout = `standard-content`, no sidebar open.
 2. Default body, layout = `content-sidebar`, sidebar open.

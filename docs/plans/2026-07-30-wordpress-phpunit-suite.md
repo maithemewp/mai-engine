@@ -1442,7 +1442,7 @@ printf( "%d of %d posts change\n", $changed, count( $rows ) );
 - [ ] **Step 2: Run it across every local site that has mai-engine**
 
 ```bash
-for s in /Users/jivedig/Herd/*/; do
+for s in ~/Herd/*/; do
   [ -d "$s/wp-content/plugins/mai-engine" ] || continue
   echo "===== $(basename $s) ====="
   wp --path="$s" eval-file /path/to/corpus-diff.php 2>/dev/null | tail -40
@@ -1517,7 +1517,7 @@ case changes is a stop condition, not something to accept.
 - [ ] **Step 4: Re-run the real smoke test**
 
 ```bash
-url=$(wp --path=/Users/jivedig/Herd/sportsdataio eval 'echo get_permalink(2937);')
+url=$(wp --path=~/Herd/sports-data-site eval 'echo get_permalink(2937);')
 curl -sk "$url" | grep -cE '<script>alert\(1\)</script>'
 ```
 
@@ -1577,7 +1577,7 @@ as they do in mai-engine after Task 11.
 - [ ] **Step 4: Check for other copies before declaring done**
 
 ```bash
-grep -rn "HTML-ENTITIES" /Users/jivedig/Plugins/ --include='*.php' | grep -v vendor | grep -v _legacy
+grep -rn "HTML-ENTITIES" ~/Plugins/ --include='*.php' | grep -v vendor | grep -v _legacy
 ```
 
 Expected: no output. Any hit is an unfixed copy.

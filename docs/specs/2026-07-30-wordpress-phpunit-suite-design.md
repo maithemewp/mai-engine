@@ -16,7 +16,7 @@ Status: Encoding fix SHIPPED across four plugins. Test-suite infrastructure (pha
 ## Security finding
 
 `mai_get_dom_html()` decodes HTML entities across the whole serialized document, turning
-escaped text back into live markup. Reproduced end to end on `sportsdataio` (WordPress
+escaped text back into live markup. Reproduced end to end on `sports-data-site` (WordPress
 7.0.2), served over HTTP:
 
 1. A Contributor types `<script>alert(1)</script>` as text in a paragraph block. The editor
@@ -173,7 +173,7 @@ Note that `plugin-loader.php` boots two non-inert files inside a live WordPress:
 }
 ```
 
-The pin is `^7.0` rather than the `^6.9` that the current `require-dev` happens to resolve, because the fleet has already moved. Sampled local site copies: `allhiphop` 7.0.2, `balloon-juice` 7.0.1, `eurweb` 7.0, `tvnewscheck` 6.9.5. Testing below the production floor means a WordPress behavior change that breaks a site can still pass CI, which matters here because `WP_HTML_Tag_Processor` is actively developed and the link-color test depends on it directly.
+The pin is `^7.0` rather than the `^6.9` that the current `require-dev` happens to resolve, because the fleet has already moved. Sampled local site copies: `news-site-c` 7.0.2, `blog-site-a` 7.0.1, `news-site-a` 7.0, `news-site-b` 6.9.5. Testing below the production floor means a WordPress behavior change that breaks a site can still pass CI, which matters here because `WP_HTML_Tag_Processor` is actively developed and the link-color test depends on it directly.
 
 `wp-phpunit` and `roots/wordpress-no-content` are meant to track together; a comment in the file says so. Matching majors is sufficient. This was tested rather than assumed: wp-phpunit 6.9.4 against core 6.9.5 passes, and wp-phpunit 6.9.5 against core 7.0.2 also passes. There is no version assertion in the bootstrap, so real drift fails loudly as a fatal rather than silently, and the committed `tests/composer.lock` means it only moves on a deliberate `composer update -d tests`.
 
@@ -485,7 +485,7 @@ Five implementations were run over 65 fixtures covering all six groups above.
 
 The fixture measurements above pointed at candidate C. The corpus diff over real content, 289,572 posts across 13 local sites, disqualified it. This is the single most important entry in this document: **no fixture anyone would have written by hand would have caught this.**
 
-**Candidate C corrupts legacy imported content.** On allhiphop it broke 12,257 posts. The mechanism, traced byte by byte:
+**Candidate C corrupts legacy imported content.** On news-site-c it broke 12,257 posts. The mechanism, traced byte by byte:
 
 1. Legacy content contains U+0092, a C1 control character. It is valid UTF-8, so no encoding check flags it, but semantically it is a CP1252 curly apostrophe from an old import. One sampled post held 14 of them.
 2. `mb_encode_numericentity` turns U+0092 into `&#146;`.
@@ -530,7 +530,7 @@ Matching decoded characters rather than a list of entity spellings is deliberate
 
 The middle row is `SEO > Tools` becoming `SEO &gt; Tools`, which browsers render identically. Verified by comparing tag structure, not by eye.
 
-The last row is the real cost and was accepted deliberately. Roughly 175 posts on allhiphop, 69 on mgnv and 8 on eurweb contain escaped markup that the blind decode was *activating* into live HTML. Those now render as visible text. Spread across 2003 to 2026, the tags involved are `div`, `a`, `br`, `p`, `iframe`, `script`, `font`, `img`, `embed`. Ten of them were activating live `<script>` tags, which is the vulnerability in production content. They are individually identifiable and repairable afterward.
+The last row is the real cost and was accepted deliberately. Roughly 175 posts on news-site-c, 69 on nonprofit-site-a and 8 on news-site-a contain escaped markup that the blind decode was *activating* into live HTML. Those now render as visible text. Spread across 2003 to 2026, the tags involved are `div`, `a`, `br`, `p`, `iframe`, `script`, `font`, `img`, `embed`. Ten of them were activating live `<script>` tags, which is the vulnerability in production content. They are individually identifiable and repairable afterward.
 
 Inline JS was checked specifically and does not break. `<script>` and `<style>` bodies pass through byte-identical, since libxml treats them as raw CDATA. Event handler attributes change in the source, `onclick="if (a && b < c)"` becomes `onclick="if (a &amp;&amp; b &lt; c)"`, but HTML parsers decode attribute values before compiling the handler, so the JS engine receives identical code. Confirmed with WordPress's own spec-compliant HTML5 parser and in a browser.
 

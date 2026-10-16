@@ -4,7 +4,7 @@ Status: fix 1 is specced in `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.m
 
 ## The problem
 
-On eurweb (85,000 posts), every article shows six related-posts grids. Each one shows posts from the article's own categories and leaves out what the grids above it showed. When a grid's list has to be rebuilt, each grid sends one statement that takes about 250 ms, about 1.5 s per article. That happens after every post save, which on eurweb comes every 15 to 75 minutes, and after a Mai Engine update. 2.40.1 is just as slow. Measured on the local copy of eurweb, 2026-10-04 (48 cold views, TTFB 2,956 ms, of which the six statements are 1,532 ms).
+On news-site-a (85,000 posts), every article shows six related-posts grids. Each one shows posts from the article's own categories and leaves out what the grids above it showed. When a grid's list has to be rebuilt, each grid sends one statement that takes about 250 ms, about 1.5 s per article. That happens after every post save, which on news-site-a comes every 15 to 75 minutes, and after a Mai Engine update. 2.40.1 is just as slow. Measured on the local copy of news-site-a, 2026-10-04 (48 cold views, TTFB 2,956 ms, of which the six statements are 1,532 ms).
 
 The statement joins `wp_term_relationships`, so a post in two of the article's categories appears twice. WordPress removes the duplicates with `GROUP BY wp_posts.ID`, which builds a temporary table of about 81,500 rows and then sorts for the newest few. It reads nothing from disk. It is CPU work. The six statements are the same query with LIMIT 2, 8, 14, 20, 26 and 32, and each smaller list was exactly the start of the LIMIT 32 list.
 
@@ -25,7 +25,7 @@ Fix 1 also shrinks the one case where beta.5 is slower than 2.40.1: the first vi
 
 Fix 1 should only ever take effect where it is known to be safe, and fall back to today's SQL everywhere else.
 
-- **Only Mai's own ID-only copy.** For grids that defer their excludes, the copy is the only statement that hits the database on a miss, and its answer is just a list of IDs. The page's own query is never rewritten. All six slow eurweb grids are of this kind.
+- **Only Mai's own ID-only copy.** For grids that defer their excludes, the copy is the only statement that hits the database on a miss, and its answer is just a list of IDs. The page's own query is never rewritten. All six slow news-site-a grids are of this kind.
 - **Only plain category and tag filters.** One or more terms with `IN`, the shapes the no-drift tests cover. Anything else (`AND`, `NOT IN`, `EXISTS` operators, meta queries mixed in, custom taxonomies Mai has not tested) keeps today's SQL.
 - **Only when nobody else touched the SQL.** At the last moment before the statement runs, Mai compares the join, where and group-by clauses with what WordPress itself built for that tax query. If another plugin changed any of them, Mai leaves the statement alone. A plugin rewriting the query can then never be broken or silently undone.
 - **A switch, off by default.** A filter turns it on, so a beta can ship it to a few sites first, and any site can turn it off again.
@@ -33,7 +33,7 @@ Fix 1 should only ever take effect where it is known to be safe, and fall back t
 
 ## How to find out
 
-1. Run one read-only `EXPLAIN` of the rewritten statement on live eurweb's MySQL 8.0.46 (`mai-sites run`).
+1. Run one read-only `EXPLAIN` of the rewritten statement on live news-site-a's MySQL 8.0.46 (`mai-sites run`).
 2. Scan the fleet for plugins hooking the SQL clause filters, and list what each does to a grid's query.
-3. Build fix 1 behind a filter that defaults to off, with no-drift tests for every tax query shape, then measure on local eurweb, larrybrownsports and a small site.
+3. Build fix 1 behind a filter that defaults to off, with no-drift tests for every tax query shape, then measure on local news-site-a, sports-site-a and a small site.
 4. Build fix 2 the same way, if fix 1 does not already make it unnecessary.

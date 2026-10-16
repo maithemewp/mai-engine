@@ -23,7 +23,7 @@
 - No em-dashes in code comments, `CHANGES.md` or commit messages. Commit bodies are one line per paragraph and end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - The committed `vendor/composer` autoloader must stay no-dev; `php vendor/bin/deployable-guard check` passes before every commit (the pre-commit hook runs it).
 - Live sites are read-only. Never push, tag or release.
-- Local site work follows `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`: back up `wp-config.php`, restore with `cp`, check with `cmp`, never `wp cache flush` on eurweb or larrybrownsports, delete every temporary mu-plugin.
+- Local site work follows `.superpowers/sdd/2026-10-01-grid-cache-beta-5/task-14-rules.md`: back up `wp-config.php`, restore with `cp`, check with `cmp`, never `wp cache flush` on news-site-a or sports-site-a, delete every temporary mu-plugin.
 
 ## Review Focus
 
@@ -225,14 +225,14 @@ Superseded on 2026-10-05: see spec "Ties" for the tiebreaker rule.
 - Consumes: Task 2's `rebuild()`, `condition()`, `swap()`; Task 1's `hint()` rule (MySQL text carries the hint, MariaDB text does not).
 
 - [ ] **Step 1: Write the three scripts.**
-- [ ] **Step 2: Smoke-run on local eurweb.**
-  1. Copy the probe to `~/Herd/eurweb/wp-content/mu-plugins/zzz-mai-optimizer-probe.php`.
+- [ ] **Step 2: Smoke-run on local news-site-a.**
+  1. Copy the probe to `~/Herd/news-site-a/wp-content/mu-plugins/zzz-mai-optimizer-probe.php`.
   2. Switch `wp-config.php` per task-14-rules: back up, `WP_DEVELOPMENT_MODE ''`, `SCRIPT_DEBUG false`.
-  3. Run `wp eval 'mai_cache( "grid" )->flush();'` in `~/Herd/eurweb`.
-  4. Run `curl -sk -o /dev/null "https://eurweb.test/realistic-editorial-technology-photography/?mai_optimizer_probe=1"`, and the same for the home page.
+  3. Run `wp eval 'mai_cache( "grid" )->flush();'` in `~/Herd/news-site-a`.
+  4. Run `curl -sk -o /dev/null "https://news-site-a.test/realistic-editorial-technology-photography/?mai_optimizer_probe=1"`, and the same for the home page.
   5. Restore `wp-config.php` with `cp`, check with `cmp`, and delete the probe.
-  6. Run `wp eval-file ~/Plugins/mai-engine/bin/grid-optimizer-pairs.php` in `~/Herd/eurweb`.
-  7. Run `php bin/grid-optimizer-replay.php --pairs=... --port=3306 --db=eurweb --engine=mysql`.
+  6. Run `wp eval-file ~/Plugins/mai-engine/bin/grid-optimizer-pairs.php` in `~/Herd/news-site-a`.
+  7. Run `php bin/grid-optimizer-replay.php --pairs=... --port=3306 --db=news-site-a --engine=mysql`.
 
   Expected: every pair's IDs match, and the six article grid statements pass the bar.
 - [ ] **Step 3: Commit** the three scripts: "Grid optimizer: tools to capture and replay grid statements on any database".
@@ -256,18 +256,18 @@ Superseded on 2026-10-05: see spec "Ties" for the tiebreaker rule.
   - A failure that is not in a `PostGridQueryOptimizer*` test: rerun it at the base commit (`git worktree add /tmp/mai-engine-base 17dddac85`, then `composer test-setup` there) on the same container. If it fails there too, it was already broken. Record it, and do not count it against these tasks.
   - A MySQL failure in the optimizer tests is a bug: fix it in its task first.
   - A MariaDB-only failure in the optimizer tests is recorded, and that version stays off.
-- [ ] **Step 3: Load the three sites' tables.** For local eurweb, larrybrownsports and one small local site:
+- [ ] **Step 3: Load the three sites' tables.** For local news-site-a, sports-site-a and one small local site:
   1. Run `mysqldump -u root -h 127.0.0.1 --set-gtid-purged=OFF <db> <prefix>posts <prefix>term_relationships <prefix>term_taxonomy > /tmp/mai-opt-<site>.sql`.
   2. For MariaDB targets, use a copy with `utf8mb4_0900_ai_ci` replaced by `utf8mb4_unicode_520_ci`.
   3. Import into a database named after the site on each container.
   4. Check `SELECT COUNT(*)` of each table equals the local count.
-- [ ] **Step 4: Replay.** Capture pairs for larrybrownsports and the small site as in Task 7 Step 2. Run `grid-optimizer-replay.php` for each site on each container, one at a time, with the load under 20 per task-14-rules. Expected: every pair's IDs match on every database, and no swapped MySQL plan shows weedout.
+- [ ] **Step 4: Replay.** Capture pairs for sports-site-a and the small site as in Task 7 Step 2. Run `grid-optimizer-replay.php` for each site on each container, one at a time, with the load under 20 per task-14-rules. Expected: every pair's IDs match on every database, and no swapped MySQL plan shows weedout.
 - [ ] **Step 5: Set the defaults from the results.**
   - `$mariadb_min` is the lowest MariaDB version whose every pair passed the bar, provided every tested version above it passed too. Otherwise it stays `''`.
   - Remove from `SORT_COLUMNS` only a sort that missed the bar on a database that stays on.
   - **If a covered shape or any MySQL version misses the bar, stop and report to Mike before changing anything.**
   - Update Task 1's and Task 2's tests to match, then run `composer test-unit` and `composer test-integration`. Expected: PASS.
-- [ ] **Step 6: Record the results** in the spec under "Results": versions, pairs, misses, medians for the eurweb article statements per database, and the defaults chosen and why.
+- [ ] **Step 6: Record the results** in the spec under "Results": versions, pairs, misses, medians for the news-site-a article statements per database, and the defaults chosen and why.
 - [ ] **Step 7: Clean up.** Run `docker rm -f mai-opt-mysql80 mai-opt-mysql84 mai-opt-mariadb106 mai-opt-mariadb1011 mai-opt-mariadb114 mai-opt-mariadb118`, `/bin/rm /tmp/mai-opt-*.sql`, and, if made, `git worktree remove /tmp/mai-engine-base`.
 - [ ] **Step 8: Commit**: "Grid optimizer: measured on MySQL 8.0 and 8.4 and MariaDB; set the defaults".
 
@@ -276,12 +276,12 @@ Superseded on 2026-10-05: see spec "Ties" for the tiebreaker rule.
 **Files:**
 - Modify: the spec ("Results"), `STATE.md`, `CHANGES.md` if Task 8 changed what is covered
 
-- [ ] **Step 1: Measure cold article views on local eurweb,** swap on and off, per task-14-rules: four articles, 12 runs each, alternating, medians, with the load average recorded. Expected: about 1.5 s faster per fully cold article with the swap on.
+- [ ] **Step 1: Measure cold article views on local news-site-a,** swap on and off, per task-14-rules: four articles, 12 runs each, alternating, medians, with the load average recorded. Expected: about 1.5 s faster per fully cold article with the swap on.
 - [ ] **Step 2: Measure the checks' own cost:**
   - Every note current, so no statement is sent: the home page and an article, swap on and off, 20 runs each.
   - Mai's notes emptied before each view, so statements are sent: the same pages, 12 runs each.
   - Expected: no difference above noise when nothing is sent, and the gain alone when statements are sent.
 - [ ] **Step 3: Record both in the spec "Results", and check every local site you touched:** `cmp` on `wp-config.php`, no temporary mu-plugin left, and `git -C ~/Plugins/mai-engine status --short` shows only intended changes.
 - [ ] **Step 4: Final verification.** Run: `composer test-unit`, `composer test-integration -- --order-by=random`, `php vendor/bin/deployable-guard check`. Expected: all pass.
-- [ ] **Step 5: Rewrite `STATE.md`.** Now: built and measured, ready for a beta. Next: Mike runs the beta push commands for eurweb and larrybrownsports, then totalprosports.
+- [ ] **Step 5: Rewrite `STATE.md`.** Now: built and measured, ready for a beta. Next: Mike runs the beta push commands for news-site-a and sports-site-a, then sports-site-b.
 - [ ] **Step 6: Commit**: "Grid optimizer: whole-page results and state". Do not push.

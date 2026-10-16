@@ -6,7 +6,7 @@ Status: not planned (2026-10-01). Sound after the review fixes below, but measur
 
 Mai caches each post grid's list of post IDs. Every cached grid of a post type carries one version stamp for that post type. Any save that affects a published post changes the stamp (`Mai_Query_Cache::on_transition()` and `on_delete()`), so every post grid on the site goes stale at once.
 
-On a site that publishes and edits all day, that means grids rebuild far more often than their content changes. A related-posts grid on a Football article goes stale when someone fixes a typo in a Basketball article. Visitors still get the old copy while one request rebuilds, so pages are not slow, but the rebuilds are wasted database work, and on the busiest sites that work is the expensive kind (category grids cost 160 ms to over a second of SQL on larrybrownsports and eurweb).
+On a site that publishes and edits all day, that means grids rebuild far more often than their content changes. A related-posts grid on a Football article goes stale when someone fixes a typo in a Basketball article. Visitors still get the old copy while one request rebuilds, so pages are not slow, but the rebuilds are wasted database work, and on the busiest sites that work is the expensive kind (category grids cost 160 ms to over a second of SQL on sports-site-a and news-site-a).
 
 ## The idea
 
@@ -124,8 +124,8 @@ Ranked, after the rules above. None is new except the last.
 
 Production data, 17 to 30 September, read-only.
 
-- **larrybrownsports:** about 27 rotations a day (publishes plus live edits), so a busy grid rebuilds about 28 times a day today. The related-posts grid on articles, which carries most grid renders, would rebuild about 13 times a day instead. That saves roughly 350 grid queries a day, about one every 4 minutes.
-- **eurweb:** 99.5% of new posts are in "News", and related grids use every category on the article (6.2 on average, News included), so they would rotate exactly as often as today. Only 10 home page grids gain, about 130 queries a day.
+- **sports-site-a:** about 27 rotations a day (publishes plus live edits), so a busy grid rebuilds about 28 times a day today. The related-posts grid on articles, which carries most grid renders, would rebuild about 13 times a day instead. That saves roughly 350 grid queries a day, about one every 4 minutes.
+- **news-site-a:** 99.5% of new posts are in "News", and related grids use every category on the article (6.2 on average, News included), so they would rotate exactly as often as today. Only 10 home page grids gain, about 130 queries a day.
 - **Floor:** the 4-hour expiry already caps any grid at about 6 rebuilds a day, so the best possible gain is from 28 to 6.
 - **Readers never wait on these rebuilds today:** the stale copy is served while one request rebuilds.
 
@@ -134,11 +134,11 @@ Production data, 17 to 30 September, read-only.
 Read-only across the hosted fleet.
 
 - 150 production sites run Mai Engine; 83 have a persistent object cache; 53 have both an object cache and term-filtered grids, but only 8 rotate 10 or more times a day (36 of the 53 rotate less than once a day).
-- Five gain: tvnewscheck, larrybrownsports, allhiphop, lamag, ontapsportsnet. Related-grid rebuilds drop 30 to 45 percent and home page grid rebuilds roughly halve. Slow page loads avoided: about 85 to 920 a day per site, worth about 5 to 370 seconds of total visitor waiting per site per day.
-- totalprosports does not qualify: 432 of its 468 term-filtered grids sort by views, and its home grids use a "Display NOT IN" filter. eurweb and ampers gain little (one dominant category).
+- Five gain: news-site-b, sports-site-a, news-site-c, news-site-d, sports-site-c. Related-grid rebuilds drop 30 to 45 percent and home page grid rebuilds roughly halve. Slow page loads avoided: about 85 to 920 a day per site, worth about 5 to 370 seconds of total visitor waiting per site per day.
+- sports-site-b does not qualify: 432 of its 468 term-filtered grids sort by views, and its home grids use a "Display NOT IN" filter. news-site-a and client-site-a gain little (one dominant category).
 - Sites without an object cache see no change. Sites with one pay 4 to 10 object cache writes per save.
-- Home pages trade one big wait for several small ones: today the first visitor after a save rebuilds every home grid at once (2.1 s on tvnewscheck, 2.6 s on allhiphop); with per-term stamps the worst load drops to about 0.45 s but slow home loads happen 2 to 3 times as often.
-- Much of what remains comes from many small cache entries expiring at 4 hours (lamag's related grid has 2,991 category combinations). A 24-hour lifetime for term-stamped grids roughly doubles the gain.
+- Home pages trade one big wait for several small ones: today the first visitor after a save rebuilds every home grid at once (2.1 s on news-site-b, 2.6 s on news-site-c); with per-term stamps the worst load drops to about 0.45 s but slow home loads happen 2 to 3 times as often.
+- Much of what remains comes from many small cache entries expiring at 4 hours (news-site-d's related grid has 2,991 category combinations). A 24-hour lifetime for term-stamped grids roughly doubles the gain.
 - Rebuilding after the page is sent would remove the visitor wait from every rebuild on every site, including the views-ordered grids this design cannot help, which makes this design a database-load saving only.
 
 ## Decision

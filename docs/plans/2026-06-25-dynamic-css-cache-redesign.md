@@ -40,7 +40,7 @@ The live equivalence check in Task 4 compares the rendered CSS before and after 
 - [ ] **Capture the baseline rendered custom-property declarations**
 
 ```bash
-SITE=https://totalprosports.test
+SITE=https://sports-site-b.test
 for path in "/" "/mlb/san-francisco-giants/harsh-warning-players-protested-against-pride-night/"; do
   curl -ks "$SITE$path" \
     | perl -0777 -ne 'print $1 if m{<style id="mai-inline-styles">(.*?)</style>}s'
@@ -394,13 +394,13 @@ git commit -m "refactor: gate dynamic_fonts cache on customizer preview only"
 
 ## Task 4: On-site verification (controller)
 
-Run against the symlinked site (`https://totalprosports.test`, which is `~/Plugins/mai-engine` on this branch). No commit; this is the integration gate.
+Run against the symlinked site (`https://sports-site-b.test`, which is `~/Plugins/mai-engine` on this branch). No commit; this is the integration gate.
 
 - [ ] **Step 1: Output equivalence (same declarations as the baseline)**
 
 ```bash
-SITE=https://totalprosports.test
-wp --path="$HOME/Herd/totalprosports" mai flush >/dev/null 2>&1   # clear css group
+SITE=https://sports-site-b.test
+wp --path="$HOME/Herd/sports-site-b" mai flush >/dev/null 2>&1   # clear css group
 for path in "/" "/mlb/san-francisco-giants/harsh-warning-players-protested-against-pride-night/"; do
   curl -ks "$SITE$path" \
     | perl -0777 -ne 'print $1 if m{<style id="mai-inline-styles">(.*?)</style>}s'
@@ -413,9 +413,9 @@ Expected: empty diff (same declarations; order is intentionally not compared). I
 - [ ] **Step 2: The cache is now alive**
 
 ```bash
-wp --path="$HOME/Herd/totalprosports" mai flush >/dev/null 2>&1
+wp --path="$HOME/Herd/sports-site-b" mai flush >/dev/null 2>&1
 curl -ks -o /dev/null "$SITE/"   # one front-end load to populate
-wp --path="$HOME/Herd/totalprosports" eval '
+wp --path="$HOME/Herd/sports-site-b" eval '
   $a = mai_cache("css")->get("dynamic_css");
   echo is_array($a) ? "dynamic_css CACHED, :root keys=" . count($a["global"][":root"] ?? []) . "\n" : "NOT CACHED\n";
 ' 2>&1 | grep -v "Deprecated:"
@@ -430,7 +430,7 @@ Manual: with the cache populated, open the Customizer (preview recomputes, must 
 - [ ] **Step 4: dynamic_fonts still caches and renders unchanged**
 
 ```bash
-wp --path="$HOME/Herd/totalprosports" eval '
+wp --path="$HOME/Herd/sports-site-b" eval '
   echo is_array(mai_cache("css")->get("dynamic_fonts")) ? "dynamic_fonts CACHED\n" : "fonts not cached yet\n";
 ' 2>&1 | grep -v "Deprecated:"
 ```

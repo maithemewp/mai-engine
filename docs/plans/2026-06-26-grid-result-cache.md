@@ -6,7 +6,7 @@
 
 **Architecture:** The reusable versioning / stale-while-revalidate machinery lives in the **mai-cache** package (a new primitive: per-scope version tokens stored as values, a fresh/stale/cold read, and a single-flight lock). mai-engine's `Mai_Grid_Cache` is a thin consumer: it builds a stable key, decides cacheability, and wires the primitive onto `posts_pre_query`/`the_posts` via a `mai_cache` query flag (so any `WP_Query` can opt in). The single-IN optimizer is decoupled and disabled by default.
 
-**Tech Stack:** PHP 8.1+, WordPress 6.1+ (`posts_pre_query`, `_prime_post_caches`, `wp_cache_add`), the mai-cache package (`~/LocalPackages/mai-cache`, vendored into mai-engine as `maithemewp/mai-cache` dev-develop), PHPUnit + Brain Monkey unit suites in both repos, WP-CLI verification on eurweb.test / totalprosports.test / a seeded sportsdataio.
+**Tech Stack:** PHP 8.1+, WordPress 6.1+ (`posts_pre_query`, `_prime_post_caches`, `wp_cache_add`), the mai-cache package (`~/LocalPackages/mai-cache`, vendored into mai-engine as `maithemewp/mai-cache` dev-develop), PHPUnit + Brain Monkey unit suites in both repos, WP-CLI verification on news-site-a.test / sports-site-b.test / a seeded sports-data-site.
 
 ## Global Constraints
 
@@ -281,7 +281,7 @@ Expected: 5 method definitions.
 
 - [ ] **Step 3: Smoke test the primitive through mai_cache() on a site**
 
-Run (from `~/Herd/eurweb`): `wp eval '$c=mai_cache("grid"); $v=$c->version(["post"]); $c->write_swr("t",[1,2],$v,60); var_dump($c->read_swr("t",$v));'`
+Run (from `~/Herd/news-site-a`): `wp eval '$c=mai_cache("grid"); $v=$c->version(["post"]); $c->write_swr("t",[1,2],$v,60); var_dump($c->read_swr("t",$v));'`
 Expected: an array with `fresh => true` and `value => [1,2]`.
 
 - [ ] **Step 4: Commit the vendored change (mai-engine)**
@@ -447,7 +447,7 @@ class Mai_Grid_Cache {
 		}
 
 		// ElasticPress offloads to ES and hooks posts_pre_query itself; that interaction is
-		// unverified (eurweb is not on EP), so skip ep_integrate grids until it is tested.
+		// unverified (news-site-a is not on EP), so skip ep_integrate grids until it is tested.
 		if ( ! empty( $query_vars['ep_integrate'] ) ) {
 			$cacheable = false;
 		}
@@ -840,21 +840,21 @@ git commit -m "feat(grid-cache): opt grids into the cache; disable single-IN opt
 
 ---
 
-### Task 7: On-site verification (eurweb.test, totalprosports.test, seeded sportsdataio)
+### Task 7: On-site verification (news-site-a.test, sports-site-b.test, seeded sports-data-site)
 
 No unit tests; each check is a hard gate run with WP-CLI. Pipe wp-cli through `grep -viE 'Deprecated|react/promise|_load_textdomain|version 6.7.0|wp-migrate-db'`.
 
-**Prerequisite on every test site:** mai-cache's `can_cache()` bypasses when `SCRIPT_DEBUG` is true (intentional — it stays out of the way during debugging, and production has it false). Dev `.test` sites usually have it true, which silently disables the cache. Before verifying, set it off: `wp --path=<site> config set SCRIPT_DEBUG false --raw`, and restore it afterward (`... config set SCRIPT_DEBUG true --raw`). eurweb.test has already been set to false for this work (was `1`).
+**Prerequisite on every test site:** mai-cache's `can_cache()` bypasses when `SCRIPT_DEBUG` is true (intentional — it stays out of the way during debugging, and production has it false). Dev `.test` sites usually have it true, which silently disables the cache. Before verifying, set it off: `wp --path=<site> config set SCRIPT_DEBUG false --raw`, and restore it afterward (`... config set SCRIPT_DEBUG true --raw`). news-site-a.test has already been set to false for this work (was `1`).
 
 Environments:
-- **eurweb.test** (Redis engaged, real prod data): with-Redis gates — hit/miss, invalidation, equivalence, SWR/stampede, cold-miss.
-- **totalprosports.test** (large, no Redis): the no-Redis `wp_options` persistence path + a second equivalence dataset.
-- **sportsdataio** (seed posts/categories/grids first): controlled invalidation precision + concurrency with no prod noise.
+- **news-site-a.test** (Redis engaged, real prod data): with-Redis gates — hit/miss, invalidation, equivalence, SWR/stampede, cold-miss.
+- **sports-site-b.test** (large, no Redis): the no-Redis `wp_options` persistence path + a second equivalence dataset.
+- **sports-data-site** (seed posts/categories/grids first): controlled invalidation precision + concurrency with no prod noise.
 
-- [ ] **Step 1: Functional hit/miss (eurweb.test)**
+- [ ] **Step 1: Functional hit/miss (news-site-a.test)**
 
 ```bash
-WP="$HOME/Herd/eurweb"; wp --path="$WP" cache flush
+WP="$HOME/Herd/news-site-a"; wp --path="$WP" cache flush
 for i in 1 2 3; do
   wp --path="$WP" eval 'global $wpdb; $c=(int)(get_terms(["taxonomy"=>"category","orderby"=>"count","order"=>"DESC","number"=>1,"hide_empty"=>true,"fields"=>"ids"])[0]??0);
   $a=apply_filters("mai_post_grid_query_args",["post_type"=>"post","post_status"=>"publish","posts_per_page"=>12,"ignore_sticky_posts"=>true,"orderby"=>["date"=>"DESC","ID"=>"DESC"],"tax_query"=>[["taxonomy"=>"category","field"=>"term_id","terms"=>[$c],"operator"=>"IN"]],"mai_cache"=>true],[]);
@@ -864,10 +864,10 @@ done
 
 Expected: run1 > 0 (cold), run2/run3 `db=0`.
 
-- [ ] **Step 2: Equivalence (eurweb.test and totalprosports.test)**
+- [ ] **Step 2: Equivalence (news-site-a.test and sports-site-b.test)**
 
 ```bash
-for WP in "$HOME/Herd/eurweb" "$HOME/Herd/totalprosports"; do
+for WP in "$HOME/Herd/news-site-a" "$HOME/Herd/sports-site-b"; do
   wp --path="$WP" eval 'global $wpdb; $c=(int)(get_terms(["taxonomy"=>"category","orderby"=>"count","order"=>"DESC","number"=>1,"fields"=>"ids","hide_empty"=>true])[0]??0);
   $base=["post_type"=>"post","post_status"=>"publish","posts_per_page"=>12,"ignore_sticky_posts"=>true,"orderby"=>["date"=>"DESC","ID"=>"DESC"],"tax_query"=>[["taxonomy"=>"category","field"=>"term_id","terms"=>[$c],"operator"=>"IN"]]];
   $n=new WP_Query($base); $ca=new WP_Query(array_merge($base,["mai_cache"=>true]));
@@ -877,11 +877,11 @@ done
 
 Expected: `MATCH` on both.
 
-- [ ] **Step 3: Invalidation correctness (sportsdataio, seeded)**
+- [ ] **Step 3: Invalidation correctness (sports-data-site, seeded)**
 
 Seed if needed (`wp post generate`, `wp term generate`, plus a mai grid block on a page), then: warm a grid, `wp post update <id> --post_status=publish` a post in that category, confirm the next request recomputes; verify an autosave/`wp_is_post_revision` path does NOT bump `mai_cache('grid')->version(['post'])`.
 
-- [ ] **Step 4: SWR/stampede probe (eurweb.test)**
+- [ ] **Step 4: SWR/stampede probe (news-site-a.test)**
 
 Create `bin/grid-swr-concurrency.php`:
 
@@ -903,7 +903,7 @@ WP_CLI::log( 'db=' . ( $wpdb->num_queries - $b ) . ' posts=' . count( $q->posts 
 ```
 
 ```bash
-WP="$HOME/Herd/eurweb"
+WP="$HOME/Herd/news-site-a"
 wp --path="$WP" eval-file "$WP/wp-content/plugins/mai-engine/bin/grid-swr-concurrency.php"   # warm
 wp --path="$WP" eval 'do_action("transition_post_status","publish","draft",(object)["ID"=>0,"post_type"=>"post"]);' # rotate
 seq 1 20 | xargs -P 20 -I{} wp --path="$WP" eval-file "$WP/wp-content/plugins/mai-engine/bin/grid-swr-concurrency.php" 2>/dev/null | grep -c 'db=[1-9]'
@@ -911,14 +911,14 @@ seq 1 20 | xargs -P 20 -I{} wp --path="$WP" eval-file "$WP/wp-content/plugins/ma
 
 Expected: the `db>0` count is small (ideally 1).
 
-- [ ] **Step 5: No-Redis persistence (totalprosports.test, no Redis)**
+- [ ] **Step 5: No-Redis persistence (sports-site-b.test, no Redis)**
 
-Run Step 1's loop on `$HOME/Herd/totalprosports`. Expected: run2/run3 cheaper than run1 (filtering query replaced by a `wp_options` read); `wp cache flush` resets it via the WP-CLI hook.
+Run Step 1's loop on `$HOME/Herd/sports-site-b`. Expected: run2/run3 cheaper than run1 (filtering query replaced by a `wp_options` read); `wp cache flush` resets it via the WP-CLI hook.
 
-- [ ] **Step 6: Cold-miss load (eurweb.test, informs the optimizer decision)**
+- [ ] **Step 6: Cold-miss load (news-site-a.test, informs the optimizer decision)**
 
 ```bash
-WP="$HOME/Herd/eurweb"
+WP="$HOME/Herd/news-site-a"
 wp --path="$WP" eval 'global $wpdb; $c=(int)(get_terms(["taxonomy"=>"category","orderby"=>"count","order"=>"DESC","number"=>1,"fields"=>"ids","hide_empty"=>true])[0]??0);
 $a=["post_type"=>"post","post_status"=>"publish","posts_per_page"=>12,"no_found_rows"=>true,"cache_results"=>false,"fields"=>"ids","ignore_sticky_posts"=>true,"orderby"=>["date"=>"DESC","ID"=>"DESC"],"tax_query"=>[["taxonomy"=>"category","field"=>"term_id","terms"=>[$c],"operator"=>"IN"]]];
 $t=microtime(true); new WP_Query($a); echo "cold miss: ".round((microtime(true)-$t)*1000,1)."ms\n";'
@@ -939,6 +939,6 @@ git commit -m "test(grid-cache): SWR/stampede concurrency probe"
 
 - **mai-cache `flush()` vs `bump()`.** `flush()` rotates mai-cache's group token (folded into the key) and orphans everything; it is only for full reset (Task 5 `flush_all`). Per-type invalidation uses `bump()` (Task 1/5), which rotates a stored value token so result keys stay stable for stale-while-revalidate.
 - **Single-flight is "one blocks, rest serve stale."** The lock winner recomputes synchronously; concurrent stale requests are served instantly from the prior value. A fully background refresh (recompute on `shutdown`) is a later enhancement, not in scope.
-- **ElasticPress is skipped for v1** (`is_cacheable` bails on `ep_integrate`); the `posts_pre_query` ordering with EP is unverified and eurweb is not on EP.
+- **ElasticPress is skipped for v1** (`is_cacheable` bails on `ep_integrate`); the `posts_pre_query` ordering with EP is unverified and news-site-a is not on EP.
 - **found_posts.** Default grids set `no_found_rows => true`, so it is not meaningful; load-more grids set it false and `pre_query` restores `found_posts`/`max_num_pages` from the cached count.
 - **Vendoring caveat.** Task 2 copies the file for testing; the released path is push mai-cache develop + `composer update maithemewp/mai-cache` in mai-engine. Re-running `composer update` will overwrite the manual copy, so re-sync after a composer run during this work.

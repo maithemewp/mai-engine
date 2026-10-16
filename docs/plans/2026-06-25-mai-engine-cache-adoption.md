@@ -48,7 +48,7 @@
 - Consumes: `\Mai\Cache\Cache::for( string $prefix ): self` and `->group( string $group ): self` from the mai-cache library.
 - Produces: `mai_cache( string $group = '' ): \Mai\Cache\Cache` — global helper. `mai_cache()` returns a transient-backed Cache bound to prefix `mai`; `mai_cache('x')` returns it scoped to group `x`.
 
-- [ ] **Step 1 (controller, pre-authorized): push mai-cache `develop` to GitHub.** The VCS require below resolves `maithemewp/mai-cache:dev-develop` from `github.com/maithemewp/mai-cache`, so its `develop` (currently local-only at the 0.2.0 merge) must be pushed first. This push was authorized by the user. From `/Users/jivedig/LocalPackages/mai-cache`: `git push origin develop`.
+- [ ] **Step 1 (controller, pre-authorized): push mai-cache `develop` to GitHub.** The VCS require below resolves `maithemewp/mai-cache:dev-develop` from `github.com/maithemewp/mai-cache`, so its `develop` (currently local-only at the 0.2.0 merge) must be pushed first. This push was authorized by the user. From `~/LocalPackages/mai-cache`: `git push origin develop`.
 
 - [ ] **Step 2: Add the repository + require to `composer.json`.** Change the `repositories` array from:
 
@@ -582,6 +582,6 @@ This is the meaningful test for a storage migration and is run on a real WordPre
 
 ## Notes for the executor
 
-- Work in `/Users/jivedig/Plugins/mai-engine` on branch `feature/mai-cache-adoption`.
+- Work in `~/Plugins/mai-engine` on branch `feature/mai-cache-adoption`.
 - The pre-existing uncommitted `vendor/composer/*` working-tree changes are not yours; `composer update` in Task 1 regenerates those files cleanly, which resolves them. Commit the regenerated result as part of Task 1.
 - Tasks 2 through 5 each depend only on Task 1 (the `mai_cache()` wrapper). They touch mostly separate files and can be reviewed independently.
