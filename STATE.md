@@ -1,40 +1,41 @@
 # State
-Updated: 2026-10-12 by Claude
+Updated: 2026-10-16 by Claude
 
 ## Now
-- **Masonry image orientation is committed on local `develop`, not pushed or released.** Mai Post Grid, Mai Term Grid and content archives offer Masonry (single content does not, via `mai_get_single_image_orientation_choices()`). It uses the Large size, hides Image Size (that field only shows for Custom), puts `is-masonry` on `.entries-wrap`, and sets no `--aspect-ratio`. Shared CSS is `assets/scss/layout/_masonry.scss`, in both `main.min.css` and `editor.min.css`.
-- Tested headless on morgastudio.test at 1440px and 390px: every masonry image box matched its own width/height ratio in the post grid, term grid, `/products/` archive and the Mai Gallery on `/art/commissioned-illustrations/`, also with Mai Galleries' own masonry rules deleted. Landscape grids unchanged. The editor preview was not checked.
-- 2.41.0-beta.8 (2026-10-09) is the last release: the `mai_metabox_post_types` filter. beta.7 (upgrade guard) and beta.6 (grid taxonomy optimizer, spec `docs/specs/2026-10-04-grid-taxonomy-query-rewrite.md`) are on 18 sites via `mai-sites push`.
+Everything below is on local `develop`, 14 commits after 2.41.0-beta.8 (`1fac2d345`), not pushed. Mike tested each piece in his browser on local sites; it is ready for beta.9 on his go.
 
-- **Gravity Forms defaults are committed on local `develop`, not pushed.** `lib/support/gravity-forms.php`, loaded only when `GFForms` exists, styles every form from `mai_get_colors()` through `gform_default_styles`. Radius and font sizes come from config `extra`, then the active Mai theme's `assets/css/themes/<theme>.min.css` `:root`, then Mai's defaults (4px, 16px, scale 1.25). Checked headless on morgastudio `/contact/` (form 1) and the homepage (form 2): the `--gf-*` variables match the palette, a form block's own settings win key by key, and a 0 radius renders 0px.
-
-- **Input borders reach 3:1, committed on local `develop`, not pushed.** `mai_get_input_border_color()` (`lib/functions/colors.php`) blends body into background until the border has 3:1 contrast. `mai_add_colors_css()` outputs it as `--input-border-color`, used only inside the `--input-border` fallback in `base/_form.scss` and the search block, so a theme's own `--input-border` wins and boxed entries (`--border`, `--color-border`) don't change. Gravity Forms uses the same color. Checked headless on eurweb, larrybrownsports and morgastudio.
+- **Masonry image orientation** for Mai Post Grid, Mai Term Grid and content archives (not single content, via `mai_get_single_image_orientation_choices()`). Large size, Image Size hidden, no `--aspect-ratio`, and a note under the setting saying entries fill each column top to bottom. `mai_get_columns_atts()` adds `is-masonry` next to `has-columns` whenever `mai_is_masonry( $args )` is true, so grids, archives and Mai Gallery all get it from one place. Shared CSS: `assets/scss/layout/_masonry.scss`, in `main.min.css` and `editor.min.css`.
+- **Gravity Forms defaults** (`lib/support/gravity-forms.php`, loaded only when `GFForms` exists): Orbital, colors from `mai_get_colors()`, radius and font sizes from config `extra`, then the active Mai theme's `assets/css/themes/<theme>.min.css` `:root`, then 4px / 16px / scale 1.25. `mai_gform_default_styles` filter. A form block's own settings win key by key. `gform_form_block_attributes` sets the same values as the block's editor defaults.
+- **Text input border at 3:1**: `mai_get_input_border_color()` blends body into background until 3:1, output as `--input-border-color`, used only inside the `--input-border` fallback (`base/_form.scss`, search block). Themes with their own `--input-border` keep it. Boxed entries and other borders unchanged. Gravity Forms uses the same color.
+- **Editor styles**: Mai's WYSIWYG stylesheet (admin-ajax `mai_classic_editor_styles`) now goes in only through `mce_css`, so the block editor no longer requests it from the site itself on every load. Buttons are styled inside `.mce-content-body`. Mai's own stylesheets in the WYSIWYG list carry the Mai version plus file date, because TinyMCE's own cache suffix only changes with WordPress.
+- 2.41.0-beta.8 (2026-10-09) is the last release. beta.6 to beta.8 are on 18 sites via `mai-sites push`.
 
 ## Next
-1. Mai Galleries `develop` (`c119ee3`, unreleased 1.3.0) takes the Masonry choice, the `is-masonry` class (from `mai_get_columns_atts()`) and the CSS from here. It forces the Large size only when `mai_is_masonry()` exists. Don't rename or remove that function. Release Mai Engine with masonry before or with Mai Galleries 1.3.0.
-2. The morgastudio theme (`ec0cf40`, local) now uses Masonry from config and dropped its own workaround, so its product archives need a Mai Engine with masonry on that site before the theme goes live. A note under Image Orientation says entries fill each column top to bottom (`8d9e31f13`).
-3. Keep watching the 18 pushed sites' error logs for `Mai Engine:` lines and fatals (read-only via `mai-sites run`, logs in `../logs/error.log`).
-4. MariaDB stays off for the grid optimizer until the hardened replay runs on MariaDB 10.6, 10.11, 11.4 and 11.8 (`TODO.md`).
-5. Before 2.41.0 final: check the buffer pool size on the main hosts, then the rest of `TODO.md`.
+1. Release beta.9 when Mike says go (`npm run beta`, then `composer dump-autoload --no-dev`).
+2. Mai Galleries `develop` (`c119ee3`, unreleased 1.3.0) takes Masonry, the class and the CSS from here, and forces Large only when `mai_is_masonry()` exists. Don't rename or remove it. Release Mai Engine first.
+3. The morgastudio theme (`ec0cf40`, local) uses Masonry from config and still has its own `includes/forms.php` Gravity Forms filter, which wins over Mai's. It can delete that file once this ships; for 2px corners set `'border-radius' => '2px'` in config `extra`.
+4. Build bug, not fixed: gulp stamps built CSS with the SCSS entry file's date, so `?ver=` doesn't change on a rebuild unless that entry file changed. Releases are fine (the version changes); `develop` pushes without a version bump serve stale CSS. Fix in `bin/styles.js` by setting each file's mtime to now before `gulp.dest`.
+5. Keep watching the 18 pushed sites' error logs (read-only via `mai-sites run`). MariaDB stays off for the grid optimizer (`TODO.md`). Before 2.41.0 final: buffer pool sizes, then `TODO.md`.
 
 ## Blocked / waiting on
-- Mike's go to push or release the masonry work.
-- Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`). Turn it back on only when Mike says.
+- Mike's go for beta.9.
+- Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (265 tests, 11 skipped libxml goldens; `MasonryTest` covers masonry), `composer test-integration -- --order-by=random` (694 tests), `php vendor/bin/deployable-guard check`. All pass as of 2026-10-12.
-- CSS: `npx gulp build:main-css build:editor-css`. There is no `styles` task.
-- `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also before this work. Not a regression.
+- `composer test-unit` (280 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (694), `php vendor/bin/deployable-guard check`. All pass as of 2026-10-15.
+- CSS: `npx gulp build:main-css build:editor-css build:blocks-css`. There is no `styles` task.
+- Admin pages headless: `mai-sites login <site>.test --redirect=<path|post:ID/edit|term:ID/edit>` prints a one-time link with nobody at a keyboard and opens nothing; open it in headless Chrome. Script: `/tmp/ocr-scripts/admin-shot.mjs` (gone after reboot).
+- `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also before this work.
 
 ## Gotchas
-- `--input-border-color` is printed in Mai's `mai-inline-styles` `:root` block, which loads after the child theme's `style.css` (checked on morgastudio), so a child theme setting it on `:root` in `style.css` loses. Set it in config `extra` or on `body`. A full `--input-border` in `style.css` still wins, because Mai never sets that.
-- Gravity Forms writes its style values into a block scoped to `#gform_wrapper_<id>[data-form-index]` and adds `px` itself, so radius and font sizes must be plain numbers in PHP, never CSS variables. A child theme's `style.css` is not read, so a radius set only there (morgastudio's 2px) needs config `extra` or the `mai_gform_default_styles` filter.
-- Masonry: never set `aspect-ratio` on the images, not even `auto`. Lazy images with `sizes="auto"` get `contain: size` from Chrome, so their shape comes only from the width/height attributes; `aspect-ratio: auto` made them 1500px tall.
-- Masonry with Background, Left Full or Right Full positions gives 4:3 tiles (the entry rules fall back to `4/3`), with images cropped by `object-fit: cover`, not stretched.
-- Masonry items flow down each column, then across, so newest-first reads top to bottom per column.
-- `:where(.has-columns.is-masonry) > * { display: block }` has no specificity on purpose, so entries keep `display: flex` (left/right image positions need it).
-- `WP_Query` has a magic `__get()`: `$query->prop['k'] = $v` on an unset property is silently dropped.
-- Never `wp cache flush` on Redis sites. Use `mai_cache( 'grid' )->flush()` through `wp eval`.
+- Gravity Forms reads `gform_default_styles` for the block's editor defaults once, early, before Mai's support file loads, and keeps it. Only `gform_form_block_attributes` (applied again when the editor config is built) reaches the editor.
+- Gravity Forms scopes its values to `#gform_wrapper_<id>[data-form-index]` and adds `px`, so radius and font sizes are plain numbers in PHP. A child theme's `style.css` is not read.
+- `--input-border-color` prints in `mai-inline-styles` after the child theme's `style.css`, so a child theme setting it on `:root` there loses. Use config `extra` or `body`.
+- ACF fields in `mai_get_grid_display_fields()` need a `name`, even message fields, or `mai_get_editor_localized_data()` logs "Undefined array key".
+- Masonry: never set `aspect-ratio` on the images, not even `auto` (lazy `sizes="auto"` images get `contain: size`; they rendered 1500px tall). Background, Left Full and Right Full positions give 4:3 tiles, cropped not stretched. Items flow down each column, then across.
+- Mai Performance Enhancer double-encodes UTF-8 (`loadHTML()` without a charset). Mike is archiving it; it must not run anywhere. Deactivated on local livingwaterguidewp.
+- totalprosports.test loads its CSS from the live domain, so it can't show local CSS changes.
 - `npm run beta` leaves a dev autoloader. Run `composer dump-autoload --no-dev`, or every site crashes.
 - `vendor/composer/installed.php` shows a modified commit reference after `composer` runs. Leave it out of feature commits.
-- Grid optimizer and database-testing gotchas (Docker, MySQL plan flips, replay bar) are in the previous state: `git show 145a4939b:STATE.md`.
+- Never `wp cache flush` on Redis sites. Use `mai_cache( 'css' )->flush()` (or `'grid'`) through `wp eval`.
+- Grid optimizer and database-testing gotchas are in `git show 145a4939b:STATE.md`.
