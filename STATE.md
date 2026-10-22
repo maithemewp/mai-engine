@@ -1,5 +1,5 @@
 # State
-Updated: 2026-10-16 by Claude
+Updated: 2026-10-22 by Claude
 
 ## Now
 2.41.0-beta.10 (2026-10-16) is the last release. beta.9 (same day) shipped everything below; beta.10 adds no features. It carries the cleanup: no client or server names in the repo (stand-ins like `news-site-a` and `server-2`, key in the git-ignored `docs-local/site-key.md`), STATE.md, TODO.md, `docs` and `.agents` left out of zips and pushes, and deployable-guard v1.2.0.
@@ -8,17 +8,16 @@ Updated: 2026-10-16 by Claude
 - **Gravity Forms defaults** (`lib/support/gravity-forms.php`, loaded only when `GFForms` exists): Orbital, colors from `mai_get_colors()`, radius and font sizes from config `extra`, then the active Mai theme's `assets/css/themes/<theme>.min.css` `:root`, then 4px / 16px / scale 1.25. `mai_gform_default_styles` filter. A form block's own settings win key by key. `gform_form_block_attributes` sets the same values as the block's editor defaults.
 - **Text input border at 3:1**: `mai_get_input_border_color()` blends body into background until 3:1, output as `--input-border-color`, used only inside the `--input-border` fallback (`base/_form.scss`, search block). Themes with their own `--input-border` keep it. Boxed entries and other borders unchanged. Gravity Forms uses the same color.
 - **Editor styles**: Mai's WYSIWYG stylesheet (admin-ajax `mai_classic_editor_styles`) now goes in only through `mce_css`, so the block editor no longer requests it from the site itself on every load. Buttons are styled inside `.mce-content-body`. Mai's own stylesheets in the WYSIWYG list carry the Mai version plus file date, because TinyMCE's own cache suffix only changes with WordPress.
-- beta.6 to beta.8 were pushed to 18 sites with `mai-sites push`; beta.9 and beta.10 are not pushed by hand yet.
+- beta.10 was pushed on 2026-10-22 to all 27 sites that ran a 2.41.0 beta (the fleet scan found more than the old push list). The git-ignored `mai-sites.json` now lists all 27, so one `mai-sites push <all 27> .` covers the next beta. Six sites sit on old pre-2.40 betas (2.25 to 2.39) and were left out on purpose; why they stopped updating is still open.
 
 ## Next
 1. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (`composer update bizbudding/deployable-guard`, bulk-update skill) so their hooks run the private-name check too. Only Mai Engine and Mai Galleries have it.
 2. Mai Galleries `develop` (`7c6a2f4`, unreleased 1.3.0, pushed) takes Masonry, the class and the CSS from here, and forces Large only when `mai_is_masonry()` exists. Don't rename or remove it. Mai Engine with masonry is out, so 1.3.0 can follow on Mike's go.
 3. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it once this ships; for its own corner radius it sets `'border-radius'` in config `extra`.
 4. Fixed in `bin/styles.js`: built CSS gets the build time, so its `?ver=` changes on every build. Before, it kept the SCSS entry file's date and a rebuild could keep serving the old file.
-5. Keep watching the 18 pushed sites' error logs (read-only via `mai-sites run`). MariaDB stays off for the grid optimizer (`TODO.md`). Before 2.41.0 final: buffer pool sizes, then `TODO.md`.
+5. Keep watching the 27 beta sites' error logs (read-only via `mai-sites run`). MariaDB stays off for the grid optimizer (`TODO.md`). Before 2.41.0 final: buffer pool sizes, then `TODO.md`.
 
 ## Blocked / waiting on
-- Mike's go for beta.9.
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
