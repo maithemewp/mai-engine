@@ -31,6 +31,9 @@ class Importer extends WXRImporter {
 		// Check, if a new AJAX request is required.
 		add_filter( 'wxr_importer.pre_process.post', array( $this, 'new_ajax_request_maybe' ) );
 
+		// Never create user accounts from the export's author records.
+		add_filter( 'wxr_importer.pre_process.user', '__return_false' );
+
 		// WooCommerce product attributes registration.
 		if ( class_exists( 'WooCommerce' ) ) {
 			add_filter( 'wxr_importer.pre_process.term', array( $this, 'woocommerce_product_attributes_registration' ), 10, 1 );
@@ -53,6 +56,12 @@ class Importer extends WXRImporter {
 
 		if ( ! class_exists( 'XMLReader' ) ) {
 			$this->logger->critical( __( 'The XMLReader class is missing! Please install the XMLReader PHP extension on your server', 'wordpress-importer' ) );
+
+			return false;
+		}
+
+		if ( empty( $file ) || ! is_file( $file ) ) {
+			$this->logger->error( __( 'The file does not exist, please try again.', 'wordpress-importer' ) );
 
 			return false;
 		}

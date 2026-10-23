@@ -19,6 +19,8 @@ namespace ProteusThemes\WPContentImporter2;
  * for the full interface specification.
  */
 class WPImporterLogger {
+	public $messages = array();
+
 	/**
 	 * System is unusable.
 	 *

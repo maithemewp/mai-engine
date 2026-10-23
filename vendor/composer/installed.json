@@ -1489,20 +1489,20 @@
         },
         {
             "name": "proteusthemes/wp-content-importer-v2",
-            "version": "v2.1.0",
-            "version_normalized": "2.1.0.0",
+            "version": "v2.1.2",
+            "version_normalized": "2.1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/proteusthemes/WordPress-Importer.git",
-                "reference": "7414ce1bfb56a8be780c520ed63e99cac7ac403b"
+                "reference": "606c9b057adc1652f572ae32819fcadba79eaf48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/proteusthemes/WordPress-Importer/zipball/7414ce1bfb56a8be780c520ed63e99cac7ac403b",
-                "reference": "7414ce1bfb56a8be780c520ed63e99cac7ac403b",
+                "url": "https://api.github.com/repos/proteusthemes/WordPress-Importer/zipball/606c9b057adc1652f572ae32819fcadba79eaf48",
+                "reference": "606c9b057adc1652f572ae32819fcadba79eaf48",
                 "shasum": ""
             },
-            "time": "2018-04-13T07:31:18+00:00",
+            "time": "2026-10-15T06:15:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1516,12 +1516,12 @@
             ],
             "authors": [
                 {
-                    "name": "Primoz Cigler",
-                    "email": "primoz@proteusnet.com"
-                },
-                {
                     "name": "Gregor Capuder",
                     "email": "capuderg@gmail.com"
+                },
+                {
+                    "name": "Primoz Cigler",
+                    "email": "primoz@proteusnet.com"
                 },
                 {
                     "name": "Humanmade contributors",
@@ -1538,7 +1538,7 @@
                 "wp"
             ],
             "support": {
-                "source": "https://github.com/proteusthemes/WordPress-Importer/tree/v2.1.0"
+                "source": "https://github.com/proteusthemes/WordPress-Importer/tree/v2.1.2"
             },
             "install-path": "../proteusthemes/wp-content-importer-v2"
         },

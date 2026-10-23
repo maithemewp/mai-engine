@@ -12,6 +12,7 @@
 * Changed: [Developers] Site logo and scroll logo images are now named through `wp_get_attachment_image_context` as `mai_logo` and `mai_scroll_logo`, so other code can tell them apart from anything else using the same `custom-logo` class.
 * Changed: Update ACF Pro to 6.8.10.
 * Changed: Update Plugin Update Checker to 5.7.
+* Changed: Update WordPress Importer v2 to 2.1.2.
 * Changed: Update mai-cache to 0.6.0.
 * Changed: Removed unused image code that was disabled long ago.
 * Changed: [Performance] Term Grids now cache their featured images in a single pass.
