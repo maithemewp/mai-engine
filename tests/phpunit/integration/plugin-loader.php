@@ -143,6 +143,10 @@ if ( ! function_exists( 'mai_get_version' ) ) {
 }
 
 require_once $plugin_root . '/lib/functions/utilities.php';
+
+// Only declares functions. The archive post type tests call its loop checks directly (#673).
+require_once $plugin_root . '/lib/functions/loop.php';
+
 require_once $plugin_root . '/lib/functions/options.php';
 require_once $plugin_root . '/lib/functions/widgets.php';
 require_once $plugin_root . '/lib/admin/upgrade.php';

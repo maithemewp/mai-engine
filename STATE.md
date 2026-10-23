@@ -1,5 +1,5 @@
 # State
-Updated: 2026-10-22 by Claude
+Updated: 2026-10-23 by Claude
 
 ## Now
 2.41.0-beta.10 (2026-10-16) is the last release. beta.9 (same day) shipped everything below; beta.10 adds no features. It carries the cleanup: no client or server names in the repo (stand-ins like `news-site-a` and `server-2`, key in the git-ignored `docs-local/site-key.md`), STATE.md, TODO.md, `docs` and `.agents` left out of zips and pushes, and deployable-guard v1.2.0.
@@ -8,6 +8,7 @@ Updated: 2026-10-22 by Claude
 - **Gravity Forms defaults** (`lib/support/gravity-forms.php`, loaded only when `GFForms` exists): Orbital, colors from `mai_get_colors()`, radius and font sizes from config `extra`, then the active Mai theme's `assets/css/themes/<theme>.min.css` `:root`, then 4px / 16px / scale 1.25. `mai_gform_default_styles` filter. A form block's own settings win key by key. `gform_form_block_attributes` sets the same values as the block's editor defaults.
 - **Text input border at 3:1**: `mai_get_input_border_color()` blends body into background until 3:1, output as `--input-border-color`, used only inside the `--input-border` fallback (`base/_form.scss`, search block). Themes with their own `--input-border` keep it. Boxed entries and other borders unchanged. Gravity Forms uses the same color.
 - **Editor styles**: Mai's WYSIWYG stylesheet (admin-ajax `mai_classic_editor_styles`) now goes in only through `mce_css`, so the block editor no longer requests it from the site itself on every load. Buttons are styled inside `.mce-content-body`. Mai's own stylesheets in the WYSIWYG list carry the Mai version plus file date, because TinyMCE's own cache suffix only changes with WordPress.
+- **WooCommerce 11+ shop fix (#673), unreleased on `develop`.** WooCommerce 11 sets the shop page (a `WP_Post`) as the queried object on the product archive, so the archive name fell back to `post` and Mai's loop ran after the WooCommerce loop. New `mai_get_archive_post_type()` (`lib/functions/utilities.php`) uses the queried object only when it is a `WP_Post_Type`, else the `post_type` query var. `mai_get_archive_args_name()` and `mai_get_post_type()` both use it. Older WooCommerce is unchanged. Tests: `ArchivePostTypeTest`. Checked on a local WooCommerce 11.1.2 copy with `wp eval` (name `post` before, `product` after). Its shop page renders through WooCommerce's own `archive-product.php`, so the doubled loop never showed there.
 - beta.10 was pushed on 2026-10-22 to all 27 sites that ran a 2.41.0 beta (the fleet scan found more than the old push list). The git-ignored `mai-sites.json` now lists all 27, so one `mai-sites push <all 27> .` covers the next beta. Six sites sit on old pre-2.40 betas (2.25 to 2.39) and were left out on purpose; why they stopped updating is still open.
 
 ## Next
@@ -21,7 +22,7 @@ Updated: 2026-10-22 by Claude
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (280 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (694), `php vendor/bin/deployable-guard check`. All pass as of 2026-10-15.
+- `composer test-unit` (280 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (699), `php vendor/bin/deployable-guard check`. All pass as of 2026-10-23.
 - CSS: `npx gulp build:main-css build:editor-css build:blocks-css`. There is no `styles` task.
 - Admin pages headless: `mai-sites login <site>.test --redirect=<path|post:ID/edit|term:ID/edit>` prints a one-time link with nobody at a keyboard and opens nothing; open it in headless Chrome. Script: `/tmp/ocr-scripts/admin-shot.mjs` (gone after reboot).
 - `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also before this work.

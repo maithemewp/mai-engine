@@ -305,24 +305,45 @@ function mai_get_index( $context, $reset = false ) {
 }
 
 /**
+ * Gets the post type of the current post type archive.
+ *
+ * Prioritizes the queried object, since pre_get_posts can change
+ * the post_type query var to an array of several post types.
+ * The queried object is only used when it is a post type, because
+ * WooCommerce 11+ sets the shop page (a WP_Post) on the product archive.
+ *
+ * @since 2.41.0
+ *
+ * @return string
+ */
+function mai_get_archive_post_type() {
+	$object = get_queried_object();
+
+	if ( $object instanceof WP_Post_Type ) {
+		return $object->name;
+	}
+
+	$name = get_query_var( 'post_type' );
+
+	return is_array( $name ) ? (string) reset( $name ) : (string) $name;
+}
+
+/**
  * Return the current post type.
  * Sometimes we need this earlier than get_post_type()
  * can handle, so we fall back to the query var.
  *
- * On post type archives, prioritizes the queried object
- * to avoid issues when pre_get_posts modifies the post_type
- * query var to an array of multiple post types.
- *
  * @since 0.1.0
+ * @since 2.41.0 Uses mai_get_archive_post_type() on post type archives.
  *
  * @return string
  */
 function mai_get_post_type() {
 	if ( is_post_type_archive() ) {
-		$object = get_queried_object();
+		$name = mai_get_archive_post_type();
 
-		if ( $object ) {
-			return $object->name;
+		if ( $name ) {
+			return $name;
 		}
 	}
 

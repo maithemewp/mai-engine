@@ -393,6 +393,7 @@ function mai_get_sanitized_entry_args( $args, $context, $name = 'post' ) {
  * Gets the archive content type name to be used in the main args function/helpers.
  *
  * @since 0.1.0
+ * @since 2.41.0 Uses mai_get_archive_post_type(), so the WooCommerce 11+ shop page gets `product`.
  *
  * @return string
  */
@@ -417,9 +418,7 @@ function mai_get_archive_args_name() {
 		$name   = $object ? $object->taxonomy : (string) get_query_var( 'taxonomy' );
 
 	} elseif ( is_post_type_archive() ) {
-		$object = get_queried_object();
-		$name   = $object ? $object->name : get_query_var( 'post_type' );
-		$name   = is_array( $name ) ? reset( $name ) : (string) $name;
+		$name = mai_get_archive_post_type();
 
 	} elseif ( is_search() ) {
 		$name = 'search';
