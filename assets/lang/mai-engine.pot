@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.41.0-beta.10\n"
+"Project-Id-Version: Mai Engine 2.41.0-beta.11\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-16T15:34:02+00:00\n"
+"POT-Creation-Date: 2026-10-23T13:57:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: mai-engine\n"
@@ -114,8 +114,8 @@ msgid "The Sidebar widget area."
 msgstr ""
 
 #: config/_default.php:582
-#: lib/functions/utilities.php:1317
-#: lib/functions/utilities.php:1381
+#: lib/functions/utilities.php:1338
+#: lib/functions/utilities.php:1402
 #: lib/structure/header.php:282
 msgid "Search..."
 msgstr ""
@@ -127,7 +127,7 @@ msgstr ""
 #: lib/admin/admin-menu.php:28
 #: lib/admin/admin-menu.php:29
 #: lib/functions/deprecated.php:289
-#: lib/functions/utilities.php:1597
+#: lib/functions/utilities.php:1618
 msgid "Mai Theme"
 msgstr ""
 
@@ -314,8 +314,8 @@ msgstr ""
 #: lib/fields/grid-display.php:520
 #: lib/functions/customizer.php:407
 #: lib/functions/customizer.php:1003
-#: lib/functions/loop.php:536
-#: lib/functions/loop.php:569
+#: lib/functions/loop.php:535
+#: lib/functions/loop.php:568
 msgid "Header Meta"
 msgstr ""
 
@@ -326,8 +326,8 @@ msgstr ""
 #: lib/fields/grid-display.php:535
 #: lib/functions/customizer.php:444
 #: lib/functions/customizer.php:1033
-#: lib/functions/loop.php:540
-#: lib/functions/loop.php:573
+#: lib/functions/loop.php:539
+#: lib/functions/loop.php:572
 msgid "Custom Content"
 msgstr ""
 
@@ -335,7 +335,7 @@ msgstr ""
 #: lib/fields/grid-display.php:202
 #: lib/fields/grid-display.php:550
 #: lib/functions/customizer.php:1047
-#: lib/functions/loop.php:574
+#: lib/functions/loop.php:573
 msgid "Custom Content 2"
 msgstr ""
 
@@ -344,8 +344,8 @@ msgstr ""
 #: lib/fields/grid-display.php:625
 #: lib/functions/customizer.php:496
 #: lib/functions/customizer.php:1018
-#: lib/functions/loop.php:544
-#: lib/functions/loop.php:577
+#: lib/functions/loop.php:543
+#: lib/functions/loop.php:576
 msgid "Footer Meta"
 msgstr ""
 
@@ -355,7 +355,7 @@ msgid "After Entry"
 msgstr ""
 
 #: lib/admin/hide-elements.php:167
-#: lib/functions/loop.php:579
+#: lib/functions/loop.php:578
 msgid "Author Box"
 msgstr ""
 
@@ -415,8 +415,8 @@ msgstr ""
 #: lib/admin/page-header.php:88
 #: lib/admin/term-image.php:56
 #: lib/fields/grid-display.php:196
-#: lib/functions/loop.php:533
-#: lib/functions/loop.php:566
+#: lib/functions/loop.php:532
+#: lib/functions/loop.php:565
 msgid "Image"
 msgstr ""
 
@@ -856,8 +856,8 @@ msgstr ""
 #: lib/classes/class-mai-setup-wizard-fields.php:245
 #: lib/classes/class-mai-setup-wizard-steps.php:206
 #: lib/fields/grid-display.php:200
-#: lib/functions/loop.php:539
-#: lib/functions/loop.php:572
+#: lib/functions/loop.php:538
+#: lib/functions/loop.php:571
 msgid "Content"
 msgstr ""
 
@@ -1249,7 +1249,7 @@ msgstr ""
 #: lib/fields/grid-display.php:612
 #: lib/functions/colors.php:256
 #: lib/functions/customizer.php:484
-#: lib/functions/utilities.php:1526
+#: lib/functions/utilities.php:1547
 msgid "Link"
 msgstr ""
 
@@ -2067,7 +2067,7 @@ msgid "Menu Toggle"
 msgstr ""
 
 #: lib/customize/site-header.php:82
-#: lib/functions/utilities.php:1374
+#: lib/functions/utilities.php:1395
 #: lib/structure/menus.php:385
 msgid "Search"
 msgstr ""
@@ -2113,17 +2113,17 @@ msgid "Miscellaneous"
 msgstr ""
 
 #: lib/customize/site-layouts.php:189
-#: lib/functions/utilities.php:470
+#: lib/functions/utilities.php:491
 msgid "Search Results"
 msgstr ""
 
 #: lib/customize/site-layouts.php:201
-#: lib/functions/utilities.php:471
+#: lib/functions/utilities.php:492
 msgid "Author Archives"
 msgstr ""
 
 #: lib/customize/site-layouts.php:213
-#: lib/functions/utilities.php:472
+#: lib/functions/utilities.php:493
 msgid "Date Archives"
 msgstr ""
 
@@ -2245,18 +2245,18 @@ msgstr ""
 #: lib/fields/grid-display.php:197
 #: lib/fields/wp-query.php:865
 #: lib/fields/wp-term-query.php:516
-#: lib/functions/loop.php:535
-#: lib/functions/loop.php:568
+#: lib/functions/loop.php:534
+#: lib/functions/loop.php:567
 msgid "Title"
 msgstr ""
 
 #: lib/fields/grid-display.php:199
-#: lib/functions/loop.php:538
+#: lib/functions/loop.php:537
 msgid "Excerpt"
 msgstr ""
 
 #: lib/fields/grid-display.php:203
-#: lib/functions/loop.php:542
+#: lib/functions/loop.php:541
 msgid "Read More link"
 msgstr ""
 
@@ -2382,7 +2382,7 @@ msgstr ""
 #: lib/functions/customizer.php:528
 #: lib/functions/customizer.php:909
 #: lib/functions/customizer.php:1116
-#: lib/functions/utilities.php:392
+#: lib/functions/utilities.php:413
 #: assets/js/blocks/layout-settings.js:625
 #: assets/js/blocks/layout-settings.js:726
 #: assets/js/min/blocks.js:1848
@@ -2936,15 +2936,15 @@ msgstr ""
 msgid "Entries fill each column top to bottom, then the next column. Best when order doesn't matter."
 msgstr ""
 
-#: lib/functions/loop.php:571
+#: lib/functions/loop.php:570
 msgid "Manual Excerpts"
 msgstr ""
 
-#: lib/functions/loop.php:580
+#: lib/functions/loop.php:579
 msgid "After Entry Content Area"
 msgstr ""
 
-#: lib/functions/loop.php:581
+#: lib/functions/loop.php:580
 msgid "Previous/Next Entry Nav"
 msgstr ""
 
@@ -2969,17 +2969,17 @@ msgid "Headings"
 msgstr ""
 
 #: lib/functions/shortcodes.php:422
-#: lib/functions/utilities.php:1523
+#: lib/functions/utilities.php:1544
 msgid "Primary"
 msgstr ""
 
 #: lib/functions/shortcodes.php:423
-#: lib/functions/utilities.php:1524
+#: lib/functions/utilities.php:1545
 msgid "Secondary"
 msgstr ""
 
 #: lib/functions/shortcodes.php:424
-#: lib/functions/utilities.php:1525
+#: lib/functions/utilities.php:1546
 msgid "Outline"
 msgstr ""
 
@@ -3132,34 +3132,34 @@ msgstr ""
 msgid "template part already exists"
 msgstr ""
 
-#: lib/functions/utilities.php:434
-#: lib/functions/utilities.php:493
+#: lib/functions/utilities.php:455
+#: lib/functions/utilities.php:514
 msgid "Post"
 msgstr ""
 
-#: lib/functions/utilities.php:494
+#: lib/functions/utilities.php:515
 msgid "Page"
 msgstr ""
 
-#: lib/functions/utilities.php:1072
-#: lib/functions/utilities.php:1088
+#: lib/functions/utilities.php:1093
+#: lib/functions/utilities.php:1109
 msgid "Updated"
 msgstr ""
 
-#: lib/functions/utilities.php:1121
-#: lib/functions/utilities.php:1134
+#: lib/functions/utilities.php:1142
+#: lib/functions/utilities.php:1155
 msgid "ago"
 msgstr ""
 
-#: lib/functions/utilities.php:1594
+#: lib/functions/utilities.php:1615
 msgid "View available shortcodes from"
 msgstr ""
 
-#: lib/functions/utilities.php:1595
+#: lib/functions/utilities.php:1616
 msgid "Genesis"
 msgstr ""
 
-#: lib/functions/utilities.php:1596
+#: lib/functions/utilities.php:1617
 msgid "and"
 msgstr ""
 
