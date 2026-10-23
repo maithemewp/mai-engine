@@ -1,18 +1,14 @@
 # Changelog
 
 ## 2.41.0 (TBD)
-* Fixed: On WooCommerce 11 and later, the shop page no longer shows every product twice. Mai's archive loop used to run after the WooCommerce loop, using the Posts archive settings.
-* Fixed: Updated Mai stylesheets reach browsers after every build. Their version is based on the file date, which used to stay the same when only a partial changed.
-* Fixed: Buttons in WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes, such as category descriptions) now look like Mai buttons, including the secondary, outline, link, small and large styles. Before, they showed as plain links.
-* Fixed: [Performance] Opening the block editor no longer makes the site send a request to itself for Mai's WYSIWYG editor styles. Those styles now go only to WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes), where the browser loads them. The block editor already gets the same CSS from Kirki.
-* Changed: Text and search fields get a clearer border, worked out from the site's body and background colors so it has 3:1 contrast, the accessibility minimum for form fields. Sites or themes that set their own `--input-border` keep it. Boxed entries and other borders don't change. [Developers] Set just the color with the new `--input-border-color` property, in the theme config's `extra` settings.
 * Added: Gravity Forms now take their colors from the site's Mai palette: inputs, labels, descriptions and the submit button, using Gravity Forms' Orbital theme. Input corners and label sizes follow the Mai theme too. A form's own Style settings still win, and the form block's settings in the editor start from the same values. [Developers] Change any value with the new `mai_gform_default_styles` filter. Values another plugin sets on `gform_default_styles` first are kept.
 * Added: Masonry image orientation for Mai Post Grid, Mai Term Grid and content archives. Images keep their own shape and stack into columns, with no JavaScript. It uses the Large image size and hides Image Size, like Custom. Entries fill each column top to bottom, then move to the next column, so a newest-first list reads down each column, and a note under the setting says so. Single entries don't offer it. [Developers] The shared `.has-columns.is-masonry` styles live in Mai Engine, so Mai Gallery and custom code can use them too.
 * Added: Sites can switch the Widgets screen to blocks. New sites start on blocks. A site that already has classic widgets keeps the classic screen, with a notice offering "Switch to blocks" or "Hide forever", and the same switch in the Help menu. Existing widgets stay as they are. Going back to classic takes the `use_widgets_block_editor` filter. Genesis's notice about adding a code snippet is removed. [Developers] Mai's choice runs on `use_widgets_block_editor` at priority 5, so a value set at the default priority 10 still wins, and the notice explains when code keeps the classic screen.
+* Changed: Text and search fields get a clearer border, worked out from the site's body and background colors so it has 3:1 contrast, the accessibility minimum for form fields. Sites or themes that set their own `--input-border` keep it. Boxed entries and other borders don't change. [Developers] Set just the color with the new `--input-border-color` property, in the theme config's `extra` settings.
 * Changed: [Developers] Site logo and scroll logo images are now named through `wp_get_attachment_image_context` as `mai_logo` and `mai_scroll_logo`, so other code can tell them apart from anything else using the same `custom-logo` class.
 * Changed: Update ACF Pro to 6.8.10.
 * Changed: Update Plugin Update Checker to 5.7.
-* Changed: Update WordPress Importer v2 to 2.1.2.
+* Changed: Update WP Content Importer v2 to 2.1.2.
 * Changed: Update mai-cache to 0.6.0.
 * Changed: Removed unused image code that was disabled long ago.
 * Changed: [Performance] Term Grids now cache their featured images in a single pass.
@@ -42,6 +38,10 @@
 * Changed: [Developers] `mai_get_columns_atts()` accepts a new `fit_basis` argument, and `mai_columns_get_flex()` a matching third parameter, so a block that knows its content width can give Fit columns a real width instead of one taken from their contents.
 * Changed: [Developers] Column layouts take their display from a new `--columns-display` custom property, defaulting to `flex`. A block can switch its columns to another layout, such as Mai Gallery's masonry, without fighting Mai's CSS.
 * Changed: [Developers] New `mai_metabox_post_types` filter changes which post types get Mai's Hide Elements or Page Header box on their edit screen. It receives the list and the box name, `hide-elements` or `page-header`. Useful when ACF fields break a plugin's editor, such as GravityView Views not publishing.
+* Fixed: [WooCommerce] Products showing twice on the shop page with WooCommerce 11 and later. Mai's archive loop ran after the WooCommerce loop, using the Posts archive settings.
+* Fixed: Updated Mai stylesheets reach browsers after every build. Their version is based on the file date, which used to stay the same when only a partial changed.
+* Fixed: Buttons in WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes, such as category descriptions) now look like Mai buttons, including the secondary, outline, link, small and large styles. Before, they showed as plain links.
+* Fixed: [Performance] Opening the block editor no longer makes the site send a request to itself for Mai's WYSIWYG editor styles. Those styles now go only to WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes), where the browser loads them. The block editor already gets the same CSS from Kirki.
 * Fixed: [Developers] `mai_get_option()` and `mai_get_options()` no longer return stale values after the Mai option is saved in the same request, whether by `mai_update_option()`, the Customizer or `update_option()`. The new `mai_reset_options_cache()` empties both caches by hand.
 * Fixed: Post classes are no longer stripped in the WordPress admin, so rows on the Posts screen keep their `status-{status}` class.
 * Fixed: The header logo lost its eager loading and its width-aware `sizes` earlier in this release, falling back to WordPress's guess that it might fill the whole viewport. It is reconnected, and core's Site Logo block is still left on WordPress's own defaults wherever an editor places it.
@@ -71,9 +71,9 @@
 * Fixed: A grid whose query failed could cache an empty list. Nothing is stored now. On sites with a persistent object cache, WordPress's own cached query results are also reset, so it does not keep serving the failed empty list.
 * Fixed: Changing a post's type left it in cached grids for the old type.
 * Fixed: Old cache rows are now deleted from the database when the cache is flushed, on sites without a persistent object cache. The match is exact, so no other option is touched.
-
 * Fixed: In the editor, items in Mai column layouts had their margins removed, so they could be spaced differently than on the front end. Only the wrappers of nested blocks are reset now.
 * Fixed: On the login page, "Remember Me" wrapped onto two lines once WordPress 7.1 added a help icon beside it. The row now keeps to one line.
+
 ## 2.40.0 (7/2/26)
 * Added: [Performance] Mai Post Grid now caches its resolved query results (the matching post IDs and total count) under a version token Mai controls, so the cache survives the constant cache-key churn that defeats WordPress's own query cache on busy, frequently-edited sites. It serves instantly on a hit, serves the previous result while one request refreshes a stale entry (stale-while-revalidate), and collapses a cold stampede to a single query (single-flight) where a persistent object cache is present. Any query can opt in via the `mai_cache` query var.
 * Added: [Developers] Filters for the query cache: `mai_post_grid_cache` (per-grid opt-out, receives the grid args), `mai_query_cache` (per-query cacheability), `mai_query_cache_ttl`, `mai_query_cache_single_flight`, `mai_query_cache_lock_ttl`, and `mai_query_cache_wait_ms`.
