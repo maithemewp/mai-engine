@@ -11,7 +11,7 @@ Updated: 2026-10-23 by Claude
 - The `beta` branch was fast-forwarded to `master` (2.41.0) the same day, so beta-channel sites get 2.41.0 too.
 
 ## Next
-1. Mai Galleries: guard `mai_get_image_orientation_choices()` in `blocks/mai-gallery/block.php` with `function_exists()`, then release 1.3.0 (Masonry, needs Mai Engine 2.41.0) on Mike's go.
+1. Mai Galleries 1.3.0 (Masonry, plus the `--skip-themes` guard) is committed on its `develop` and waits for Mike to release it. See its STATE.md.
 2. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
 3. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
 4. Then `TODO.md`. MariaDB stays off for the grid optimizer.
