@@ -8,14 +8,13 @@ Updated: 2026-10-23 by Claude
 - **2.40.1 never shipped.** It had a release commit on `master` but no release or tag, so non-beta sites stayed on 2.40.0 until 2.41.0. Its two changes are in 2.41.0.
 - **The auto-mode permission check refuses `npm run beta`, `npm run release`, tags and releases.** Hand Mike the commands.
 - Checked before release: every BizBudding server's buffer pool (4 to 16 GB) holds all its sites' `wp_posts` and `wp_term_relationships`. The 128 MB servers host only small sites. No MariaDB. No Mai Engine errors in the beta sites' `debug.log` since beta.9, but 15 of 27 have no `debug.log`.
-- The `beta` branch still says 2.41.0-beta.11. It can fast-forward to `master`.
+- The `beta` branch was fast-forwarded to `master` (2.41.0) the same day, so beta-channel sites get 2.41.0 too.
 
 ## Next
 1. Mai Galleries: guard `mai_get_image_orientation_choices()` in `blocks/mai-gallery/block.php` with `function_exists()`, then release 1.3.0 (Masonry, needs Mai Engine 2.41.0) on Mike's go.
-2. Fast-forward `beta` to `master` on Mike's go, so beta-channel sites move off beta.11.
-3. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
-4. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
-5. Then `TODO.md`. MariaDB stays off for the grid optimizer.
+2. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
+3. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
+4. Then `TODO.md`. MariaDB stays off for the grid optimizer.
 
 ## Blocked / waiting on
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
