@@ -11,10 +11,9 @@ Updated: 2026-10-23 by Claude
 - The `beta` branch was fast-forwarded to `master` (2.41.0) the same day, so beta-channel sites get 2.41.0 too.
 
 ## Next
-1. Mai Galleries 1.3.0 (Masonry, plus the `--skip-themes` guard) is committed on its `develop` and waits for Mike to release it. See its STATE.md.
-2. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
-3. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
-4. Then `TODO.md`. MariaDB stays off for the grid optimizer.
+1. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
+2. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
+3. Then `TODO.md`. MariaDB stays off for the grid optimizer.
 
 ## Blocked / waiting on
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
@@ -26,7 +25,7 @@ Updated: 2026-10-23 by Claude
 - `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also before this work.
 
 ## Gotchas
-- `wp ... --skip-themes` fatals on sites running Mai Galleries: it calls `mai_get_image_orientation_choices()` unguarded, and Mai Engine loads no files without Genesis. Front end is fine. Leave `--skip-themes` off for reads on those sites.
+- `wp ... --skip-themes` fatals on sites running Mai Galleries older than 1.3.0, because Mai Engine loads no functions without Genesis. Leave `--skip-themes` off for reads on those sites.
 - Never write a client site, server or local `.test` name into this repo (it is public on GitHub), not even in STATE.md or a commit message. Use stand-ins; put real detail in `docs-local/`, which every repo ignores (`~/.config/git/ignore`). The commit hooks refuse names from the mai-sites registry and `~/Herd` through `git config deployable-guard.extraHooks`. BizBudding's own demo domain is on that list too, so a commit adding it is refused.
 - Gravity Forms reads `gform_default_styles` for the block's editor defaults once, early, before Mai's support file loads, and keeps it. Only `gform_form_block_attributes` (applied again when the editor config is built) reaches the editor.
 - Gravity Forms scopes its values to `#gform_wrapper_<id>[data-form-index]` and adds `px`, so radius and font sizes are plain numbers in PHP. A child theme's `style.css` is not read.
