@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.41.0 (TBD)
+## 2.41.0 (10/23/26)
 * Added: Masonry image orientation for Mai Post Grid, Mai Term Grid, and content archives. Images keep their own shape and stack into columns.
 * Added: Gravity Forms now use the site's Mai colors, input corners, and label sizes. A form's own Style settings still win.
 * Added: Sites can switch the Widgets screen to blocks. New sites start on blocks, and existing sites get a notice offering the switch.
