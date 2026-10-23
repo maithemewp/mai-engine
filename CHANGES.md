@@ -1,77 +1,83 @@
 # Changelog
 
 ## 2.41.0 (TBD)
-* Added: Gravity Forms now take their colors from the site's Mai palette: inputs, labels, descriptions and the submit button, using Gravity Forms' Orbital theme. Input corners and label sizes follow the Mai theme too. A form's own Style settings still win, and the form block's settings in the editor start from the same values. [Developers] Change any value with the new `mai_gform_default_styles` filter. Values another plugin sets on `gform_default_styles` first are kept.
-* Added: Masonry image orientation for Mai Post Grid, Mai Term Grid and content archives. Images keep their own shape and stack into columns, with no JavaScript. It uses the Large image size and hides Image Size, like Custom. Entries fill each column top to bottom, then move to the next column, so a newest-first list reads down each column, and a note under the setting says so. Single entries don't offer it. [Developers] The shared `.has-columns.is-masonry` styles live in Mai Engine, so Mai Gallery and custom code can use them too.
-* Added: Sites can switch the Widgets screen to blocks. New sites start on blocks. A site that already has classic widgets keeps the classic screen, with a notice offering "Switch to blocks" or "Hide forever", and the same switch in the Help menu. Existing widgets stay as they are. Going back to classic takes the `use_widgets_block_editor` filter. Genesis's notice about adding a code snippet is removed. [Developers] Mai's choice runs on `use_widgets_block_editor` at priority 5, so a value set at the default priority 10 still wins, and the notice explains when code keeps the classic screen.
-* Changed: Text and search fields get a clearer border, worked out from the site's body and background colors so it has 3:1 contrast, the accessibility minimum for form fields. Sites or themes that set their own `--input-border` keep it. Boxed entries and other borders don't change. [Developers] Set just the color with the new `--input-border-color` property, in the theme config's `extra` settings.
-* Changed: [Developers] Site logo and scroll logo images are now named through `wp_get_attachment_image_context` as `mai_logo` and `mai_scroll_logo`, so other code can tell them apart from anything else using the same `custom-logo` class.
+* Added: Masonry image orientation for Mai Post Grid, Mai Term Grid, and content archives. Images keep their own shape and stack into columns.
+* Added: Gravity Forms now use the site's Mai colors, input corners, and label sizes. A form's own Style settings still win.
+* Added: Sites can switch the Widgets screen to blocks. New sites start on blocks, and existing sites get a notice offering the switch.
+* Added: [Developers] New `mai_gform_default_styles` filter to change Mai's Gravity Forms defaults.
+* Added: [Developers] Shared `.has-columns.is-masonry` styles, so Mai Gallery and custom code can use masonry too.
+* Added: [Developers] Mai sets `use_widgets_block_editor` at priority 5, so code at the default priority still wins.
+* Added: [Developers] New `--input-border-color` custom property to set just the text field border color.
+* Added: [Developers] New `--columns-display` custom property, defaulting to `flex`, so a block can switch its columns to another layout.
+* Added: [Developers] New `mai_metabox_post_types` filter to choose which post types get Mai's Hide Elements and Page Header boxes.
+* Added: [Developers] New `mai_post_grid_max_posts_per_page` and `mai_term_grid_max_number` filters. Return 0 for no limit.
+* Added: [Developers] New `mai_post_grid_defer_excludes` filter.
+* Added: [Developers] New `mai_query_cache_hard_ttl` filter. Cached grid results refresh after 4 hours and are kept for up to 24.
+* Added: [Developers] New `mai_query_cache_after_page` and `mai_query_cache_after_page_ms` filters to control refreshing grids after the page is sent.
+* Added: [Developers] New `mai_css_cache_wait_ms` filter for how long a request waits for the generated CSS to rebuild.
+* Added: [Developers] New `mai_entry_image_fallback` filter to turn off the first-attached-image fallback.
+* Added: [Developers] New `mai_reset_options_cache()` function.
+* Changed: Text and search fields get a clearer border with 3:1 contrast, worked out from the site's colors. Themes that set their own `--input-border` keep it.
+* Changed: Post grids using "Exclude current" or "Exclude displayed" now drop excluded entries while rendering, so many more grids share one cached result.
+* Changed: Post grids without Load More now break ties in their sort order, so entries with the same sort value no longer change between page loads.
+* Changed: Grids set to show all entries now stop at 1,000.
+* Changed: On sites with a persistent object cache, page cache plugins that honor `DONOTCACHEPAGE` no longer save a page built while one of its grids was refreshing after a post save.
+* Changed: Removed unused image code that was disabled long ago.
 * Changed: Update ACF Pro to 6.8.10.
 * Changed: Update Plugin Update Checker to 5.7.
 * Changed: Update WP Content Importer v2 to 2.1.2.
 * Changed: Update mai-cache to 0.6.0.
-* Changed: Removed unused image code that was disabled long ago.
+* Changed: [Performance] Post grids sorted by date and filtered by categories, tags, or other taxonomies load faster on large sites running MySQL 8.0.16 or newer.
+* Changed: [Performance] Post grids using "Exclude current" or "Exclude displayed" load only the entries they show.
+* Changed: [Performance] On PHP-FPM and LiteSpeed hosts, a cached "Exclude current" or "Exclude displayed" grid older than 4 hours is shown, then refreshed after the page is sent.
+* Changed: [Performance] On PHP-FPM and LiteSpeed hosts without a persistent object cache, new grid results are saved after the page is sent.
+* Changed: [Performance] Grids using a relative After/Before date, such as "30 days ago", now cache their results.
+* Changed: [Performance] Mai's caches are now cleared when Mai Engine itself updates, so cached grids stay warm through unrelated plugin updates.
 * Changed: [Performance] Term Grids now cache their featured images in a single pass.
 * Changed: [Performance] Related-posts grids now reuse the terms WordPress has already loaded for the current post.
 * Changed: [Performance] Blocks are only scanned for link-color markup when that markup is present.
 * Changed: [Performance] The generated CSS and font list are rebuilt by a single request when their cache is empty.
-* Changed: [Performance] The first-attached-image fallback for entries without a featured image is now cached per post on sites with a persistent object cache, and can be turned off with the new `mai_entry_image_fallback` filter.
-* Changed: [Performance] Grids using a relative After/Before date (for example "30 days ago") now cache their results.
-* Changed: [Performance] Mai's caches are now cleared when Mai Engine itself updates, keeping cached grid results warm through unrelated plugin updates.
-* Changed: [Developers] New `mai_post_grid_max_posts_per_page` and `mai_term_grid_max_number` filters, defaulting to 1000, so a grid set to show all entries stays bounded on large sites. Return 0 to opt back into an unbounded query.
-* Changed: [Developers] New `mai_css_cache_wait_ms` filter for how long a request waits for another to finish rebuilding the generated CSS.
-* Changed: [Performance] Scripts now use WordPress's own async loading strategy, which respects script dependencies, and several unused asset helpers were removed.
-* Changed: [Performance] Repaired internal caches for font weights, image aspect ratios, page header types, and image sizes so each value is calculated once per page load.
-* Changed: [Developers] Config files merge more predictably. A list under an `add` or `remove` key is added to the defaults, and any other list replaces the default outright. Lists used to merge by position, which quietly overwrote whichever default happened to sit in the same spot.
+* Changed: [Performance] The first-attached-image fallback is now cached per post on sites with a persistent object cache.
+* Changed: [Performance] Scripts now use WordPress's own async loading strategy, and several unused asset helpers were removed.
+* Changed: [Performance] Repaired internal caches for font weights, image aspect ratios, page header types, and image sizes.
+* Changed: [Developers] The `mai_post_grid_optimize_query` filter now defaults to true. Return false to turn the faster grid queries off.
+* Changed: [Developers] Config files merge more predictably. Lists under `add` or `remove` add to the defaults, and other lists replace them.
 * Changed: [Developers] Cleaned up duplicate and empty entries in the default config.
-* Changed: Post grids using "Exclude current" or "Exclude displayed" no longer put those post IDs into the query. The grid asks for one extra entry for every entry it will drop, then drops them while rendering. With "Exclude current" that is a single extra entry. With "Exclude displayed" it is one for every entry already shown above it on the page, which can be a lot more. Caching improves either way. A grid pinned to fixed categories or tags is now one cached result shared by every page that runs it. A related-posts grid takes its categories and tags from the article being viewed, so it collapses to one cached result per set of them instead of one per article: on a site with 145,646 articles that came to 1,358 cached results. "Exclude displayed" lands somewhere above that, because the number of entries it asks for depends on how many appeared above it. Unchanged: grids with an offset, grids that count total results (Mai Load More), grids set to "Choice", grids set to a random order, grids set to show all entries, grids asking for 500 entries or more once the extras are counted, grids that show sticky posts, term grids, and grids handled by ElasticPress or FacetWP. Filterable with `mai_post_grid_defer_excludes`.
-* Changed: Post grids without Load More now break ties in their sort order. Grids sorted by date or author settle ties by entry ID in the same direction. Other sorts show tied entries newest first. When many entries share the same sort value, such as menu order, views or comment count, the database could return a different set of them on each page load.
-* Changed: [Performance] Post grids sorted by date and filtered by categories, tags or other taxonomies load faster on large sites that run MySQL 8.0.16 or newer.
-* Changed: [Developers] The `mai_post_grid_optimize_query` filter now defaults to true, so the faster grid queries are on. Return false to turn them off.
-* Changed: [Performance] Post grids using "Exclude current" or "Exclude displayed" now load only the entries they show, instead of every entry they asked for to cover the excluded ones.
-* Changed: [Performance] A cached grid using "Exclude current" or "Exclude displayed" that is older than 4 hours is now shown as it is and refreshed after the page is sent, if no post of its post type has been saved since. This needs a PHP-FPM or LiteSpeed host. After a post is saved, the next visit still refreshes the grid before the page is sent.
-* Changed: [Performance] On PHP-FPM and LiteSpeed hosts without a persistent object cache, new grid results are now saved after the page is sent.
-* Changed: [Developers] Cached grid results are refreshed after 4 hours (`mai_query_cache_ttl`) and kept for up to 24 hours (`mai_query_cache_hard_ttl`). The new `mai_query_cache_hard_ttl` filter receives the query vars as its second argument, like `mai_query_cache_ttl`.
-* Changed: [Developers] New `mai_query_cache_after_page` filter to turn off refreshing grids after the page is sent, and `mai_query_cache_after_page_ms` to set, in milliseconds, when no new refresh starts after the page is sent. It does not cap how long a refresh that has started runs. The default is 1000.
-* Changed: On sites with a persistent object cache, a page is not saved by page cache plugins that honor `DONOTCACHEPAGE` when it was built while another visitor was refreshing one of its grids after a post save. That page shows the old list.
-* Changed: [Developers] `mai_get_columns_atts()` accepts a new `fit_basis` argument, and `mai_columns_get_flex()` a matching third parameter, so a block that knows its content width can give Fit columns a real width instead of one taken from their contents.
-* Changed: [Developers] Column layouts take their display from a new `--columns-display` custom property, defaulting to `flex`. A block can switch its columns to another layout, such as Mai Gallery's masonry, without fighting Mai's CSS.
-* Changed: [Developers] New `mai_metabox_post_types` filter changes which post types get Mai's Hide Elements or Page Header box on their edit screen. It receives the list and the box name, `hide-elements` or `page-header`. Useful when ACF fields break a plugin's editor, such as GravityView Views not publishing.
-* Fixed: [WooCommerce] Products showing twice on the shop page with WooCommerce 11 and later. Mai's archive loop ran after the WooCommerce loop, using the Posts archive settings.
-* Fixed: Updated Mai stylesheets reach browsers after every build. Their version is based on the file date, which used to stay the same when only a partial changed.
-* Fixed: Buttons in WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes, such as category descriptions) now look like Mai buttons, including the secondary, outline, link, small and large styles. Before, they showed as plain links.
-* Fixed: [Performance] Opening the block editor no longer makes the site send a request to itself for Mai's WYSIWYG editor styles. Those styles now go only to WYSIWYG editors (the classic editor, ACF WYSIWYG fields and other `wp_editor()` boxes), where the browser loads them. The block editor already gets the same CSS from Kirki.
-* Fixed: [Developers] `mai_get_option()` and `mai_get_options()` no longer return stale values after the Mai option is saved in the same request, whether by `mai_update_option()`, the Customizer or `update_option()`. The new `mai_reset_options_cache()` empties both caches by hand.
-* Fixed: Post classes are no longer stripped in the WordPress admin, so rows on the Posts screen keep their `status-{status}` class.
-* Fixed: The header logo lost its eager loading and its width-aware `sizes` earlier in this release, falling back to WordPress's guess that it might fill the whole viewport. It is reconnected, and core's Site Logo block is still left on WordPress's own defaults wherever an editor places it.
-* Fixed: The logo could take the browser's single high-priority slot away from the page's main image. WordPress judges that on the file's own dimensions, so a logo uploaded large for retina looks like the biggest image on the page even when it paints small. The logo now declines the slot and passes it to the first entry image.
-* Fixed: Columns set to Fit collapsed the layout instead of sizing each item to its content. This affected Mai Gallery, Mai Testimonials, Mai Lists, and any grid whose columns setting was missing.
-* Fixed: Grids fell back to a hardcoded image size that some themes do not register, which produced a PHP warning. They now fall back to a size the site actually has.
-* Fixed: Images in the editor canvas could run past the edge of their block. The canvas was missing the rule that keeps an image inside its container on the front end.
-* Fixed: The image edit panel in an ACF gallery field no longer overflows the block settings sidebar. Its labels were cut off and it covered the close button, so there was no way to leave it or pick another image.
-* Fixed: A Mai theme that adds its own theme support, a sticky or transparent header for example, silently removed one of Mai's defaults instead of adding to it. Thirteen themes were affected.
-* Fixed: WordPress block styles loaded out of order on some pages and overrode Mai's, most visibly as table borders that were dark on some pages and light on others.
-* Fixed: WordPress's opinionated block styles are off by default again. They were always meant to be, but WordPress 6.9 changed how they load and they came back on. [Developers] A site that wants them can add `wp-block-styles` to `theme-support` in its config.
-* Fixed: Importing an XML file with the WordPress Importer plugin no longer adds stray backslashes to post content, which was stripping block settings and putting a backslash before apostrophes.
-* Fixed: Restored the aspect ratio controls on image blocks, unintentionally removed in 2.40.0.
-* Fixed: [Security] Improved security when rendering content.
-* Fixed: JSON stored in `data-` attributes is no longer corrupted when a block is rendered.
-* Fixed: Content archive and single content settings are now sanitized when rendered, not only when saved, so values written outside the Customizer (by an import, a migration, or a filter) are covered too.
-* Fixed: Per-post and per-term hidden element settings are now applied to the correct entry on term archives.
+* Changed: [Developers] Site logo and scroll logo images are named `mai_logo` and `mai_scroll_logo` through `wp_get_attachment_image_context`.
+* Changed: [Developers] `mai_get_columns_atts()` accepts a new `fit_basis` argument, and `mai_columns_get_flex()` a matching third parameter.
+* Fixed: Browsers could keep an old copy of a Mai stylesheet after an update.
+* Fixed: Buttons in WYSIWYG editors, such as the classic editor and ACF WYSIWYG fields, now look like Mai buttons.
+* Fixed: The logo could take the browser's high-priority image slot away from the page's main image.
+* Fixed: Columns set to Fit collapsed the layout instead of sizing each item to its content.
+* Fixed: Grids fell back to an image size some themes don't register, which caused a PHP warning.
+* Fixed: Images in the editor canvas could run past the edge of their block.
+* Fixed: The image edit panel in an ACF gallery field overflowed the block settings sidebar and covered its close button.
+* Fixed: A Mai theme that adds its own theme support removed one of Mai's defaults instead of adding to it.
+* Fixed: WordPress block styles loaded out of order on some pages and overrode Mai's, such as table borders.
+* Fixed: WordPress's opinionated block styles are off by default again, as they were before WordPress 6.9. Add `wp-block-styles` to `theme-support` in the config to turn them on.
+* Fixed: Importing an XML file with the WordPress Importer plugin added stray backslashes to post content.
+* Fixed: Restored the aspect ratio controls on image blocks, removed by mistake in 2.40.0.
+* Fixed: JSON stored in `data-` attributes was corrupted when a block was rendered.
+* Fixed: Content archive and single content settings are now sanitized when rendered, not only when saved.
+* Fixed: Per-post and per-term hidden element settings applied to the wrong entry on term archives.
 * Fixed: Mai Post Grids set to a random order are now random on every page load.
 * Fixed: Each performance setting now uses its own default rather than the emoji setting's.
 * Fixed: A fatal error on the front end when a separate ACF Pro plugin is active alongside the bundled copy.
-* Fixed: A PHP 8.5 deprecation notice, and a stray character added to the Easy Digital Downloads stylesheet.
-* Fixed: The Cover block's `sizes` attribute used a hard-coded 600px breakpoint rather than the theme's configured breakpoint, so themes with a custom breakpoint could get a mismatched value.
-* Fixed: PHP warnings and a bad srcset calculation when an attachment's file could not be resolved but its metadata still existed.
+* Fixed: A PHP 8.5 deprecation notice, and a stray character in the Easy Digital Downloads stylesheet.
+* Fixed: The Cover block's `sizes` attribute used a hard-coded 600px breakpoint instead of the theme's breakpoint.
+* Fixed: PHP warnings and a bad srcset when an attachment's file was missing but its metadata still existed.
 * Fixed: Saving a private post now refreshes cached grids that show private posts.
-* Fixed: Grids whose query uses `LIKE` got a new cache entry on every view, so they were never served from the cache.
-* Fixed: [Performance] Grids whose query holds the current time, such as The Events Calendar's event grids, are no longer cached. They got a new cache entry on every view, so they were never served from it.
-* Fixed: A grid whose query failed could cache an empty list. Nothing is stored now. On sites with a persistent object cache, WordPress's own cached query results are also reset, so it does not keep serving the failed empty list.
 * Fixed: Changing a post's type left it in cached grids for the old type.
-* Fixed: Old cache rows are now deleted from the database when the cache is flushed, on sites without a persistent object cache. The match is exact, so no other option is touched.
-* Fixed: In the editor, items in Mai column layouts had their margins removed, so they could be spaced differently than on the front end. Only the wrappers of nested blocks are reset now.
-* Fixed: On the login page, "Remember Me" wrapped onto two lines once WordPress 7.1 added a help icon beside it. The row now keeps to one line.
+* Fixed: A grid whose query failed could cache an empty list.
+* Fixed: In the editor, items in Mai column layouts lost their margins, so spacing differed from the front end.
+* Fixed: On the login page, "Remember Me" wrapped onto two lines in WordPress 7.1.
+* Fixed: [Performance] Opening the block editor no longer makes the site send a request to itself for Mai's WYSIWYG editor styles.
+* Fixed: [Performance] Grids whose query uses `LIKE` were never served from the cache.
+* Fixed: [Performance] Grids whose query holds the current time, such as event grids from The Events Calendar, are no longer cached, since they were never served from it.
+* Fixed: [Performance] Old cache rows are now deleted from the database when the cache is flushed, on sites without a persistent object cache.
+* Fixed: [WooCommerce] Products showing twice on the shop page with WooCommerce 11 and later.
+* Fixed: [Security] Improved security when rendering content.
+* Fixed: [Developers] `mai_get_option()` and `mai_get_options()` returned stale values after the Mai option was saved in the same request.
 
 ## 2.40.0 (7/2/26)
 * Added: [Performance] Mai Post Grid now caches its resolved query results (the matching post IDs and total count) under a version token Mai controls, so the cache survives the constant cache-key churn that defeats WordPress's own query cache on busy, frequently-edited sites. It serves instantly on a hit, serves the previous result while one request refreshes a stale entry (stale-while-revalidate), and collapses a cold stampede to a single query (single-flight) where a persistent object cache is present. Any query can opt in via the `mai_cache` query var.
