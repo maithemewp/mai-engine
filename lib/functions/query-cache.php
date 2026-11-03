@@ -15,6 +15,7 @@ add_action( 'init', 'mai_register_query_cache' );
  * @since 2.40.0
  * @since 2.41.0 Registers the grid ID tiebreaker.
  * @since 2.41.0 Uses the shared instance, and runs its queue on shutdown.
+ * @since 2.41.1 Registers the term change hooks.
  *
  * @return void
  */
@@ -43,6 +44,13 @@ function mai_register_query_cache() {
 
 	add_action( 'transition_post_status', [ $cache, 'on_transition' ], 10, 3 );
 	add_action( 'deleted_post', [ $cache, 'on_delete' ], 10, 2 );
+	add_action( 'added_term_relationship', [ $cache, 'on_add_term' ], 10, 3 );
+	add_action( 'set_object_terms', [ $cache, 'on_set_terms' ], 10, 4 );
+	add_action( 'deleted_term_relationships', [ $cache, 'on_remove_terms' ], 10, 3 );
+	add_action( 'pre_delete_term', [ $cache, 'before_term_delete' ], 10, 2 );
+	add_action( 'delete_term', [ $cache, 'on_term_deleted' ], 10, 3 );
+	add_action( 'edit_terms', [ $cache, 'before_term_edit' ], 10, 2 );
+	add_action( 'edited_term', [ $cache, 'on_term_edited' ], 10, 3 );
 
 	if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( 'WP_CLI' ) ) {
 		WP_CLI::add_hook( 'after_invoke:cache flush', [ $cache, 'flush_all' ] );

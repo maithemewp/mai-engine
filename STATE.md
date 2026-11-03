@@ -1,7 +1,9 @@
 # State
-Updated: 2026-10-23 by Claude
+Updated: 2026-11-03 by Claude
 
 ## Now
+2.41.1 is on `develop`, not pushed and not released: post grids now refresh when a post's terms change without a save (issue #675). The grid cache resets a post type once per `wp_set_object_terms()` call and once per term delete, never once per term or per post. CHANGES.md has `## 2.41.1 (TBD)`; the version header is still 2.41.0.
+
 2.41.0 is released (2026-10-23): GitHub release `2.41.0` on `master` at `e804a3b9b`, the same commit as `develop`. Issue #673 (WooCommerce 11+ shop showing products twice) closed with it. The changelog was trimmed to one short line per change, grouped Added, Changed, Fixed, and by tag inside each (untagged, Performance, WooCommerce, Security, Developers). Keep that shape.
 
 - **How Mai Engine releases:** dated `Release X.Y.Z` commit (version header, changelog date, `npm run release`), fast-forward `master`, `gh release create X.Y.Z --target master --title "Mai Engine vX.Y.Z" --notes-file CHANGES.md`. Sites on `master` update only from a GitHub release, then a tag (`Vcs/GitHubApi.php:354`). The mai-bulk-update fleet flow (merge commits, annotated tags) is not used here, so `release-qa.sh postrelease` warns about the develop tip. Ignore it.
@@ -11,15 +13,16 @@ Updated: 2026-10-23 by Claude
 - The `beta` branch was fast-forwarded to `master` (2.41.0) the same day, so beta-channel sites get 2.41.0 too.
 
 ## Next
-1. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
-2. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
-3. Then `TODO.md`. MariaDB stays off for the grid optimizer.
+1. Ship 2.41.1 (consent-gated): bump the header, date the changelog, beta or release as Mike decides. A client site plugin calls `Mai_Query_Cache::instance()->on_transition()` after setting a term as a workaround; it can drop that once 2.41.1 is live.
+2. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
+3. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
+4. Then `TODO.md`. MariaDB stays off for the grid optimizer.
 
 ## Blocked / waiting on
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (280 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (699), `php vendor/bin/deployable-guard check`. All pass as of 2026-10-23.
+- `composer test-unit` (280 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (715), `php vendor/bin/deployable-guard check`. All pass as of 2026-11-03.
 - CSS: `npx gulp build:main-css build:editor-css build:blocks-css`. There is no `styles` task.
 - Admin pages headless: `mai-sites login <site>.test --redirect=<path|post:ID/edit|term:ID/edit>` prints a one-time link with nobody at a keyboard and opens nothing; open it in headless Chrome. Script: `/tmp/ocr-scripts/admin-shot.mjs` (gone after reboot).
 - `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also before this work.

@@ -113,6 +113,29 @@ class Mai_Query_Cache {
 	private Mai_Query_Cache_Queue $queue;
 
 	/**
+	 * Parents of terms being edited in this request, read before the edit, keyed by taxonomy
+	 * then term ID. See before_term_edit().
+	 *
+	 * @var array<string, array<int, int>>
+	 */
+	private array $parents = [];
+
+	/**
+	 * Posts that gained a term in this request and wait for on_set_terms() to rotate their type,
+	 * keyed by taxonomy then object ID, holding the post type. See on_add_term().
+	 *
+	 * @var array<string, array<int, string>>
+	 */
+	private array $added = [];
+
+	/**
+	 * Taxonomies with a term being deleted right now. See before_term_delete().
+	 *
+	 * @var array<string, true>
+	 */
+	private array $deleting = [];
+
+	/**
 	 * Sets up the queue.
 	 *
 	 * @since 2.41.0
@@ -1432,6 +1455,239 @@ class Mai_Query_Cache {
 	public function on_delete( $post_id, $post ) {
 		if ( $post && in_array( $post->post_status, self::SHOWN, true ) && 'revision' !== $post->post_type ) {
 			mai_cache( self::GROUP )->bump( $post->post_type );
+		}
+	}
+
+	/**
+	 * Note that a post a grid can show gained a term. A grid that filters by taxonomy stores the
+	 * IDs that matched, and terms set in code (a plugin, an import, WP-CLI) change no status, so
+	 * on_transition() never runs. The block editor also saves terms after the status transition,
+	 * so a grid rebuilt in between needs this too.
+	 *
+	 * Hooked to added_term_relationship, which core fires only when a row is really added. It
+	 * fires once per term, and before core clears its own term query cache, so the rotation
+	 * waits for on_set_terms(). Then a post saved with ten tags rotates once, and a grid rebuilt
+	 * right after can't get core's old cached list.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param int    $object_id Object ID.
+	 * @param int    $tt_id     Term taxonomy ID added.
+	 * @param string $taxonomy  Taxonomy slug.
+	 *
+	 * @return void
+	 */
+	public function on_add_term( $object_id, $tt_id, $taxonomy ) {
+		if ( isset( $this->deleting[ $taxonomy ] ) ) {
+			return;
+		}
+
+		$type = $this->shown_type( (int) $object_id, (string) $taxonomy );
+
+		if ( $type ) {
+			$this->added[ $taxonomy ][ (int) $object_id ] = $type;
+		}
+	}
+
+	/**
+	 * Rotate once for the terms on_add_term() noted, after core has saved them all.
+	 *
+	 * Not the only hook, because set_object_terms can't tell what changed: on an append core
+	 * passes no old terms, so a term the post already has looks new there. A replace removes the
+	 * old terms through wp_remove_object_terms(), which on_remove_terms() handles.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param int    $object_id Object ID.
+	 * @param array  $terms     The terms passed in.
+	 * @param array  $tt_ids    Term taxonomy IDs set.
+	 * @param string $taxonomy  Taxonomy slug.
+	 *
+	 * @return void
+	 */
+	public function on_set_terms( $object_id, $terms, $tt_ids, $taxonomy ) {
+		$object_id = (int) $object_id;
+		$type      = $this->added[ $taxonomy ][ $object_id ] ?? null;
+
+		if ( null === $type ) {
+			return;
+		}
+
+		unset( $this->added[ $taxonomy ][ $object_id ] );
+
+		mai_cache( self::GROUP )->bump( $type );
+	}
+
+	/**
+	 * Rotate when a post a grid can show has terms removed, once per call.
+	 *
+	 * Core fires this for any term that exists, even one the post never had, so it can rotate
+	 * with nothing changed. That costs one rebuild. While a term is being deleted,
+	 * on_term_deleted() rotates once instead of once per post.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param int    $object_id Object ID.
+	 * @param array  $tt_ids    Term taxonomy IDs removed.
+	 * @param string $taxonomy  Taxonomy slug.
+	 *
+	 * @return void
+	 */
+	public function on_remove_terms( $object_id, $tt_ids, $taxonomy ) {
+		if ( isset( $this->deleting[ $taxonomy ] ) ) {
+			return;
+		}
+
+		$type = $this->shown_type( (int) $object_id, (string) $taxonomy );
+
+		if ( $type ) {
+			mai_cache( self::GROUP )->bump( $type );
+		}
+	}
+
+	/**
+	 * The post type to rotate when an object's terms change, or null when no grid can show it.
+	 *
+	 * The object a term is attached to is not always a post (links, users), and its ID can match
+	 * an unrelated post, so only a post whose type uses the taxonomy counts.
+	 *
+	 * Inside wp_insert_post() the status read here can be the one from before the save. A post
+	 * changing status is rotated by on_transition(), so only a post that stays shown needs this.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param int    $object_id Object ID.
+	 * @param string $taxonomy  Taxonomy slug.
+	 *
+	 * @return string|null
+	 */
+	private function shown_type( int $object_id, string $taxonomy ): ?string {
+		$post = get_post( $object_id );
+
+		if ( ! $post || ! in_array( $post->post_status, self::SHOWN, true ) || 'revision' === $post->post_type ) {
+			return null;
+		}
+
+		if ( ! is_object_in_taxonomy( $post->post_type, $taxonomy ) ) {
+			return null;
+		}
+
+		return $post->post_type;
+	}
+
+	/**
+	 * Stop rotating per post while a term is deleted. wp_delete_term() removes the term from each
+	 * post in turn, and gives a post left with no category the default one, so a term on 200
+	 * posts would rotate 200 times. on_term_deleted() rotates once at the end.
+	 *
+	 * Set only for a term that exists. wp_delete_term() returns early only when it doesn't, so
+	 * delete_term always follows and the flag can't stay set.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param int    $term_id  Term ID.
+	 * @param string $taxonomy Taxonomy slug.
+	 *
+	 * @return void
+	 */
+	public function before_term_delete( $term_id, $taxonomy ) {
+		if ( get_term( (int) $term_id, $taxonomy ) instanceof WP_Term ) {
+			$this->deleting[ $taxonomy ] = true;
+		}
+	}
+
+	/**
+	 * Rotate every post type using a taxonomy when one of its terms is deleted. This also covers
+	 * a deleted parent with no posts of its own: core moves its children up with a direct
+	 * database write, and no post loses a term.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param int    $term_id  Term ID.
+	 * @param int    $tt_id    Term taxonomy ID.
+	 * @param string $taxonomy Taxonomy slug.
+	 *
+	 * @return void
+	 */
+	public function on_term_deleted( $term_id, $tt_id, $taxonomy ) {
+		unset( $this->deleting[ $taxonomy ] );
+
+		$this->bump_taxonomy( (string) $taxonomy );
+	}
+
+	/**
+	 * Remember a hierarchical term's parent before it is edited, so on_term_edited() can tell
+	 * whether it moved. edited_term gets no old parent, and the parent in its args may not be
+	 * the one saved, because the wp_update_term_parent filter can change it.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param int    $term_id  Term ID.
+	 * @param string $taxonomy Taxonomy slug.
+	 *
+	 * @return void
+	 */
+	public function before_term_edit( $term_id, $taxonomy ) {
+		if ( ! is_taxonomy_hierarchical( $taxonomy ) ) {
+			return;
+		}
+
+		$term = get_term( (int) $term_id, $taxonomy );
+
+		if ( $term instanceof WP_Term ) {
+			$this->parents[ $taxonomy ][ $term->term_id ] = $term->parent;
+		}
+	}
+
+	/**
+	 * Rotate every post type using a taxonomy when one of its terms gets a new parent. A grid
+	 * that includes child terms matches different posts then, while no post changed. Other term
+	 * edits (name, slug, description) don't change which posts a grid stores, because grids
+	 * query terms by ID.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param int    $term_id  Term ID.
+	 * @param int    $tt_id    Term taxonomy ID.
+	 * @param string $taxonomy Taxonomy slug.
+	 *
+	 * @return void
+	 */
+	public function on_term_edited( $term_id, $tt_id, $taxonomy ) {
+		$term_id = (int) $term_id;
+
+		if ( ! isset( $this->parents[ $taxonomy ][ $term_id ] ) ) {
+			return;
+		}
+
+		$old = $this->parents[ $taxonomy ][ $term_id ];
+		unset( $this->parents[ $taxonomy ][ $term_id ] );
+
+		$term = get_term( $term_id, $taxonomy );
+
+		if ( $term instanceof WP_Term && $term->parent !== $old ) {
+			$this->bump_taxonomy( (string) $taxonomy );
+		}
+	}
+
+	/**
+	 * Rotate every post type a taxonomy is registered for.
+	 *
+	 * @since 2.41.1
+	 *
+	 * @param string $taxonomy Taxonomy slug.
+	 *
+	 * @return void
+	 */
+	private function bump_taxonomy( string $taxonomy ): void {
+		$tax = get_taxonomy( $taxonomy );
+
+		if ( ! $tax ) {
+			return;
+		}
+
+		foreach ( (array) $tax->object_type as $type ) {
+			mai_cache( self::GROUP )->bump( $type );
 		}
 	}
 

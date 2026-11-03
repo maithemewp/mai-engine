@@ -367,8 +367,9 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 	}
 
 	/**
-	 * Changes what a shape's query returns without saving a post, so the version stays and the
-	 * entry can only go stale by age. Adding a term or changing a meta value is not a save.
+	 * Changes what a shape's query returns in a way the cache does not see, so the version stays
+	 * and the entry can only go stale by age. Changing a meta value does not rotate the version.
+	 * Adding a term does, so join_without_rotating() adds it the way a direct database write would.
 	 */
 	private function drift( string $shape ): void {
 		$before = $this->version();
@@ -376,10 +377,22 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		if ( 'views' === $shape ) {
 			update_post_meta( $this->post_ids[8], self::VIEWS, 1000 );
 		} else {
-			wp_set_object_terms( $this->outsider, [ $this->term_id ], 'category', true );
+			$this->join_without_rotating( $this->outsider, $this->term_id );
 		}
 
-		$this->assertSame( $before, $this->version(), 'no save, so the version stays' );
+		$this->assertSame( $before, $this->version(), 'the cache did not see the change, so the version stays' );
+	}
+
+	/**
+	 * Adds a post to a category without rotating the version, like a write the cache does not
+	 * see. The grid cache's own term hook is off while it runs.
+	 */
+	private function join_without_rotating( int $post_id, int $term_id ): void {
+		$cache = Mai_Query_Cache::instance();
+
+		remove_action( 'added_term_relationship', [ $cache, 'on_add_term' ], 10 );
+		wp_set_object_terms( $post_id, [ $term_id ], 'category', true );
+		add_action( 'added_term_relationship', [ $cache, 'on_add_term' ], 10, 3 );
 	}
 
 	/** Publishes a post in the category, which changes the version. */
@@ -724,7 +737,7 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 	/**
 	 * The no-drift rule: the job stores exactly what a rebuild during the page would. The data
-	 * changes between the first store and the job, without a save, so the job has a new list
+	 * changes between the first store and the job, unseen by the cache, so the job has a new list
 	 * to get right. The comparison is a cold rebuild of the same grid during the page, with core's
 	 * query cache emptied so it runs its own SQL.
 	 */
@@ -986,6 +999,29 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 			$this->assertSame( 1, $first['selects'] + $second['selects'], 'one grid query' );
 			$this->assertSame( [], $this->queue->jobs() );
 		}
+	}
+
+	/**
+	 * A post joining the grid's category in code, with no save, rotates the version. The next
+	 * page rebuilds the grid during the page and shows the post.
+	 */
+	public function test_a_post_joining_the_category_shows_on_the_next_page(): void {
+		$warm = $this->warm( 'current' );
+
+		$this->assertNotContains( $this->outsider, $warm['ids'] );
+
+		$before = $this->version();
+
+		wp_set_object_terms( $this->outsider, [ $this->term_id ], 'category', true );
+
+		$this->assertNotSame( $before, $this->version(), 'the term change rotated the version' );
+
+		$this->new_request( 'current' );
+
+		$grid = $this->render( 'current' );
+
+		$this->assert_rebuilt_during_page( $grid );
+		$this->assertContains( $this->outsider, $this->ids( $grid['query'] ) );
 	}
 
 	// ---- The job ----
@@ -1310,11 +1346,11 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 	// ---- An empty grid ----
 
-	/** Whether a post joins the empty grid's category, without a save, before the job runs. */
+	/** Whether a post joins the empty grid's category, unseen by the cache, before the job runs. */
 	public static function empty_grid_changes(): array {
 		return [
-			'still empty'                  => [ false ],
-			'a post joined without a save' => [ true ],
+			'still empty'          => [ false ],
+			'a post joined unseen' => [ true ],
 		];
 	}
 
@@ -1378,7 +1414,8 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 
 	/**
 	 * An aged empty entry carries the marker, so it is served as it is and rebuilt after the
-	 * page, like any other. When a post joins the category without a save, the rebuild finds it.
+	 * page, like any other. When a post joins the category in a way the cache does not see, such
+	 * as a direct database write, the rebuild finds it.
 	 */
 	#[DataProvider( 'empty_grid_changes' )]
 	public function test_aged_empty_entry_is_rebuilt_after_the_page( bool $joined ): void {
@@ -1389,9 +1426,9 @@ final class GridCacheAfterPageTest extends MaiIntegrationTestCase {
 		if ( $joined ) {
 			$before = $this->version();
 
-			wp_set_object_terms( $this->outsider, [ $this->empty_term_id ], 'category', true );
+			$this->join_without_rotating( $this->outsider, $this->empty_term_id );
 
-			$this->assertSame( $before, $this->version(), 'no save, so the version stays' );
+			$this->assertSame( $before, $this->version(), 'the cache did not see the change, so the version stays' );
 		}
 
 		$this->age();

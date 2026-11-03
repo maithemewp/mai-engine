@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.41.1 (TBD)
+* Fixed: Post grids now refresh when a post's categories, tags, or other terms change without the post being saved.
+
 ## 2.41.0 (10/23/26)
 * Added: Masonry image orientation for Mai Post Grid, Mai Term Grid, and content archives. Images keep their own shape and stack into columns.
 * Added: Gravity Forms now use the site's Mai colors, input corners, and label sizes. A form's own Style settings still win.
