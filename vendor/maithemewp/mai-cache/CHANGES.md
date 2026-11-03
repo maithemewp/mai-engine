@@ -4,6 +4,12 @@ All notable changes to `mai-cache` are documented here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: [Semantic Versioning](https://semver.org/).
 
+## [0.6.1] - 2026-11-03
+
+### Fixed
+
+- **A change made after `switch_to_blog()` now reaches the other site.** Version tokens were remembered per request without the site ID, so code on one site of a multisite network that bumped or flushed a cache after switching to another site wrote under the first site's tokens. The other site never saw the change and served old entries until they expired. Switching back after a flush also left the first site using the other site's token. Tokens are now remembered per site.
+
 ## [0.6.0] - 2026-10-03
 
 0.5.0 was never tagged, but mai-engine 2.40 bundles a copy that registers itself as 0.5.0. This release is 0.6.0 so it loads ahead of that copy, and it includes everything listed for 0.5.0 below.

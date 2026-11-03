@@ -2,6 +2,7 @@
 
 ## 2.41.1 (TBD)
 * Fixed: Post grids now refresh when a post's categories, tags, or other terms change without the post being saved.
+* Fixed: On multisite, a post or term changed after switching to another site now refreshes that site's grids. Updates mai-cache to 0.6.1.
 
 ## 2.41.0 (10/23/26)
 * Added: Masonry image orientation for Mai Post Grid, Mai Term Grid, and content archives. Images keep their own shape and stack into columns.

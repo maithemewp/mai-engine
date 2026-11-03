@@ -2,7 +2,7 @@
 Updated: 2026-11-03 by Claude
 
 ## Now
-2.41.1 is on `develop`, not pushed and not released: post grids now refresh when a post's terms change without a save (issue #675). The grid cache resets a post type once per `wp_set_object_terms()` call and once per term delete, never once per term or per post. CHANGES.md has `## 2.41.1 (TBD)`; the version header is still 2.41.0.
+2.41.1 is on `develop`, not pushed and not released: post grids now refresh when a post's terms change without a save (issue #675). The grid cache resets a post type once per `wp_set_object_terms()` call and once per term delete, never once per term or per post. 2.41.1 also updates mai-cache to 0.6.1 (released and tagged 2026-11-03), which fixes grid cache resets made after `switch_to_blog()` on multisite. CHANGES.md has `## 2.41.1 (TBD)`; the version header is still 2.41.0.
 
 2.41.0 is released (2026-10-23): GitHub release `2.41.0` on `master` at `e804a3b9b`, the same commit as `develop`. Issue #673 (WooCommerce 11+ shop showing products twice) closed with it. The changelog was trimmed to one short line per change, grouped Added, Changed, Fixed, and by tag inside each (untagged, Performance, WooCommerce, Security, Developers). Keep that shape.
 

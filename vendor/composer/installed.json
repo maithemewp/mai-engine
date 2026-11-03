@@ -997,17 +997,17 @@
         },
         {
             "name": "maithemewp/mai-cache",
-            "version": "v0.6.0",
-            "version_normalized": "0.6.0.0",
+            "version": "v0.6.1",
+            "version_normalized": "0.6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maithemewp/mai-cache.git",
-                "reference": "cfaf24db8cc153a545465193500b73440832ed9e"
+                "reference": "ff262f538620c94d61a175f5123f54e7245db9ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maithemewp/mai-cache/zipball/cfaf24db8cc153a545465193500b73440832ed9e",
-                "reference": "cfaf24db8cc153a545465193500b73440832ed9e",
+                "url": "https://api.github.com/repos/maithemewp/mai-cache/zipball/ff262f538620c94d61a175f5123f54e7245db9ce",
+                "reference": "ff262f538620c94d61a175f5123f54e7245db9ce",
                 "shasum": ""
             },
             "require": {
@@ -1018,7 +1018,7 @@
                 "brain/monkey": "^2.6",
                 "phpunit/phpunit": "^10.5"
             },
-            "time": "2026-10-04T00:09:05+00:00",
+            "time": "2026-11-03T23:44:26+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload-dev": {
@@ -1037,7 +1037,7 @@
             "description": "Ergonomic remember()-pattern caching for WordPress transients and the object cache. SCRIPT_DEBUG-aware. Safe to bundle in several plugins on one WordPress site: the newest copy loads.",
             "homepage": "https://github.com/maithemewp/mai-cache",
             "support": {
-                "source": "https://github.com/maithemewp/mai-cache/tree/v0.6.0",
+                "source": "https://github.com/maithemewp/mai-cache/tree/v0.6.1",
                 "issues": "https://github.com/maithemewp/mai-cache/issues"
             },
             "install-path": "../maithemewp/mai-cache"

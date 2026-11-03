@@ -26,9 +26,11 @@ class Cache {
 	private static array $instances = [];
 
 	/**
-	 * Memoized version tokens keyed by scope (used from 0.2.0).
+	 * Memoized version tokens keyed by site ID, then scope (used from 0.2.0). Each site of a
+	 * multisite network keeps its own tokens in its own storage, so a token read on one site
+	 * must not be used after switch_to_blog() to another.
 	 *
-	 * @var array<string,string>
+	 * @var array<int,array<string,string>>
 	 */
 	private static array $tokens = [];
 
@@ -319,7 +321,7 @@ class Cache {
 
 		$token = self::new_token();
 
-		self::$tokens[ $scope ] = $token;
+		self::$tokens[ self::blog_id() ][ $scope ] = $token;
 
 		$written = $this->store->write( $this->token_key( $scope ), $token, 0 );
 
@@ -622,8 +624,10 @@ class Cache {
 	 * @since 0.2.0
 	 */
 	private function token( string $scope ): string {
-		if ( isset( self::$tokens[ $scope ] ) ) {
-			return self::$tokens[ $scope ];
+		$blog_id = self::blog_id();
+
+		if ( isset( self::$tokens[ $blog_id ][ $scope ] ) ) {
+			return self::$tokens[ $blog_id ][ $scope ];
 		}
 
 		$stored = $this->store->read( $this->token_key( $scope ) );
@@ -633,7 +637,16 @@ class Cache {
 			$this->store->write( $this->token_key( $scope ), $stored, 0 );
 		}
 
-		return self::$tokens[ $scope ] = $stored;
+		return self::$tokens[ $blog_id ][ $scope ] = $stored;
+	}
+
+	/**
+	 * The current site ID, or 0 outside WordPress.
+	 *
+	 * @since 0.6.1
+	 */
+	private static function blog_id(): int {
+		return function_exists( 'get_current_blog_id' ) ? (int) get_current_blog_id() : 0;
 	}
 
 	/**
