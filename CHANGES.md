@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.41.1 (TBD)
+## 2.41.1 (11/05/26)
 * Fixed: Post grids now refresh when a post's categories, tags, or other terms change without the post being saved.
 * Fixed: Gallery blocks show the right number of columns again on WordPress 7.1 and newer.
 * Fixed: On multisite, a post or term changed after switching to another site now refreshes that site's grids. Updates mai-cache to 0.6.1.

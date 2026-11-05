@@ -2,7 +2,7 @@
 Updated: 2026-11-03 by Claude
 
 ## Now
-2.41.1 is on `develop`, pushed but not released: post grids now refresh when a post's terms change without a save (issue #675). The grid cache resets a post type once per `wp_set_object_terms()` call and once per term delete, never once per term or per post. 2.41.1 also updates mai-cache to 0.6.1 (released and tagged 2026-11-03), which fixes grid cache resets made after `switch_to_blog()` on multisite. It also fixes gallery blocks showing one column too few on WP 7.1+: core stopped setting each gallery's gap, so Mai's `.is-layout-flex` gap won. That rule now skips galleries. CHANGES.md has `## 2.41.1 (TBD)`; the version header is still 2.41.0.
+2.41.1 is committed and pushed to `master`, waiting on Mike to publish the GitHub release. Sites on `master` update only from that release. It fixes grids not refreshing on term changes without a save (#675), grid resets after `switch_to_blog()` (mai-cache 0.6.1), and gallery blocks showing one column too few on WP 7.1+ (#671). Mai's `.is-layout-flex` gap rule now skips galleries, so they take core's gap of about 9px. #671 argued for keeping 16px; Mike chose core's on 2026-11-05.
 
 2.41.0 is released (2026-10-23): GitHub release `2.41.0` on `master` at `e804a3b9b`, the same commit as `develop`. Issue #673 (WooCommerce 11+ shop showing products twice) closed with it. The changelog was trimmed to one short line per change, grouped Added, Changed, Fixed, and by tag inside each (untagged, Performance, WooCommerce, Security, Developers). Keep that shape.
 
@@ -13,7 +13,7 @@ Updated: 2026-11-03 by Claude
 - The `beta` branch was fast-forwarded to `master` (2.41.0) the same day, so beta-channel sites get 2.41.0 too.
 
 ## Next
-1. Ship 2.41.1 (consent-gated): bump the header, date the changelog, beta or release as Mike decides. A client site plugin calls `Mai_Query_Cache::instance()->on_transition()` after setting a term as a workaround; it can drop that once 2.41.1 is live.
+1. After Mike publishes 2.41.1: fast-forward `beta` to `master` and push it. A client site plugin calls `Mai_Query_Cache::instance()->on_transition()` after setting a term as a workaround; it can drop that once 2.41.1 is live.
 2. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
 3. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
 4. Then `TODO.md`. MariaDB stays off for the grid optimizer.
