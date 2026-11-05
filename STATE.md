@@ -2,7 +2,7 @@
 Updated: 2026-11-03 by Claude
 
 ## Now
-2.41.1 is on `develop`, not pushed and not released: post grids now refresh when a post's terms change without a save (issue #675). The grid cache resets a post type once per `wp_set_object_terms()` call and once per term delete, never once per term or per post. 2.41.1 also updates mai-cache to 0.6.1 (released and tagged 2026-11-03), which fixes grid cache resets made after `switch_to_blog()` on multisite. CHANGES.md has `## 2.41.1 (TBD)`; the version header is still 2.41.0.
+2.41.1 is on `develop`, pushed but not released: post grids now refresh when a post's terms change without a save (issue #675). The grid cache resets a post type once per `wp_set_object_terms()` call and once per term delete, never once per term or per post. 2.41.1 also updates mai-cache to 0.6.1 (released and tagged 2026-11-03), which fixes grid cache resets made after `switch_to_blog()` on multisite. It also fixes gallery blocks showing one column too few on WP 7.1+: core stopped setting each gallery's gap, so Mai's `.is-layout-flex` gap won. That rule now skips galleries. CHANGES.md has `## 2.41.1 (TBD)`; the version header is still 2.41.0.
 
 2.41.0 is released (2026-10-23): GitHub release `2.41.0` on `master` at `e804a3b9b`, the same commit as `develop`. Issue #673 (WooCommerce 11+ shop showing products twice) closed with it. The changelog was trimmed to one short line per change, grouped Added, Changed, Fixed, and by tag inside each (untagged, Performance, WooCommerce, Security, Developers). Keep that shape.
 
@@ -28,6 +28,7 @@ Updated: 2026-11-03 by Claude
 - `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also before this work.
 
 ## Gotchas
+- Don't reach for CSS on the gallery block's gap. Galleries take core's default. On WP 7.1+ a gap typed into the code editor shows in the editor but not on the page, because `spacing.blockGap` is off on Mai. See `TODO.md`, native controls migration.
 - `wp ... --skip-themes` fatals on sites running Mai Galleries older than 1.3.0, because Mai Engine loads no functions without Genesis. Leave `--skip-themes` off for reads on those sites.
 - Never write a client site, server or local `.test` name into this repo (it is public on GitHub), not even in STATE.md or a commit message. Use stand-ins; put real detail in `docs-local/`, which every repo ignores (`~/.config/git/ignore`). The commit hooks refuse names from the mai-sites registry and `~/Herd` through `git config deployable-guard.extraHooks`. BizBudding's own demo domain is on that list too, so a commit adding it is refused.
 - Gravity Forms reads `gform_default_styles` for the block's editor defaults once, early, before Mai's support file loads, and keeps it. Only `gform_form_block_attributes` (applied again when the editor config is built) reaches the editor.

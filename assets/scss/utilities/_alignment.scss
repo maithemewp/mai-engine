@@ -4,6 +4,12 @@
 	--group-block-justify-content: start;
 	--row-gap: var(--spacing-md);
 	--column-gap: var(--spacing-md);
+}
+
+// Not galleries. Core sizes gallery images for its own gap, so a different gap here wraps the
+// last image and shows one column too few. Since WP 7.1 core has no rule of its own that beats
+// this one. The :where() keeps this as easy to override as a plain .is-layout-flex.
+.is-layout-flex:where(:not(.wp-block-gallery)) {
 	gap: var(--row-gap) var(--column-gap);
 }
 
