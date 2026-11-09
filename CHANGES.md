@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.41.2 (TBD)
+* Changed: [Security] Update ACF Pro to 6.8.11.
+
 ## 2.41.1 (11/05/26)
 * Fixed: Post grids now refresh when a post's categories, tags, or other terms change without the post being saved.
 * Fixed: Gallery blocks show the right number of columns again on WordPress 7.1 and newer.
