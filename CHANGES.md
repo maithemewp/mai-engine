@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.41.2 (TBD)
+## 2.41.2 (11/09/26)
 * Changed: [Security] Update ACF Pro to 6.8.11.
 
 ## 2.41.1 (11/05/26)

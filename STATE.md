@@ -1,7 +1,9 @@
 # State
-Updated: 2026-11-05 by Claude
+Updated: 2026-11-09 by Claude
 
 ## Now
+2.41.2 (2026-11-09) is a security patch: ACF Pro 6.8.10 to 6.8.11, nothing else. Mike chose to skip beta because it is a security release. If GitHub has no `2.41.2` release yet, it is not live: Mike runs `npm run release`, commits, fast-forwards `master` and publishes the release. 6.8.11 keeps only saved fields that were rendered for the object or whose group is located on it, and limits saved wrapper settings to width, class and id. Mai renders through ACF's own forms and its wrappers set only `class`, so neither rule affects Mai. ACF logs dropped keys under `WP_DEBUG` ("ACF: dropped field keys not rendered for this object"). Look for that line if a Mai setting stops saving.
+
 2.41.1 is released (2026-11-05): GitHub release `2.41.1` on `master` at `3cac37db6`. `beta` was fast-forwarded to it the same day. It fixes grids not refreshing on term changes without a save (#675), grid resets after `switch_to_blog()` (mai-cache 0.6.1), and gallery blocks showing one column too few on WP 7.1+ (#671). Mai's `.is-layout-flex` gap rule now skips galleries, so they take core's gap of about 9px. #671 argued for keeping 16px; Mike chose core's on 2026-11-05.
 
 2.41.0 is released (2026-10-23): GitHub release `2.41.0` on `master` at `e804a3b9b`, the same commit as `develop`. Issue #673 (WooCommerce 11+ shop showing products twice) closed with it. The changelog was trimmed to one short line per change, grouped Added, Changed, Fixed, and by tag inside each (untagged, Performance, WooCommerce, Security, Developers). Keep that shape.
