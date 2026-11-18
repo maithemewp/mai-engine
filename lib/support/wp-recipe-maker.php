@@ -107,35 +107,64 @@ function mai_wprm_convert_buttons( $html ) {
 		return $html;
 	}
 
-	// Set vars.
-	$dom   = mai_get_dom_document( $html );
-	$svgs  = [];
-	$nodes = $dom->getElementsByTagName( 'a' );
+	// Recolor svg fills inside buttons. Depth tracks open svgs so only their descendants change.
+	// A self-closing svg has no closer, so it is not counted or the depth would never return to 0.
+	$tags      = new WP_HTML_Tag_Processor( $html );
+	$in_button = false;
+	$svg_depth = 0;
 
-	// Loop through nodes.
-	foreach ( $nodes as $node ) {
-		// Get the class attribute.
-		$class = $node->getAttribute( 'class' );
+	while ( $tags->next_tag( [ 'tag_closers' => 'visit' ] ) ) {
+		$tag    = $tags->get_tag();
+		$closer = $tags->is_tag_closer();
 
-		// Skip if no classes, or classes don't contain 'button'.
-		if ( ! ( $class && str_contains( $class, 'button' ) ) ) {
+		if ( 'A' === $tag ) {
+			// Reset per link so an unclosed svg can't affect the next one.
+			$svg_depth = 0;
+
+			if ( $closer ) {
+				$in_button = false;
+			} else {
+				$class     = $tags->get_attribute( 'class' );
+				$in_button = is_string( $class ) && str_contains( $class, 'button' );
+			}
+
 			continue;
 		}
 
-		// Get all svgs inside the current node.
-		$svgs = $node->getElementsByTagName( 'svg' );
+		if ( ! $in_button ) {
+			continue;
+		}
 
-		// Loop through each svgs.
-		foreach ( $svgs as $svg ) {
-			mai_wprm_dom_convert_svgs( $svg );
+		if ( 'SVG' === $tag && $closer ) {
+			$svg_depth = max( 0, $svg_depth - 1 );
+			continue;
+		}
+
+		if ( $closer ) {
+			continue;
+		}
+
+		$is_svg = 'SVG' === $tag;
+
+		if ( $is_svg || $svg_depth > 0 ) {
+			$fill = $tags->get_attribute( 'fill' );
+
+			if ( is_string( $fill ) && '' !== $fill && 'none' !== $fill ) {
+				$tags->set_attribute( 'fill', 'currentColor' );
+			}
+		}
+
+		if ( $is_svg && ! $tags->has_self_closing_flag() ) {
+			++$svg_depth;
 		}
 	}
 
-	return mai_get_dom_html( $dom );
+	return $tags->get_updated_html();
 }
 
 /**
  * Recursively convert svgs to use currentColor.
+ * No longer called by Mai Engine. Kept only so external callers don't fatal.
  *
  * @access private
  *
