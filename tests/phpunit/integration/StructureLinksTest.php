@@ -19,9 +19,9 @@ final class StructureLinksTest extends MaiIntegrationTestCase {
 
 	private const PREV_NEXT = '<div class="archive-pagination pagination"><div class="pagination-previous"><a href="/page/1/">&#xAB; Previous Page</a></div><div class="pagination-next"><a href="/page/3/">Next Page &#xBB;</a></div></div>';
 
-	protected function tearDown(): void {
+	public function tear_down() {
 		remove_all_filters( 'mai_archive_pagination_link_classes' );
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	// ---- Entry pagination ----
@@ -122,7 +122,7 @@ final class StructureLinksTest extends MaiIntegrationTestCase {
 
 		$base = [ 'pagination-link', 'button', 'button-small' ];
 
-		// The second li is "active"; link order: previous, 1, 2, 3, next.
+		// Page 2's li is active; link order: previous, 1, 2, 3, next.
 		$this->assertEqualsCanonicalizing( array_merge( $base, [ 'button-secondary' ] ), $this->tagClasses( $out, 'a', 1 ) );
 		$this->assertEqualsCanonicalizing( array_merge( $base, [ 'button-secondary' ] ), $this->tagClasses( $out, 'a', 2 ) );
 		$this->assertEqualsCanonicalizing( $base, $this->tagClasses( $out, 'a', 3 ) );

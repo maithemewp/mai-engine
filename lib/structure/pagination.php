@@ -106,7 +106,7 @@ function mai_posts_nav() {
  * Adds the button classes to the links in archive pagination markup.
  * Split out of mai_posts_nav() so it can run without Genesis.
  *
- * @since TBD
+ * @since 2.42.0
  *
  * @access private
  *
