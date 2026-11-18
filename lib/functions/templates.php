@@ -547,6 +547,7 @@ function mai_localize_blocks( $content ) {
 	}
 
 	$replace_urls = [];
+	$replace_ids  = [];
 
 	foreach ( $blocks as $index => $block ) {
 		if ( 'core/cover' === $block['blockName'] ) {
@@ -589,16 +590,16 @@ function mai_localize_blocks( $content ) {
 			}
 
 		} elseif ( 'core/image' === $block['blockName'] ) {
-			$image_id   = $block['attrs']['id'];
-			$image_size = $block['attrs']['sizeSlug'];
+			$image_id   = $block['attrs']['id'] ?? 0;
+			$image_size = $block['attrs']['sizeSlug'] ?? '';
 			$image_url  = false;
 
 			if ( $image_id ) {
-				$dom = mai_get_dom_document( $blocks[ $index ]['innerHTML'] );
-				$img = $dom->getElementsByTagName( 'img' )->item(0);
+				$tags = new WP_HTML_Tag_Processor( $block['innerHTML'] );
 
-				if ( $img ) {
-					$image_url = $img->getAttribute( 'src' );
+				if ( $tags->next_tag( 'img' ) ) {
+					$src       = $tags->get_attribute( 'src' );
+					$image_url = is_string( $src ) ? $src : false;
 				}
 
 				if ( $image_url ) {
@@ -611,28 +612,15 @@ function mai_localize_blocks( $content ) {
 					$filename   = $path_parts['filename'];
 					$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
 					$existing   = mai_get_existing_attachment_from_filename( $filename );
+					$new_id     = $existing ? $existing : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+					$new_img    = $new_id ? wp_get_attachment_image_src( $new_id, $image_size ? $image_size : 'full' ) : false;
 
-					if ( $existing ) {
-						$new_id  = $existing;
-						$new_img = wp_get_attachment_image_src( $existing, $image_size ? $image_size : 'full' );
-						$new_url = $new_img[0];
+					// A match that isn't an image has no src, so leave the block pointing at the demo image.
+					if ( $new_img ) {
+						$blocks[ $index ]['attrs']['id'] = $new_id;
 
-						$blocks[ $index ]['attrs']['id']  = $new_id;
-
-						$replace_urls[ $image_url ] = $new_url;
-
-					} else {
-
-						$new_id  = mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
-
-						if ( $new_id  ) {
-							$new_img = wp_get_attachment_image_src( $new_id, $image_size ? $image_size : 'full' );
-							$new_url = $new_img[0];
-
-							$blocks[ $index ]['attrs']['id']  = $new_id;
-
-							$replace_urls[ $image_url ] = $new_url;
-						}
+						$replace_urls[ $image_url ] = $new_img[0];
+						$replace_ids[ $image_id ]   = $new_id;
 					}
 
 					$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
@@ -640,19 +628,20 @@ function mai_localize_blocks( $content ) {
 			}
 
 		} elseif ( 'core/media-text' === $block['blockName'] ) {
-			$media_id   = $block['attrs']['mediaId'];
-			$media_type = $block['attrs']['mediaType'];
+			$media_id   = $block['attrs']['mediaId'] ?? 0;
+			$media_type = $block['attrs']['mediaType'] ?? '';
+			$image_url  = false;
 
 			if ( 'image' !== $media_type ) {
 				continue;
 			}
 
-			if ( $image_id ) {
-				$dom = mai_get_dom_document( $blocks[ $index ]['innerHTML'] );
-				$img = $dom->getElementsByTagName( 'img' )->item(0);
+			if ( $media_id ) {
+				$tags = new WP_HTML_Tag_Processor( $block['innerHTML'] );
 
-				if ( $img ) {
-					$image_url = $img->getAttribute( 'src' );
+				if ( $tags->next_tag( 'img' ) ) {
+					$src       = $tags->get_attribute( 'src' );
+					$image_url = is_string( $src ) ? $src : false;
 				}
 
 				if ( $image_url ) {
@@ -665,35 +654,16 @@ function mai_localize_blocks( $content ) {
 					$filename   = $path_parts['filename'];
 					$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
 					$existing   = mai_get_existing_attachment_from_filename( $filename );
+					$new_id     = $existing ? $existing : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+					$new_img    = $new_id ? wp_get_attachment_image_src( $new_id, 'large' ) : false;
 
-					if ( $existing ) {
-						$new_id  = $existing;
-						$new_img = wp_get_attachment_image_src( $existing, 'large' );
-						$new_url = $new_img[0];
+					// The new src reaches the output through $replace_urls, since serialize_blocks() reads innerContent, not innerHTML.
+					if ( $new_img ) {
+						$blocks[ $index ]['attrs']['mediaId'] = $new_id;
 
-						$blocks[ $index ]['attrs']['id']  = $new_id;
-
-						$img->setAttribute( 'src', $new_url );
-
-						$replace_urls[ $image_url ] = $new_url;
-
-					} else {
-
-						$new_id  = mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
-
-						if ( $new_id  ) {
-							$new_img = wp_get_attachment_image_src( $existing, 'large' );
-							$new_url = $new_img[0];
-
-							$blocks[ $index ]['attrs']['id']  = $new_id;
-
-							$img->setAttribute( 'src', $new_url );
-
-							$replace_urls[ $image_url ] = $new_url;
-						}
+						$replace_urls[ $image_url ] = $new_img[0];
+						$replace_ids[ $media_id ]   = $new_id;
 					}
-
-					$blocks[ $index ]['innerHTML'] = mai_get_dom_html( $dom );
 
 					$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
 				}
@@ -707,6 +677,13 @@ function mai_localize_blocks( $content ) {
 		foreach ( $replace_urls as $old => $new ) {
 			$blocks = str_replace( $old, $new, $blocks );
 		}
+
+		// One pass for every image ID class, so a class rewritten to a new ID that is also another image's old ID is not rewritten again.
+		$blocks = preg_replace_callback(
+			'/\bwp-image-(\d+)\b/',
+			fn( $m ) => isset( $replace_ids[ $m[1] ] ) ? 'wp-image-' . $replace_ids[ $m[1] ] : $m[0],
+			$blocks
+		);
 
 		return $blocks;
 	}
