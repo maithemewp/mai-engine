@@ -205,4 +205,62 @@ abstract class MaiIntegrationTestCase extends WP_UnitTestCase {
 			);
 		}
 	}
+
+	/**
+	 * Returns the class tokens of the nth matching tag, or an empty array when there is no such
+	 * tag. A valueless class attribute gives an empty array too.
+	 *
+	 * @param string $html HTML to walk.
+	 * @param string $tag  Tag name to match.
+	 * @param int    $nth  Which match to read, starting at 1.
+	 *
+	 * @return string[]
+	 */
+	public function tagClasses( string $html, string $tag, int $nth = 1 ): array {
+		$tags = new WP_HTML_Tag_Processor( $html );
+		$seen = 0;
+
+		while ( $tags->next_tag( $tag ) ) {
+			if ( ++$seen < $nth ) {
+				continue;
+			}
+
+			$class = $tags->get_attribute( 'class' );
+
+			return is_string( $class ) ? preg_split( '/\s+/', $class, -1, PREG_SPLIT_NO_EMPTY ) : [];
+		}
+
+		return [];
+	}
+
+	/**
+	 * Returns the style declarations of the nth matching tag as an ordered list of trimmed,
+	 * non-empty "prop:value" strings, or an empty array when there is no such tag or style.
+	 *
+	 * @param string $html HTML to walk.
+	 * @param string $tag  Tag name to match.
+	 * @param int    $nth  Which match to read, starting at 1.
+	 *
+	 * @return string[]
+	 */
+	public function tagStyles( string $html, string $tag, int $nth = 1 ): array {
+		$tags = new WP_HTML_Tag_Processor( $html );
+		$seen = 0;
+
+		while ( $tags->next_tag( $tag ) ) {
+			if ( ++$seen < $nth ) {
+				continue;
+			}
+
+			$style = $tags->get_attribute( 'style' );
+
+			if ( ! is_string( $style ) ) {
+				return [];
+			}
+
+			return array_values( array_filter( array_map( 'trim', explode( ';', $style ) ), 'strlen' ) );
+		}
+
+		return [];
+	}
 }

@@ -1172,6 +1172,7 @@ function mai_convert_case( $string, $case = 'snake' ) {
  * Add classes to an existing string of classes.
  *
  * @since  0.1.0
+ * @since  2.42.0 De-duplicate classes and normalize whitespace.
  *
  * @param  string|array $new      The classes to add.
  * @param  string       $existing The existing classes.
@@ -1180,10 +1181,10 @@ function mai_convert_case( $string, $case = 'snake' ) {
  */
 function mai_add_classes( $new, $existing = '' ) {
 	if ( ! empty( $new ) ) {
-		$space = ! empty( $existing ) ? ' ' : '';
-		$new   = is_array( $new ) ? implode( ' ', $new ) : $new;
+		$new     = is_array( $new ) ? implode( ' ', $new ) : $new;
+		$classes = preg_split( '/\s+/', $existing . ' ' . $new, -1, PREG_SPLIT_NO_EMPTY );
 
-		return esc_attr( $existing . $space . $new );
+		return esc_attr( implode( ' ', array_unique( $classes ) ) );
 	}
 
 	return $existing;

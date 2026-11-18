@@ -118,12 +118,32 @@ if ( ! function_exists( 'mai_get_config' ) ) {
 	 * @return array
 	 */
 	function mai_get_config( $sub_config ) {
+		// The global-styles block is the real one from config/_default.php. Without
+		// contrast-limit, mai_is_light_color() is always false. Without the whole block,
+		// mai_get_global_styles() falls back to the entire array for a missing key.
 		$config = $GLOBALS['mai_test_config'] ?? [
-			'settings' => [
+			'settings'      => [
 				'page-header' => '*',
 				'widgets'     => [
 					'block-editor' => true,
 				],
+			],
+			'global-styles' => [
+				'breakpoint'     => 1200,
+				'contrast-limit' => 160,
+				'colors'         => [
+					'black'      => '#000000',
+					'white'      => '#ffffff',
+					'header'     => '#ffffff',
+					'background' => '#ffffff',
+					'alt'        => '#f8f9fa',
+					'body'       => '#6c747d',
+					'heading'    => '#343a40',
+					'link'       => '#007bff',
+					'primary'    => '#007bff',
+					'secondary'  => '#6c747d',
+				],
+				'custom-colors' => [],
 			],
 		];
 
@@ -152,3 +172,62 @@ require_once $plugin_root . '/lib/functions/widgets.php';
 require_once $plugin_root . '/lib/admin/upgrade.php';
 require_once $plugin_root . '/lib/admin/notices.php';
 require_once $plugin_root . '/lib/admin/template-parts.php';
+
+// Files the Tag Processor conversion touches, and the helpers they call. None of them needs
+// Genesis at load: they declare functions and register hooks. Genesis-only calls inside them
+// stay untested here.
+require_once $plugin_root . '/packages/kirki/lib/class-aricolor.php';
+require_once $plugin_root . '/lib/functions/colors.php';
+require_once $plugin_root . '/lib/functions/columns.php';
+require_once $plugin_root . '/lib/blocks/mai-grid/functions.php';
+require_once $plugin_root . '/lib/blocks/paragraph.php';
+require_once $plugin_root . '/lib/blocks/heading.php';
+require_once $plugin_root . '/lib/blocks/group.php';
+require_once $plugin_root . '/lib/blocks/button.php';
+require_once $plugin_root . '/lib/structure/single.php';
+require_once $plugin_root . '/lib/structure/comments.php';
+require_once $plugin_root . '/lib/structure/pagination.php';
+require_once $plugin_root . '/lib/functions/shortcodes.php';
+require_once $plugin_root . '/lib/functions/icons.php';
+require_once $plugin_root . '/lib/functions/templates.php';
+require_once $plugin_root . '/lib/support/woocommerce.php';
+require_once $plugin_root . '/lib/support/wp-recipe-maker.php';
+
+// The real mai_get_dir() is in lib/init.php, which the suite does not load.
+if ( ! function_exists( 'mai_get_dir' ) ) {
+	/**
+	 * Test-harness stand-in for the real mai_get_dir().
+	 *
+	 * @return string
+	 */
+	function mai_get_dir() {
+		return trailingslashit( dirname( __DIR__, 3 ) );
+	}
+}
+
+// Points icon lookups at a small fixture set instead of the plugin's full icon library.
+if ( ! function_exists( 'mai_icons_get_dir' ) ) {
+	/**
+	 * Test-harness stand-in for the real mai_icons_get_dir().
+	 *
+	 * @return string
+	 */
+	function mai_icons_get_dir() {
+		return dirname( __DIR__, 3 ) . '/tests/phpunit/integration/fixtures/icons';
+	}
+}
+
+// WooCommerce is not installed. Tests set $GLOBALS['mai_test_wc_loop_columns'] to change the
+// column count; it defaults to 4.
+if ( ! function_exists( 'wc_get_loop_prop' ) ) {
+	/**
+	 * Test-harness stand-in for the real wc_get_loop_prop().
+	 *
+	 * @param string $prop The loop property.
+	 *
+	 * @return mixed
+	 */
+	function wc_get_loop_prop( $prop ) {
+		return 'columns' === $prop ? ( $GLOBALS['mai_test_wc_loop_columns'] ?? 4 ) : null;
+	}
+}
