@@ -113,21 +113,12 @@ function mai_render_paragraph_block( $block_content, $block ) {
 		return $block_content;
 	}
 
-	$dom = mai_get_dom_document( $block_content );
+	$tags = new WP_HTML_Tag_Processor( $block_content );
 
-	/**
-	 * The group block container.
-	 *
-	 * @var DOMElement $first_block The group block container.
-	 */
-	$first_block = mai_get_dom_first_child( $dom );
-
-	if ( $first_block ) {
-		$classes = $first_block->getAttribute( 'class' );
-		$classes = mai_add_classes( sprintf( 'has-no-margin-%s', $side ), $classes );
-		$first_block->setAttribute( 'class', $classes );
-
-		$block_content = mai_get_dom_html( $dom );
+	// Without a tag there is nothing to add the class to, so the input comes back untouched.
+	if ( $tags->next_tag() ) {
+		$tags->add_class( sprintf( 'has-no-margin-%s', $side ) );
+		$block_content = $tags->get_updated_html();
 	}
 
 	return $block_content;

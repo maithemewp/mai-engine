@@ -104,16 +104,15 @@ function mai_render_button_block( $block_content, $block ) {
 
 	// Conditions.
 	if ( $color_value || $background_value || $radius || $is_small || $is_large ) {
-		$dom     = mai_get_dom_document( $block_content );
-		$wraps   = $dom->getElementsByTagName( 'div' );
-		$buttons = $dom->getElementsByTagName( 'a' );
+		$tags   = new WP_HTML_Tag_Processor( $block_content );
+		$prefix = ( 'primary' === $type ) ? '--button' : sprintf( '--button-%s', $type );
 
-		if ( $wraps ) {
-			$prefix = ( 'primary' === $type ) ? '--button' : sprintf( '--button-%s', $type );
+		while ( $tags->next_tag() ) {
+			$tag = $tags->get_tag();
 
-			foreach ( $wraps as $wrap ) {
-				$style  = $wrap->getAttribute( 'style' );
-				$styles = explode( ';', $style );
+			if ( 'DIV' === $tag ) {
+				$style  = $tags->get_attribute( 'style' );
+				$styles = explode( ';', is_string( $style ) ? $style : '' );
 				$styles = array_map( 'trim', $styles );
 
 				if ( '' !== $color_value ) {
@@ -142,43 +141,37 @@ function mai_render_button_block( $block_content, $block ) {
 				$styles = array_values( array_filter( $styles ) );
 
 				if ( $styles ) {
-					$wrap->setAttribute( 'style', implode( ';', $styles ) . ';' );
+					$tags->set_attribute( 'style', implode( ';', $styles ) . ';' );
 				} else {
-					$wrap->removeAttribute( 'style' );
+					$tags->remove_attribute( 'style' );
 				}
-			}
-		}
-
-		if ( $buttons ) {
-			foreach ( $buttons as $button ) {
-				$classes = $button->getAttribute( 'class' );
-				$classes = str_replace( 'has-text-color', '', $classes );
-				$classes = str_replace( 'has-background', '', $classes );
+			} elseif ( 'A' === $tag ) {
+				// Whole class names only, so a class like has-background-blur is left alone.
+				$tags->remove_class( 'has-text-color' );
+				$tags->remove_class( 'has-background' );
 
 				// Clear color classes.
 				if ( $color_name ) {
-					$classes = str_replace( sprintf( 'has-%s-color', $color_name ), '', $classes );
+					$tags->remove_class( sprintf( 'has-%s-color', $color_name ) );
 				}
 
 				// Clear background classes.
 				if ( $background_name ) {
-					$classes = str_replace( sprintf( 'has-%s-background-color', $background_name ), '', $classes ); // WP 5.9 seems to have added the -color.
-					$classes = str_replace( sprintf( 'has-%s-background', $background_name ), '', $classes );
+					$tags->remove_class( sprintf( 'has-%s-background-color', $background_name ) ); // WP 5.9 seems to have added the -color.
+					$tags->remove_class( sprintf( 'has-%s-background', $background_name ) );
 				}
 
 				if ( $is_small ) {
-					$classes .= ' button-small';
+					$tags->add_class( 'button-small' );
 				}
 
 				if ( $is_large ) {
-					$classes .= ' button-large';
+					$tags->add_class( 'button-large' );
 				}
-
-				$button->setAttribute( 'class', trim( $classes ) );
 			}
 		}
 
-		$block_content = mai_get_dom_html( $dom );
+		$block_content = $tags->get_updated_html();
 	}
 
 	return $block_content;

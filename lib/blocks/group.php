@@ -49,30 +49,21 @@ function mai_render_group_block( $block_content, $block ) {
 	}
 
 	if ( $align || $light_or_dark ) {
-		$dom = mai_get_dom_document( $block_content );
+		$tags = new WP_HTML_Tag_Processor( $block_content );
 
-		/**
-		 * The group block container.
-		 *
-		 * @var DOMElement $first_block The group block container.
-		 */
-		$first_block = mai_get_dom_first_child( $dom );
-
-		if ( $first_block ) {
-
+		// Without a tag there is nothing to change, so the input comes back untouched.
+		if ( $tags->next_tag() ) {
 			if ( $align ) {
-				$style = (string) $first_block->getAttribute( 'style' );
-				$style = sprintf( '--group-block-justify-content:%s;', mai_get_flex_align( $align ) ) . $style;
-				$first_block->setAttribute( 'style', $style );
+				$style = $tags->get_attribute( 'style' );
+				$style = is_string( $style ) ? $style : '';
+				$tags->set_attribute( 'style', sprintf( '--group-block-justify-content:%s;', mai_get_flex_align( $align ) ) . $style );
 			}
 
 			if ( $light_or_dark ) {
-				$classes = (string) $first_block->getAttribute( 'class' );
-				$classes = mai_add_classes( sprintf( 'has-%s-background', $light_or_dark ), $classes );
-				$first_block->setAttribute( 'class', $classes );
+				$tags->add_class( sprintf( 'has-%s-background', $light_or_dark ) );
 			}
 
-			$block_content = mai_get_dom_html( $dom );
+			$block_content = $tags->get_updated_html();
 		}
 	}
 
