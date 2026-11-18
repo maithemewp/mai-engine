@@ -489,18 +489,20 @@ function mai_post_terms_shortcode_classes( $output, $terms, $atts ) {
 		return $output;
 	}
 
-	if ( ! ( isset( $atts['taxonomy'] ) || $atts['taxonomy'] ) ) {
+	if ( empty( $atts['taxonomy'] ) ) {
 		return $output;
 	}
 
-	$dom     = mai_get_dom_document( $output );
-	$first   = mai_get_dom_first_child( $dom );
-	$classes = $first->getAttribute( 'class' );
-	$classes = mai_add_classes( sprintf( 'entry-terms-%s', sanitize_html_class( (string) $atts['taxonomy'] ) ), $classes );
-	$first->setAttribute( 'class', $classes );
-	$output  = mai_get_dom_html( $dom );
+	$tags = new WP_HTML_Tag_Processor( $output );
 
-	return trim( $output );
+	if ( ! $tags->next_tag() ) {
+		return $output;
+	}
+
+	// Taxonomy slugs have no spaces, so this is a single class name.
+	$tags->add_class( sprintf( 'entry-terms-%s', sanitize_html_class( (string) $atts['taxonomy'] ) ) );
+
+	return trim( $tags->get_updated_html() );
 }
 
 add_filter( 'do_shortcode_tag', 'mai_gallery_shortcode_tag', 10, 4 );
@@ -537,14 +539,20 @@ function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
 		]
 	);
 
-	$dom   = mai_get_dom_document( $output );
-	$first = mai_get_dom_first_child( $dom );
+	$tags = new WP_HTML_Tag_Processor( $output );
 
-	if ( ! $first ) {
+	if ( ! $tags->next_tag() ) {
 		return $output;
 	}
 
-	$style   = $first->getAttribute( 'style' );
+	$style = $tags->get_attribute( 'style' );
+	$style = is_string( $style ) ? rtrim( $style ) : '';
+
+	// Keep an existing declaration separate from the ones added below.
+	if ( '' !== $style && ';' !== substr( $style, -1 ) ) {
+		$style .= ';';
+	}
+
 	$columns = mai_get_breakpoint_columns(
 		[
 			'columns' => $atts['columns'],
@@ -556,13 +564,7 @@ function mai_gallery_shortcode_tag( $output, $tag, $atts, $m ) {
 		$style .= sprintf( '--gallery-columns-%s:%s;', $break, $column );
 	}
 
-	if ( $style ) {
-		$first->setAttribute( 'style', $style );
-	} else {
-		$first->removeAttribute( 'style' );
-	}
+	$tags->set_attribute( 'style', $style );
 
-	$output = mai_get_dom_html( $dom );
-
-	return $output;
+	return $tags->get_updated_html();
 }

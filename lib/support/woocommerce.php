@@ -88,10 +88,9 @@ function mai_product_loop_start_columns( $html ) {
 		return $html;
 	}
 
-	$dom   = mai_get_dom_document( $html );
-	$first = mai_get_dom_first_child( $dom );
+	$tags = new WP_HTML_Tag_Processor( $html );
 
-	if ( ! $first ) {
+	if ( ! $tags->next_tag() ) {
 		return $html;
 	}
 
@@ -102,17 +101,22 @@ function mai_product_loop_start_columns( $html ) {
 		]
 	);
 
-	$style  = $first->getAttribute( 'style' );
+	$style = $tags->get_attribute( 'style' );
+	$style = is_string( $style ) ? rtrim( $style ) : '';
+
+	if ( '' !== $style && ';' !== substr( $style, -1 ) ) {
+		$style .= ';';
+	}
+
 	$style .= sprintf( '--columns-xs:%s;', $columns['xs'] );
 	$style .= sprintf( '--columns-sm:%s;', $columns['sm'] );
 	$style .= sprintf( '--columns-md:%s;', $columns['md'] );
 	$style .= sprintf( '--columns-lg:%s;', $columns['lg'] );
 
-	$first->setAttribute( 'style', $style );
+	$tags->set_attribute( 'style', $style );
 
-	$html = mai_get_dom_html( $dom );
-
-	return str_replace( '</ul>', '', $html );
+	// The loop start is an open <ul> that WooCommerce closes later; the Tag Processor leaves it open.
+	return $tags->get_updated_html();
 }
 
 add_filter( 'woocommerce_pagination_args', 'mai_woocommerce_pagination_previous_next_text' );
