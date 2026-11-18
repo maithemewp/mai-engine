@@ -77,7 +77,7 @@ add_action( 'genesis_after_endwhile', 'mai_posts_nav', 9 );
 /**
  * Add classes to pagination elements.
  * We can't use `genesis_markup_archive-pagination_content` filter because
- * it uses open/close and would be too confusing with DOMDocoment.
+ * it uses open/close, so the whole nav is buffered and walked instead.
  *
  * @since 1.0.0
  *
@@ -98,70 +98,71 @@ function mai_posts_nav() {
 	$type       = esc_html( mai_isset( $args, 'posts_nav', 'numeric' ) );
 	$pagination = str_replace( ' alignleft', '', $pagination );
 	$pagination = str_replace( ' alignright', '', $pagination );
-	$dom        = mai_get_dom_document( $pagination );
+	echo mai_get_posts_nav_with_classes( $pagination, $type );
+}
 
-	/**
-	 * The pagination wrap.
-	 *
-	 * @var DOMElement $wrap The group block wrap.
-	 */
-	$wrap = mai_get_dom_first_child( $dom );
-
-	if ( $wrap ) {
-		$classes = $wrap->getAttribute( 'class' );
-		$wrap->setAttribute( 'class', $classes );
-
-		if ( 'numeric' === $type ) {
-			$lis = $wrap->getElementsByTagName( 'li' );
-
-			if ( $lis->length ) {
-				foreach ( $lis as $li ) {
-					$active = mai_has_string( 'active', $li->getAttribute( 'class' ) );
-					$links  = $li->getElementsByTagName( 'a' );
-
-					if ( $links ) {
-						foreach ( $links as $link ) {
-							$classes     = $link->getAttribute( 'class' );
-							$new_classes = [
-								'pagination-link',
-								'button',
-								'button-small',
-							];
-							if ( ! $active ) {
-								$new_classes[] = 'button-secondary';
-
-							}
-							$new_classes = apply_filters( 'mai_archive_pagination_link_classes', $new_classes, $active, $type );
-							$classes     = mai_add_classes( $new_classes, $classes );
-							$link->setAttribute( 'class', $classes );
-						}
-					}
-				}
-			}
-		} elseif ( 'prev-next' === $type ) {
-			$active = false;
-			$links  = $wrap->getElementsByTagName( 'a' );
-
-			if ( $links->length ) {
-				foreach ( $links as $link ) {
-					$classes     = $link->getAttribute( 'class' );
-					$new_classes = [
-						'pagination-link',
-						'button',
-						'button-small',
-						'button-secondary',
-					];
-					$new_classes = apply_filters( 'mai_archive_pagination_link_classes', $new_classes, $active, $type );
-					$classes     = mai_add_classes( $new_classes, $classes );
-					$link->setAttribute( 'class', $classes );
-				}
-			}
-		}
-
-		$pagination = mai_get_dom_html( $dom );
+/**
+ * Adds the button classes to the links in archive pagination markup.
+ * Split out of mai_posts_nav() so it can run without Genesis.
+ *
+ * @since TBD
+ *
+ * @access private
+ *
+ * @param string $pagination The pagination markup from Genesis.
+ * @param string $type       The pagination type, numeric or prev-next.
+ *
+ * @return string
+ */
+function mai_get_posts_nav_with_classes( $pagination, $type ) {
+	if ( ! in_array( $type, [ 'numeric', 'prev-next' ], true ) ) {
+		return $pagination;
 	}
 
-	echo $pagination;
+	$tags      = new WP_HTML_Tag_Processor( $pagination );
+	$numeric   = 'numeric' === $type;
+	$in_li     = false;
+	$li_active = false;
+
+	// Closers are visited so the numeric walk knows when it leaves an li.
+	while ( $tags->next_tag( [ 'tag_closers' => 'visit' ] ) ) {
+		$name = $tags->get_tag();
+
+		if ( 'LI' === $name ) {
+			if ( $tags->is_tag_closer() ) {
+				$in_li     = false;
+				$li_active = false;
+			} else {
+				$class     = $tags->get_attribute( 'class' );
+				$in_li     = true;
+				$li_active = is_string( $class ) && mai_has_string( 'active', $class );
+			}
+
+			continue;
+		}
+
+		if ( 'A' !== $name || $tags->is_tag_closer() ) {
+			continue;
+		}
+
+		// Genesis keeps every numeric link inside an li. Anything outside one is not ours.
+		if ( $numeric && ! $in_li ) {
+			continue;
+		}
+
+		$active  = $numeric ? $li_active : false;
+		$classes = [ 'pagination-link', 'button', 'button-small' ];
+
+		if ( ! $active ) {
+			$classes[] = 'button-secondary';
+		}
+
+		$classes  = apply_filters( 'mai_archive_pagination_link_classes', $classes, $active, $type );
+		$existing = $tags->get_attribute( 'class' );
+		$tags->set_attribute( 'class', mai_add_classes( $classes, is_string( $existing ) ? $existing : '' ) );
+	}
+
+	return $tags->get_updated_html();
 }
 
 add_filter( 'genesis_markup_pagination-previous_content', 'mai_adjacent_entry', 10, 2 );
@@ -186,24 +187,13 @@ function mai_adjacent_entry( $content, $args ) {
 	}
 
 	$content = str_replace( 'adjacent-post-link', 'adjacent-entry-link-inner', $content );
-	$dom     = mai_get_dom_document( $content );
+	$tags    = new WP_HTML_Tag_Processor( $content );
 
-	/**
-	 * The pagination link.
-	 *
-	 * @var DOMElement $link The group block link.
-	 */
-	$link = mai_get_dom_first_child( $dom );
-
-	if ( $link ) {
-		$classes = $link->getAttribute( 'class' );
-		$classes = mai_add_classes( 'adjacent-entry-link', $classes );
-		$link->setAttribute( 'class', $classes );
+	if ( $tags->next_tag() ) {
+		$tags->add_class( 'adjacent-entry-link' );
 	}
 
-	$content = mai_get_dom_html( $dom );
-
-	return $content;
+	return $tags->get_updated_html();
 }
 
 add_filter( 'genesis_prev_link_text', 'mai_previous_page_link', 8 );

@@ -42,20 +42,15 @@ add_filter( 'comment_reply_link', 'mai_comment_reply_button_class' );
  * @return string
  */
 function mai_comment_reply_button_class( $link ) {
-	$dom   = mai_get_dom_document( $link );
-	$links = $dom->getElementsByTagName( 'a' );
+	$tags = new WP_HTML_Tag_Processor( $link );
 
-	if ( ! $links ) {
-		return $link;
+	while ( $tags->next_tag( 'a' ) ) {
+		$tags->add_class( 'button' );
+		$tags->add_class( 'button-secondary' );
+		$tags->add_class( 'button-small' );
 	}
 
-	foreach ( $links as $button ) {
-		$classes = $button->getAttribute( 'class' );
-		$classes = mai_add_classes( [ 'button', 'button-secondary', 'button-small' ], $classes );
-		$classes = $button->setAttribute( 'class', $classes );
-	}
-
-	return mai_get_dom_html( $dom );
+	return $tags->get_updated_html();
 }
 
 /**
@@ -73,16 +68,11 @@ function mai_comment_reply_link( $formatted_link, $link, $text ) {
 		return $formatted_link;
 	}
 
-	$dom  = mai_get_dom_document( $formatted_link );
-	$link = mai_get_dom_first_child( $dom );
+	$tags = new WP_HTML_Tag_Processor( $formatted_link );
 
-	if ( ! $link ) {
-		return $formatted_link;
+	if ( $tags->next_tag() ) {
+		$tags->add_class( 'cancel-comment-reply-link' );
 	}
 
-	$classes = $link->getAttribute( 'class' );
-	$classes = mai_add_classes( 'cancel-comment-reply-link', $classes );
-	$classes = $link->setAttribute( 'class', $classes );
-
-	return mai_get_dom_html( $dom );
+	return $tags->get_updated_html();
 }

@@ -27,27 +27,23 @@ add_filter( 'wp_link_pages_link', 'mai_entry_pagination_button_class', 10, 2 );
  * @return string
  */
 function mai_entry_pagination_button_class( $link, $i ) {
-	$dom = mai_get_dom_document( $link );
-	/**
-	 * The link element.
-	 *
-	 * @var DOMElement $first
-	 */
-	$first = mai_get_dom_first_child( $dom );
+	$tags = new WP_HTML_Tag_Processor( $link );
 
-	if ( $first ) {
-		$class = $first->getAttribute( 'class' );
-		$new   = 'button';
-
-		if ( ! mai_has_string( 'current', $class ) ) {
-			$new .= ' button-secondary';
-		}
-
-		$new  .= ' button-small';
-		$class = mai_add_classes( $new, $class );
-		$first->setAttribute( 'class', $class );
-		$link = mai_get_dom_html( $dom );
+	if ( ! $tags->next_tag() ) {
+		return $link;
 	}
 
-	return $link;
+	$class = $tags->get_attribute( 'class' );
+	$class = is_string( $class ) ? $class : '';
+	$new   = 'button';
+
+	if ( ! mai_has_string( 'current', $class ) ) {
+		$new .= ' button-secondary';
+	}
+
+	$new .= ' button-small';
+
+	$tags->set_attribute( 'class', mai_add_classes( $new, $class ) );
+
+	return $tags->get_updated_html();
 }
