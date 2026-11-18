@@ -1,46 +1,35 @@
 # State
-Updated: 2026-11-09 by Claude
+Updated: 2026-11-18 by Claude
 
 ## Now
-2.41.2 is released (2026-11-09): GitHub release `2.41.2` on `master` at `b083647ec`, the same commit as `develop` and `beta`. It is a security patch, ACF Pro 6.8.10 to 6.8.11 and nothing else. Mike chose to skip beta because it is a security release. 6.8.11 keeps only saved fields that were rendered for the object or whose group is located on it, and limits saved wrapper settings to width, class and id. Mai renders through ACF's own forms and its wrappers set only `class`, so neither rule affects Mai. ACF logs dropped keys under `WP_DEBUG` ("ACF: dropped field keys not rendered for this object"). Look for that line if a Mai setting stops saving.
+Branch `dom-to-tag-processor` (from `develop` at `5d6534d68`) moves 18 of the 19 DOMDocument call sites to `WP_HTML_Tag_Processor`, per `docs/specs/2026-11-16-dom-to-tag-processor.md` and `docs/plans/2026-11-16-dom-to-tag-processor.md`. All 11 plan tasks are done and committed. Not pushed. The header scroll logo stays on DOMDocument on purpose, and `mai_get_dom_document()`, `mai_get_dom_html()` and `mai_get_dom_first_child()` stay for other plugins.
 
-2.41.1 is released (2026-11-05): GitHub release `2.41.1` on `master` at `3cac37db6`. `beta` was fast-forwarded to it the same day. It fixes grids not refreshing on term changes without a save (#675), grid resets after `switch_to_blog()` (mai-cache 0.6.1), and gallery blocks showing one column too few on WP 7.1+ (#671). Mai's `.is-layout-flex` gap rule now skips galleries, so they take core's gap of about 9px. #671 argued for keeping 16px; Mike chose core's on 2026-11-05.
-
-2.41.0 is released (2026-10-23): GitHub release `2.41.0` on `master` at `e804a3b9b`, the same commit as `develop`. Issue #673 (WooCommerce 11+ shop showing products twice) closed with it. The changelog was trimmed to one short line per change, grouped Added, Changed, Fixed, and by tag inside each (untagged, Performance, WooCommerce, Security, Developers). Keep that shape.
-
-- **How Mai Engine releases:** dated `Release X.Y.Z` commit (version header, changelog date, `npm run release`), fast-forward `master`, `gh release create X.Y.Z --target master --title "Mai Engine vX.Y.Z" --notes-file CHANGES.md`. Sites on `master` update only from a GitHub release, then a tag (`Vcs/GitHubApi.php:354`). The mai-bulk-update fleet flow (merge commits, annotated tags) is not used here, so `release-qa.sh postrelease` warns about the develop tip. Ignore it.
-- **2.40.1 never shipped.** It had a release commit on `master` but no release or tag, so non-beta sites stayed on 2.40.0 until 2.41.0. Its two changes are in 2.41.0.
-- **The auto-mode permission check refuses `npm run beta`, `npm run release`, tags and releases.** Hand Mike the commands.
-- Checked before release: every BizBudding server's buffer pool (4 to 16 GB) holds all its sites' `wp_posts` and `wp_term_relationships`. The 128 MB servers host only small sites. No MariaDB. No Mai Engine errors in the beta sites' `debug.log` since beta.9, but 15 of 27 have no `debug.log`.
-- The `beta` branch was fast-forwarded to `master` (2.41.0) the same day, so beta-channel sites get 2.41.0 too.
+- **The corpus diff gate** (Task 9) rendered every post that can reach the converted code on all 35 local sites. It stopped on four shapes, and Mike decided them on 2026-11-18. The prev-next archive pagination never closed its wrap `div`, an old bug DOMDocument hid. It is fixed here (`51d3a501f`). Two malformed posts are accepted as the sites' to fix. URL percent-encoding and Gravity Forms boolean attributes are accepted, since they render the same. Counts are in the plan's Results, and post IDs are in `docs-local/2026-11-18-tag-processor-corpus.md`.
+- **Profiling** (Task 10): the group block is 14 times faster per call and buttons are about 7 µs slower on DOM-path inputs. The page render shows no change (6.34 ms both), so the changelog makes no performance claim.
+- **Changelog:** `CHANGES.md` has a `2.42.0 (unreleased)` section. Mike sets the version and date at release.
 
 ## Next
-1. Reply to Henry on Help Scout ticket #786985 once Mike approves the wording. A client site plugin calls `Mai_Query_Cache::instance()->on_transition()` after setting a term as a workaround; it can drop that now 2.41.1 is live.
-2. Roll deployable-guard v1.2.0 to the other `mai-*` plugins (bulk-update skill). Only Mai Engine and Mai Galleries have it.
-3. A child theme with its own `gform_default_styles` filter wins over Mai's. Such a theme can drop it now. For its own corner radius it sets `'border-radius'` in config `extra`.
-4. Then `TODO.md`. MariaDB stays off for the grid optimizer.
+1. Mike reviews the branch, then it goes to `develop` and a beta. Mike does the push, merge and beta.
+2. Two GitHub issues are drafted and wait for Mike's per-issue yes: the pagination closer (fixed here) and cover blocks keeping the demo site's `wp-image-` class on import (not fixed).
+3. Mike fixes the gallery caption typo on nonprofit-site-a post 9620 himself.
+4. Issue #677 (entry image aspect ratio when the crop is missing) is open. Don't start it unless Mike asks.
+5. Earlier queue: reply on Help Scout ticket #786985 once Mike approves the wording; roll deployable-guard v1.2.0 to the other `mai-*` plugins; then `TODO.md`.
 
 ## Blocked / waiting on
+- Mike's review of this branch, and his yes on each GitHub issue.
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (280 tests, 11 skipped libxml goldens), `composer test-integration -- --order-by=random` (715), `php vendor/bin/deployable-guard check`. All pass as of 2026-11-03.
-- CSS: `npx gulp build:main-css build:editor-css build:blocks-css`. There is no `styles` task.
-- Admin pages headless: `mai-sites login <site>.test --redirect=<path|post:ID/edit|term:ID/edit>` prints a one-time link with nobody at a keyboard and opens nothing; open it in headless Chrome. Script: `/tmp/ocr-scripts/admin-shot.mjs` (gone after reboot).
-- `GridCacheAfterPageTest` fails 2 tests on MySQL 8.0.28, 8.0.16, MariaDB 11.4 and 11.8, also before this work.
+- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (799). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
+- `deployable-guard` fails in this working tree because of the uncommitted with-dev `vendor/`. Check the committed tree: `git worktree add --detach /tmp/tp-guard HEAD && php vendor/bin/deployable-guard check --root=/tmp/tp-guard; git worktree remove --force /tmp/tp-guard`.
+- `rg -n "mai_get_dom_document|mai_get_dom_first_child" lib` shows only `lib/structure/header.php` and the definitions in `utilities.php`.
+- Corpus and profiling scripts: `/tmp/tp-corpus/`, `/tmp/tp-profile/`, `/tmp/tp-floor/` (gone after reboot).
 
 ## Gotchas
-- Don't reach for CSS on the gallery block's gap. Galleries take core's default. On WP 7.1+ a gap typed into the code editor shows in the editor but not on the page, because `spacing.blockGap` is off on Mai. See `TODO.md`, native controls migration.
-- `wp ... --skip-themes` fatals on sites running Mai Galleries older than 1.3.0, because Mai Engine loads no functions without Genesis. Leave `--skip-themes` off for reads on those sites.
-- Never write a client site, server or local `.test` name into this repo (it is public on GitHub), not even in STATE.md or a commit message. Use stand-ins; put real detail in `docs-local/`, which every repo ignores (`~/.config/git/ignore`). The commit hooks refuse names from the mai-sites registry and `~/Herd` through `git config deployable-guard.extraHooks`. BizBudding's own demo domain is on that list too, so a commit adding it is refused.
-- Gravity Forms reads `gform_default_styles` for the block's editor defaults once, early, before Mai's support file loads, and keeps it. Only `gform_form_block_attributes` (applied again when the editor config is built) reaches the editor.
-- Gravity Forms scopes its values to `#gform_wrapper_<id>[data-form-index]` and adds `px`, so radius and font sizes are plain numbers in PHP. A child theme's `style.css` is not read.
-- `--input-border-color` prints in `mai-inline-styles` after the child theme's `style.css`, so a child theme setting it on `:root` there loses. Use config `extra` or `body`.
-- ACF fields in `mai_get_grid_display_fields()` need a `name`, even message fields, or `mai_get_editor_localized_data()` logs "Undefined array key".
-- Masonry: never set `aspect-ratio` on the images, not even `auto` (lazy `sizes="auto"` images get `contain: size`; they rendered 1500px tall). Background, Left Full and Right Full positions give 4:3 tiles, cropped not stretched. Items flow down each column, then across.
-- Mai Performance Enhancer double-encodes UTF-8 (`loadHTML()` without a charset). Mike is archiving it; it must not run anywhere.
-- A local copy whose asset URLs still point at the live domain can't show local CSS changes. Check the stylesheet URLs before testing CSS on it.
-- `npm run beta` leaves a dev autoloader. Run `composer dump-autoload --no-dev`, or every site crashes.
-- `vendor/composer/installed.php` shows a modified commit reference after `composer` runs. Leave it out of feature commits.
+- The working tree carries uncommitted `TODO.md`, `lib/functions/images.php` and `vendor/composer/*` changes that are not part of this work. The `vendor/` one is a with-dev autoloader, and committing it takes every site down on deploy. Stage by explicit path only.
+- Test stubs for global functions go in `tests/phpunit/integration/plugin-loader.php`, never in the namespaced test files.
+- `get_attribute()` returns `null` or `true` as well as strings; guard every read with `is_string()`. Never mix `set_attribute( 'class', ... )` with `add_class()` on one tag.
+- Run `wp` against local sites from `/tmp`, not from this repo. One site's plugin includes a relative `vendor/autoload.php` and loads this repo's autoloader otherwise.
+- Never write a client site, server or local `.test` name into this repo. Use the stand-ins in `docs-local/site-key.md`. The commit hooks refuse registry names.
 - Never `wp cache flush` on Redis sites. Use `mai_cache( 'css' )->flush()` (or `'grid'`) through `wp eval`.
-- Grid optimizer and database-testing gotchas are in `git show 145a4939b:STATE.md`.
+- How Mai Engine releases, and the gotchas older than this branch, are in `git show 0f34a094d:STATE.md`.

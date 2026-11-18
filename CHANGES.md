@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.42.0 (unreleased)
+* Changed: Icons and the markup Mai adds to paragraphs, headings, groups, buttons, pagination and shortcodes now keep their HTML as written, so SVG attributes such as `viewBox` keep their case.
+* Changed: [Developers] `mai_add_classes()` now drops repeated classes and extra spaces.
+* Fixed: Button blocks no longer cut pieces out of longer class names such as `has-background-blur` when removing color classes.
+* Fixed: Prev-next archive pagination now closes its wrapper `div`.
+* Fixed: Importing a demo template now copies Media & Text images to the site too, and imported images keep their responsive sizes.
+
 ## 2.41.2 (11/09/26)
 * Changed: [Security] Update ACF Pro to 6.8.11.
 
