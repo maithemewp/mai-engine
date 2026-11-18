@@ -36,6 +36,7 @@ add_filter( 'genesis_markup_archive-pagination_content', 'mai_archive_pagination
  * Adds wrap to archive pagination.
  *
  * @since 0.2.0
+ * @since 2.42.0 Close the wrap when open and close arrive in one call.
  *
  * @param string $content The existing content.
  * @param array  $args    The genesis_markup() element args.
@@ -44,10 +45,10 @@ add_filter( 'genesis_markup_archive-pagination_content', 'mai_archive_pagination
  */
 function mai_archive_pagination_wrap( $content, $args ) {
 	if ( isset( $args['open'] ) && $args['open'] ) {
-		$args    = mai_get_template_args();
-		$type    = esc_html( mai_isset( $args, 'posts_nav', 'numeric' ) );
-		$classes = sprintf( 'wrap archive-pagination-wrap archive-pagination-%s-wrap', $type );
-		$content = sprintf( '<div class="%s">', $classes ) . $content;
+		$template_args = mai_get_template_args();
+		$type          = esc_html( mai_isset( $template_args, 'posts_nav', 'numeric' ) );
+		$classes       = sprintf( 'wrap archive-pagination-wrap archive-pagination-%s-wrap', $type );
+		$content       = sprintf( '<div class="%s">', $classes ) . $content;
 	}
 
 	if ( isset( $args['close'] ) && $args['close'] ) {

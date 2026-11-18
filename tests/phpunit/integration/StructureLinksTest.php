@@ -92,6 +92,31 @@ final class StructureLinksTest extends MaiIntegrationTestCase {
 
 	// ---- Archive pagination ----
 
+	public function test_pagination_wrap_closes_when_open_and_close_arrive_together(): void {
+		$out = mai_archive_pagination_wrap( self::PREV_NEXT, [ 'open' => '<div>', 'close' => '</div>', 'content' => self::PREV_NEXT ] );
+
+		$this->assertStringStartsWith( '<div class="wrap archive-pagination-wrap', $out );
+		$this->assertStringEndsWith( '</div>', $out );
+		$this->assertSame( substr_count( $out, '<div' ), substr_count( $out, '</div>' ) );
+	}
+
+	public function test_pagination_wrap_open_only_adds_opener(): void {
+		$out = mai_archive_pagination_wrap( '<nav></nav>', [ 'open' => '<div>' ] );
+
+		$this->assertStringStartsWith( '<div class="wrap archive-pagination-wrap', $out );
+		$this->assertStringNotContainsString( '</div>', $out );
+	}
+
+	public function test_pagination_wrap_close_only_adds_one_closer(): void {
+		$out = mai_archive_pagination_wrap( '</nav>', [ 'close' => '</div>' ] );
+
+		$this->assertSame( '</nav></div>', $out );
+	}
+
+	public function test_pagination_wrap_without_open_or_close_is_unchanged(): void {
+		$this->assertSame( '<nav></nav>', mai_archive_pagination_wrap( '<nav></nav>', [] ) );
+	}
+
 	public function test_numeric_nav_classes(): void {
 		$out = mai_get_posts_nav_with_classes( self::NUMERIC, 'numeric' );
 
