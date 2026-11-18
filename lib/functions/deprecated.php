@@ -27,28 +27,6 @@ defined( 'ABSPATH' ) || die;
  */
 function mai_convert_svg_xmlns( $svg ) {
 	return $svg;
-
-	// Old code left to remember what it was doing prior.
-
-	if ( ! mai_is_https() ) {
-		return $svg;
-	}
-
-	$dom   = mai_get_dom_document( $svg );
-	$first = mai_get_dom_first_child( $dom );
-
-	if ( $first ) {
-		$xmlns = $first->attributes->getNamedItem( 'xmlns' );
-		$xmlns = $xmlns->value;
-
-		if ( $xmlns ) {
-			$xmlns = str_replace( 'http:', 'https:', $xmlns );
-			$first->setAttribute( 'xmlns', $xmlns );
-			$svg = mai_get_dom_html( $dom );
-		}
-	}
-
-	return $svg;
 }
 
 /**

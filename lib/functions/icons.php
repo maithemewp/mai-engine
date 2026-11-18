@@ -232,20 +232,12 @@ function mai_get_svg( $name, $class = '' ) {
 	}
 
 	if ( $class ) {
-		$dom  = mai_get_dom_document( $svg );
-		$svgs = $dom->getElementsByTagName( 'svg' );
+		$tags = new WP_HTML_Tag_Processor( $svg );
 
-		/**
-		 * DOM Element.
-		 *
-		 * @var DOMElement $first_svg First dom element.
-		 */
-		$first_svg = isset( $svgs[0] ) ? $svgs[0] : null;
-
-		if ( $first_svg ) {
-			$classes = mai_add_classes( $class, $first_svg->getAttribute( 'class' ) );
-			$first_svg->setAttribute( 'class', $classes );
-			$svg = mai_get_dom_html( $dom );
+		if ( $tags->next_tag( 'svg' ) ) {
+			$existing = $tags->get_attribute( 'class' );
+			$tags->set_attribute( 'class', mai_add_classes( $class, is_string( $existing ) ? $existing : '' ) );
+			$svg = $tags->get_updated_html();
 		}
 	}
 
@@ -281,25 +273,15 @@ function mai_get_svg_icon( $name, $style = 'light', $atts = [] ) {
 		$atts['height'] = '24';
 	}
 
-	if ( $atts ) {
-		$dom  = mai_get_dom_document( $svg );
-		$svgs = $dom->getElementsByTagName( 'svg' );
+	// The Tag Processor leaves the markup alone apart from the attributes set.
+	$tags = new WP_HTML_Tag_Processor( $svg );
 
+	if ( $tags->next_tag( 'svg' ) ) {
 		foreach ( $atts as $att => $value ) {
-
-			/**
-			 * DOM Element.
-			 *
-			 * @var DOMElement $first_svg First dom element.
-			 */
-			$first_svg = isset( $svgs[0] ) ? $svgs[0] : null;
-
-			if ( $first_svg ) {
-				$first_svg->setAttribute( $att, $value );
-			}
+			$tags->set_attribute( $att, $value );
 		}
 
-		$svg = mai_get_dom_html( $dom );
+		$svg = $tags->get_updated_html();
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
