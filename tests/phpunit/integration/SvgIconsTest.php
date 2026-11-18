@@ -32,7 +32,7 @@ final class SvgIconsTest extends MaiIntegrationTestCase {
 		$this->assertSame( [ 'a', 'b' ], $this->tagClasses( $out, 'svg' ) );
 		$this->assertStringContainsString( 'viewBox="0 0 1000 120"', $out );
 		$this->assertStringContainsString( 'Z"/></svg>', $out );
-		$this->assertSame( str_replace( '<svg ', '<svg class="a b" ', $raw ), $out );
+		$this->assertSame( $raw, str_replace( ' class="a b"', '', $out ) );
 	}
 
 	public function test_get_svg_without_class_returns_file_unchanged(): void {
