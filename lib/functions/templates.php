@@ -551,8 +551,8 @@ function mai_localize_blocks( $content ) {
 
 	foreach ( $blocks as $index => $block ) {
 		if ( 'core/cover' === $block['blockName'] ) {
-			$image_id  = $block['attrs']['id'];
-			$image_url = $block['attrs']['url'];
+			$image_id  = $block['attrs']['id'] ?? 0;
+			$image_url = $block['attrs']['url'] ?? '';
 
 			// Skip if already a local image.
 			if ( mai_has_string( home_url(), $image_url	) ) {
@@ -571,6 +571,7 @@ function mai_localize_blocks( $content ) {
 					$blocks[ $index ]['attrs']['url'] = $new_url;
 
 					$replace_urls[ $image_url ] = $new_url;
+					$replace_ids[ $image_id ]   = $new_id;
 
 				} else {
 
@@ -583,6 +584,7 @@ function mai_localize_blocks( $content ) {
 						$blocks[ $index ]['attrs']['url'] = $new_url;
 
 						$replace_urls[ $image_url ] = $new_url;
+						$replace_ids[ $image_id ]   = $new_id;
 					}
 				}
 

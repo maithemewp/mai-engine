@@ -165,6 +165,38 @@ final class LocalizeBlocksTest extends MaiIntegrationTestCase {
 		$this->assertSame( $html, mai_localize_blocks( $html ) );
 	}
 
+	// ---- Cover ----
+
+	public function test_cover_gets_local_url_id_and_class(): void {
+		$new_id = $this->attachment( 'photo' );
+		$out    = mai_localize_blocks( $this->cover( 5, 'photo.jpg' ) );
+		$block  = $this->block( $out, 1 );
+
+		$this->assertSame( $new_id, $block['attrs']['id'] );
+		$this->assertSame( wp_get_attachment_url( $new_id ), $block['attrs']['url'] );
+		$this->assertSame( wp_get_attachment_url( $new_id ), $block['src'] );
+		$this->assertContains( 'wp-image-' . $new_id, $block['class'] );
+		$this->assertNotContains( 'wp-image-5', $block['class'] );
+		$this->assertStringNotContainsString( self::REMOTE, $out );
+	}
+
+	public function test_cover_without_image_is_unchanged(): void {
+		$html = "<!-- wp:cover {\"overlayColor\":\"primary\",\"dimRatio\":100} -->\n<div class=\"wp-block-cover\"><span aria-hidden=\"true\" class=\"wp-block-cover__background has-primary-background-color has-background-dim-100 has-background-dim\"></span><div class=\"wp-block-cover__inner-container\"><!-- wp:paragraph -->\n<p>Text</p>\n<!-- /wp:paragraph --></div></div>\n<!-- /wp:cover -->";
+
+		$this->assertSame( $html, mai_localize_blocks( $html ) );
+	}
+
+	public function test_cover_and_image_with_overlapping_old_ids_each_get_their_own_id(): void {
+		$cover_id = $this->attachment( 'twelve' );
+		$image_id = $this->attachment( 'one-two-three' );
+		$out      = mai_localize_blocks( $this->cover( 12, 'twelve.jpg' ) . "\n\n" . $this->image( 123, 'one-two-three-300x200.jpg', 'large' ) );
+
+		$this->assertSame( [ 'wp-image-' . $cover_id ], $this->image_id_classes( $this->block( $out, 1 )['class'] ) );
+		$this->assertSame( [ 'wp-image-' . $image_id ], $this->image_id_classes( $this->block( $out, 2 )['class'] ) );
+		$this->assertSame( $cover_id, $this->block( $out, 1 )['attrs']['id'] );
+		$this->assertSame( $image_id, $this->block( $out, 2 )['attrs']['id'] );
+	}
+
 	// ---- Image ID classes ----
 
 	public function test_overlapping_old_ids_are_rewritten_exactly(): void {
@@ -248,6 +280,24 @@ final class LocalizeBlocksTest extends MaiIntegrationTestCase {
 			"<!-- wp:image %s -->\n<figure class=\"%s\"><img src=\"%s%s\" alt=\"\" class=\"wp-image-%d\"/></figure>\n<!-- /wp:image -->",
 			$attrs,
 			$figure,
+			$base,
+			$file,
+			$id
+		);
+	}
+
+	/**
+	 * Builds a core/cover block with a background image and a paragraph.
+	 *
+	 * @param int    $id   Old attachment ID.
+	 * @param string $file Image file name.
+	 * @param string $base Base URL of the image.
+	 *
+	 * @return string
+	 */
+	private function cover( int $id, string $file, string $base = self::REMOTE ): string {
+		return sprintf(
+			"<!-- wp:cover {\"url\":\"%1\$s%2\$s\",\"id\":%3\$d,\"dimRatio\":50} -->\n<div class=\"wp-block-cover\"><span aria-hidden=\"true\" class=\"wp-block-cover__background has-background-dim\"></span><img class=\"wp-block-cover__image-background wp-image-%3\$d\" alt=\"\" src=\"%1\$s%2\$s\" data-object-fit=\"cover\"/><div class=\"wp-block-cover__inner-container\"><!-- wp:paragraph -->\n<p>Text</p>\n<!-- /wp:paragraph --></div></div>\n<!-- /wp:cover -->",
 			$base,
 			$file,
 			$id

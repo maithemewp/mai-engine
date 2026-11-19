@@ -10,17 +10,17 @@ Branch `dom-to-tag-processor` (from `develop` at `5d6534d68`) moves 18 of the 19
 
 ## Next
 1. Mike reviews the branch, then it goes to `develop` and a beta. Mike does the push, merge and beta.
-2. Two GitHub issues are drafted and wait for Mike's per-issue yes: the pagination closer (fixed here) and cover blocks keeping the demo site's `wp-image-` class on import (not fixed).
+2. Issues #678 (prev-next pagination closer) and #679 (demo import cover block `wp-image-` class) are open; both are fixed on this branch.
 3. Mike fixes the gallery caption typo on nonprofit-site-a post 9620 himself.
 4. Issue #677 (entry image aspect ratio when the crop is missing) is open. Don't start it unless Mike asks.
 5. Earlier queue: reply on Help Scout ticket #786985 once Mike approves the wording; roll deployable-guard v1.2.0 to the other `mai-*` plugins; then `TODO.md`.
 
 ## Blocked / waiting on
-- Mike's review of this branch, and his yes on each GitHub issue.
+- Mike's review of this branch. The #679 cover fix is uncommitted until he has seen it in Tower.
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (799). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
+- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (802 with the uncommitted #679 tests). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
 - `deployable-guard` fails in this working tree because of the uncommitted with-dev `vendor/`. Check the committed tree: `git worktree add --detach /tmp/tp-guard HEAD && php vendor/bin/deployable-guard check --root=/tmp/tp-guard; git worktree remove --force /tmp/tp-guard`.
 - `rg -n "mai_get_dom_document|mai_get_dom_first_child" lib` shows only `lib/structure/header.php` and the definitions in `utilities.php`.
 - Corpus and profiling scripts: `/tmp/tp-corpus/`, `/tmp/tp-profile/`, `/tmp/tp-floor/` (gone after reboot).
