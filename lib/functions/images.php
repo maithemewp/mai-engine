@@ -473,6 +473,7 @@ function mai_get_fallback_image_id( $post_id ) {
  * @since 2.25.0
  * @since 2.41.0 Stopped forcing fetchpriority="high", then set it to "auto" so
  *               WordPress does not add "high" back. See above.
+ * @since 2.42.0 Falls back to the config logo width when the setting was never saved.
  *
  * @param array $attr The existing attributes.
  *
@@ -480,7 +481,10 @@ function mai_get_fallback_image_id( $post_id ) {
  */
 function mai_add_logo_attributes( $attr ) {
 	$break     = mai_get_mobile_menu_breakpoint();
-	$widths    = mai_get_option( 'logo-width', [] );
+	// Fall back to the config default. A site that never saved the Customizer setting
+	// has no stored value, and an empty array here made sizes "1px", so browsers
+	// picked the smallest srcset file and upscaled it.
+	$widths    = mai_get_option( 'logo-width', mai_get_config( 'settings' )['logo']['width'] );
 	$widths    = array_map( 'absint', $widths );
 	$desktop   = isset( $widths['desktop'] ) ? $widths['desktop'] : 0;
 	$desktop   = max( $desktop, 1 );

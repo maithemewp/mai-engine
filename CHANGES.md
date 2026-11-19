@@ -5,6 +5,7 @@
 * Changed: On WordPress 6.9 and newer, pages no longer load WordPress's old gradient, gray and font size classes, which trims about 1 KB from the block styles on every page. Old posts that still use these classes lose those sizes and colors.
 * Changed: [Developers] `mai_add_classes()` now drops repeated classes and extra spaces.
 * Changed: [Developers] `mai_setup_wizard_slash_data()` and `mai_setup_wizard_add_slash_data()` are deprecated and do nothing, since the content importer now slashes post data itself.
+* Fixed: The logo now loads a sharp image on sites that never saved the logo width in the Customizer. Browsers were picking the smallest file and stretching it.
 * Fixed: Button blocks no longer cut pieces out of longer class names such as `has-background-blur` when removing color classes.
 * Fixed: Prev-next archive pagination now closes its wrapper `div`.
 * Fixed: Imported demo content areas now load their images from the site's own media library, including Media & Text images and images inside groups and columns. Imported images also get their responsive sizes.
