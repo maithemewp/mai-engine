@@ -27,13 +27,18 @@ class Mai_Setup_Wizard_Wxr_Importer extends ProteusThemes\WPContentImporter2\Imp
 	 * Block attributes save `<`, `>`, `&`, `--` and `"` as `\u` escapes, so a value like `<p>`
 	 * comes back as the literal text `u003cpu003e`. Doing the URL swap here with a slashed update keeps
 	 * the escapes. Deleting the temp meta afterwards makes the parent skip its own unslashed rewrite,
-	 * while it still remaps parents, authors and menu items.
+	 * while it still remaps parents, authors and menu items. The meta is deleted even when the update
+	 * fails, because otherwise the parent retries with its unslashed rewrite and strips the escapes. The
+	 * post then keeps the demo URLs, which still render. The parent used to clear `_wxr_import_user_slug`
+	 * as a side effect of its content update, so that meta is cleared here for the posts handled above.
 	 *
 	 * @since 2.42.0
 	 *
 	 * @return void
 	 */
 	protected function post_process() {
+		$handled = [];
+
 		if ( ! empty( $this->requires_remapping['post'] ) ) {
 			foreach ( array_keys( $this->requires_remapping['post'] ) as $post_id ) {
 				if ( empty( get_post_meta( $post_id, '_wxr_import_has_attachment_refs', true ) ) ) {
@@ -46,6 +51,7 @@ class Mai_Setup_Wizard_Wxr_Importer extends ProteusThemes\WPContentImporter2\Imp
 					continue;
 				}
 
+				$handled[]   = $post_id;
 				$new_content = str_replace( array_keys( $this->url_remap ), $this->url_remap, $post->post_content );
 
 				if ( $new_content !== $post->post_content ) {
@@ -69,7 +75,6 @@ class Mai_Setup_Wizard_Wxr_Importer extends ProteusThemes\WPContentImporter2\Imp
 							)
 						);
 						$this->logger->debug( $result->get_error_message() );
-						continue;
 					}
 				}
 
@@ -78,5 +83,9 @@ class Mai_Setup_Wizard_Wxr_Importer extends ProteusThemes\WPContentImporter2\Imp
 		}
 
 		parent::post_process();
+
+		foreach ( $handled as $post_id ) {
+			delete_post_meta( $post_id, '_wxr_import_user_slug' );
+		}
 	}
 }

@@ -84,7 +84,7 @@ final class SetupWizardWxrImporterTest extends MaiIntegrationTestCase {
 	 *
 	 * @return string The stored post_content afterwards.
 	 */
-	private function run_post_process( Importer $importer, int &$post_id ): string {
+	private function run_post_process( Importer $importer, int &$post_id, array $meta = [], ?array $mapping = null, ?callable $before = null ): string {
 		$post_id = wp_insert_post(
 			wp_slash(
 				[
@@ -102,6 +102,10 @@ final class SetupWizardWxrImporterTest extends MaiIntegrationTestCase {
 
 		add_post_meta( $post_id, '_wxr_import_has_attachment_refs', true );
 
+		foreach ( $meta as $key => $value ) {
+			add_post_meta( $post_id, $key, $value );
+		}
+
 		$class = new ReflectionClass( Importer::class );
 
 		$url_remap = $class->getProperty( 'url_remap' );
@@ -109,6 +113,14 @@ final class SetupWizardWxrImporterTest extends MaiIntegrationTestCase {
 
 		$remapping = $class->getProperty( 'requires_remapping' );
 		$remapping->setValue( $importer, [ 'post' => [ $post_id => true ] ] );
+
+		if ( null !== $mapping ) {
+			$class->getProperty( 'mapping' )->setValue( $importer, $mapping );
+		}
+
+		if ( $before ) {
+			$before();
+		}
 
 		// Reflect on the instance's own class so the subclass override runs, not the parent's method.
 		( new ReflectionClass( $importer ) )->getMethod( 'post_process' )->invoke( $importer );
@@ -125,6 +137,55 @@ final class SetupWizardWxrImporterTest extends MaiIntegrationTestCase {
 
 		$this->assertSame( $this->content( self::NEW_URL ), $stored );
 		$this->assertSame( '', get_post_meta( $post_id, '_wxr_import_has_attachment_refs', true ) );
+	}
+
+	public function test_wizard_importer_still_remaps_the_parent(): void {
+		$target   = self::factory()->post->create( [ 'post_type' => 'page' ] );
+		$importer = new \Mai_Setup_Wizard_Wxr_Importer( [ 'fetch_attachments' => false ], new WPImporterLogger() );
+		$post_id  = 0;
+		$stored   = $this->run_post_process(
+			$importer,
+			$post_id,
+			[ '_wxr_import_parent' => 999 ],
+			[
+				'post'      => [ 999 => $target ],
+				'user_slug' => [],
+			]
+		);
+
+		$this->assertSame( $this->content( self::NEW_URL ), $stored );
+		$this->assertSame( $target, (int) get_post( $post_id )->post_parent );
+	}
+
+	public function test_failed_update_does_not_fall_back_to_the_unslashed_rewrite(): void {
+		$fail_once = static function ( $empty ) use ( &$fail_once ) {
+			remove_filter( 'wp_insert_post_empty_content', $fail_once );
+
+			return true;
+		};
+		$importer = new \Mai_Setup_Wizard_Wxr_Importer( [ 'fetch_attachments' => false ], new WPImporterLogger() );
+		$post_id  = 0;
+		$stored   = $this->run_post_process(
+			$importer,
+			$post_id,
+			[],
+			null,
+			static fn() => add_filter( 'wp_insert_post_empty_content', $fail_once )
+		);
+
+		$this->assertFalse( has_filter( 'wp_insert_post_empty_content', $fail_once ), 'The first update should have failed.' );
+		$this->assertSame( $this->content( self::OLD_URL ), $stored );
+		$this->assertStringContainsString( chr( 92 ), $stored );
+		$this->assertSame( '', get_post_meta( $post_id, '_wxr_import_has_attachment_refs', true ) );
+	}
+
+	public function test_user_slug_meta_is_cleared_for_a_handled_post(): void {
+		$importer = new \Mai_Setup_Wizard_Wxr_Importer( [ 'fetch_attachments' => false ], new WPImporterLogger() );
+		$post_id  = 0;
+
+		$this->run_post_process( $importer, $post_id, [ '_wxr_import_user_slug' => 'demo-author' ], [ 'post' => [], 'user_slug' => [] ] );
+
+		$this->assertSame( '', get_post_meta( $post_id, '_wxr_import_user_slug', true ) );
 	}
 
 	/**
