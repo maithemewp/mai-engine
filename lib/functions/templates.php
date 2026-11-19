@@ -605,9 +605,7 @@ function mai_localize_block( array $block, array &$replace_urls, array &$replace
 
 		if ( $image_id && $image_url ) {
 			$path_parts = pathinfo( $image_url );
-			$new_id     = mai_get_attachment_id_from_demo_url( $image_url );
-			$new_id     = $new_id ? $new_id : mai_get_existing_attachment_from_filename( $path_parts['filename'] );
-			$new_id     = $new_id ? $new_id : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+			$new_id     = mai_get_local_image_id( (int) $image_id, $image_url, $path_parts['filename'], $path_parts['filename'], $replace_ids );
 
 			if ( $new_id ) {
 				$new_url = wp_get_attachment_url( $new_id );
@@ -644,9 +642,7 @@ function mai_localize_block( array $block, array &$replace_urls, array &$replace
 				$path_parts = pathinfo( $image_url );
 				$filename   = $path_parts['filename'];
 				$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
-				$new_id     = mai_get_attachment_id_from_demo_url( $image_url );
-				$new_id     = $new_id ? $new_id : mai_get_existing_attachment_from_filename( $filename );
-				$new_id     = $new_id ? $new_id : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+				$new_id     = mai_get_local_image_id( (int) $image_id, $image_url, $filename, $path_parts['filename'], $replace_ids );
 				$new_img    = $new_id ? wp_get_attachment_image_src( $new_id, $image_size ? $image_size : 'full' ) : false;
 
 				// A match that isn't an image has no src, so leave the block pointing at the demo image.
@@ -687,9 +683,7 @@ function mai_localize_block( array $block, array &$replace_urls, array &$replace
 				$path_parts = pathinfo( $image_url );
 				$filename   = $path_parts['filename'];
 				$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
-				$new_id     = mai_get_attachment_id_from_demo_url( $image_url );
-				$new_id     = $new_id ? $new_id : mai_get_existing_attachment_from_filename( $filename );
-				$new_id     = $new_id ? $new_id : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+				$new_id     = mai_get_local_image_id( (int) $media_id, $image_url, $filename, $path_parts['filename'], $replace_ids );
 				$new_img    = $new_id ? wp_get_attachment_image_src( $new_id, 'large' ) : false;
 
 				// The new src reaches the output through $replace_urls, since serialize_blocks() reads innerContent, not innerHTML.
@@ -706,6 +700,33 @@ function mai_localize_block( array $block, array &$replace_urls, array &$replace
 	}
 
 	return $block;
+}
+
+/**
+ * Gets the local attachment ID for a demo image.
+ *
+ * Reuses the ID already found for the same demo ID in this run, so a repeated demo image is one attachment and
+ * never downloaded twice. Otherwise tries the upload path, then the filename slug, then downloads the image.
+ *
+ * @access private
+ *
+ * @since 2.42.0
+ *
+ * @param int    $demo_id     The demo attachment ID.
+ * @param string $image_url   The demo image URL.
+ * @param string $slug        The filename to match an existing attachment slug, without sizes.
+ * @param string $download    The filename to give a downloaded image.
+ * @param array  $replace_ids Old attachment IDs already mapped to new ones in this run.
+ *
+ * @return int The attachment ID, or 0 if there is none.
+ */
+function mai_get_local_image_id( int $demo_id, string $image_url, string $slug, string $download, array $replace_ids ): int {
+	$new_id = (int) ( $replace_ids[ $demo_id ] ?? 0 );
+	$new_id = $new_id ? $new_id : mai_get_attachment_id_from_demo_url( $image_url );
+	$new_id = $new_id ? $new_id : (int) mai_get_existing_attachment_from_filename( $slug );
+	$new_id = $new_id ? $new_id : (int) mai_get_new_image_from_url( $image_url, $download );
+
+	return $new_id;
 }
 
 /**

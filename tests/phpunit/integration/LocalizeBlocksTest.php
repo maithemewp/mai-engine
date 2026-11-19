@@ -340,6 +340,27 @@ final class LocalizeBlocksTest extends MaiIntegrationTestCase {
 		$this->assertSame( $before, (int) wp_count_posts( 'attachment' )->inherit );
 	}
 
+	public function test_same_demo_id_reuses_first_match(): void {
+		// The first block matches by upload path, the second names a file nothing local matches.
+		$new_id = self::factory()->attachment->create(
+			[
+				'file'           => '2020/01/photo.jpg',
+				'post_name'      => 'unrelated-name',
+				'post_mime_type' => 'image/jpeg',
+			]
+		);
+
+		$out    = mai_localize_blocks( $this->image( 5, 'photo-300x200.jpg', 'large' ) . "\n\n" . $this->image( 5, 'ghost-300x200.jpg', 'large' ) );
+		$first  = $this->block( $out, 1 );
+		$second = $this->block( $out, 2 );
+
+		$this->assertSame( $new_id, $first['attrs']['id'] );
+		$this->assertSame( $new_id, $second['attrs']['id'] );
+		$this->assertSame( [ 'wp-image-' . $new_id ], $this->image_id_classes( $first['class'] ) );
+		$this->assertSame( [ 'wp-image-' . $new_id ], $this->image_id_classes( $second['class'] ) );
+		$this->assertStringNotContainsString( self::REMOTE, $out );
+	}
+
 	public function test_second_import_changes_nothing(): void {
 		$this->attachment( 'photo' );
 		$once = mai_localize_blocks( $this->wrap( 'group', $this->image( 5, 'photo-300x200.jpg', 'large' ) ) );
