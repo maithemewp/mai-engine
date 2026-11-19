@@ -6,6 +6,7 @@
 * Fixed: Button blocks no longer cut pieces out of longer class names such as `has-background-blur` when removing color classes.
 * Fixed: Prev-next archive pagination now closes its wrapper `div`.
 * Fixed: Imported demo content areas now load their images from the site's own media library, including Media & Text images and images inside groups and columns. Imported images also get their responsive sizes.
+* Fixed: Imported demo content areas keep block settings that contain `--`, `&` or quotes, such as a `button--primary` class.
 
 ## 2.41.2 (11/09/26)
 * Changed: [Security] Update ACF Pro to 6.8.11.
