@@ -8,7 +8,7 @@ Branch `demo-import-images`, cut from `dom-to-tag-processor` (the Tag Processor 
 - `mai_localize_blocks()` now walks nested blocks through `mai_localize_block()`. `mai_get_local_image_id()` reuses an earlier match for the same demo image, then tries the file path, the old slug match and a download.
 - The setup wizard runs every content area through `mai_localize_blocks()` before trashing the old one, and a failed demo download now shows the URL and the real reason (request error or HTTP status).
 - Both content area imports `wp_slash()` the content before `wp_insert_post()`, which unslashes. Without it, a `--`, `&` or quote in a block attribute lost its escape. All 40 demos today only carry `\/` in ACF block JSON, which is harmless, so no re-export is needed.
-- `Mai_Setup_Wizard_Wxr_Importer` extends the vendored WXR importer. Its `post_process()` does the image URL rewrite itself with `wp_slash()`, because the parent's `wp_update_post()` there is unslashed and stripped every escape (the Side Hustle homepage's Mai Grid custom content came out as `u003cp...`). 14 pages across 13 demos were exposed. The scoped `mai_setup_wizard_slash_data` filter (Help Scout #783681) is still right and covers only the first insert.
+- `proteusthemes/wp-content-importer-v2` is now 2.1.4. Upstream 2.1.3 and 2.1.4 slash post data on insert and on the image URL rewrite, which had stripped every escape (the Side Hustle homepage's Mai Grid custom content came out as `u003cp...`; 14 pages across 13 demos were exposed). Mai's own `mai_setup_wizard_slash_data` filter is gone, because upstream now slashes right after that filter and keeping both would slash twice (the Help Scout #783681 symptom). The temporary `Mai_Setup_Wizard_Wxr_Importer` subclass is gone too.
 - End to end on the local demo import site: `post-header`'s cover and `footer`'s nested image point at local attachments 111 and 339, with no new attachments. The failure message was checked with a temporary mu-plugin, because Mike kept the demo host allowed. Details are in the plan's Results.
 - `CHANGES.md` 2.42.0 (unreleased): the demo import Fixed line now covers content area images.
 
@@ -23,13 +23,14 @@ Branch `demo-import-images`, cut from `dom-to-tag-processor` (the Tag Processor 
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (819). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
+- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (815). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
 - `composer test-integration -- --filter LocalizeBlocksTest` covers the path match, nested blocks and re-import.
-- `composer test-integration -- --filter TemplatePartImportSlashTest` covers escaped block attributes surviving the single import. `SetupWizardWxrImporterTest` covers the importer's URL rewrite pass, including a test showing the parent class loses the escapes.
+- `composer test-integration -- --filter TemplatePartImportSlashTest` covers escaped block attributes surviving the single import. `SetupWizardSlashDataTest` and `SetupWizardWxrImporterTest` cover the vendored importer keeping escapes on insert and on the URL rewrite, and nothing in Mai slashing a second time.
 - `deployable-guard` fails in this working tree because of the uncommitted with-dev `vendor/`. Check the committed tree: `git worktree add --detach /tmp/tp-guard HEAD && php vendor/bin/deployable-guard check --root=/tmp/tp-guard; git worktree remove --force /tmp/tp-guard`.
 - Wizard scripts: `/tmp/tp-demo/pw/import.js` (full run) and `fail.js` (first content request only), plus `/tmp/tp-demo/check.php` for content area images (gone after reboot).
 
 ## Gotchas
+- Update vendored packages only in a clean worktree with `composer dump-autoload --no-dev --optimize` (the release script's shape), then run deployable-guard on it. Never in the main tree.
 - The working tree carries uncommitted `TODO.md`, `lib/functions/images.php` and `vendor/composer/*` changes that are not part of this work. The `vendor/` one is a with-dev autoloader, and committing it takes every site down on deploy. Stage by explicit path only.
 - The wizard caches demo files for an hour in `wp-content/mai-setup-wizard/<theme>/`. Delete that folder to force a fresh download.
 - The local demo site blocks outgoing HTTP. Only Mike opens or closes it with `mai-sites isolate`.
