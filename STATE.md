@@ -2,12 +2,13 @@
 Updated: 2026-11-19 by Claude
 
 ## Now
-Branch `demo-import-images`, cut from `dom-to-tag-processor` (the Tag Processor migration, pushed but not merged). It builds `docs/plans/2026-11-19-demo-import-images.md`, and all four tasks are committed locally. Not pushed.
+Branch `demo-import-images`, cut from `dom-to-tag-processor` (the Tag Processor migration, pushed but not merged). It builds `docs/plans/2026-11-19-demo-import-images.md`, and all four tasks are committed locally, plus the follow-up fixes below. Not pushed.
 
 - `mai_get_attachment_id_from_demo_url()` matches a demo image to a local attachment by its stored file path (`_wp_attached_file`), including sized and `-scaled` names.
 - `mai_localize_blocks()` now walks nested blocks through `mai_localize_block()`. `mai_get_local_image_id()` reuses an earlier match for the same demo image, then tries the file path, the old slug match and a download.
 - The setup wizard runs every content area through `mai_localize_blocks()` before trashing the old one, and a failed demo download now shows the URL and the real reason (request error or HTTP status).
 - Both content area imports `wp_slash()` the content before `wp_insert_post()`, which unslashes. Without it, a `--`, `&` or quote in a block attribute lost its escape. All 40 demos today only carry `\/` in ACF block JSON, which is harmless, so no re-export is needed.
+- `Mai_Setup_Wizard_Wxr_Importer` extends the vendored WXR importer. Its `post_process()` does the image URL rewrite itself with `wp_slash()`, because the parent's `wp_update_post()` there is unslashed and stripped every escape (the Side Hustle homepage's Mai Grid custom content came out as `u003cp...`). 14 pages across 13 demos were exposed. The scoped `mai_setup_wizard_slash_data` filter (Help Scout #783681) is still right and covers only the first insert.
 - End to end on the local demo import site: `post-header`'s cover and `footer`'s nested image point at local attachments 111 and 339, with no new attachments. The failure message was checked with a temporary mu-plugin, because Mike kept the demo host allowed. Details are in the plan's Results.
 - `CHANGES.md` 2.42.0 (unreleased): the demo import Fixed line now covers content area images.
 
@@ -22,9 +23,9 @@ Branch `demo-import-images`, cut from `dom-to-tag-processor` (the Tag Processor 
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (814). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
+- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (819). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
 - `composer test-integration -- --filter LocalizeBlocksTest` covers the path match, nested blocks and re-import.
-- `composer test-integration -- --filter TemplatePartImportSlashTest` covers escaped block attributes surviving the single import.
+- `composer test-integration -- --filter TemplatePartImportSlashTest` covers escaped block attributes surviving the single import. `SetupWizardWxrImporterTest` covers the importer's URL rewrite pass, including a test showing the parent class loses the escapes.
 - `deployable-guard` fails in this working tree because of the uncommitted with-dev `vendor/`. Check the committed tree: `git worktree add --detach /tmp/tp-guard HEAD && php vendor/bin/deployable-guard check --root=/tmp/tp-guard; git worktree remove --force /tmp/tp-guard`.
 - Wizard scripts: `/tmp/tp-demo/pw/import.js` (full run) and `fail.js` (first content request only), plus `/tmp/tp-demo/check.php` for content area images (gone after reboot).
 
