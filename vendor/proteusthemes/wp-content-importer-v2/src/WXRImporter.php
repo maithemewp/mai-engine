@@ -852,6 +852,8 @@ class WXRImporter extends \WP_Importer {
 
 		$postdata = apply_filters( 'wp_import_post_data_processed', $postdata, $data );
 
+		$postdata = wp_slash( $postdata );
+
 		if ( 'attachment' === $postdata['post_type'] ) {
 			if ( ! $this->options['fetch_attachments'] ) {
 				$this->logger->notice( sprintf(
@@ -2068,7 +2070,7 @@ class WXRImporter extends \WP_Importer {
 
 			// Run the update
 			$data['ID'] = $post_id;
-			$result = wp_update_post( $data, true );
+			$result = wp_update_post( wp_slash( $data ), true );
 			if ( is_wp_error( $result ) ) {
 				$this->logger->warning( sprintf(
 					__( 'Could not update "%s" (post #%d) with mapped data', 'wordpress-importer' ),

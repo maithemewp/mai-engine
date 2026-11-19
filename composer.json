@@ -28,7 +28,7 @@
     "ext-libxml": "*",
     "afragen/wp-dependency-installer": "^4",
     "maithemewp/mai-cache": "^0.6",
-    "proteusthemes/wp-content-importer-v2": "^2.1",
+    "proteusthemes/wp-content-importer-v2": "^2.1.4",
     "wpengine/advanced-custom-fields-pro": "^6.6.0",
     "yahnis-elsts/plugin-update-checker": "^5"
   },

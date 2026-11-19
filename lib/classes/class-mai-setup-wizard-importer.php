@@ -146,7 +146,7 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		$logger   = new ProteusThemes\WPContentImporter2\WPImporterLogger();
-		$importer = new Mai_Setup_Wizard_Wxr_Importer(
+		$importer = new ProteusThemes\WPContentImporter2\Importer(
 			[
 				'fetch_attachments' => true,
 			],

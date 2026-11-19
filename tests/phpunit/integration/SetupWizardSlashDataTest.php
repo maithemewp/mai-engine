@@ -2,95 +2,138 @@
 
 namespace BizBudding\MaiEngine\Tests\Integration;
 
+use ProteusThemes\WPContentImporter2\Importer;
+use ProteusThemes\WPContentImporter2\WPImporterLogger;
+use ReflectionClass;
+
 /**
- * Covers mai_setup_wizard_slash_data() in lib/admin/setup-wizard.php.
+ * Guards the slashing contract between the setup wizard and its vendored importer.
  *
- * The two WXR importers Mai has to coexist with disagree about who slashes:
+ * History: Mai used to register its own wp_slash() on wp_import_post_data_processed for the
+ * wizard's import, because proteusthemes/wp-content-importer-v2 (up to 2.1.2) handed the data to
+ * wp_insert_post() unslashed, and the single wp_unslash() inside wp_insert_post() ate block
+ * attribute JSON. The official WordPress Importer plugin already slashes after that filter, so
+ * a global Mai filter double-slashed its imports (`{\"level\":3}` and `\'` in the database).
+ * Mai then scoped the filter to the wizard run.
  *
- * - proteusthemes/wp-content-importer-v2 (vendored, used by the setup wizard) fires
- *   wp_import_post_data_processed and then calls wp_insert_post() directly, with no
- *   wp_slash(). See vendor/proteusthemes/wp-content-importer-v2/src/WXRImporter.php:853
- *   and :864. Without Mai's filter, block attribute JSON is eaten.
- *
- * - The official WordPress Importer plugin fires the same filter and then applies its own
- *   wp_slash( $postdata ). See class-wp-import.php:870-872, unchanged from 0.8 to 0.9.5.
- *   With Mai's filter also applied, the data is slashed twice and wp_insert_post()'s single
- *   wp_unslash() (wp-includes/post.php:4888) leaves one layer in the database.
- *
- * So the filter is correct for one importer and corrupting for the other. It has to be
- * scoped to the wizard's own import run, not registered for the whole admin.
+ * Importer 2.1.4 slashes the post data itself, right after the filter, and in the
+ * post-processing update too. Mai's filter would now slash wizard imports twice, so it is gone.
+ * These tests keep it gone and prove the importer alone stores the content exactly as exported.
  */
 final class SetupWizardSlashDataTest extends MaiIntegrationTestCase {
 
-	/**
-	 * Block markup carrying both symptoms from the support report: JSON attributes on the
-	 * delimiter, and an apostrophe in the body.
-	 */
-	private const CONTENT = '<!-- wp:heading {"level":3,"className":"is-style-fancy"} --><h3>It\'s a "test"</h3><!-- /wp:heading -->';
-
-	/**
-	 * wp_insert_post() runs post_content through kses unless the author may post unfiltered
-	 * HTML, which would strip the block delimiters for reasons unrelated to slashing.
-	 */
 	public function set_up(): void {
 		parent::set_up();
 
-		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
-	}
-
-	/**
-	 * Runs the given content through a filter-then-insert sequence and returns what actually
-	 * landed in the database.
-	 *
-	 * @param bool $importer_slashes Whether the importer applies its own wp_slash() after the
-	 *                               filter, as the official WordPress Importer does.
-	 */
-	private function import( bool $importer_slashes ): string {
-		$postdata = [
-			'post_title'   => 'Imported',
-			'post_content' => self::CONTENT,
-			'post_status'  => 'publish',
-			'post_type'    => 'page',
-		];
-
-		$postdata = apply_filters( 'wp_import_post_data_processed', $postdata, [] );
-
-		if ( $importer_slashes ) {
-			$postdata = wp_slash( $postdata );
+		if ( ! class_exists( 'WP_Importer' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-importer.php';
 		}
 
-		$post_id = wp_insert_post( $postdata, true );
+		// wp_insert_post() runs kses on post_content unless the author may post unfiltered HTML.
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
 
-		$this->assertIsInt( $post_id, 'wp_insert_post() failed' );
+		add_filter( 'pre_http_request', [ $this, 'block_http' ], 10, 3 );
+	}
 
-		return get_post( $post_id )->post_content;
+	public function tear_down(): void {
+		remove_filter( 'pre_http_request', [ $this, 'block_http' ], 10 );
+
+		parent::tear_down();
 	}
 
 	/**
-	 * The reported bug. Mai must not be slashing on behalf of an importer that already does.
+	 * Fails the test on any HTTP request.
+	 *
+	 * @param mixed  $response Short-circuit value.
+	 * @param array  $args     Request arguments.
+	 * @param string $url      Request URL.
+	 *
+	 * @return \WP_Error
 	 */
-	public function test_official_importer_content_survives_intact(): void {
-		$this->assertSame( self::CONTENT, $this->import( true ) );
+	public function block_http( $response, $args, $url ) {
+		$this->fail( 'The importer made an HTTP request to ' . $url );
+
+		return new \WP_Error( 'blocked', 'HTTP is blocked in this test.' );
 	}
 
 	/**
-	 * The reason the filter exists. Inside the wizard's own import the vendored importer does
-	 * not slash, so Mai has to.
+	 * Block with a `\u` escape in an attribute (built by core's serializer so it is real), an
+	 * apostrophe and a double quote in the body, and no image URL so no remap pass is queued.
 	 */
-	public function test_wizard_import_content_survives_intact(): void {
-		// Only the opening hook. mai_setup_wizard_after_import needs Genesis, which this suite
-		// deliberately does not load, and the wizard's AJAX request ends after the import
-		// anyway, so nothing unregisters the filter in production either.
-		do_action( 'mai_setup_wizard_before_import', 'demo' );
+	private function content(): string {
+		$content = serialize_block(
+			[
+				'blockName'    => 'core/heading',
+				'attrs'        => [
+					'level'     => 3,
+					'className' => 'is-style-fancy',
+					'metadata'  => [ 'name' => 'Tom & <b>Jerry</b>' ],
+				],
+				'innerBlocks'  => [],
+				'innerHTML'    => '<h3>It\'s a "test"</h3>',
+				'innerContent' => [ '<h3>It\'s a "test"</h3>' ],
+			]
+		);
 
-		$this->assertSame( self::CONTENT, $this->import( false ) );
+		$this->assertStringContainsString( chr( 92 ), $content, 'The fixture must carry backslash escapes.' );
+		$this->assertStringContainsString( "'", $content, 'The fixture must carry an apostrophe.' );
+
+		return $content;
 	}
 
 	/**
-	 * Direct lock on the scoping itself, so a future refactor cannot quietly re-register the
-	 * filter globally and still pass the two round-trip tests by luck.
+	 * Nothing Mai registers may slash on the importer's filter, or wizard imports are slashed twice.
 	 */
-	public function test_filter_is_not_registered_outside_a_wizard_import(): void {
-		$this->assertFalse( has_filter( 'wp_import_post_data_processed', 'mai_setup_wizard_slash_data' ) );
+	public function test_wizard_registers_nothing_on_the_post_data_filter(): void {
+		do_action( 'mai_setup_wizard_before_import', 'x' );
+
+		$this->assertFalse( has_filter( 'wp_import_post_data_processed' ), 'No callback should be on wp_import_post_data_processed.' );
+		$this->assertFalse( function_exists( 'mai_setup_wizard_slash_data' ) );
+		$this->assertFalse( function_exists( 'mai_setup_wizard_add_slash_data' ) );
+	}
+
+	/**
+	 * Runs the vendored importer's real process_post() and checks what landed in the database.
+	 */
+	public function test_vendored_importer_stores_content_unslashed_exactly_once(): void {
+		do_action( 'mai_setup_wizard_before_import', 'x' );
+
+		$content  = $this->content();
+		$importer = new Importer( [ 'fetch_attachments' => false ], new WPImporterLogger() );
+		$class    = new ReflectionClass( Importer::class );
+		$method   = $class->getMethod( 'process_post' );
+
+		// import() normally sets this. Left at zero, the importer's pre-process filter thinks the
+		// request has run for decades and ends it with a "new AJAX request" response.
+		$class->getProperty( 'start_time' )->setValue( $importer, microtime( true ) );
+
+		$method->invoke(
+			$importer,
+			[
+				'post_id'      => 9001,
+				'post_type'    => 'page',
+				'post_title'   => 'Slash contract',
+				'post_author'  => '',
+				'post_content' => $content,
+				'post_status'  => 'publish',
+				'post_date'    => '2024-01-01 00:00:00',
+				'guid'         => 'https://demo.example/?page_id=9001',
+				'is_sticky'    => '0',
+			],
+			[],
+			[],
+			[]
+		);
+
+		$posts = get_posts(
+			[
+				'post_type'   => 'page',
+				'title'       => 'Slash contract',
+				'post_status' => 'any',
+			]
+		);
+
+		$this->assertCount( 1, $posts, 'The importer should have inserted the page.' );
+		$this->assertSame( $content, $posts[0]->post_content );
 	}
 }

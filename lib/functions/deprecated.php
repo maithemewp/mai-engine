@@ -147,6 +147,39 @@ function mai_get_cover_image_html( $image_id, $atts = [], $max_width = '100vw' )
 	return $html;
 }
 
+/**
+ * Used to add the setup wizard's slash filter to the content importer.
+ *
+ * @access private Do not use. Left here for back compat.
+ *
+ * @since 2.41.0
+ * @since 2.42.0 Deprecated. The content importer slashes post data itself since 2.1.4.
+ *
+ * @return void
+ */
+function mai_setup_wizard_add_slash_data() {
+	_deprecated_function( __FUNCTION__, '2.42.0', 'No longer needed' );
+}
+
+/**
+ * Used to slash post data during the setup wizard import.
+ *
+ * @access private Do not use. Left here for back compat.
+ *
+ * @since 2.13.0
+ * @since 2.42.0 Deprecated. Returns the data unchanged, because the content importer
+ *               slashes it itself since 2.1.4 and slashing again would store backslashes.
+ *
+ * @param array $data The post data.
+ *
+ * @return array
+ */
+function mai_setup_wizard_slash_data( $data ) {
+	_deprecated_function( __FUNCTION__, '2.42.0', 'No longer needed' );
+
+	return $data;
+}
+
 add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
 /**
  * Run deprecated functionality on older installs.
