@@ -1,33 +1,34 @@
 # State
-Updated: 2026-11-19 by Claude (after the develop push)
+Updated: 2026-11-19 by Claude (after the legacy preset CSS and logo width commits)
 
 ## Now
-`develop` is pushed (`ef272b2c0`, 2026-11-19). It holds the Tag Processor migration and the demo import work from `docs/plans/2026-11-19-demo-import-images.md`: content area images point at local attachments (nested blocks too), content areas keep escaped block attributes, and the vendored `proteusthemes/wp-content-importer-v2` is 2.1.4, which slashes post data itself. Mai's old `mai_setup_wizard_slash_data` filter is a deprecated no-op in `deprecated.php`. `CHANGES.md` has a `2.42.0 (unreleased)` section; Mike sets the version and runs the beta.
+`develop` on GitHub is at `ef272b2c0`. Three local commits sit on top, not pushed: `17a3f6cce` (state), `0ce48ba62` (legacy preset CSS) and `c99085f7b` (logo width). `CHANGES.md` has a `2.42.0 (unreleased)` section; Mike sets the version and runs the beta.
+- **Legacy preset CSS:** `mai_remove_legacy_block_css()` on `wp_head` at 2 (`lib/functions/enqueue.php`) strips core's 15 old gradient, gray and font size rules from the inlined `block-library/common.css`. Only core's copy at `extra['after'][0]` is touched. Plan and measurements are in `docs/plans/2026-11-19-legacy-preset-css.md` (7,411 to 5,944 inline bytes unminified, about 1.1 KB with the min file).
+- **Logo width:** `mai_add_logo_attributes()` falls back to `mai_get_config( 'settings' )['logo']['width']`, so a site that never saved the setting stops getting `sizes` of 1px.
+- The working tree is clean. Mike's `TODO.md` line about the legacy CSS is gone because the work is done, which leaves `TODO.md` matching the commit.
 
 ## Next
-1. Strip core's legacy preset classes from the inlined `wp-block-library` CSS (`TODO.md`, design in `~/Themes/mai-theme/docs/specs/2026-10-20-mai-theme-v3.md`, "theme.json").
-2. The uncommitted `lib/functions/images.php` change: `mai_add_logo_attributes()` falls back to the config logo width, so a site that never saved the setting stops getting `sizes="1px"`. Ask Mike whether to finish it (test, changelog, commit) before touching it.
-3. Mike: close issues #678 and #679 (fixed on `develop`), delete the merged `demo-import-images` and `dom-to-tag-processor` branches on GitHub, run the 2.42.0 beta.
-4. Issue #677 (entry image aspect ratio when the crop is missing) is open. Don't start it unless Mike asks.
-5. Help Scout ticket #786985: reply once Mike approves the wording.
-6. Then `TODO.md`. Its deployable-guard v1.1.0 item is done (v1.2.0 is installed; 52 of 54 `mai-*` plugins have it, all but mai-content-areas and mai-user-post).
+1. Mike: push `develop` (needs his yes).
+2. Mike: close issues #678 and #679 (fixed on `develop`), delete the merged `demo-import-images` and `dom-to-tag-processor` branches on GitHub, run the 2.42.0 beta.
+3. Issue #677 (entry image aspect ratio when the crop is missing) is open. Don't start it unless Mike asks.
+4. Help Scout ticket #786985: reply once Mike approves the wording.
+5. Then `TODO.md`.
 
 ## Blocked / waiting on
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (815). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
-- `composer test-integration -- --filter LocalizeBlocksTest` covers the path match, nested blocks and re-import.
-- `composer test-integration -- --filter TemplatePartImportSlashTest` covers escaped block attributes surviving the single import. `SetupWizardSlashDataTest` and `SetupWizardWxrImporterTest` cover the vendored importer keeping escapes on insert and on the URL rewrite, and nothing in Mai slashing a second time.
-- `deployable-guard` fails in this working tree because of the uncommitted with-dev `vendor/`. Check the committed tree: `git worktree add --detach /tmp/tp-guard HEAD && php vendor/bin/deployable-guard check --root=/tmp/tp-guard; git worktree remove --force /tmp/tp-guard`.
-- Wizard scripts: `/tmp/tp-demo/pw/import.js` (full run) and `fail.js` (first content request only), plus `/tmp/tp-demo/check.php` for content area images (gone after reboot).
+- `composer test-unit` (289, 11 skipped), `composer test-integration -- --order-by=random` (821).
+- `--filter LegacyBlockCssTest` (unit and integration) and `--filter LogoAttributesTest` cover today's work. The unit fixtures are copies of WP 7.0.2's `common.css` and `common.min.css`; copy them in again when the test WordPress updates.
+- Deployable check on the committed tree: `git worktree add --detach /tmp/tp-guard HEAD && php vendor/bin/deployable-guard check --root=/tmp/tp-guard; git worktree remove --force /tmp/tp-guard`.
+- Inline CSS bytes: `/tmp/legacy-css/measure.php <saved homepage html>` (gone after reboot).
 
 ## Gotchas
-- Update vendored packages only in a clean worktree with `composer dump-autoload --no-dev --optimize` (the release script's shape), then run deployable-guard on it. Never in the main tree.
-- The working tree carries Mike's uncommitted `TODO.md` line (the legacy preset item) and the `lib/functions/images.php` logo fix. Stage by explicit path only. The old with-dev `vendor/composer` files were discarded on 2026-11-19 (saved at `/tmp/mai-engine-local-vendor-composer.patch`). Never commit a with-dev autoloader: it takes every site down on deploy.
-- The wizard caches demo files for an hour in `wp-content/mai-setup-wizard/<theme>/`. Delete that folder to force a fresh download.
-- The local demo site blocks outgoing HTTP. Only Mike opens or closes it with `mai-sites isolate`.
-- Test stubs for global functions go in `tests/phpunit/integration/plugin-loader.php`, never in the namespaced test files.
+- Never run two integration runs at once. A targeted run reinstalls the shared test DB, and the other run then fails with errors that have nothing to do with the code (seen 2026-11-19 in `GridKeptOnlyTest`; the same seed replayed green). One earlier random-order run had a single failure that was not captured; 20+ runs since were green.
+- `phpcs.xml.dist` errors out (`minimum_supported_version` does not exist on `WordPress.WP.DeprecatedFunctions`). `php vendor/bin/phpcs --standard=WordPress <file>` works but flags the repo's short arrays everywhere.
+- The `nonprofit-site-a` local site has `SCRIPT_DEBUG` on, so it inlines unminified core CSS.
+- Update vendored packages only in a clean worktree with `composer dump-autoload --no-dev --optimize`, then run deployable-guard on it. Never in the main tree. Never commit a with-dev autoloader: it takes every site down on deploy.
+- Test stubs for global functions go in `tests/phpunit/integration/plugin-loader.php`, never in the namespaced test files. Tests that need `lib/functions/images.php` require it in a separate process, since it adds global image filters.
 - `get_attribute()` returns `null` or `true` as well as strings; guard every read with `is_string()`. Never mix `set_attribute( 'class', ... )` with `add_class()` on one tag.
 - Run `wp` against local sites from `/tmp`, not from this repo.
 - Never write a client site, server or local `.test` name into this repo. Use the stand-ins in `docs-local/site-key.md`. The commit hooks refuse registry names.
