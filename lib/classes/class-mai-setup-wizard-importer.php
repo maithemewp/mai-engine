@@ -184,14 +184,16 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 		}
 
 		foreach ( $data as $index => $post ) {
+			// Localize first, since image downloads can time out and must not leave the old content area trashed with nothing in its place.
+			$post['ID']           = 0;
+			$post['post_content'] = mai_localize_blocks( (string) ( $post['post_content'] ?? '' ) );
+
 			$existing = get_page_by_path( $post['post_name'], ARRAY_A, 'mai_template_part' );
 
 			if ( $existing ) {
 				wp_trash_post( $existing['ID'] );
 			}
 
-			$post['ID']           = 0;
-			$post['post_content'] = mai_localize_blocks( (string) ( $post['post_content'] ?? '' ) );
 			wp_insert_post( $post );
 		}
 
