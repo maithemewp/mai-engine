@@ -365,6 +365,98 @@ function mai_reorder_core_block_styles() {
 	$styles->queue = $remaining;
 }
 
+add_action( 'wp_head', 'mai_remove_legacy_block_css', 2 );
+/**
+ * Strips core's legacy preset rules from its inlined block library CSS.
+ *
+ * Core copies `block-library/common.css` into the `after` data of `wp-block-library`
+ * in `wp_maybe_inline_styles()` on `wp_head` at priority 1, and prints it at 8.
+ * Running at 2 changes the inline copy. When a page inlines too much CSS, core links
+ * the file instead, there is nothing to change, and the classes stay.
+ *
+ * Only core's copy is changed. Core sets `src` to false and puts the file first in
+ * `after`, so CSS a plugin or child theme adds to the same handle keeps its own
+ * rules for these classes.
+ *
+ * A site that wants the classes back can remove this hook.
+ *
+ * @since 2.42.0
+ *
+ * @return void
+ */
+function mai_remove_legacy_block_css() {
+	$styles = wp_styles();
+	$style  = $styles->registered['wp-block-library'] ?? null;
+
+	if ( ! $style || false !== $style->src || ! $styles->get_data( 'wp-block-library', 'inlined_src' ) ) {
+		return;
+	}
+
+	$path = $styles->get_data( 'wp-block-library', 'path' );
+
+	if ( ! is_string( $path ) || ! preg_match( '~/block-library/common(\.min)?\.css$~', $path ) ) {
+		return;
+	}
+
+	if ( ! isset( $style->extra['after'][0] ) || ! is_string( $style->extra['after'][0] ) ) {
+		return;
+	}
+
+	$style->extra['after'][0] = mai_strip_legacy_block_css( $style->extra['after'][0] );
+}
+
+/**
+ * Removes core's 15 hard-coded legacy preset rules from block library CSS.
+ *
+ * Core's common block CSS ships classes for seven old gradients, four old grey colors
+ * and four old font sizes. No filter reaches them, so they print on every page even
+ * though Mai registers its own presets. Rules are matched by exact class name, never
+ * by a pattern such as `*-gradient-background`, so a plugin's own gradient added to
+ * the same stylesheet survives.
+ *
+ * It fails safe. If core renames one of these rules or adds a selector to it, the
+ * pattern stops matching and the rule stays. A rule is only removed when it is flat,
+ * with no nested rule inside it. A nested rule that is the first thing inside its
+ * parent is left alone, but one that follows a sibling rule inside the same parent is
+ * removed too, since it looks like a top level rule. Core does not nest these rules
+ * today. Removing a flat rule cannot unbalance the braces, so the brace count check is
+ * belt and braces: a stray brace would break every rule after it, so the original text
+ * comes back if the counts ever differ.
+ *
+ * @since 2.42.0
+ *
+ * @param string $css Core's `common.css` or `common.min.css` contents.
+ *
+ * @return string The CSS without the legacy rules, or the original if unsure.
+ */
+function mai_strip_legacy_block_css( $css ) {
+	$selectors = [];
+
+	foreach ( [ 'vivid-green-cyan-to-vivid-cyan-blue', 'purple-crush', 'hazy-dawn', 'subdued-olive', 'atomic-cream', 'nightshade', 'midnight' ] as $name ) {
+		$selectors[] = ':root .has-' . $name . '-gradient-background';
+	}
+
+	foreach ( [ 'very-light-gray-color', 'very-dark-gray-color', 'very-light-gray-background-color', 'very-dark-gray-background-color' ] as $name ) {
+		$selectors[] = ':root .has-' . $name;
+	}
+
+	foreach ( [ 'regular', 'larger', 'normal', 'huge' ] as $name ) {
+		$selectors[] = '.has-' . $name . '-font-size';
+	}
+
+	// The lookbehind makes a rule start at the top of the file or right after another
+	// rule, so `.a, .has-huge-font-size{}` is never touched. `[^{}]*` stops at a nested
+	// rule, which leaves it alone.
+	$pattern = '~(?<=^|\})\s*(?:' . implode( '|', array_map( 'preg_quote', $selectors ) ) . ')\s*\{[^{}]*\}~';
+	$result  = preg_replace( $pattern, '', $css );
+
+	if ( null === $result || substr_count( $result, '{' ) !== substr_count( $result, '}' ) ) {
+		return $css;
+	}
+
+	return $result;
+}
+
 add_action( 'wp_enqueue_scripts', 'mai_admin_bar_inline_styles' );
 /**
  * Admin bar inline styles.

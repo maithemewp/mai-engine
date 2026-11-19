@@ -2,6 +2,7 @@
 
 ## 2.42.0 (unreleased)
 * Changed: Mai no longer rewrites the HTML of icons, blocks, pagination, comment links, shortcodes and recipe cards when it adds classes or styles, so SVG attributes such as `viewBox` keep their case.
+* Changed: On WordPress 6.9 and newer, pages no longer load WordPress's old gradient, gray and font size classes, which trims about 1 KB from the block styles on every page. Old posts that still use these classes lose those sizes and colors.
 * Changed: [Developers] `mai_add_classes()` now drops repeated classes and extra spaces.
 * Changed: [Developers] `mai_setup_wizard_slash_data()` and `mai_setup_wizard_add_slash_data()` are deprecated and do nothing, since the content importer now slashes post data itself.
 * Fixed: Button blocks no longer cut pieces out of longer class names such as `has-background-blur` when removing color classes.

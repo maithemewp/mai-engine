@@ -193,6 +193,10 @@ require_once $plugin_root . '/lib/functions/templates.php';
 require_once $plugin_root . '/lib/support/woocommerce.php';
 require_once $plugin_root . '/lib/support/wp-recipe-maker.php';
 
+// Declares functions and registers hooks only. No test fires the enqueue hooks it adds, so
+// Mai's own assets never load here. The legacy block CSS tests call its wp_head callback.
+require_once $plugin_root . '/lib/functions/enqueue.php';
+
 // The real mai_get_dir() is in lib/init.php, which the suite does not load.
 if ( ! function_exists( 'mai_get_dir' ) ) {
 	/**
