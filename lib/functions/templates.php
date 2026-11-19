@@ -510,7 +510,8 @@ function mai_import_template_part( $slug, $force = false ) {
 			'post_name'    => $slug,
 			'post_status'  => 'publish',
 			'post_title'   => mai_convert_case( $slug, 'title' ),
-			'post_content' => mai_localize_blocks( $template_parts[ $slug ] ),
+			// wp_insert_post() unslashes, so slash the content to keep the unicode escapes in block attributes.
+			'post_content' => wp_slash( mai_localize_blocks( $template_parts[ $slug ] ) ),
 			'menu_order'   => isset( $config[ $slug ]['menu_order'] ) ? $config[ $slug ]['menu_order'] : 0,
 		]
 	);

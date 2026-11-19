@@ -194,7 +194,8 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 				wp_trash_post( $existing['ID'] );
 			}
 
-			wp_insert_post( $post );
+			// wp_insert_post() unslashes, so slash the content to keep the unicode escapes in block attributes.
+			wp_insert_post( wp_slash( $post ) );
 		}
 
 		do_action( 'mai_setup_wizard_after_template_parts', $this->ajax->get_demo_id() );
