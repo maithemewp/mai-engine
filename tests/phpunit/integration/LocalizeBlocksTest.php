@@ -243,7 +243,54 @@ final class LocalizeBlocksTest extends MaiIntegrationTestCase {
 		}
 	}
 
+	// ---- Demo URL lookup by file path ----
+
+	public function test_matches_exact_upload_path(): void {
+		$id = $this->attachment_at( '2024/02/photo-scaled-1.jpg' );
+
+		$this->assertSame( $id, mai_get_attachment_id_from_demo_url( 'https://demo.example/site/wp-content/uploads/sites/83/2024/02/photo-scaled-1.jpg' ) );
+	}
+
+	public function test_matches_without_multisite_prefix(): void {
+		$id = $this->attachment_at( '2024/02/photo.jpg' );
+
+		$this->assertSame( $id, mai_get_attachment_id_from_demo_url( 'https://demo.example/wp-content/uploads/2024/02/photo.jpg' ) );
+	}
+
+	public function test_matches_sized_url_to_original(): void {
+		$id = $this->attachment_at( '2024/03/Asset-2@4x-e1711650607873.png' );
+
+		$this->assertSame( $id, mai_get_attachment_id_from_demo_url( 'https://demo.example/wp-content/uploads/sites/83/2024/03/Asset-2@4x-e1711650607873-300x238.png' ) );
+	}
+
+	public function test_matches_sized_url_to_scaled_original(): void {
+		$id = $this->attachment_at( '2024/05/big-scaled.jpg' );
+
+		$this->assertSame( $id, mai_get_attachment_id_from_demo_url( 'https://demo.example/wp-content/uploads/2024/05/big-300x200.jpg' ) );
+	}
+
+	public function test_no_match_returns_zero(): void {
+		$this->assertSame( 0, mai_get_attachment_id_from_demo_url( 'https://demo.example/wp-content/uploads/2024/06/missing.jpg' ) );
+		$this->assertSame( 0, mai_get_attachment_id_from_demo_url( 'https://demo.example/images/photo.jpg' ) );
+		$this->assertSame( 0, mai_get_attachment_id_from_demo_url( '' ) );
+	}
+
 	// ---- Helpers ----
+
+	/**
+	 * Creates an image attachment stored at a given uploads path.
+	 *
+	 * @param string $path Path relative to the uploads directory.
+	 *
+	 * @return int
+	 */
+	private function attachment_at( string $path ): int {
+		$id = self::factory()->attachment->create( [ 'post_mime_type' => 'image/jpeg' ] );
+
+		update_post_meta( $id, '_wp_attached_file', $path );
+
+		return $id;
+	}
 
 	/**
 	 * Creates an image attachment with a file, so wp_get_attachment_image_src() works for it.

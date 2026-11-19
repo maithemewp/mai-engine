@@ -726,6 +726,53 @@ function mai_get_existing_attachment_from_filename( $filename ) {
 }
 
 /**
+ * Gets the local attachment ID for a demo image URL, matched by its upload file path.
+ *
+ * Demo images share the same relative upload path as the local copies, so the path after
+ * `/uploads/` is looked up in `_wp_attached_file`. A leading multisite `sites/<id>/` is dropped.
+ * Sized URLs fall back to the original file, then to its `-scaled` version.
+ *
+ * @access private
+ *
+ * @since 2.42.0
+ *
+ * @param string $url The demo image URL.
+ *
+ * @return int The attachment ID, or 0 if none matches.
+ */
+function mai_get_attachment_id_from_demo_url( string $url ): int {
+	$position = strrpos( $url, '/uploads/' );
+
+	if ( false === $position ) {
+		return 0;
+	}
+
+	$path = substr( $url, $position + strlen( '/uploads/' ) );
+	$path = (string) preg_replace( '~^sites/\d+/~', '', $path );
+
+	if ( '' === $path ) {
+		return 0;
+	}
+
+	$sized      = (string) preg_replace( '~-\d+x\d+(\.[^./]+)?$~', '$1', $path );
+	$candidates = [ $path, $sized ];
+
+	// A big original is stored as `-scaled`, and its sized copies are named from that, so the suffix is missing from the size-stripped path.
+	$candidates[] = (string) preg_replace( '~(\.[^./]+)?$~', '-scaled$1', $sized, 1 );
+	$base_url     = trailingslashit( wp_get_upload_dir()['baseurl'] );
+
+	foreach ( array_unique( $candidates ) as $candidate ) {
+		$id = attachment_url_to_postid( $base_url . $candidate );
+
+		if ( $id ) {
+			return $id;
+		}
+	}
+
+	return 0;
+}
+
+/**
  * Imports an image from an external URL.
  *
  * @access private
