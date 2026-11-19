@@ -5,15 +5,15 @@ Updated: 2026-11-19 by Claude
 Branch `demo-import-images`, cut from `dom-to-tag-processor` (the Tag Processor migration, pushed but not merged). It builds `docs/plans/2026-11-19-demo-import-images.md`, and all four tasks are committed locally. Not pushed.
 
 - `mai_get_attachment_id_from_demo_url()` matches a demo image to a local attachment by its stored file path (`_wp_attached_file`), including sized and `-scaled` names.
-- `mai_localize_blocks()` now walks nested blocks through `mai_localize_block()`, and tries the file path before the old slug match.
-- The setup wizard runs every content area through `mai_localize_blocks()`, and a failed demo download now shows the URL and the real reason (request error or HTTP status).
+- `mai_localize_blocks()` now walks nested blocks through `mai_localize_block()`. `mai_get_local_image_id()` reuses an earlier match for the same demo image, then tries the file path, the old slug match and a download.
+- The setup wizard runs every content area through `mai_localize_blocks()` before trashing the old one, and a failed demo download now shows the URL and the real reason (request error or HTTP status).
 - End to end on the local demo import site: `post-header`'s cover and `footer`'s nested image point at local attachments 111 and 339, with no new attachments. The failure message was checked with a temporary mu-plugin, because Mike kept the demo host allowed. Details are in the plan's Results.
 - `CHANGES.md` 2.42.0 (unreleased): the demo import Fixed line now covers content area images.
 
 ## Next
 1. Mike reviews `demo-import-images`. Then it joins the Tag Processor work for the 2.42.0 beta. Mike does the push, merge and beta.
 2. Open from the Tag Processor branch: issues #678 (prev-next pagination closer) and #679 (cover block `wp-image-` class) are fixed there and still open on GitHub.
-3. Possible follow-up, not started: with Content unchecked, the same demo image used twice in a content area downloads twice. This is older than this branch.
+3. Possible follow-up, not started: both content area imports pass unslashed content to `wp_insert_post()`, which strips backslashes, so a `\u002d` escape in a block attribute would break. Older than this branch. The Side Hustle demo has none.
 4. Issue #677 (entry image aspect ratio when the crop is missing) is open. Don't start it unless Mike asks.
 5. Earlier queue: Help Scout ticket #786985 reply once Mike approves the wording; roll deployable-guard v1.2.0 to the other `mai-*` plugins; then `TODO.md`.
 
@@ -22,7 +22,7 @@ Branch `demo-import-images`, cut from `dom-to-tag-processor` (the Tag Processor 
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
 
 ## Verify
-- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (812). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
+- `composer test-unit` (280, 11 skipped), `composer test-integration -- --order-by=random` (813). `GridCacheAfterPageTest` fails 2 tests on some MySQL/MariaDB versions regardless; it passed here.
 - `composer test-integration -- --filter LocalizeBlocksTest` covers the path match, nested blocks and re-import.
 - `deployable-guard` fails in this working tree because of the uncommitted with-dev `vendor/`. Check the committed tree: `git worktree add --detach /tmp/tp-guard HEAD && php vendor/bin/deployable-guard check --root=/tmp/tp-guard; git worktree remove --force /tmp/tp-guard`.
 - Wizard scripts: `/tmp/tp-demo/pw/import.js` (full run) and `fail.js` (first content request only), plus `/tmp/tp-demo/check.php` for content area images (gone after reboot).
