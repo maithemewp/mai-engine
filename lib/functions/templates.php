@@ -550,127 +550,7 @@ function mai_localize_blocks( $content ) {
 	$replace_ids  = [];
 
 	foreach ( $blocks as $index => $block ) {
-		if ( 'core/cover' === $block['blockName'] ) {
-			$image_id  = $block['attrs']['id'] ?? 0;
-			$image_url = $block['attrs']['url'] ?? '';
-
-			// Skip if already a local image.
-			if ( mai_has_string( home_url(), $image_url	) ) {
-				continue;
-			}
-
-			if ( $image_id && $image_url ) {
-				$path_parts = pathinfo( $image_url );
-				$existing   = mai_get_existing_attachment_from_filename( $path_parts['filename'] );
-
-				if ( $existing ) {
-					$new_id  = $existing;
-					$new_url = wp_get_attachment_url( $existing );
-
-					$blocks[ $index ]['attrs']['id']  = $new_id;
-					$blocks[ $index ]['attrs']['url'] = $new_url;
-
-					$replace_urls[ $image_url ] = $new_url;
-					$replace_ids[ $image_id ]   = $new_id;
-
-				} else {
-
-					$new_id  = mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
-
-					if ( $new_id  ) {
-						$new_url = wp_get_attachment_url( $new_id );
-
-						$blocks[ $index ]['attrs']['id']  = $new_id;
-						$blocks[ $index ]['attrs']['url'] = $new_url;
-
-						$replace_urls[ $image_url ] = $new_url;
-						$replace_ids[ $image_id ]   = $new_id;
-					}
-				}
-
-				$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
-			}
-
-		} elseif ( 'core/image' === $block['blockName'] ) {
-			$image_id   = $block['attrs']['id'] ?? 0;
-			$image_size = $block['attrs']['sizeSlug'] ?? '';
-			$image_url  = false;
-
-			if ( $image_id ) {
-				$tags = new WP_HTML_Tag_Processor( $block['innerHTML'] );
-
-				if ( $tags->next_tag( 'img' ) ) {
-					$src       = $tags->get_attribute( 'src' );
-					$image_url = is_string( $src ) ? $src : false;
-				}
-
-				if ( $image_url ) {
-					// Skip if already a local image.
-					if ( mai_has_string( home_url(), $image_url	) ) {
-						continue;
-					}
-
-					$path_parts = pathinfo( $image_url );
-					$filename   = $path_parts['filename'];
-					$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
-					$existing   = mai_get_existing_attachment_from_filename( $filename );
-					$new_id     = $existing ? $existing : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
-					$new_img    = $new_id ? wp_get_attachment_image_src( $new_id, $image_size ? $image_size : 'full' ) : false;
-
-					// A match that isn't an image has no src, so leave the block pointing at the demo image.
-					if ( $new_img ) {
-						$blocks[ $index ]['attrs']['id'] = $new_id;
-
-						$replace_urls[ $image_url ] = $new_img[0];
-						$replace_ids[ $image_id ]   = $new_id;
-					}
-
-					$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
-				}
-			}
-
-		} elseif ( 'core/media-text' === $block['blockName'] ) {
-			$media_id   = $block['attrs']['mediaId'] ?? 0;
-			$media_type = $block['attrs']['mediaType'] ?? '';
-			$image_url  = false;
-
-			if ( 'image' !== $media_type ) {
-				continue;
-			}
-
-			if ( $media_id ) {
-				$tags = new WP_HTML_Tag_Processor( $block['innerHTML'] );
-
-				if ( $tags->next_tag( 'img' ) ) {
-					$src       = $tags->get_attribute( 'src' );
-					$image_url = is_string( $src ) ? $src : false;
-				}
-
-				if ( $image_url ) {
-					// Skip if already a local image.
-					if ( mai_has_string( home_url(), $image_url	) ) {
-						continue;
-					}
-
-					$path_parts = pathinfo( $image_url );
-					$filename   = $path_parts['filename'];
-					$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
-					$existing   = mai_get_existing_attachment_from_filename( $filename );
-					$new_id     = $existing ? $existing : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
-					$new_img    = $new_id ? wp_get_attachment_image_src( $new_id, 'large' ) : false;
-
-					// The new src reaches the output through $replace_urls, since serialize_blocks() reads innerContent, not innerHTML.
-					if ( $new_img ) {
-						$blocks[ $index ]['attrs']['mediaId'] = $new_id;
-
-						$replace_urls[ $image_url ] = $new_img[0];
-						$replace_ids[ $media_id ]   = $new_id;
-					}
-
-					$blocks[ $index ] = filter_block_kses( $blocks[ $index ], 'post' );
-				}
-			}
-		}
+		$blocks[ $index ] = mai_localize_block( $block, $replace_urls, $replace_ids );
 	}
 
 	if ( $replace_urls ) {
@@ -691,6 +571,141 @@ function mai_localize_blocks( $content ) {
 	}
 
 	return $content;
+}
+
+/**
+ * Localizes the images of one block and its inner blocks.
+ *
+ * Inner blocks are visited first, so a block that is left alone still has its children localized.
+ * URL and ID replacements are collected for the caller to apply once to the serialized content.
+ *
+ * @access private
+ *
+ * @since 2.42.0
+ *
+ * @param array $block        The parsed block.
+ * @param array $replace_urls Old image URLs mapped to new ones, added to by reference.
+ * @param array $replace_ids  Old attachment IDs mapped to new ones, added to by reference.
+ *
+ * @return array The block.
+ */
+function mai_localize_block( array $block, array &$replace_urls, array &$replace_ids ): array {
+	foreach ( $block['innerBlocks'] as $index => $inner_block ) {
+		$block['innerBlocks'][ $index ] = mai_localize_block( $inner_block, $replace_urls, $replace_ids );
+	}
+
+	if ( 'core/cover' === $block['blockName'] ) {
+		$image_id  = $block['attrs']['id'] ?? 0;
+		$image_url = $block['attrs']['url'] ?? '';
+
+		// Skip if already a local image.
+		if ( mai_has_string( home_url(), $image_url ) ) {
+			return $block;
+		}
+
+		if ( $image_id && $image_url ) {
+			$path_parts = pathinfo( $image_url );
+			$new_id     = mai_get_attachment_id_from_demo_url( $image_url );
+			$new_id     = $new_id ? $new_id : mai_get_existing_attachment_from_filename( $path_parts['filename'] );
+			$new_id     = $new_id ? $new_id : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+
+			if ( $new_id ) {
+				$new_url = wp_get_attachment_url( $new_id );
+
+				$block['attrs']['id']  = $new_id;
+				$block['attrs']['url'] = $new_url;
+
+				$replace_urls[ $image_url ] = $new_url;
+				$replace_ids[ $image_id ]   = $new_id;
+			}
+
+			$block = filter_block_kses( $block, 'post' );
+		}
+
+	} elseif ( 'core/image' === $block['blockName'] ) {
+		$image_id   = $block['attrs']['id'] ?? 0;
+		$image_size = $block['attrs']['sizeSlug'] ?? '';
+		$image_url  = false;
+
+		if ( $image_id ) {
+			$tags = new WP_HTML_Tag_Processor( $block['innerHTML'] );
+
+			if ( $tags->next_tag( 'img' ) ) {
+				$src       = $tags->get_attribute( 'src' );
+				$image_url = is_string( $src ) ? $src : false;
+			}
+
+			if ( $image_url ) {
+				// Skip if already a local image.
+				if ( mai_has_string( home_url(), $image_url ) ) {
+					return $block;
+				}
+
+				$path_parts = pathinfo( $image_url );
+				$filename   = $path_parts['filename'];
+				$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
+				$new_id     = mai_get_attachment_id_from_demo_url( $image_url );
+				$new_id     = $new_id ? $new_id : mai_get_existing_attachment_from_filename( $filename );
+				$new_id     = $new_id ? $new_id : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+				$new_img    = $new_id ? wp_get_attachment_image_src( $new_id, $image_size ? $image_size : 'full' ) : false;
+
+				// A match that isn't an image has no src, so leave the block pointing at the demo image.
+				if ( $new_img ) {
+					$block['attrs']['id'] = $new_id;
+
+					$replace_urls[ $image_url ] = $new_img[0];
+					$replace_ids[ $image_id ]   = $new_id;
+				}
+
+				$block = filter_block_kses( $block, 'post' );
+			}
+		}
+
+	} elseif ( 'core/media-text' === $block['blockName'] ) {
+		$media_id   = $block['attrs']['mediaId'] ?? 0;
+		$media_type = $block['attrs']['mediaType'] ?? '';
+		$image_url  = false;
+
+		if ( 'image' !== $media_type ) {
+			return $block;
+		}
+
+		if ( $media_id ) {
+			$tags = new WP_HTML_Tag_Processor( $block['innerHTML'] );
+
+			if ( $tags->next_tag( 'img' ) ) {
+				$src       = $tags->get_attribute( 'src' );
+				$image_url = is_string( $src ) ? $src : false;
+			}
+
+			if ( $image_url ) {
+				// Skip if already a local image.
+				if ( mai_has_string( home_url(), $image_url ) ) {
+					return $block;
+				}
+
+				$path_parts = pathinfo( $image_url );
+				$filename   = $path_parts['filename'];
+				$filename   = preg_replace( '/(\d+)x(\d+)$/', '', $filename ); // Filename without sizes.
+				$new_id     = mai_get_attachment_id_from_demo_url( $image_url );
+				$new_id     = $new_id ? $new_id : mai_get_existing_attachment_from_filename( $filename );
+				$new_id     = $new_id ? $new_id : mai_get_new_image_from_url( $image_url, $path_parts['filename'] );
+				$new_img    = $new_id ? wp_get_attachment_image_src( $new_id, 'large' ) : false;
+
+				// The new src reaches the output through $replace_urls, since serialize_blocks() reads innerContent, not innerHTML.
+				if ( $new_img ) {
+					$block['attrs']['mediaId'] = $new_id;
+
+					$replace_urls[ $image_url ] = $new_img[0];
+					$replace_ids[ $media_id ]   = $new_id;
+				}
+
+				$block = filter_block_kses( $block, 'post' );
+			}
+		}
+	}
+
+	return $block;
 }
 
 /**

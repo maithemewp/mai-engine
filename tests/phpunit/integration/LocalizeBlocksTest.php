@@ -275,7 +275,115 @@ final class LocalizeBlocksTest extends MaiIntegrationTestCase {
 		$this->assertSame( 0, mai_get_attachment_id_from_demo_url( '' ) );
 	}
 
+	// ---- Nested blocks and file path matching ----
+
+	public function test_nested_image_is_localized(): void {
+		$new_id = $this->attachment( 'photo' );
+		$html   = $this->wrap( 'group', $this->wrap( 'columns', $this->wrap( 'column', $this->image( 5, 'photo-300x200.jpg', 'large' ) ) ) );
+		$out    = mai_localize_blocks( $html );
+		$block  = $this->find_block( parse_blocks( $out ), 'core/image' );
+
+		$this->assertNotNull( $block );
+		$this->assertSame( $new_id, $block['attrs']['id'] );
+
+		$tags = new WP_HTML_Tag_Processor( $block['innerHTML'] );
+		$tags->next_tag( 'img' );
+
+		$this->assertSame( wp_get_attachment_image_src( $new_id, 'large' )[0], $tags->get_attribute( 'src' ) );
+		$this->assertContains( 'wp-image-' . $new_id, $this->tagClasses( $block['innerHTML'], 'img' ) );
+		$this->assertStringNotContainsString( self::REMOTE, $out );
+	}
+
+	public function test_nested_cover_and_media_text_are_localized(): void {
+		$cover_id = $this->attachment( 'photo' );
+		$media_id = $this->attachment( 'other' );
+		$html     = $this->wrap( 'group', $this->cover( 5, 'photo.jpg' ) ) . "\n\n" . $this->wrap( 'columns', $this->wrap( 'column', $this->media_text( 6, 'other-1024x683.jpg' ) ) );
+		$out      = mai_localize_blocks( $html );
+		$blocks   = parse_blocks( $out );
+		$cover    = $this->find_block( $blocks, 'core/cover' );
+		$media    = $this->find_block( $blocks, 'core/media-text' );
+
+		$this->assertSame( $cover_id, $cover['attrs']['id'] );
+		$this->assertSame( wp_get_attachment_url( $cover_id ), $cover['attrs']['url'] );
+		$this->assertContains( 'wp-image-' . $cover_id, $this->tagClasses( $cover['innerHTML'], 'img' ) );
+
+		$this->assertSame( $media_id, $media['attrs']['mediaId'] );
+		$this->assertContains( 'wp-image-' . $media_id, $this->tagClasses( $media['innerHTML'], 'img' ) );
+		$this->assertStringNotContainsString( self::REMOTE, $out );
+	}
+
+	public function test_file_path_match_wins_over_slug(): void {
+		$new_id = self::factory()->attachment->create(
+			[
+				'file'           => '2024/03/Asset-2@4x-e1711650607873.png',
+				'post_name'      => 'asset-24x',
+				'post_mime_type' => 'image/png',
+			]
+		);
+
+		$base  = 'https://demo.example.com/wp-content/uploads/sites/83/2024/03/';
+		$html  = $this->image( 5, 'Asset-2@4x-e1711650607873-300x238.png', 'large', $base );
+		$out   = mai_localize_blocks( $html );
+		$block = $this->block( $out, 1 );
+
+		$this->assertSame( $new_id, $block['attrs']['id'] );
+		$this->assertStringNotContainsString( 'demo.example.com', $out );
+	}
+
+	public function test_same_image_twice_uses_one_attachment(): void {
+		$new_id = $this->attachment( 'photo' );
+		$before = (int) wp_count_posts( 'attachment' )->inherit;
+		$out    = mai_localize_blocks( $this->image( 5, 'photo-300x200.jpg', 'large' ) . "\n\n" . $this->image( 5, 'photo-300x200.jpg', 'large' ) );
+
+		$this->assertSame( $new_id, $this->block( $out, 1 )['attrs']['id'] );
+		$this->assertSame( $new_id, $this->block( $out, 2 )['attrs']['id'] );
+		$this->assertSame( $before, (int) wp_count_posts( 'attachment' )->inherit );
+	}
+
+	public function test_second_import_changes_nothing(): void {
+		$this->attachment( 'photo' );
+		$once = mai_localize_blocks( $this->wrap( 'group', $this->image( 5, 'photo-300x200.jpg', 'large' ) ) );
+
+		$this->assertSame( $once, mai_localize_blocks( $once ) );
+	}
+
 	// ---- Helpers ----
+
+	/**
+	 * Wraps serialized blocks in a core container block.
+	 *
+	 * @param string $name  Block name without the core/ prefix.
+	 * @param string $inner Serialized inner blocks.
+	 *
+	 * @return string
+	 */
+	private function wrap( string $name, string $inner ): string {
+		return sprintf( "<!-- wp:%1\$s -->\n<div class=\"wp-block-%1\$s\">%2\$s</div>\n<!-- /wp:%1\$s -->", $name, $inner );
+	}
+
+	/**
+	 * Finds the first block with a name, searching inner blocks.
+	 *
+	 * @param array[] $blocks Parsed blocks.
+	 * @param string  $name   Block name.
+	 *
+	 * @return array|null
+	 */
+	private function find_block( array $blocks, string $name ): ?array {
+		foreach ( $blocks as $block ) {
+			if ( $name === $block['blockName'] ) {
+				return $block;
+			}
+
+			$found = $this->find_block( $block['innerBlocks'], $name );
+
+			if ( $found ) {
+				return $found;
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * Creates an image attachment stored at a given uploads path.
