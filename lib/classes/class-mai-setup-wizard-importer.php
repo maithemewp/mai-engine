@@ -100,8 +100,16 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 
 		$response = wp_remote_get( $url );
 
-		if ( ! $response ) {
-			wp_send_json_error( $url . __( ' could not be retrieved.', 'mai-engine' ) );
+		if ( is_wp_error( $response ) ) {
+			/* translators: 1: file URL, 2: error message. */
+			wp_send_json_error( sprintf( __( '%1$s could not be downloaded: %2$s', 'mai-engine' ), $url, $response->get_error_message() ) );
+		}
+
+		$code = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( 200 !== $code ) {
+			/* translators: 1: file URL, 2: HTTP status code. */
+			wp_send_json_error( sprintf( __( '%1$s could not be downloaded. The server returned status %2$d.', 'mai-engine' ), $url, $code ) );
 		}
 
 		$body = wp_remote_retrieve_body( $response );
@@ -182,7 +190,8 @@ class Mai_Setup_Wizard_Importer extends Mai_Setup_Wizard_Service_Provider {
 				wp_trash_post( $existing['ID'] );
 			}
 
-			$post['ID'] = 0;
+			$post['ID']           = 0;
+			$post['post_content'] = mai_localize_blocks( (string) ( $post['post_content'] ?? '' ) );
 			wp_insert_post( $post );
 		}
 
