@@ -1,18 +1,23 @@
 # State
-Updated: 2026-11-19 by Claude (after the legacy preset CSS and logo width commits)
+Updated: 2026-11-20 by Claude (entry image shape spec and plan written, GitHub batch on hold)
 
 ## Now
-`develop` on GitHub is at `ef272b2c0`. Three local commits sit on top, not pushed: `17a3f6cce` (state), `0ce48ba62` (legacy preset CSS) and `c99085f7b` (logo width). `CHANGES.md` has a `2.42.0 (unreleased)` section; Mike sets the version and runs the beta.
+`develop` on GitHub is at `ef272b2c0`. Local commits on top, not pushed: `0ce48ba62` (legacy preset CSS), `c99085f7b` (logo width) and state updates. `CHANGES.md` has a `2.42.0 (unreleased)` section; Mike sets the version and runs the beta.
 - **Legacy preset CSS:** `mai_remove_legacy_block_css()` on `wp_head` at 2 (`lib/functions/enqueue.php`) strips core's 15 old gradient, gray and font size rules from the inlined `block-library/common.css`. Only core's copy at `extra['after'][0]` is touched. Plan and measurements are in `docs/plans/2026-11-19-legacy-preset-css.md` (7,411 to 5,944 inline bytes unminified, about 1.1 KB with the min file).
 - **Logo width:** `mai_add_logo_attributes()` falls back to `mai_get_config( 'settings' )['logo']['width']`, so a site that never saved the setting stops getting `sizes` of 1px.
-- The working tree is clean. Mike's `TODO.md` line about the legacy CSS is gone because the work is done, which leaves `TODO.md` matching the commit.
+- The working tree holds only the untracked #677 spec and plan. Mike's `TODO.md` line about the legacy CSS is gone because the work is done.
 
 ## Next
-1. Mike: push `develop` (needs his yes).
-2. Mike: close issues #678 and #679 (fixed on `develop`), delete the merged `demo-import-images` and `dom-to-tag-processor` branches on GitHub, run the 2.42.0 beta.
-3. Issue #677 (entry image aspect ratio when the crop is missing) is open. Don't start it unless Mike asks.
+1. Issue #677, entry images keeping their chosen shape: spec `docs/specs/2026-11-19-entry-image-shape.md` and plan `docs/plans/2026-11-20-entry-image-shape.md` are written and reviewed but not committed (the plan's Task 0 commits them). Waiting on Mike's plan approval, then a build prompt for a fresh session.
+2. Then walk `TODO.md` with Mike, one item at a time.
+3. Mike: push `develop` (needs his yes), run the 2.42.0 beta.
 4. Help Scout ticket #786985: reply once Mike approves the wording.
-5. Then `TODO.md`.
+
+## GitHub batch, on hold until Mike names the time
+GitHub actions notify the team, so nothing here fires during the workday or without Mike's say-so.
+- Close #678 (prev-next pagination wrapper) as completed, comment: "Fixed in 51d3a501f on develop. Ships in 2.42.0."
+- Close #679 (cover block image ID class) as completed, comment: "Fixed in 11dee0a5b on develop. Ships in 2.42.0."
+- Delete remote branches `demo-import-images` and `dom-to-tag-processor` (both fully merged into `origin/develop`), then `git branch -d` the local copies.
 
 ## Blocked / waiting on
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
