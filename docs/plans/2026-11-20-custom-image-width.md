@@ -32,3 +32,10 @@ Follow-up to issue #677 (`docs/plans/2026-11-20-entry-image-shape.md`). Both dec
   - **Custom Thumbnail, Left Top, ⅓, 2 columns:** every image 150×150, the size width, since a third of the card is wider.
   - **Custom Tiny, Left Top, ⅓, 2 columns:** every image 80×80, including the six with no Tiny crop. A 60×40 original shows at 60×60: the right shape, never enlarged.
   - **Custom Large Full, Custom Medium Center, Custom Large Background:** unchanged.
+
+### Task 2
+
+- `package.json` targets `baseline widely available` (Chrome and Edge 125+, Firefox 126+, Safari 17.5+ on 2026-11-20) and lists browserslist 4.29.6 as a dev dependency, since 4.25.1 did not know the query. `package-lock.json` is ignored by git, so the dev dependency is what makes a fresh install understand the target.
+- Before the change, `npx gulp build:css` and `npx gulp build:js` on a clean tree reproduced every committed file byte for byte.
+- After the change, 29 CSS bundles changed. A scratch script stripped every vendor prefix from the old and new files and compared each declaration with colors normalized. The only other differences are equal values written shorter: 8-digit hex colors (`transparent` as `#0000`, `rgba(0,0,0,.1)` as `#0000001a`), `vertical-align:initial` for `baseline` and `box-sizing:initial` for `content-box`. `-o-object-fit` is gone. Prefixes still in the files are ones the target browsers need.
+- The full build (`gulp build`, which `npm run beta` runs) also builds `assets/js/min/blocks.js` with Parcel, which reads the same target. Its output changed only in how the minifier wrote the same code (14 bytes smaller), so the rebuilt file is committed with the CSS.
