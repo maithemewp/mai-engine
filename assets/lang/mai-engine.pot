@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.41.2\n"
+"Project-Id-Version: Mai Engine 2.42.0-beta.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-09T17:01:34+00:00\n"
+"POT-Creation-Date: 2026-11-20T21:12:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: mai-engine\n"
@@ -78,7 +78,7 @@ msgid "Sidebar, Content"
 msgstr ""
 
 #: config/_default.php:192
-#: lib/functions/deprecated.php:264
+#: lib/functions/deprecated.php:275
 msgid "Mobile Menu"
 msgstr ""
 
@@ -104,12 +104,12 @@ msgid "After Header Menu"
 msgstr ""
 
 #: config/_default.php:548
-#: lib/functions/deprecated.php:254
+#: lib/functions/deprecated.php:265
 msgid "Sidebar"
 msgstr ""
 
 #: config/_default.php:549
-#: lib/functions/deprecated.php:255
+#: lib/functions/deprecated.php:266
 msgid "The Sidebar widget area."
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 
 #: lib/admin/admin-menu.php:28
 #: lib/admin/admin-menu.php:29
-#: lib/functions/deprecated.php:289
+#: lib/functions/deprecated.php:300
 #: lib/functions/utilities.php:1618
 msgid "Mai Theme"
 msgstr ""
@@ -263,7 +263,7 @@ msgid "Select elements to hide on this page."
 msgstr ""
 
 #: lib/admin/hide-elements.php:138
-#: lib/functions/deprecated.php:231
+#: lib/functions/deprecated.php:242
 msgid "Before Header"
 msgstr ""
 
@@ -311,7 +311,7 @@ msgstr ""
 
 #: lib/admin/hide-elements.php:162
 #: lib/fields/grid-display.php:198
-#: lib/fields/grid-display.php:520
+#: lib/fields/grid-display.php:490
 #: lib/functions/customizer.php:407
 #: lib/functions/customizer.php:1003
 #: lib/functions/loop.php:535
@@ -323,7 +323,7 @@ msgstr ""
 #: lib/customize/site-header.php:83
 #: lib/customize/site-header.php:112
 #: lib/fields/grid-display.php:201
-#: lib/fields/grid-display.php:535
+#: lib/fields/grid-display.php:505
 #: lib/functions/customizer.php:444
 #: lib/functions/customizer.php:1033
 #: lib/functions/loop.php:539
@@ -333,7 +333,7 @@ msgstr ""
 
 #: lib/admin/hide-elements.php:164
 #: lib/fields/grid-display.php:202
-#: lib/fields/grid-display.php:550
+#: lib/fields/grid-display.php:520
 #: lib/functions/customizer.php:1047
 #: lib/functions/loop.php:573
 msgid "Custom Content 2"
@@ -341,7 +341,7 @@ msgstr ""
 
 #: lib/admin/hide-elements.php:165
 #: lib/fields/grid-display.php:204
-#: lib/fields/grid-display.php:625
+#: lib/fields/grid-display.php:595
 #: lib/functions/customizer.php:496
 #: lib/functions/customizer.php:1018
 #: lib/functions/loop.php:543
@@ -350,7 +350,7 @@ msgid "Footer Meta"
 msgstr ""
 
 #: lib/admin/hide-elements.php:166
-#: lib/functions/deprecated.php:259
+#: lib/functions/deprecated.php:270
 msgid "After Entry"
 msgstr ""
 
@@ -360,17 +360,17 @@ msgid "Author Box"
 msgstr ""
 
 #: lib/admin/hide-elements.php:170
-#: lib/functions/deprecated.php:269
+#: lib/functions/deprecated.php:280
 msgid "Before Footer"
 msgstr ""
 
 #: lib/admin/hide-elements.php:171
-#: lib/functions/deprecated.php:275
+#: lib/functions/deprecated.php:286
 msgid "Footer"
 msgstr ""
 
 #: lib/admin/hide-elements.php:172
-#: lib/functions/deprecated.php:280
+#: lib/functions/deprecated.php:291
 msgid "Footer Credits"
 msgstr ""
 
@@ -555,7 +555,7 @@ msgstr ""
 #: lib/blocks/mai-icon/block.php:343
 #: lib/customize/page-header.php:95
 #: lib/fields/columns.php:242
-#: lib/fields/grid-display.php:660
+#: lib/fields/grid-display.php:630
 #: lib/fields/grid-layout.php:257
 #: lib/functions/customizer.php:529
 #: lib/functions/customizer.php:795
@@ -571,7 +571,7 @@ msgstr ""
 #: lib/blocks/mai-column/block.php:92
 #: lib/blocks/mai-columns/block.php:383
 #: lib/fields/columns.php:243
-#: lib/fields/grid-display.php:661
+#: lib/fields/grid-display.php:631
 #: lib/fields/grid-layout.php:258
 #: lib/functions/customizer.php:530
 #: lib/functions/customizer.php:796
@@ -583,7 +583,7 @@ msgstr ""
 #: lib/blocks/mai-icon/block.php:351
 #: lib/customize/page-header.php:96
 #: lib/fields/columns.php:244
-#: lib/fields/grid-display.php:662
+#: lib/fields/grid-display.php:632
 #: lib/fields/grid-layout.php:259
 #: lib/functions/customizer.php:531
 #: lib/functions/customizer.php:797
@@ -939,7 +939,7 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:365
 #: lib/customize/page-header.php:131
 #: lib/customize/page-header.php:147
-#: lib/fields/grid-display.php:644
+#: lib/fields/grid-display.php:614
 #: lib/fields/grid-layout.php:234
 #: lib/functions/customizer.php:516
 #: lib/functions/customizer.php:775
@@ -958,7 +958,7 @@ msgstr ""
 #: lib/customize/page-header.php:132
 #: lib/customize/page-header.php:148
 #: lib/fields/grid-display.php:299
-#: lib/fields/grid-display.php:645
+#: lib/fields/grid-display.php:615
 #: lib/fields/grid-layout.php:235
 #: lib/functions/customizer.php:246
 #: lib/functions/customizer.php:517
@@ -973,7 +973,7 @@ msgstr ""
 #: lib/blocks/mai-columns/block.php:367
 #: lib/customize/page-header.php:133
 #: lib/customize/page-header.php:149
-#: lib/fields/grid-display.php:646
+#: lib/fields/grid-display.php:616
 #: lib/fields/grid-layout.php:236
 #: lib/functions/customizer.php:518
 #: lib/functions/customizer.php:777
@@ -1246,7 +1246,7 @@ msgid "Accepts all unit values (px, rem, em, vw, etc). Leave empty for theme def
 msgstr ""
 
 #: lib/blocks/mai-icon/block.php:158
-#: lib/fields/grid-display.php:612
+#: lib/fields/grid-display.php:582
 #: lib/functions/colors.php:256
 #: lib/functions/customizer.php:484
 #: lib/functions/utilities.php:1547
@@ -1314,7 +1314,7 @@ msgid "Margin"
 msgstr ""
 
 #: lib/blocks/mai-icon/block.php:375
-#: lib/fields/grid-display.php:868
+#: lib/fields/grid-display.php:838
 #: lib/functions/customizer.php:684
 msgid "Border Radius"
 msgstr ""
@@ -1350,11 +1350,11 @@ msgstr ""
 msgid "Updated options."
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1219
+#: lib/classes/class-mai-entry.php:1237
 msgid "Pages:"
 msgstr ""
 
-#: lib/classes/class-mai-entry.php:1227
+#: lib/classes/class-mai-entry.php:1245
 msgid "Page "
 msgstr ""
 
@@ -1593,41 +1593,49 @@ msgstr ""
 msgid "No file to import."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:104
-msgid " could not be retrieved."
+#. translators: 1: file URL, 2: error message.
+#: lib/classes/class-mai-setup-wizard-importer.php:105
+#, php-format
+msgid "%1$s could not be downloaded: %2$s"
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:110
+#. translators: 1: file URL, 2: HTTP status code.
+#: lib/classes/class-mai-setup-wizard-importer.php:112
+#, php-format
+msgid "%1$s could not be downloaded. The server returned status %2$d."
+msgstr ""
+
+#: lib/classes/class-mai-setup-wizard-importer.php:118
 msgid " response body could not be retrieved."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:152
-#: lib/classes/class-mai-setup-wizard-importer.php:191
+#: lib/classes/class-mai-setup-wizard-importer.php:160
+#: lib/classes/class-mai-setup-wizard-importer.php:203
 msgid "Finished importing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:155
+#: lib/classes/class-mai-setup-wizard-importer.php:163
 msgid "Failed importing "
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:175
+#: lib/classes/class-mai-setup-wizard-importer.php:183
 msgid "Something went wrong downloading content area data. Please contact BizBudding support for assistance."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:207
+#: lib/classes/class-mai-setup-wizard-importer.php:219
 msgid "Error importing settings! Please try again."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:223
-#: lib/classes/class-mai-setup-wizard-importer.php:227
+#: lib/classes/class-mai-setup-wizard-importer.php:235
+#: lib/classes/class-mai-setup-wizard-importer.php:239
 msgid "Error importing settings! Please check that you uploaded a customizer export file."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:231
+#: lib/classes/class-mai-setup-wizard-importer.php:243
 msgid "Error importing settings! The settings you uploaded are not for the current theme."
 msgstr ""
 
-#: lib/classes/class-mai-setup-wizard-importer.php:266
+#: lib/classes/class-mai-setup-wizard-importer.php:278
 msgid "Sucessfully imported customizer."
 msgstr ""
 
@@ -1760,9 +1768,9 @@ msgid "Skip this step"
 msgstr ""
 
 #: lib/classes/class-mai-setup-wizard-steps.php:318
-#: lib/structure/pagination.php:218
+#: lib/structure/pagination.php:209
 #: lib/support/facetwp.php:111
-#: lib/support/woocommerce.php:129
+#: lib/support/woocommerce.php:133
 msgid "Previous"
 msgstr ""
 
@@ -2328,57 +2336,57 @@ msgstr ""
 msgid "Image Width"
 msgstr ""
 
-#: lib/fields/grid-display.php:565
+#: lib/fields/grid-display.php:535
 #: lib/functions/customizer.php:422
 msgid "Content Limit"
 msgstr ""
 
-#: lib/fields/grid-display.php:566
+#: lib/fields/grid-display.php:536
 #: lib/functions/customizer.php:423
 msgid "Limit the number of characters shown for the content or excerpt. Use 0 for no limit."
 msgstr ""
 
-#: lib/fields/grid-display.php:589
+#: lib/fields/grid-display.php:559
 #: lib/functions/customizer.php:458
 msgid "More Link Text"
 msgstr ""
 
-#: lib/fields/grid-display.php:604
+#: lib/fields/grid-display.php:574
 #: lib/functions/customizer.php:475
 msgid "More Link Style"
 msgstr ""
 
-#: lib/fields/grid-display.php:608
+#: lib/fields/grid-display.php:578
 #: lib/functions/customizer.php:480
 msgid "Primary Button"
 msgstr ""
 
-#: lib/fields/grid-display.php:609
+#: lib/fields/grid-display.php:579
 #: lib/functions/customizer.php:481
 msgid "Secondary Button"
 msgstr ""
 
-#: lib/fields/grid-display.php:610
+#: lib/fields/grid-display.php:580
 #: lib/functions/customizer.php:482
 msgid "Outline Button"
 msgstr ""
 
-#: lib/fields/grid-display.php:611
+#: lib/fields/grid-display.php:581
 #: lib/functions/customizer.php:483
 msgid "Link Button"
 msgstr ""
 
-#: lib/fields/grid-display.php:640
+#: lib/fields/grid-display.php:610
 #: lib/functions/customizer.php:511
 msgid "Align Text"
 msgstr ""
 
-#: lib/fields/grid-display.php:655
+#: lib/fields/grid-display.php:625
 #: lib/functions/customizer.php:523
 msgid "Align Text (vertical)"
 msgstr ""
 
-#: lib/fields/grid-display.php:659
+#: lib/fields/grid-display.php:629
 #: lib/functions/customizer.php:528
 #: lib/functions/customizer.php:909
 #: lib/functions/customizer.php:1116
@@ -2390,40 +2398,40 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: lib/fields/grid-display.php:757
+#: lib/fields/grid-display.php:727
 #: lib/functions/customizer.php:581
 msgid "Stack Image"
 msgstr ""
 
-#: lib/fields/grid-display.php:760
+#: lib/fields/grid-display.php:730
 #: lib/functions/customizer.php:625
 msgid "Stack image and content on mobile"
 msgstr ""
 
-#: lib/fields/grid-display.php:839
+#: lib/fields/grid-display.php:809
 #: lib/functions/customizer.php:672
 msgid "Boxed"
 msgstr ""
 
-#: lib/fields/grid-display.php:842
+#: lib/fields/grid-display.php:812
 #: lib/functions/customizer.php:677
 msgid "Display boxed styling"
 msgstr ""
 
-#: lib/fields/grid-display.php:869
+#: lib/fields/grid-display.php:839
 #: lib/functions/customizer.php:685
 msgid "Leave empty for theme default. Accepts all unit values (px, rem, em, vw, etc)."
 msgstr ""
 
-#: lib/fields/grid-display.php:897
+#: lib/fields/grid-display.php:867
 msgid "Disable"
 msgstr ""
 
-#: lib/fields/grid-display.php:900
+#: lib/fields/grid-display.php:870
 msgid "Disable entry links"
 msgstr ""
 
-#: lib/fields/grid-display.php:905
+#: lib/fields/grid-display.php:875
 msgid "No results text"
 msgstr ""
 
@@ -2856,83 +2864,83 @@ msgstr ""
 msgid "Use featured image as page header image"
 msgstr ""
 
-#: lib/functions/deprecated.php:232
+#: lib/functions/deprecated.php:243
 msgid "The Before Header widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:236
+#: lib/functions/deprecated.php:247
 msgid "Header Left"
 msgstr ""
 
-#: lib/functions/deprecated.php:237
+#: lib/functions/deprecated.php:248
 msgid "The Header Left widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:245
+#: lib/functions/deprecated.php:256
 msgid "Header Right"
 msgstr ""
 
-#: lib/functions/deprecated.php:246
+#: lib/functions/deprecated.php:257
 msgid "The Header Right widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:260
+#: lib/functions/deprecated.php:271
 msgid "The After Entry widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:265
+#: lib/functions/deprecated.php:276
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:270
+#: lib/functions/deprecated.php:281
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:276
+#: lib/functions/deprecated.php:287
 msgid "The Footer widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:281
+#: lib/functions/deprecated.php:292
 msgid "The Footer Credits widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:286
+#: lib/functions/deprecated.php:297
 msgid "Copyright"
 msgstr ""
 
-#: lib/functions/deprecated.php:287
+#: lib/functions/deprecated.php:298
 msgid "All Rights Reserved"
 msgstr ""
 
-#: lib/functions/deprecated.php:288
+#: lib/functions/deprecated.php:299
 msgid "Powered by"
 msgstr ""
 
-#: lib/functions/helpers.php:1254
+#: lib/functions/helpers.php:1255
 msgid "More info"
 msgstr ""
 
-#: lib/functions/images.php:736
+#: lib/functions/images.php:786
 msgid "Landscape"
 msgstr ""
 
-#: lib/functions/images.php:737
+#: lib/functions/images.php:787
 msgid "Portrait"
 msgstr ""
 
-#: lib/functions/images.php:738
+#: lib/functions/images.php:788
 msgid "Square"
 msgstr ""
 
-#: lib/functions/images.php:747
+#: lib/functions/images.php:797
 msgid "Custom"
 msgstr ""
 
-#: lib/functions/images.php:748
+#: lib/functions/images.php:798
 msgid "Masonry"
 msgstr ""
 
-#: lib/functions/images.php:780
+#: lib/functions/images.php:830
 msgid "Entries fill each column top to bottom, then the next column. Best when order doesn't matter."
 msgstr ""
 
@@ -3215,9 +3223,9 @@ msgstr ""
 msgid "Not found, error 404"
 msgstr ""
 
-#: lib/structure/pagination.php:230
+#: lib/structure/pagination.php:221
 #: lib/support/facetwp.php:136
-#: lib/support/woocommerce.php:130
+#: lib/support/woocommerce.php:134
 msgid "Next"
 msgstr ""
 
@@ -3229,7 +3237,7 @@ msgstr ""
 msgid "Go to page"
 msgstr ""
 
-#: lib/support/woocommerce.php:232
+#: lib/support/woocommerce.php:236
 msgid "Edit Page"
 msgstr ""
 
