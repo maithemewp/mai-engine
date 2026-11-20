@@ -66,6 +66,12 @@ function mai_do_entries_open( $args, $query = null ) {
 		if ( 'background' !== $args['image_position'] ) {
 
 			$left_right = mai_has_string( [ 'left', 'right' ], $args['image_position'] );
+			$share      = $left_right ? match ( $args['image_width'] ) {
+				'half'   => '50%',
+				'third'  => '33.33333333%',
+				'fourth' => '25%',
+				default  => '',
+			} : '';
 
 			// Image width.
 			if ( 'custom' === $args['image_orientation'] ) {
@@ -80,21 +86,16 @@ function mai_do_entries_open( $args, $query = null ) {
 					$image_width = $image_width ? $image_width . 'px' : 'unset';
 				}
 
+				// On the left or right, a custom size takes its share of the card like any other
+				// image, but never grows past the size's own width, so a small size stays small.
+				if ( $share ) {
+					$image_width = 'unset' === $image_width ? $share : sprintf( 'min(%s,%s)', $image_width, $share );
+				}
+
 				$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', $image_width );
 
-			} elseif ( $left_right ) {
-
-				switch ( $args['image_width'] ) {
-					case 'half':
-						$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', '50%' );
-						break;
-					case 'third':
-						$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', '33.33333333%' );
-						break;
-					case 'fourth':
-						$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', '25%' );
-						break;
-				}
+			} elseif ( $share ) {
+				$atts['style'] .= sprintf( '--entry-image-link-max-width:%s;', $share );
 			}
 
 			// Image alternating.

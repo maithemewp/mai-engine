@@ -417,11 +417,6 @@ function mai_get_grid_display_fields() {
 						'value'    => 'image',
 					],
 					[
-						'field'    => 'mai_grid_block_image_orientation',
-						'operator' => '!=',
-						'value'    => 'custom',
-					],
-					[
 						'field'    => 'mai_grid_block_image_position',
 						'operator' => '==',
 						'value'    => 'left-top',
@@ -432,11 +427,6 @@ function mai_get_grid_display_fields() {
 						'field'    => 'mai_grid_block_show',
 						'operator' => '==',
 						'value'    => 'image',
-					],
-					[
-						'field'    => 'mai_grid_block_image_orientation',
-						'operator' => '!=',
-						'value'    => 'custom',
 					],
 					[
 						'field'    => 'mai_grid_block_image_position',
@@ -451,11 +441,6 @@ function mai_get_grid_display_fields() {
 						'value'    => 'image',
 					],
 					[
-						'field'    => 'mai_grid_block_image_orientation',
-						'operator' => '!=',
-						'value'    => 'custom',
-					],
-					[
 						'field'    => 'mai_grid_block_image_position',
 						'operator' => '==',
 						'value'    => 'left-full',
@@ -466,11 +451,6 @@ function mai_get_grid_display_fields() {
 						'field'    => 'mai_grid_block_show',
 						'operator' => '==',
 						'value'    => 'image',
-					],
-					[
-						'field'    => 'mai_grid_block_image_orientation',
-						'operator' => '!=',
-						'value'    => 'custom',
 					],
 					[
 						'field'    => 'mai_grid_block_image_position',
@@ -485,11 +465,6 @@ function mai_get_grid_display_fields() {
 						'value'    => 'image',
 					],
 					[
-						'field'    => 'mai_grid_block_image_orientation',
-						'operator' => '!=',
-						'value'    => 'custom',
-					],
-					[
 						'field'    => 'mai_grid_block_image_position',
 						'operator' => '==',
 						'value'    => 'right-middle',
@@ -500,11 +475,6 @@ function mai_get_grid_display_fields() {
 						'field'    => 'mai_grid_block_show',
 						'operator' => '==',
 						'value'    => 'image',
-					],
-					[
-						'field'    => 'mai_grid_block_image_orientation',
-						'operator' => '!=',
-						'value'    => 'custom',
 					],
 					[
 						'field'    => 'mai_grid_block_image_position',
