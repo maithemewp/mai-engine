@@ -59,7 +59,7 @@
 // and height attributes, and a lazy sizes="auto" image then collapses to a thin strip.
 // object-fit reads --entry-image-object-fit so a theme that sets it (contain, for example) keeps
 // its choice, with cover as the default so the image is trimmed the way a real crop would be.
-// :where() keeps this at the weight of .entry-image, so a theme's own .entry-image rule still wins.
+// :where() keeps this at the weight of .entry-image, so a theme's own .entry-image rule that loads after Mai's CSS still wins.
 .entry-image:where(.has-aspect-ratio) {
 	aspect-ratio: var(--aspect-ratio);
 	object-fit: var(--entry-image-object-fit, cover);

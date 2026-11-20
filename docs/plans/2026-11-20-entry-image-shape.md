@@ -147,27 +147,63 @@
 
 Measured on 2026-11-20 with Playwright 1.65.1, all headless: Chromium 159.0.8154.6, Firefox 159.0 and WebKit 27.2. The script is `/tmp/entry-shape/check.js` (scratch, gone after a reboot). Each case runs in its own page against the committed CSS from before this task (`/tmp/entry-shape/main.before.min.css`) and the rebuilt `main.min.css`, with WordPress 7.1's inline `sizes="auto"` rule (`contain-intrinsic-size:3000px 1500px`) in front of it. Images are SVG data URIs of the stated size, and the script waits for them to load. Lazy images sit 6,000px below the fold with a src that never answers, and every lazy box was measured with the image still not loaded.
 
-Each cell is before → after, in CSS pixels, rounded to 0.1px. The three engines agree within 0.2px on every case.
+Each case lists before → after, in CSS pixels, rounded to 0.1px. All three engines ran (Chromium 159.0.8154.6, Firefox 159.0, WebKit 27.2) and agree within 0.2px unless a case says otherwise.
 
-| Case | Expected | Chromium | Firefox | WebKit |
-| --- | --- | --- | --- | --- |
-| Full, 300×190 file, shaped | 400×300, cover | 400×253.3 → 400×300, cover | 400×253.3 → 400×300, cover | 400×253.3 → 400×300, cover |
-| Full, 200×300 portrait file, shaped | 400×300 | 400×600 → 400×300 | 400×600 → 400×300 | 400×600 → 400×300 |
-| Center, 300×190, shaped | 300×225 | 300×190 → 300×225 | 300×190 → 300×225 | 300×190 → 300×225 |
-| Left top at a third, shaped | 133.33×100 | 133.3×84.4 → 133.3×100 | 133.3×84.4 → 133.3×100 | 133.3×84.4 → 133.3×100 |
-| Stacked left top, 500px viewport | 300×225 | 300×190 → 300×225 | 300×190 → 300×225 | 300×190 → 300×225 |
-| Boxed center, shaped | 300×225 | 300×190 → 300×225 | 300×190 → 300×225 | 300×190 → 300×225 |
-| Single, 400px content, shaped | 400×300 | 400×253.3 → 400×300 | 400×253.3 → 400×300 | 400×253.3 → 400×300 |
-| Plain div, lazy 400×600, 300px, shaped | 300×225 | 300×450 → 300×225 | 300×450 → 300×225 | 300×450 → 300×225 |
-| Left full, third, short excerpt, shaped | 200×150 both | 200×150 → 200×150 | 200×150 → 200×150 | 200×150 → 200×150 |
-| Left full, custom large, short excerpt | 475×475 → 475×301 | 524.9×524.9 → 524.9×332.4 | 524.9×524.9 → 524.9×332.4 | 524.8×524.8 → 524.8×332.4 |
-| Left full, third, long excerpt, shaped | fills card height | 200×859.8 → 200×859.8 | 200×860 → 200×860 | 200×859.8 → 200×859.8 |
-| Background, landscape (card) | 400×300 both | 400×300 → 400×300 | 400×300 → 400×300 | 400×300 → 400×300 |
-| Background, custom large (card) | 400×400 both | 400×400 → 400×400 | 400×400 → 400×400 | 400×400 → 400×400 |
-| Masonry, not shaped | own shape | 400×253.3 → 400×253.3 | 400×253.3 → 400×253.3 | 400×253.3 → 400×253.3 |
-| Custom large at full, not shaped | own shape | 400×253.3 → 400×253.3 | 400×253.3 → 400×253.3 | 400×253.3 → 400×253.3 |
-| Unshaped lazy grid nested in shaped grid | 300×450 both | 299.9×449.9 → 299.9×449.9 | 299.9×449.9 → 299.9×449.9 | 299.9×449.9 → 299.9×449.9 |
-| Archive, theme sets object-fit contain | contain | contain → contain (400×300) | contain → contain (400×300) | contain → contain (400×300) |
+- **Full, 300×190 file, shaped**
+  - Expected: 400×300, cover
+  - Before and after: 400×253.3 → 400×300, cover
+- **Full, 200×300 portrait file, shaped**
+  - Expected: 400×300
+  - Before and after: 400×600 → 400×300
+- **Center, 300×190, shaped**
+  - Expected: 300×225
+  - Before and after: 300×190 → 300×225
+- **Left top at a third, shaped**
+  - Expected: 133.33×100
+  - Before and after: 133.3×84.4 → 133.3×100
+- **Stacked left top, 500px viewport**
+  - Expected: 300×225
+  - Before and after: 300×190 → 300×225
+- **Boxed center, shaped**
+  - Expected: 300×225
+  - Before and after: 300×190 → 300×225
+- **Single, 400px content, shaped**
+  - Expected: 400×300
+  - Before and after: 400×253.3 → 400×300
+- **Plain div, lazy 400×600, 300px, shaped**
+  - Expected: 300×225
+  - Before and after: 300×450 → 300×225
+- **Left full, third, short excerpt, shaped**
+  - Expected: 200×150 both
+  - Before and after: 200×150 → 200×150
+- **Left full, custom large, short excerpt**
+  - Expected: 475×475 → 475×301
+  - Before and after, Chromium: 524.9×524.9 → 524.9×332.4
+  - Before and after, Firefox: 524.9×524.9 → 524.9×332.4
+  - Before and after, WebKit: 524.8×524.8 → 524.8×332.4
+- **Left full, third, long excerpt, shaped**
+  - Expected: fills card height
+  - Before and after, Chromium: 200×859.8 → 200×859.8
+  - Before and after, Firefox: 200×860 → 200×860
+  - Before and after, WebKit: 200×859.8 → 200×859.8
+- **Background, landscape (card)**
+  - Expected: 400×300 both
+  - Before and after: 400×300 → 400×300
+- **Background, custom large (card)**
+  - Expected: 400×400 both
+  - Before and after: 400×400 → 400×400
+- **Masonry, not shaped**
+  - Expected: own shape
+  - Before and after: 400×253.3 → 400×253.3
+- **Custom large at full, not shaped**
+  - Expected: own shape
+  - Before and after: 400×253.3 → 400×253.3
+- **Unshaped lazy grid nested in shaped grid**
+  - Expected: 300×450 both
+  - Before and after: 299.9×449.9 → 299.9×449.9
+- **Archive, theme sets object-fit contain**
+  - Expected: contain
+  - Before and after: contain → contain (400×300)
 
 Every case matches in all three engines except the width in left full with custom `large`. There the image's width is the card (600px) minus the 24px gap minus the narrowest the text column can get, which is its longest word or button. The fixture uses Mai's markup with a title and a two-word excerpt, so the text column is 51px wide and the image 525px, not 475px. The text decides that width, and it is the same before and after. The change itself matches what was agreed: the image goes from the size's square box (525×525) to the photo's own shape (525×332, which is 300:190), the same shape as 475×301. In the long excerpt case the image fills the 860px card both times, since that fixture's text runs longer than the spec's 609px example.
 

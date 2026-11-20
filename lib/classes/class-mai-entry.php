@@ -140,8 +140,10 @@ class Mai_Entry {
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
 		$this->image_id    = $this->get_image_id();
 		$this->image_size  = $this->image_id ? $this->get_image_size() : '';
+
 		// The shape follows what the editor chose, not a size a filter swapped in.
 		$this->aspect_ratio = mai_get_entry_aspect_ratio( $this->args );
+
 		$this->args        = array_merge( $this->args, [ 'image_id' => $this->image_id, 'image_size' => $this->image_size ] );
 		$this->args        = apply_filters( 'mai_entry_args', $this->args, $this->entry, $this->type );
 	}

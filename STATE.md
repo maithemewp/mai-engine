@@ -1,5 +1,5 @@
 # State
-Updated: 2026-11-20 by Claude (entry image shape #677 built on develop, final review pending)
+Updated: 2026-11-20 by Claude
 
 ## Now
 `develop` on GitHub is at `ef272b2c0`. Local commits on top, not pushed: legacy preset CSS (`0ce48ba62`), logo width (`c99085f7b`), the #677 spec and plan, and the three #677 build commits ending with "Entry images: keep the chosen shape when the crop is missing". `CHANGES.md` has a `2.42.0 (unreleased)` section; Mike sets the version and runs the beta.
@@ -7,17 +7,18 @@ Updated: 2026-11-20 by Claude (entry image shape #677 built on develop, final re
 - **Legacy preset CSS** and **logo width** are done (see `docs/plans/2026-11-19-legacy-preset-css.md`).
 
 ## Next
-1. Final whole-branch review of the #677 work, pending from the controller.
-2. Then walk `TODO.md` with Mike, one item at a time.
-3. Mike: push `develop` (needs his yes), run the 2.42.0 beta.
-4. Help Scout ticket #786985: reply once Mike approves the wording.
+1. Mike reviews the #677 branch locally. The final whole-branch review is done (verdict: ready, with its cosmetic fixes applied).
+2. Then Mike pushes `develop` and runs the 2.42.0 beta, both only on his yes.
+3. One optional `CHANGES.md` `[Developers]` line waits on Mike's wording: entry images with a cropped shape get the `has-aspect-ratio` class and their own `--aspect-ratio`, and the shape follows the orientation and size settings, not the `mai_entry_image_size` filter.
+4. Then walk `TODO.md` with Mike, one item at a time.
+5. Help Scout ticket #786985: reply once Mike approves the wording.
 
 ## GitHub batch, on hold until Mike names the time
 GitHub actions notify the team, so nothing here fires during the workday or without Mike's say-so.
 - Close #678 (prev-next pagination wrapper) as completed, comment: "Fixed in 51d3a501f on develop. Ships in 2.42.0."
 - Close #679 (cover block image ID class) as completed, comment: "Fixed in 11dee0a5b on develop. Ships in 2.42.0."
 - Delete remote branches `demo-import-images` and `dom-to-tag-processor` (both fully merged into `origin/develop`), then `git branch -d` the local copies.
-- Close #677 (entry images keeping their chosen shape) as completed, comment: "Fixed on develop in the 'Entry images: keep the chosen shape when the crop is missing' commit. Ships in 2.42.0."
+- Close #677 (entry images keeping their chosen shape) as completed, comment: "Fixed in bb9659638 on develop. Ships in 2.42.0."
 
 ## Blocked / waiting on
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).

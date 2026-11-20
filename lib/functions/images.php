@@ -569,7 +569,7 @@ function mai_get_image_aspect_ratio( $image_size ) {
  *
  * @return string A ratio like `4/3`, or an empty string.
  */
-function mai_get_entry_aspect_ratio( $args ) {
+function mai_get_entry_aspect_ratio( $args ): string {
 	$orientation = isset( $args['image_orientation'] ) && is_string( $args['image_orientation'] ) ? $args['image_orientation'] : '';
 	$image_size  = isset( $args['image_size'] ) && is_string( $args['image_size'] ) ? $args['image_size'] : '';
 
