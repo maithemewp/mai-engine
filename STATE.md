@@ -2,17 +2,16 @@
 Updated: 2026-11-20 by Claude (custom image width and CSS browser target)
 
 ## Now
-`develop` on GitHub is at `ef272b2c0`. Everything since is local and not pushed: legacy preset CSS, logo width, issue #677 (entry images keep their chosen shape), the custom image width, and the CSS browser target. `CHANGES.md` has a `2.42.0 (unreleased)` section; Mike sets the version and runs the beta.
+**2.42.0-beta.1 is out:** `develop` and `beta` on GitHub are both at `db7b85214` (pushed 2026-11-20 with Mike's yes). It holds legacy preset CSS, logo width, issue #677 (entry images keep their chosen shape), the custom image width, the CSS browser target, ACF Pro 6.8.12 and plugin update checker 6.0 (namespace `v6`, checked on a local site against GitHub for master and beta).
 - **#677:** `mai_get_entry_aspect_ratio()` decides the forced ratio, `Mai_Entry::get_image()` marks the image with `has-aspect-ratio` and its own `--aspect-ratio`, and `.entry-image:where(.has-aspect-ratio)` shapes only those images. Plan and three-engine results: `docs/plans/2026-11-20-entry-image-shape.md`.
 - **Walked with Mike on 2026-11-20 against a local test page:** uncropped sizes in Left Full and Right Full keep the photo's own shape. Center crops to the chosen orientation. A custom size on the left or right now uses Image Width (¼, ⅓, ½) but never shows wider than the size: `min(<size>px,<share>)` in `mai_do_entries_open()`. Plan: `docs/plans/2026-11-20-custom-image-width.md`.
 - **CSS browser target:** `package.json` targets `baseline widely available`. Every bundle was rebuilt and checked: only dropped prefixes and equal values written shorter.
 - The test page lives on the local demo-import site, page "Entry Image Shape Test", built by `/tmp/entry-shape-page/setup.php` (scratch, gone after reboot).
 
 ## Next
-1. Mike reviews the branch locally.
-2. Mike pushes `develop` and runs the 2.42.0 beta, both only on his yes.
-3. Then walk `TODO.md` with Mike, one item at a time.
-4. Help Scout ticket #786985: reply once Mike approves the wording.
+1. Beta soak on beta-tester sites. Then promote 2.42.0 to `master` on Mike's yes; Mike publishes the GitHub Release himself.
+2. Then walk `TODO.md` with Mike, one item at a time.
+3. Help Scout ticket #786985: reply once Mike approves the wording.
 
 ## GitHub batch, on hold until Mike names the time
 GitHub actions notify the team, so nothing here fires during the workday or without Mike's say-so.
@@ -36,6 +35,7 @@ GitHub actions notify the team, so nothing here fires during the workday or with
 - In `CHANGES.md`, tagged lines (`[Developers]`, `[Security]`) sit together inside each Added, Changed or Fixed group.
 - Never run two integration runs at once. A targeted run reinstalls the shared test DB.
 - `phpcs.xml.dist` errors out (`minimum_supported_version`). `php vendor/bin/phpcs --standard=WordPress <file>` works but flags short arrays everywhere.
+- The main tree's own `composer.lock` (ignored by git) is stale: it still pins PUC 5.7 and the importer 2.1.2, so the last step of `npm run beta` (`composer install`) stops with a lock warning. That left the tree clean on 2026-11-20. Refresh it in a worktree, never with `composer update` in the main tree.
 - Update vendored packages only in a clean worktree with `composer dump-autoload --no-dev --optimize`, then run deployable-guard. Never commit a with-dev autoloader: it takes every site down on deploy.
 - Test stubs for global functions go in `tests/phpunit/integration/plugin-loader.php`. Tests that need `lib/functions/images.php` require it in a separate process.
 - `get_attribute()` returns `null` or `true` as well as strings; guard every read with `is_string()`.
