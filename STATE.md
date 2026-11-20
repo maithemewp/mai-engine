@@ -15,10 +15,8 @@ Updated: 2026-11-20 by Claude (custom image width and CSS browser target)
 
 ## GitHub batch, on hold until Mike names the time
 GitHub actions notify the team, so nothing here fires during the workday or without Mike's say-so.
-- Close #678 (prev-next pagination wrapper) as completed, comment: "Fixed in 51d3a501f on develop. Ships in 2.42.0."
-- Close #679 (cover block image ID class) as completed, comment: "Fixed in 11dee0a5b on develop. Ships in 2.42.0."
+- Issues #677, #678 and #679 were closed as completed on 2026-11-20, on Mike's say-so.
 - Delete remote branches `demo-import-images` and `dom-to-tag-processor` (both fully merged into `origin/develop`), then `git branch -d` the local copies.
-- Close #677 (entry images keeping their chosen shape) as completed, comment: "Fixed in bb9659638 on develop. Ships in 2.42.0."
 
 ## Blocked / waiting on
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
