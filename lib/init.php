@@ -13,7 +13,7 @@
 defined( 'ABSPATH' ) || die();
 
 // Must be at the top of the file.
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+use YahnisElsts\PluginUpdateChecker\v6\PucFactory;
 
 /**
  * Deactivate Mai Engine plugin.
@@ -187,7 +187,7 @@ add_action( 'plugins_loaded', 'mai_plugin_update_checker' );
  */
 function mai_plugin_update_checker() {
 	// Bail if plugin updater is not loaded.
-	if ( ! class_exists( 'YahnisElsts\PluginUpdateChecker\v5\PucFactory' ) ) {
+	if ( ! class_exists( 'YahnisElsts\PluginUpdateChecker\v6\PucFactory' ) ) {
 		return;
 	}
 

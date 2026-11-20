@@ -30,7 +30,7 @@
     "maithemewp/mai-cache": "^0.6",
     "proteusthemes/wp-content-importer-v2": "^2.1.4",
     "wpengine/advanced-custom-fields-pro": "^6.6.0",
-    "yahnis-elsts/plugin-update-checker": "^5"
+    "yahnis-elsts/plugin-update-checker": "^6"
   },
   "require-dev": {
     "php": "^8.1",

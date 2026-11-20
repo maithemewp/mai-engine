@@ -14,10 +14,10 @@
 		}
 	],
 	"require": {
-		"php": ">=5.6.20",
+		"php": ">=7.4",
 		"ext-json": "*"
 	},
 	"autoload": {
-		"files": ["load-v5p7.php"]
+		"files": ["load-v6p0.php"]
 	}
 }

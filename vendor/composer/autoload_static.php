@@ -8,7 +8,7 @@ class ComposerStaticInit9e67745729d23cd12c1cc70fc3d46e58
 {
     public static $files = array (
         '671026b9d17335c2461acda5bb058348' => __DIR__ . '/..' . '/maithemewp/mai-package-loader/init.php',
-        'bc0af1337b39f0d750e835f5263eb646' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v5p7.php',
+        'd7b84b18862ca404853ecae4a88762f0' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v6p0.php',
     );
 
     public static $prefixLengthsPsr4 = array (

@@ -4,10 +4,12 @@
 * Changed: Mai no longer rewrites the HTML of icons, blocks, pagination, comment links, shortcodes and recipe cards when it adds classes or styles, so SVG attributes such as `viewBox` keep their case.
 * Changed: On WordPress 6.9 and newer, pages no longer load WordPress's old gradient, gray and font size classes, which trims about 1 KB from the block styles on every page. Old posts that still use these classes lose those sizes and colors.
 * Changed: Grids with the image position set to Left Full or Right Full and an uncropped image size now show the photo's own shape instead of the size's width and height.
-* Changed: Grids and archives with a custom image size and the image on the left or right now use the Image Width setting. Images on the left or right now take their Image Width share of the card, up to their registered size.
+* Changed: Grids and archives with a custom image size and the image on the left or right now take their Image Width share of the card, up to their registered size.
 * Changed: [Developers] `mai_add_classes()` now drops repeated classes and extra spaces.
 * Changed: [Developers] `mai_setup_wizard_slash_data()` and `mai_setup_wizard_add_slash_data()` are deprecated and do nothing, since the content importer now slashes post data itself.
 * Changed: [Developers] Entry images with a cropped shape get the `has-aspect-ratio` class and their own `--aspect-ratio`. The shape follows the image orientation and size settings.
+* Changed: [Developers] Update the plugin update checker to 6.0.
+* Changed: [Security] Update ACF Pro to 6.8.12.
 * Fixed: The logo now loads a sharp image on sites that never saved the logo width in the Customizer. Browsers were picking the smallest file and stretching it.
 * Fixed: Button blocks no longer cut pieces out of longer class names such as `has-background-blur` when removing color classes.
 * Fixed: Prev-next archive pagination now closes its wrapper `div`.
