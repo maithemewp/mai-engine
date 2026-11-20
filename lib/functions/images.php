@@ -550,6 +550,52 @@ function mai_get_image_aspect_ratio( $image_size ) {
 }
 
 /**
+ * Gets the ratio an entry image is forced to, or an empty string when no shape is forced.
+ *
+ * A shape is forced when the chosen orientation has a ratio in the `image-sizes` config,
+ * or when the orientation is `custom` and the chosen image size is registered with crop on.
+ * Never for `masonry`, and never for an uncropped size, because that image has no fixed shape.
+ * An unknown size is never given a guessed ratio, unlike `mai_get_image_aspect_ratio()`, which
+ * falls back to 4/3. Core sizes carry `get_option( "{$size}_crop" )` (the string '1' or false),
+ * and added sizes carry `$crop` as registered (a bool or a position array), so any truthy
+ * crop with a width and height above 0 counts.
+ *
+ * Pass the image size setting, not what the `mai_entry_image_size` filter returned, so the
+ * shape follows what the editor chose.
+ *
+ * @since 2.42.0
+ *
+ * @param array $args Entry args with `image_orientation` and `image_size`.
+ *
+ * @return string A ratio like `4/3`, or an empty string.
+ */
+function mai_get_entry_aspect_ratio( $args ) {
+	$orientation = isset( $args['image_orientation'] ) && is_string( $args['image_orientation'] ) ? $args['image_orientation'] : '';
+	$image_size  = isset( $args['image_size'] ) && is_string( $args['image_size'] ) ? $args['image_size'] : '';
+
+	if ( mai_has_image_orientiation( $orientation ) ) {
+		$ratio = mai_get_aspect_ratio_from_orientation( $orientation );
+
+		return is_string( $ratio ) ? $ratio : '';
+	}
+
+	if ( 'custom' !== $orientation ) {
+		return '';
+	}
+
+	$sizes = mai_get_available_image_sizes();
+
+	if ( ! isset( $sizes[ $image_size ] ) || empty( $sizes[ $image_size ]['crop'] ) ) {
+		return '';
+	}
+
+	$width  = absint( $sizes[ $image_size ]['width'] ?? 0 );
+	$height = absint( $sizes[ $image_size ]['height'] ?? 0 );
+
+	return $width > 0 && $height > 0 ? sprintf( '%s/%s', $width, $height ) : '';
+}
+
+/**
  * Gets a registered image size to fall back on when the requested one is missing.
  *
  * Themes choose which orientations they register, and a theme can remove one the
