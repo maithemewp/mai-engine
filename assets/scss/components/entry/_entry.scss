@@ -36,14 +36,6 @@
 	order: var(--entry-order, var(--entry-index, unset));
 }
 
-.has-image-left-full,
-.has-image-right-full {
-
-	.entry-image {
-		aspect-ratio: var(--aspect-ratio, 4/3);
-	}
-}
-
 .has-image-background {
 	--entry-flex-direction: row;
 	--align-text-vertical: start;

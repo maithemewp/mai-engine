@@ -52,6 +52,19 @@
 	border-radius: var(--entry-image-border-radius, var(--image-border-radius, var(--border-radius)));
 }
 
+// Gives an image the shape its settings chose, even when WordPress served a file without that crop.
+// Mai_Entry::get_image() marks such images with has-aspect-ratio and puts the ratio in their own
+// inline --aspect-ratio, so the mark and its value always travel together. Only marked images get
+// this: any aspect-ratio from CSS, even auto, replaces the ratio the browser takes from the width
+// and height attributes, and a lazy sizes="auto" image then collapses to a thin strip.
+// object-fit reads --entry-image-object-fit so a theme that sets it (contain, for example) keeps
+// its choice, with cover as the default so the image is trimmed the way a real crop would be.
+// :where() keeps this at the weight of .entry-image, so a theme's own .entry-image rule still wins.
+.entry-image:where(.has-aspect-ratio) {
+	aspect-ratio: var(--aspect-ratio);
+	object-fit: var(--entry-image-object-fit, cover);
+}
+
 .has-image-center {
 	--entry-image-link-align: center;
 }
