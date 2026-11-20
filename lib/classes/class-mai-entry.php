@@ -108,9 +108,19 @@ class Mai_Entry {
 	protected $image_id;
 
 	/**
+	 * The ratio the image is forced to, like `4/3`, or an empty string when its shape is not forced.
+	 *
+	 * @since 2.42.0
+	 *
+	 * @var string $aspect_ratio
+	 */
+	protected $aspect_ratio = '';
+
+	/**
 	 * Mai_Entry constructor.
 	 *
 	 * @since 0.1.0
+	 * @since 2.42.0 Keeps the ratio the editor chose for the image.
 	 *
 	 * @param WP_Post|WP_Term $entry Entry object.
 	 * @param array           $args  Entry args.
@@ -130,6 +140,8 @@ class Mai_Entry {
 		$this->link_entry  = apply_filters( 'mai_link_entry', (bool) ! $this->args['disable_entry_link'], $this->args, $this->entry );
 		$this->image_id    = $this->get_image_id();
 		$this->image_size  = $this->image_id ? $this->get_image_size() : '';
+		// The shape follows what the editor chose, not a size a filter swapped in.
+		$this->aspect_ratio = mai_get_entry_aspect_ratio( $this->args );
 		$this->args        = array_merge( $this->args, [ 'image_id' => $this->image_id, 'image_size' => $this->image_size ] );
 		$this->args        = apply_filters( 'mai_entry_args', $this->args, $this->entry, $this->type );
 	}
@@ -583,6 +595,7 @@ class Mai_Entry {
 	 * Gets the image HTML.
 	 *
 	 * @since 0.1.0
+	 * @since 2.42.0 Marks a shaped image and gives it its own ratio.
 	 *
 	 * @return string
 	 */
@@ -602,14 +615,17 @@ class Mai_Entry {
 			add_filter( 'wp_lazy_loading_enabled', $filter );
 		}
 
-		$image = wp_get_attachment_image(
-			$image_id,
-			$this->image_size,
-			false,
-			[
-				'class' => "entry-image size-{$this->image_size}",
-			]
-		);
+		$attr = [
+			'class' => "entry-image size-{$this->image_size}",
+		];
+
+		// The image carries its own ratio, so it never depends on a wrapper.
+		if ( $this->aspect_ratio ) {
+			$attr['class'] .= ' has-aspect-ratio';
+			$attr['style']  = "--aspect-ratio:{$this->aspect_ratio};";
+		}
+
+		$image = wp_get_attachment_image( $image_id, $this->image_size, false, $attr );
 
 		if ( 'single' === $this->context ) {
 			remove_filter( 'wp_lazy_loading_enabled', $filter );
