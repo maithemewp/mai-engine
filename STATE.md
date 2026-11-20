@@ -11,7 +11,6 @@ Updated: 2026-11-20 by Claude (custom image width and CSS browser target)
 ## Next
 1. Beta soak on beta-tester sites. Then promote 2.42.0 to `master` on Mike's yes; Mike publishes the GitHub Release himself.
 2. Then walk `TODO.md` with Mike, one item at a time.
-3. Help Scout ticket #786985: reply once Mike approves the wording.
 
 ## GitHub batch, on hold until Mike names the time
 GitHub actions notify the team, so nothing here fires during the workday or without Mike's say-so.
