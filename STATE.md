@@ -8,7 +8,7 @@ Updated: 2026-11-20 by Claude (entry image shape spec and plan written, GitHub b
 - The working tree holds only the untracked #677 spec and plan. Mike's `TODO.md` line about the legacy CSS is gone because the work is done.
 
 ## Next
-1. Issue #677, entry images keeping their chosen shape: spec `docs/specs/2026-11-19-entry-image-shape.md` and plan `docs/plans/2026-11-20-entry-image-shape.md` are written and reviewed but not committed (the plan's Task 0 commits them). Waiting on Mike's plan approval, then a build prompt for a fresh session.
+1. Issue #677, entry images keeping their chosen shape: spec `docs/specs/2026-11-19-entry-image-shape.md` and plan `docs/plans/2026-11-20-entry-image-shape.md` are written and reviewed but not committed (the plan's Task 0 commits them). Approved by Mike on 2026-11-20, and the build prompt is written: it runs in a fresh session.
 2. Then walk `TODO.md` with Mike, one item at a time.
 3. Mike: push `develop` (needs his yes), run the 2.42.0 beta.
 4. Help Scout ticket #786985: reply once Mike approves the wording.
