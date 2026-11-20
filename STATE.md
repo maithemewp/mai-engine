@@ -15,8 +15,7 @@ Updated: 2026-11-20 by Claude (custom image width and CSS browser target)
 
 ## GitHub batch, on hold until Mike names the time
 GitHub actions notify the team, so nothing here fires during the workday or without Mike's say-so.
-- Issues #677, #678 and #679 were closed as completed on 2026-11-20, on Mike's say-so.
-- Delete remote branches `demo-import-images` and `dom-to-tag-processor` (both fully merged into `origin/develop`), then `git branch -d` the local copies.
+- Issues #677, #678 and #679 were closed and the merged branches `demo-import-images` and `dom-to-tag-processor` deleted on 2026-11-20, on Mike's say-so. Nothing is queued.
 
 ## Blocked / waiting on
 - Hindsight is off on purpose (`"disabled": true` in `~/.agents/hindsight/coding-agent.json`).
