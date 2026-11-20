@@ -125,6 +125,18 @@ final class EntryImageWidthTest extends TestCase {
 		$this->assertSame( 'min(1024px,33.33333333%)', $this->max_width( $args ) );
 	}
 
+	public function test_a_size_with_no_width_on_the_side_takes_only_its_share(): void {
+		$args          = $this->args( 'custom', 'nope', 'left-top' );
+		$args['class'] = 'alignwide';
+
+		$this->assertSame( '33.33333333%', $this->max_width( $args ) );
+	}
+
+	public function test_no_image_width_keeps_the_old_widths(): void {
+		$this->assertSame( '1024px', $this->max_width( $this->args( 'custom', 'large', 'left-top', '' ) ) );
+		$this->assertNull( $this->max_width( $this->args( 'landscape', 'landscape-md', 'left-top', '' ) ) );
+	}
+
 	public function test_a_custom_size_above_the_text_keeps_the_size_width(): void {
 		$this->assertSame( '1024px', $this->max_width( $this->args( 'custom', 'large', 'center' ) ) );
 		$this->assertSame( '150px', $this->max_width( $this->args( 'custom', 'thumbnail', 'full' ) ) );
