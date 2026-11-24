@@ -485,6 +485,27 @@ function mai_sidebar_has_widget( $sidebar, $widget ) {
 }
 
 /**
+ * Checks if a widget area is registered and has widgets.
+ *
+ * `is_active_sidebar()` only reads the saved `sidebars_widgets` option, so it
+ * stays true for widget areas the current setup never registers. Sites coming
+ * from Mai Theme v1 (or older Genesis child themes) often still have widgets
+ * saved to `header-left`, `header-right` or `before-header`. Mai Engine only
+ * registers those areas through the deprecated fallback, so without this check
+ * the header opens an empty section that nobody can see or clear in the admin,
+ * which pushes the logo off center.
+ *
+ * @since 2.42.0
+ *
+ * @param string $id Widget area ID, e.g. `header-right`.
+ *
+ * @return bool
+ */
+function mai_has_widget_area( string $id ): bool {
+	return is_registered_sidebar( $id ) && is_active_sidebar( $id );
+}
+
+/**
  * Checks if current page has a sidebar.
  *
  * @since 0.1.0

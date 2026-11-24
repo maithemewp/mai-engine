@@ -459,7 +459,7 @@ function mai_site_title_link( $default ) {
  * @return void
  */
 function mai_do_header_left() {
-	if ( ! has_nav_menu( 'header-left' ) && ! mai_has_template_part( 'header-left' ) && ! is_active_sidebar( 'header-left' ) ) {
+	if ( ! has_nav_menu( 'header-left' ) && ! mai_has_template_part( 'header-left' ) && ! mai_has_widget_area( 'header-left' ) ) {
 		return;
 	}
 
@@ -491,7 +491,7 @@ function mai_do_header_left() {
  * @return void
  */
 function mai_do_header_right() {
-	if ( ! has_nav_menu( 'header-right' ) && ! mai_has_template_part( 'header-right' ) && ! is_active_sidebar( 'header-right' ) ) {
+	if ( ! has_nav_menu( 'header-right' ) && ! mai_has_template_part( 'header-right' ) && ! mai_has_widget_area( 'header-right' ) ) {
 		return;
 	}
 

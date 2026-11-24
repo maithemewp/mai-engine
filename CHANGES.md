@@ -8,6 +8,7 @@
 * Changed: [Developers] `mai_add_classes()` now drops repeated classes and extra spaces.
 * Changed: [Developers] `mai_setup_wizard_slash_data()` and `mai_setup_wizard_add_slash_data()` are deprecated and do nothing, since the content importer now slashes post data itself.
 * Changed: [Developers] Entry images with a cropped shape get the `has-aspect-ratio` class and their own `--aspect-ratio`. The shape follows the image orientation and size settings.
+* Changed: [Developers] New `mai_has_widget_area()` helper. It checks that a widget area is registered and has widgets, since `is_active_sidebar()` also counts areas that are no longer registered.
 * Changed: [Developers] Update the plugin update checker to 6.0.
 * Changed: [Security] Update ACF Pro to 6.8.12.
 * Fixed: The logo now loads a sharp image on sites that never saved the logo width in the Customizer. Browsers were picking the smallest file and stretching it.
@@ -17,6 +18,7 @@
 * Fixed: Imported demo content areas keep block settings that contain `--`, `&` or quotes, such as a `button--primary` class.
 * Fixed: Demo pages imported by the setup wizard keep block settings that contain `--`, `&` or quotes when their image links are updated. This broke custom content in Mai Grid blocks on several demo homepages. Updates the content importer to 2.1.4.
 * Fixed: Grid, archive and single post images keep their chosen shape when an image has no crop in that size, such as images uploaded before the site used Mai.
+* Fixed: Sites upgraded from Mai Theme v1 no longer get an empty Header Left or Header Right section, which pushed the logo off center. Widgets left in the old v1 header and Before Header widget areas no longer count once those areas are gone.
 
 ## 2.41.2 (11/09/26)
 * Changed: [Security] Update ACF Pro to 6.8.11.

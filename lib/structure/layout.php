@@ -66,7 +66,7 @@ function mai_body_classes( $classes ) {
 	}
 
 	// Add before class.
-	if ( mai_has_template_part( 'before-header' ) || is_active_sidebar( 'before-header' ) ) {
+	if ( mai_has_template_part( 'before-header' ) || mai_has_widget_area( 'before-header' ) ) {
 		$classes[] = 'has-before-header';
 	}
 
