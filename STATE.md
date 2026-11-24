@@ -1,5 +1,5 @@
 # State
-Updated: 2026-11-20 by Claude (custom image width and CSS browser target)
+Updated: 2026-11-24 by Claude (stale v1 header widget areas)
 
 ## Now
 **2.42.0-beta.1 is out:** `develop` and `beta` on GitHub are both at `db7b85214` (pushed 2026-11-20 with Mike's yes). It holds legacy preset CSS, logo width, issue #677 (entry images keep their chosen shape), the custom image width, the CSS browser target, ACF Pro 6.8.12 and plugin update checker 6.0 (namespace `v6`, checked on a local site against GitHub for master and beta).
@@ -8,8 +8,12 @@ Updated: 2026-11-20 by Claude (custom image width and CSS browser target)
 - **CSS browser target:** `package.json` targets `baseline widely available`. Every bundle was rebuilt and checked: only dropped prefixes and equal values written shorter.
 - The test page lives on the local demo-import site, page "Entry Image Shape Test", built by `/tmp/entry-shape-page/setup.php` (scratch, gone after reboot).
 
+- **On `develop`, not pushed (2026-11-24):** `mai_has_widget_area()` = registered + `is_active_sidebar()`. Header Left, Header Right and the `has-before-header` class use it, so widgets saved to v1 areas Mai no longer registers stop opening an empty header section that pushes the logo off center. Found on a v1 upgrade where the Widgets screen showed nothing to clear. Test: `StaleWidgetAreaTest`.
+- **Not changed on purpose:** the `break` in `mai_do_deprecated_functionality()` sits outside the `if`, so only `before-header` is checked. Fixing it would start rendering old v1 widgets on long-upgraded sites. Mike's call.
+
 ## Next
-1. Beta soak on beta-tester sites. Then promote 2.42.0 to `master` on Mike's yes; Mike publishes the GitHub Release himself.
+1. On Mike's yes: bump to 2.42.0-beta.2 and run `npm run beta` (pushes `develop` and `beta`).
+2. Beta soak on beta-tester sites. Then promote 2.42.0 to `master` on Mike's yes; Mike publishes the GitHub Release himself.
 2. Then walk `TODO.md` with Mike, one item at a time.
 
 ## GitHub batch, on hold until Mike names the time
