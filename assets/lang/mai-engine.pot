@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mai Engine 2.42.0-beta.1\n"
+"Project-Id-Version: Mai Engine 2.42.0-beta.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mai-engine\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-20T21:12:48+00:00\n"
+"POT-Creation-Date: 2026-11-24T16:42:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: mai-engine\n"
@@ -78,7 +78,7 @@ msgid "Sidebar, Content"
 msgstr ""
 
 #: config/_default.php:192
-#: lib/functions/deprecated.php:275
+#: lib/functions/deprecated.php:258
 msgid "Mobile Menu"
 msgstr ""
 
@@ -104,12 +104,12 @@ msgid "After Header Menu"
 msgstr ""
 
 #: config/_default.php:548
-#: lib/functions/deprecated.php:265
+#: lib/functions/deprecated.php:248
 msgid "Sidebar"
 msgstr ""
 
 #: config/_default.php:549
-#: lib/functions/deprecated.php:266
+#: lib/functions/deprecated.php:249
 msgid "The Sidebar widget area."
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 
 #: lib/admin/admin-menu.php:28
 #: lib/admin/admin-menu.php:29
-#: lib/functions/deprecated.php:300
+#: lib/functions/deprecated.php:283
 #: lib/functions/utilities.php:1618
 msgid "Mai Theme"
 msgstr ""
@@ -263,7 +263,7 @@ msgid "Select elements to hide on this page."
 msgstr ""
 
 #: lib/admin/hide-elements.php:138
-#: lib/functions/deprecated.php:242
+#: lib/functions/deprecated.php:225
 msgid "Before Header"
 msgstr ""
 
@@ -350,7 +350,7 @@ msgid "Footer Meta"
 msgstr ""
 
 #: lib/admin/hide-elements.php:166
-#: lib/functions/deprecated.php:270
+#: lib/functions/deprecated.php:253
 msgid "After Entry"
 msgstr ""
 
@@ -360,17 +360,17 @@ msgid "Author Box"
 msgstr ""
 
 #: lib/admin/hide-elements.php:170
-#: lib/functions/deprecated.php:280
+#: lib/functions/deprecated.php:263
 msgid "Before Footer"
 msgstr ""
 
 #: lib/admin/hide-elements.php:171
-#: lib/functions/deprecated.php:286
+#: lib/functions/deprecated.php:269
 msgid "Footer"
 msgstr ""
 
 #: lib/admin/hide-elements.php:172
-#: lib/functions/deprecated.php:291
+#: lib/functions/deprecated.php:274
 msgid "Footer Credits"
 msgstr ""
 
@@ -519,15 +519,15 @@ msgstr ""
 msgid "Edit content areas now"
 msgstr ""
 
-#: lib/admin/upgrade.php:236
+#: lib/admin/upgrade.php:302
 msgid "Content Areas successfully updated for compatibility with WP 5.7+."
 msgstr ""
 
-#: lib/admin/upgrade.php:240
+#: lib/admin/upgrade.php:306
 msgid "Error migrating content areas."
 msgstr ""
 
-#: lib/admin/upgrade.php:245
+#: lib/admin/upgrade.php:311
 msgid "Please contact BizBudding support."
 msgstr ""
 
@@ -2864,59 +2864,59 @@ msgstr ""
 msgid "Use featured image as page header image"
 msgstr ""
 
-#: lib/functions/deprecated.php:243
+#: lib/functions/deprecated.php:226
 msgid "The Before Header widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:247
+#: lib/functions/deprecated.php:230
 msgid "Header Left"
 msgstr ""
 
-#: lib/functions/deprecated.php:248
+#: lib/functions/deprecated.php:231
 msgid "The Header Left widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:256
+#: lib/functions/deprecated.php:239
 msgid "Header Right"
 msgstr ""
 
-#: lib/functions/deprecated.php:257
+#: lib/functions/deprecated.php:240
 msgid "The Header Right widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:271
+#: lib/functions/deprecated.php:254
 msgid "The After Entry widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:276
+#: lib/functions/deprecated.php:259
 msgid "The Mobile Menu widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:281
+#: lib/functions/deprecated.php:264
 msgid "The Before Footer widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:287
+#: lib/functions/deprecated.php:270
 msgid "The Footer widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:292
+#: lib/functions/deprecated.php:275
 msgid "The Footer Credits widget area."
 msgstr ""
 
-#: lib/functions/deprecated.php:297
+#: lib/functions/deprecated.php:280
 msgid "Copyright"
 msgstr ""
 
-#: lib/functions/deprecated.php:298
+#: lib/functions/deprecated.php:281
 msgid "All Rights Reserved"
 msgstr ""
 
-#: lib/functions/deprecated.php:299
+#: lib/functions/deprecated.php:282
 msgid "Powered by"
 msgstr ""
 
-#: lib/functions/helpers.php:1255
+#: lib/functions/helpers.php:1276
 msgid "More info"
 msgstr ""
 
