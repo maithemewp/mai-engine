@@ -290,6 +290,7 @@ function mai_get_deprecated_widget_areas(): array {
  * Run functionality deprecated since 2.0.0.
  *
  * @since 2.0.0
+ * @since 2.42.0 Reads the widget areas from mai_get_deprecated_widget_areas().
  *
  * @param array $config Theme config.
  *

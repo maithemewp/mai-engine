@@ -63,6 +63,7 @@ add_action( 'admin_init', 'mai_do_upgrade' );
  * Run setting upgrades during engine update.
  *
  * @since 0.2.0
+ * @since 2.42.0 Moves widgets out of unregistered v1 widget areas.
  *
  * @return void
  */

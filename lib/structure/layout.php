@@ -38,6 +38,7 @@ add_filter( 'body_class', 'mai_body_classes' );
  * Add additional classes to the body element.
  *
  * @since 0.1.0
+ * @since 2.42.0 `has-before-header` ignores widgets saved to a Before Header area that is not registered.
  *
  * @param array $classes Body classes.
  *

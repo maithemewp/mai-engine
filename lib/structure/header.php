@@ -455,6 +455,7 @@ function mai_site_title_link( $default ) {
  * Adds header left section.
  *
  * @since 0.1.0
+ * @since 2.42.0 Ignores widgets saved to a Header Left area that is not registered.
  *
  * @return void
  */
@@ -487,6 +488,7 @@ function mai_do_header_left() {
  * Adds header right section.
  *
  * @since 0.1.0
+ * @since 2.42.0 Ignores widgets saved to a Header Right area that is not registered.
  *
  * @return void
  */
