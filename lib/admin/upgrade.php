@@ -113,6 +113,10 @@ function mai_do_upgrade() {
 			mai_upgrade_2_41_0();
 			mai_upgrade_2_41_0_widgets();
 		}
+
+		if ( version_compare( $db_version, '2.42.0', '<' ) ) {
+			mai_upgrade_2_42_0_widget_areas();
+		}
 	} else {
 		// A new install saves its widget editor choice too, so it can't flip later.
 		mai_upgrade_2_41_0_widgets();
@@ -120,6 +124,67 @@ function mai_do_upgrade() {
 
 	// Update database version after upgrade.
 	mai_update_option( 'db-version', $plugin_version );
+}
+
+/**
+ * Moves widgets out of Mai Theme v1 widget areas that are no longer registered.
+ *
+ * Mai Engine registers the v1 areas only through the deprecated fallback, which turns
+ * on when Before Header has widgets. On every other upgraded site, widgets saved to
+ * the other v1 areas stayed in the database where nobody could see or remove them,
+ * because the Widgets screen only lists registered areas. `is_active_sidebar()` still
+ * counted them, which opened an empty Header Right section and pushed the logo off
+ * center.
+ *
+ * Moves them to Inactive Widgets, which is what WordPress does itself when someone
+ * opens the Widgets screen, so nothing is deleted and they can be dragged back.
+ * Unlike core, only the v1 area IDs are touched, so areas a plugin registers late
+ * are never moved. Areas that are registered, including all of them on sites still
+ * on the fallback, are left alone. Writes only when it changes something, so most sites
+ * pay for one option read.
+ *
+ * Skipped, not waited for, when deprecated.php is an older copy without the v1 area
+ * list, like the font flush in mai_upgrade_2_41_0(). The cleanup is tidying only:
+ * mai_has_widget_area() already keeps these widgets from opening header sections.
+ *
+ * @since 2.42.0
+ *
+ * @return void
+ */
+function mai_upgrade_2_42_0_widget_areas(): void {
+	if ( ! function_exists( 'mai_get_deprecated_widget_areas' ) ) {
+		return;
+	}
+
+	$sidebars_widgets = get_option( 'sidebars_widgets' );
+
+	if ( ! is_array( $sidebars_widgets ) ) {
+		return;
+	}
+
+	$inactive = isset( $sidebars_widgets['wp_inactive_widgets'] ) && is_array( $sidebars_widgets['wp_inactive_widgets'] ) ? $sidebars_widgets['wp_inactive_widgets'] : [];
+	$changed  = false;
+
+	foreach ( array_keys( mai_get_deprecated_widget_areas() ) as $id ) {
+		if ( ! array_key_exists( $id, $sidebars_widgets ) || is_registered_sidebar( $id ) ) {
+			continue;
+		}
+
+		if ( is_array( $sidebars_widgets[ $id ] ) ) {
+			$inactive = array_merge( $inactive, $sidebars_widgets[ $id ] );
+		}
+
+		unset( $sidebars_widgets[ $id ] );
+		$changed = true;
+	}
+
+	if ( ! $changed ) {
+		return;
+	}
+
+	$sidebars_widgets['wp_inactive_widgets'] = $inactive;
+
+	update_option( 'sidebars_widgets', $sidebars_widgets );
 }
 
 /**

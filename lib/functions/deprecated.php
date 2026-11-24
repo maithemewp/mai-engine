@@ -187,38 +187,103 @@ add_action( 'after_setup_theme', 'mai_do_deprecated_functionality', 4 );
  * `first-version` was not set correctly pre-2.0.0
  * so we need to do checks for active sidebars.
  *
+ * Only the v1 Before Header area turns the fallback on. Until 2.42.0 this was a loop
+ * over every v1 area that stopped after the first one, so Before Header was the only
+ * area ever checked. Sites have run that way since 2.0.0, so it stays: checking every
+ * area would start showing v1 widgets that have been hidden for years on sites that
+ * upgraded long ago. Widgets left in v1 areas that are not registered are moved to
+ * Inactive Widgets by mai_upgrade_2_42_0_widget_areas().
+ *
  * @link https://github.com/maithemewp/mai-engine/issues/170
  *
  * @since 2.0.0
+ * @since 2.42.0 Checks Before Header by name instead of a loop that only ever checked it.
  *
  * @return void
  */
 function mai_do_deprecated_functionality() {
-	$has_deprecated_sidebar = false;
-	$deprecated_sidebars    = [
-		'before-header',
-		'header-left',
-		'header-right',
-		'sidebar',
-		'after-entry',
-		'mobile-menu',
-		'before-footer',
-		'footer',
-		'footer-credits',
-	];
-
-	foreach ( $deprecated_sidebars as $sidebar ) {
-		if ( is_active_sidebar( $sidebar ) ) {
-			$has_deprecated_sidebar = true;
-		}
-		break;
-	}
-
-	if ( ! $has_deprecated_sidebar ) {
+	if ( ! is_active_sidebar( 'before-header' ) ) {
 		return;
 	}
 
 	add_filter( 'mai_config', 'mai_deprecated_2_0_0' );
+}
+
+/**
+ * Returns the widget areas Mai Theme v1 registered.
+ *
+ * Mai Engine registers them only through the deprecated fallback. Shared by the
+ * fallback and the 2.42.0 upgrade, which needs the same list of area IDs.
+ *
+ * @since 2.42.0
+ *
+ * @return array Widget area args keyed by area ID.
+ */
+function mai_get_deprecated_widget_areas(): array {
+	return [
+		'before-header' => [
+			'name'        => __( 'Before Header', 'mai-engine' ),
+			'description' => __( 'The Before Header widget area.', 'mai-engine' ),
+			'location'    => 'genesis_before_header',
+		],
+		'header-left' => [
+			'name'        => __( 'Header Left', 'mai-engine' ),
+			'description' => __( 'The Header Left widget area.', 'mai-engine' ),
+			'location'    => 'mai_header_left',
+			'args'        => [
+				'before' => '<div class="header-widget-area">',
+				'after'  => '</div>',
+			],
+		],
+		'header-right' => [
+			'name'        => __( 'Header Right', 'mai-engine' ),
+			'description' => __( 'The Header Right widget area.', 'mai-engine' ),
+			'location'    => 'mai_header_right',
+			'args'        => [
+				'before' => '<div class="header-widget-area">',
+				'after'  => '</div>',
+			],
+		],
+		'sidebar' => [
+			'name'        => __( 'Sidebar', 'mai-engine' ),
+			'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
+			'location'    => '',
+		],
+		'after-entry' => [
+			'name'        => __( 'After Entry', 'mai-engine' ),
+			'description' => __( 'The After Entry widget area.', 'mai-engine' ),
+			'location'    => '',
+		],
+		'mobile-menu' => [
+			'name'        => __( 'Mobile Menu', 'mai-engine' ),
+			'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
+			'location'    => 'mai_after_header_wrap',
+		],
+		'before-footer' => [
+			'name'        => __( 'Before Footer', 'mai-engine' ),
+			'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
+			'location'    => 'genesis_footer',
+			'priority'    => 5,
+		],
+		'footer' => [
+			'name'        => __( 'Footer', 'mai-engine' ),
+			'description' => __( 'The Footer widget area.', 'mai-engine' ),
+			'location'    => 'genesis_footer',
+		],
+		'footer-credits' => [
+			'name'        => __( 'Footer Credits', 'mai-engine' ),
+			'description' => __( 'The Footer Credits widget area.', 'mai-engine' ),
+			'location'    => 'genesis_footer',
+			'priority'    => 12,
+			'default'     => sprintf(
+				'%s [footer_copyright] · [footer_home_link] · %s · %s <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">%s</a>',
+				__( 'Copyright', 'mai-engine' ),
+				__( 'All Rights Reserved', 'mai-engine' ),
+				__( 'Powered by', 'mai-engine' ),
+				__( 'Mai Theme', 'mai-engine' )
+			),
+		],
+	];
 }
 
 /**
@@ -237,70 +302,7 @@ function mai_deprecated_2_0_0( $config ) {
 	];
 
 	$config['widget-areas'] = [
-		'add'    => [
-			'before-header' => [
-				'name'        => __( 'Before Header', 'mai-engine' ),
-				'description' => __( 'The Before Header widget area.', 'mai-engine' ),
-				'location'    => 'genesis_before_header',
-			],
-			'header-left' => [
-				'name'        => __( 'Header Left', 'mai-engine' ),
-				'description' => __( 'The Header Left widget area.', 'mai-engine' ),
-				'location'    => 'mai_header_left',
-				'args'        => [
-					'before' => '<div class="header-widget-area">',
-					'after'  => '</div>',
-				],
-			],
-			'header-right' => [
-				'name'        => __( 'Header Right', 'mai-engine' ),
-				'description' => __( 'The Header Right widget area.', 'mai-engine' ),
-				'location'    => 'mai_header_right',
-				'args'        => [
-					'before' => '<div class="header-widget-area">',
-					'after'  => '</div>',
-				],
-			],
-			'sidebar' => [
-				'name'        => __( 'Sidebar', 'mai-engine' ),
-				'description' => __( 'The Sidebar widget area.', 'mai-engine' ),
-				'location'    => '',
-			],
-			'after-entry' => [
-				'name'        => __( 'After Entry', 'mai-engine' ),
-				'description' => __( 'The After Entry widget area.', 'mai-engine' ),
-				'location'    => '',
-			],
-			'mobile-menu' => [
-				'name'        => __( 'Mobile Menu', 'mai-engine' ),
-				'description' => __( 'The Mobile Menu widget area.', 'mai-engine' ),
-				'location'    => 'mai_after_header_wrap',
-			],
-			'before-footer' => [
-				'name'        => __( 'Before Footer', 'mai-engine' ),
-				'description' => __( 'The Before Footer widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-				'priority'    => 5,
-			],
-			'footer' => [
-				'name'        => __( 'Footer', 'mai-engine' ),
-				'description' => __( 'The Footer widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-			],
-			'footer-credits' => [
-				'name'        => __( 'Footer Credits', 'mai-engine' ),
-				'description' => __( 'The Footer Credits widget area.', 'mai-engine' ),
-				'location'    => 'genesis_footer',
-				'priority'    => 12,
-				'default'     => sprintf(
-					'%s [footer_copyright] · [footer_home_link] · %s · %s <a target="_blank" rel="nofollow noopener sponsored" href="https://bizbudding.com/mai-theme/">%s</a>',
-					__( 'Copyright', 'mai-engine' ),
-					__( 'All Rights Reserved', 'mai-engine' ),
-					__( 'Powered by', 'mai-engine' ),
-					__( 'Mai Theme', 'mai-engine' )
-				),
-			],
-		],
+		'add'    => mai_get_deprecated_widget_areas(),
 		'remove' => [],
 	];
 

@@ -34,6 +34,9 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 	/** The font flush, which the upgrade skips when it is missing. It lives in lib/customize/typography.php. */
 	private const FONT_FLUSH = 'mai_typography_flush_local_fonts';
 
+	/** The v1 widget area list the 2.42.0 step reads. It lives in lib/functions/deprecated.php. */
+	private const DEPRECATED_CODE = 'mai_get_deprecated_widget_areas';
+
 	/** Saved options of an upgrade from 2.40.0. */
 	private const FROM_2_40 = [ 'first-version' => '2.30.0', 'db-version' => '2.40.0' ];
 
@@ -54,10 +57,11 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 	 * @param array    $options Saved options. Leave out `db-version` for a new install.
 	 * @param string   $version The plugin version.
 	 * @param string[] $loaded  The WIDGET_CODE functions and FONT_FLUSH that are loaded. The rest stay undefined.
+	 * @param bool     $deprecated_loaded Whether DEPRECATED_CODE is loaded. When it is, the 2.42.0 step finds no saved widgets.
 	 *
 	 * @return void
 	 */
-	private function upgrade( array $options, string $version, array $loaded ): void {
+	private function upgrade( array $options, string $version, array $loaded, bool $deprecated_loaded = true ): void {
 		// Loaded here, after Brain Monkey is up, because the file calls add_action() as it loads.
 		require_once dirname( __DIR__, 3 ) . '/lib/admin/upgrade.php';
 
@@ -75,6 +79,13 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 
 		foreach ( $loaded as $function ) {
 			Functions\when( $function )->alias( $stubs[ $function ] );
+		}
+
+		$this->assertFalse( function_exists( self::DEPRECATED_CODE ), self::DEPRECATED_CODE . ' starts undefined' );
+
+		if ( $deprecated_loaded ) {
+			Functions\when( self::DEPRECATED_CODE )->justReturn( [] );
+			Functions\when( 'get_option' )->justReturn( false );
 		}
 
 		Functions\when( 'mai_get_version' )->justReturn( $version );
@@ -195,5 +206,21 @@ final class UpgradeWaitsForCodeTest extends TestCase {
 		$this->assertSame( '2.41.1', $this->saved['db-version'] );
 		$this->assertArrayNotHasKey( 'widgets-block-editor', $this->saved );
 		$this->assertSame( 0, $this->flushes );
+	}
+
+	/** A site whose deprecated.php is older than upgrade.php skips the 2.42.0 step and still finishes. */
+	#[RunInSeparateProcess]
+	public function test_an_upgrade_finishes_without_the_v1_area_list(): void {
+		$this->upgrade( [ 'first-version' => '2.30.0', 'db-version' => '2.41.2' ], '2.42.0', [], false );
+
+		$this->assertSame( '2.42.0', $this->saved['db-version'] );
+	}
+
+	/** An upgrade from 2.41.2 runs the 2.42.0 step and saves the new version. */
+	#[RunInSeparateProcess]
+	public function test_an_upgrade_from_2_41_2_finishes(): void {
+		$this->upgrade( [ 'first-version' => '2.30.0', 'db-version' => '2.41.2' ], '2.42.0', [] );
+
+		$this->assertSame( '2.42.0', $this->saved['db-version'] );
 	}
 }
